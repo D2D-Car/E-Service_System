@@ -27,13 +27,13 @@
 .icon-circle {
   width: 80px;
   height: 80px;
-  background-color: #ff3b3be8;
+  background-color: var(--icon-bg-color);
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 1rem;
-  outline: 7px solid #fa33338c;
+  outline: 7px solid var(--hover-primary);
 }
 
 .icon-img {

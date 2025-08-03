@@ -1,0 +1,60 @@
+//TODO @use "../node_modules/bootstrap/scss/bootstrap" as *;
+
+$primary: #E83030;
+$dark: #0a0a0a;
+$secondary: #5b272a;
+$light: #FFFFFF;
+$text-color: #333;
+$card-bg-color: #2c2c2c;
+$icon-bg-color: #ff3b3be8;
+$icon-border-color: #ff3b3b96;
+$background-color: #1a1a1a;
+$light-font-color: #c0c0c0;
+$hover-primary: #fa33338c;
+
+:root {
+  --primary-color: #{$primary};
+  --secondary-color: #{$secondary};
+  --text-color: #{$text-color};
+  --card-bg-color: #{$card-bg-color};
+  --icon-bg-color: #{$icon-bg-color};
+  --icon-border-color: #{$icon-border-color};
+  --background-color: #{$background-color};
+  --light-font-color: #{$light-font-color};
+  --hover-primary: #{$hover-primary};
+
+  --padding: 1rem;
+  --border-radius: 16px;
+  --time-transition: 0.3s ease-in-out;
+  --line-height: 1.7;
+  --font-size-small: 0.8rem;
+
+  --dark: #{$dark};
+  --light: #{$light};
+}
+
+body {
+  background-color: var(--background-color);
+}
+
+.head-of-section {
+  font-weight: 600;
+
+  padding: {
+    top: 40px;
+    bottom: 10px;
+  }
+
+  h2 {
+    color: var(--icon-bg-color);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 16px;
+    margin-bottom: 0px;
+  }
+
+  p {
+    font-size: 40px;
+    color: var(--light);
+  }
+}
