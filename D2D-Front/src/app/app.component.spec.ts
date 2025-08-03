@@ -14,16 +14,18 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'D2D-Front' title`, () => {
+  it(`should have the 'D2D Car' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('D2D-Front');
+    expect(app.title).toEqual('D2D Car');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, D2D-Front');
+    expect(compiled.querySelector('h1')?.textContent).toContain(
+      'Hello, D2D-Front'
+    );
   });
 });

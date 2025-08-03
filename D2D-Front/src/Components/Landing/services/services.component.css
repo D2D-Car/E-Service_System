@@ -1,8 +1,10 @@
 .card {
-  background-color: #2c2c2c;
+  background-color: var(--card-bg-color);
   border: none;
+  border-radius: var(--border-radius);
   color: #fff;
-  transition: transform 0.3s ease-in-out;
+  transition: transform var(--time-transition);
+  padding: 30px 60px;
 
   &:hover {
     transform: translateY(-5px);
@@ -11,27 +13,31 @@
 
 .card-title {
   font-weight: 600;
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.4rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 
 .card-text {
-  font-size: 0.9rem;
-  color: #c0c0c0;
+  font-size: var(--font-size-small);
+  color: var(--light-font-color);
+  line-height: var(--line-height);
 }
 
 .icon-circle {
   width: 80px;
   height: 80px;
-  background-color: #ff3b3b;
+  background-color: #ff3b3be8;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 1rem;
+  outline: 7px solid #fa33338c;
 }
 
 .icon-img {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
+  filter: invert(100%) brightness(200%);
 }
