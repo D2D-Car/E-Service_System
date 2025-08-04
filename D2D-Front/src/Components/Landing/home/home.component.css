@@ -1,23 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap");
 
 :host {
   --primary-red: #d9232d;
   --text-light: #ffffff;
   --text-secondary: #c0c0c0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .hero-section {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 50%, var(--background-color) 100%),
-    url('/assets/home-img/Background.png') no-repeat center center / cover;
+  background: linear-gradient(90deg,
+      rgba(0, 0, 0, 0.95) 0%,
+      rgba(0, 0, 0, 0.7) 50%,
+      var(--background-color) 100%),
+    url("/assets/home-img/Background.png") no-repeat center center / cover;
   display: flex;
   align-items: center;
   position: relative;
   overflow: hidden;
+  height: 100vh;
 }
 
 .hero-section::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -65,42 +69,6 @@
   }
 }
 
-.welcome-banner {
-  /* Basic Box Model */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 15px 40px;
-  height: 60px;
-  max-width: 350px;
-  font-size: 17px;
-  white-space: nowrap;
-  margin-bottom: 25px;
-  position: relative;
-  overflow: hidden;
-  animation: slideInBanner 0.8s ease-out;
-
-  /* Background and Border */
-  background-color: #DC2E3F;
-  border: 2px solid #000000;
-
-  /* Initial state - Rectangle */
-  transform: skewX(0);
-  animation: skewIn 0.1s ease-out 0.1s forwards;
-}
-
-/* Counter-skew for the text to keep it straight */
-.welcome-banner .banner-text {
-  transform: skewX(-10deg);
-  color: #FFFFFF;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 24px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 0 20px;
-}
-
 @keyframes skewIn {
   from {
     transform: skewX(0);
@@ -124,7 +92,7 @@
 }
 
 .hero-content h1 {
-  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-size: clamp(2.5rem, 6vw, 3em);
   margin: 0.5rem 0 1rem;
   font-weight: bold;
   text-align: left;
@@ -207,10 +175,9 @@
   }
 }
 
-
 .hero-content h1 br {
   display: block;
-  content: '';
+  content: "";
   margin: 0.5em 0;
 }
 
