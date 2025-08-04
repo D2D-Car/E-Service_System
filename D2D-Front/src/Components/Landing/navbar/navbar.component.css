@@ -146,6 +146,10 @@
     margin: 10px;
   }
 
+  .nav-link {
+    font-size: 0.8rem;
+  }
+
   .nav-link:hover {
     max-width: 100%;
   }
