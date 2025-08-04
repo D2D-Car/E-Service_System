@@ -91,7 +91,7 @@
   animation: slideInBanner 0.8s ease-out, skewIn 0.1s ease-out 0.1s forwards;
 }
 
-@media (max-width:992) {
+@media (max-width: 992) {
   .welcome-banner {
     max-width: 90%;
   }
@@ -132,7 +132,7 @@
 }
 
 .hero-content h1 {
-  font-size: clamp(2.rem, 6vw, 3em);
+  font-size: clamp(2rem, 6vw, 3em);
   margin: 0.5rem 0 1rem;
   font-weight: bold;
   text-align: left;
@@ -140,13 +140,13 @@
   max-width: 100%;
 }
 
-@media (max-width:992px) {
+@media (max-width: 992px) {
   .hero-content h1 {
     font-size: 2rem;
   }
 }
 
-@media (max-width:767px) {
+@media (max-width: 767px) {
   .hero-content h1 {
     font-size: 1rem;
   }
@@ -316,4 +316,82 @@
   background-color: var(--text-light);
   border-color: var(--text-light);
   transform: scale(1.2);
+}
+
+/* CTA Buttons Styling */
+.cta-buttons {
+  display: flex;
+  gap: 1.5rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.dashboard-access-btn {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  text-decoration: none;
+  padding: 1rem 2rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
+  border: 2px solid transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dashboard-access-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 35px rgba(0, 123, 255, 0.5);
+  background: linear-gradient(135deg, #0056b3, #007bff);
+  color: white;
+  text-decoration: none;
+}
+
+.dashboard-access-btn:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.services-btn {
+  background: transparent;
+  color: var(--primary-color);
+  text-decoration: none;
+  padding: 1rem 2rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid var(--primary-color);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.services-btn:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 35px rgba(255, 59, 59, 0.3);
+  text-decoration: none;
+}
+
+.navigation-section {
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .cta-buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .dashboard-access-btn,
+  .services-btn {
+    text-align: center;
+    justify-content: center;
+  }
 }
