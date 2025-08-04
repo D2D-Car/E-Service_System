@@ -8,10 +8,11 @@ import { TechniciansComponent } from '../Components/Landing/technicians/technici
 import { FooterComponent } from '../Components/Landing/footer/footer.component';
 import { HomeComponent } from "../Components/Landing/home/home.component";
 import { FeedbackComponent } from '../Components/Landing/feedback/feedback.component';
+import { AboutComponent } from "../Components/Landing/about/about.component";
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, ServicesComponent, NavbarComponent, TechniciansComponent, FeedbackComponent, FooterComponent],
+  imports: [CommonModule, RouterOutlet, ServicesComponent, NavbarComponent, TechniciansComponent, FeedbackComponent, FooterComponent, AboutComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })

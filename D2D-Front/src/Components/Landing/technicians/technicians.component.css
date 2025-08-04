@@ -1,10 +1,11 @@
 .technicians-section {
   background-color: var(--background-color);
   padding: 4rem 1rem;
+  transition: var(--time-transition);
 }
 
 .section-title {
-  font-size: 2.75rem;
+  font-size: 2rem;
   font-weight: 700;
   color: #ffffff;
   text-align: center;
@@ -15,6 +16,22 @@
   transform: translateX(-50%);
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+@media (max-width:992px) {
+  .section-title {
+    font-size: 1rem;
+    max-width: 80%;
+  }
+
+  .section-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .section-title::after {
+    max-width: 60%;
+    margin: auto;
+  }
 }
 
 .section-title::after {
@@ -30,13 +47,15 @@
 
 .section-subtitle {
   color: #ccc;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-align: center;
   margin-top: 1rem;
   margin-bottom: 2.5rem;
   font-weight: 400;
   letter-spacing: 0.5px;
 }
+
+@media (max-width:992px) {}
 
 .cards-container {
   display: flex;
