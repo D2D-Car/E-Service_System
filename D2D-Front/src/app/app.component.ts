@@ -7,10 +7,11 @@ import { CommonModule } from '@angular/common';
 import { TechniciansComponent } from '../Components/Landing/technicians/technicians.component';
 import { FooterComponent } from '../Components/Landing/footer/footer.component';
 import { HomeComponent } from "../Components/Landing/home/home.component";
+import { ServiceHistoryComponent } from '../Components/Customer/service-history/service-history.component';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, ServicesComponent, NavbarComponent, TechniciansComponent, FooterComponent, HomeComponent],
+  imports: [CommonModule, RouterOutlet, ServicesComponent, NavbarComponent, TechniciansComponent, FooterComponent, HomeComponent , ServiceHistoryComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
