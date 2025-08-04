@@ -1,23 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap");
 
 :host {
   --primary-red: #d9232d;
   --text-light: #ffffff;
   --text-secondary: #c0c0c0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .hero-section {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 50%, var(--background-color) 100%),
-    url('/assets/home-img/Background.png') no-repeat center center / cover;
+  background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.95) 0%,
+      rgba(0, 0, 0, 0.7) 50%,
+      var(--background-color) 100%
+    ),
+    url("/assets/home-img/Background.png") no-repeat center center / cover;
   display: flex;
   align-items: center;
   position: relative;
   overflow: hidden;
+  height: 100vh;
 }
 
 .hero-section::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -81,7 +87,7 @@
   animation: slideInBanner 0.8s ease-out;
 
   /* Background and Border */
-  background-color: #DC2E3F;
+  background-color: #dc2e3f;
   border: 2px solid #000000;
 
   /* Initial state - Rectangle */
@@ -92,8 +98,8 @@
 /* Counter-skew for the text to keep it straight */
 .welcome-banner .banner-text {
   transform: skewX(-10deg);
-  color: #FFFFFF;
-  font-family: 'Montserrat', sans-serif;
+  color: #ffffff;
+  font-family: "Montserrat", sans-serif;
   font-size: 24px;
   font-weight: 800;
   text-transform: uppercase;
@@ -207,10 +213,9 @@
   }
 }
 
-
 .hero-content h1 br {
   display: block;
-  content: '';
+  content: "";
   margin: 0.5em 0;
 }
 
