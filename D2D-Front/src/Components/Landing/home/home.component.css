@@ -69,42 +69,6 @@
   }
 }
 
-.welcome-banner {
-  /* Basic Box Model */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 15px 40px;
-  height: 60px;
-  max-width: 350px;
-  font-size: 17px;
-  white-space: nowrap;
-  margin-bottom: 25px;
-  position: relative;
-  overflow: hidden;
-  animation: slideInBanner 0.8s ease-out;
-
-  /* Background and Border */
-  background-color: #dc2e3f;
-  border: 2px solid #000000;
-
-  /* Initial state - Rectangle */
-  transform: skewX(0);
-  animation: skewIn 0.1s ease-out 0.1s forwards;
-}
-
-/* Counter-skew for the text to keep it straight */
-.welcome-banner .banner-text {
-  transform: skewX(-10deg);
-  color: #ffffff;
-  font-family: "Montserrat", sans-serif;
-  font-size: 24px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 0 20px;
-}
-
 @keyframes skewIn {
   from {
     transform: skewX(0);
