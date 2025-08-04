@@ -11,7 +11,7 @@ import { FeedbackComponent } from '../Components/Landing/feedback/feedback.compo
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, ServicesComponent, NavbarComponent, TechniciansComponent,FeedbackComponent, FooterComponent, HomeComponent],
+  imports: [CommonModule, RouterOutlet, ServicesComponent, NavbarComponent, TechniciansComponent, FeedbackComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
