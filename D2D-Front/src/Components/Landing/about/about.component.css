@@ -38,7 +38,9 @@ body {
 }
 
 .about-image img {
+  width: 300px;
   max-width: 100%;
+  filter: drop-shadow(3px 3px 5px var(--primary-color));
 }
 
 .btn {

@@ -9,18 +9,25 @@ import { FooterComponent } from '../Components/Landing/footer/footer.component';
 import { HomeComponent } from "../Components/Landing/home/home.component";
 import { ServiceHistoryComponent } from '../Components/Customer/service-history/service-history.component';
 import { FeedbackComponent } from '../Components/Landing/feedback/feedback.component';
-import { AboutComponent } from "../Components/Landing/about/about.component";
+import { AboutComponent } from '../Components/Landing/about/about.component';
 
 @Component({
   selector: 'app-root',
-<<<<<<< HEAD
-  imports: [CommonModule, RouterOutlet, ServicesComponent, NavbarComponent, TechniciansComponent, FeedbackComponent, FooterComponent, AboutComponent],
-=======
-  imports: [CommonModule, RouterOutlet, ServicesComponent, NavbarComponent, TechniciansComponent, FeedbackComponent, FooterComponent, HomeComponent, ServiceHistoryComponent],
->>>>>>> 252c32748ce65667888e1885b312637260d1a5d4
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    ServicesComponent,
+    NavbarComponent,
+    TechniciansComponent,
+    FeedbackComponent,
+    FooterComponent,
+    AboutComponent
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
+
 export class AppComponent {
   title = 'D2D Car';
   public isHomePage = false;
