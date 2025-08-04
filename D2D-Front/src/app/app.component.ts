@@ -4,10 +4,11 @@ import { NavbarComponent } from '../Components/Landing/navbar/navbar.component';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
+import { TechniciansComponent } from '../Components/Landing/technicians/technicians.component';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, ServicesComponent, NavbarComponent],
+  imports: [CommonModule, RouterOutlet, ServicesComponent, NavbarComponent,TechniciansComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
