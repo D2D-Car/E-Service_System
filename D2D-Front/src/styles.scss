@@ -1,10 +1,10 @@
 //TODO @use "../node_modules/bootstrap/scss/bootstrap" as *;
 
-$primary: #E83030;
-$background-darkgray: #1C1C1E;
+$primary: #e83030;
+$background-darkgray: #1c1c1e;
 $dark: #0a0a0a;
 $secondary: #5b272a;
-$light: #FFFFFF;
+$light: #ffffff;
 $text-color: #333;
 $card-bg-color: #2c2c2c;
 $icon-bg-color: #ff3b3be8;
@@ -12,6 +12,24 @@ $icon-border-color: #ff3b3b96;
 $background-color: #1a1a1a;
 $light-font-color: #c0c0c0;
 $hover-primary: #fa33338c;
+
+// Status Colors
+$success-color: #4caf50;
+$success-bg: rgba(76, 175, 80, 0.2);
+$warning-color: #ffc107;
+$warning-bg: rgba(255, 193, 7, 0.2);
+$danger-color: #f44336;
+$danger-bg: rgba(244, 67, 54, 0.2);
+
+// Icon Gradient Colors
+$services-gradient-start: #ffa726;
+$services-gradient-end: #ff8a65;
+$money-gradient-start: #66bb6a;
+$money-gradient-end: #4caf50;
+$loyalty-gradient-start: #42a5f5;
+$loyalty-gradient-end: #1e88e5;
+$member-gradient-start: #ab47bc;
+$member-gradient-end: #8e24aa;
 
 :root {
   --primary-color: #{$primary};
@@ -25,11 +43,42 @@ $hover-primary: #fa33338c;
   --light-font-color: #{$light-font-color};
   --hover-primary: #{$hover-primary};
 
+  // Status Colors
+  --success-color: #{$success-color};
+  --success-bg: #{$success-bg};
+  --warning-color: #{$warning-color};
+  --warning-bg: #{$warning-bg};
+  --danger-color: #{$danger-color};
+  --danger-bg: #{$danger-bg};
+
+  // Icon Gradients
+  --services-gradient: linear-gradient(
+    135deg,
+    #{$services-gradient-start},
+    #{$services-gradient-end}
+  );
+  --money-gradient: linear-gradient(
+    135deg,
+    #{$money-gradient-start},
+    #{$money-gradient-end}
+  );
+  --loyalty-gradient: linear-gradient(
+    135deg,
+    #{$loyalty-gradient-start},
+    #{$loyalty-gradient-end}
+  );
+  --member-gradient: linear-gradient(
+    135deg,
+    #{$member-gradient-start},
+    #{$member-gradient-end}
+  );
+
   --padding: 1rem;
   --border-radius: 16px;
   --time-transition: 0.3s ease-in-out;
   --line-height: 1.7;
   --font-size-small: 0.8rem;
+  --box-shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.3);
 
   --dark: #{$dark};
   --light: #{$light};
