@@ -5,10 +5,11 @@ import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { TechniciansComponent } from '../Components/Landing/technicians/technicians.component';
+import { FooterComponent } from '../Components/Landing/footer/footer.component';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, ServicesComponent, NavbarComponent,TechniciansComponent],
+  imports: [CommonModule, RouterOutlet, ServicesComponent, NavbarComponent,TechniciansComponent,FooterComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
