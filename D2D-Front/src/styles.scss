@@ -1,6 +1,7 @@
 //TODO @use "../node_modules/bootstrap/scss/bootstrap" as *;
 
 $primary: #E83030;
+$background-darkgray: #1C1C1E;
 $dark: #0a0a0a;
 $secondary: #5b272a;
 $light: #FFFFFF;
@@ -20,6 +21,7 @@ $hover-primary: #fa33338c;
   --icon-bg-color: #{$icon-bg-color};
   --icon-border-color: #{$icon-border-color};
   --background-color: #{$background-color};
+  --background-darkgray: #{$background-darkgray};
   --light-font-color: #{$light-font-color};
   --hover-primary: #{$hover-primary};
 
@@ -35,6 +37,7 @@ $hover-primary: #fa33338c;
 
 body {
   background-color: var(--background-color) !important;
+  box-sizing: border-box;
 }
 
 .head-of-section {

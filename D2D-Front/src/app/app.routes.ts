@@ -8,7 +8,6 @@ import { ServicesComponent } from '../Components/Landing/services/services.compo
 import { TechniciansComponent } from '../Components/Landing/technicians/technicians.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signUp', component: RegisterComponent },
   { path: 'about', component: AboutComponent },

@@ -1,5 +1,5 @@
 .technicians-section {
-  background-color: #1C1C1E;
+  background-color: var(--background-color);
   padding: 4rem 1rem;
 }
 
@@ -32,7 +32,7 @@
   color: #ccc;
   font-size: 1.1rem;
   text-align: center;
-  margin-top: 1rem;  
+  margin-top: 1rem;
   margin-bottom: 2.5rem;
   font-weight: 400;
   letter-spacing: 0.5px;

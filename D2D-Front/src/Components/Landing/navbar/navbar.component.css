@@ -1,14 +1,10 @@
 .navbar {
-  border-bottom: 1px solid var(--secondary-color);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 50%, var(--background-color) 100%);
+  padding: 10px;
 }
 
-.brand-logo {
-  height: 60px;
-  width: auto;
-  object-fit: cover;
-  filter:
-    drop-shadow(0 2px 6px var(--primary-color)) drop-shadow(0 6px 18px var(--secondary-color));
-  transition: var(--time-transition);
+.brand-highlight {
+  color: var(--primary-color);
 }
 
 .nav-link {
@@ -59,6 +55,7 @@
 .search-form {
   --search-width: 220px;
   position: relative;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 50%, var(--background-color) 100%);
 }
 
 .search-input {
@@ -73,7 +70,6 @@
 
 .search-input:focus {
   outline: none;
-  background-color: var(--primary-color);
   box-shadow: 0 0 0;
   border: 2px solid var(--hover-primary);
   width: 280px;
