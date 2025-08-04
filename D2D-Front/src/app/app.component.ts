@@ -6,13 +6,11 @@ import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { TechniciansComponent } from '../Components/Landing/technicians/technicians.component';
 import { FooterComponent } from '../Components/Landing/footer/footer.component';
-import { HomeComponent } from "../Components/Landing/home/home.component";
-import { ServiceHistoryComponent } from '../Components/Customer/service-history/service-history.component';
 import { FeedbackComponent } from '../Components/Landing/feedback/feedback.component';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, ServicesComponent, NavbarComponent, TechniciansComponent, FeedbackComponent, FooterComponent, HomeComponent, ServiceHistoryComponent],
+  imports: [CommonModule, RouterOutlet, ServicesComponent, NavbarComponent, TechniciansComponent, FeedbackComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })

@@ -1,108 +1,33 @@
 <div class="vehicles-container">
   <div class="header">
     <h2>My Vehicles</h2>
-    <button class="add-vehicle-btn">+ Add Vehicle</button>
+    <button class="add-vehicle-btn">
+      <i class="fas fa-plus"></i>
+      Add Vehicle
+    </button>
   </div>
   <div class="vehicle-cards">
-    
-    <!-- Toyota -->
-    <div class="vehicle-card">
-      <img src="./assets/vehicles-img/toyota_camry2.jpeg" alt="Toyota Camry" class="vehicle-img" />
+    <div class="vehicle-card" *ngFor="let vehicle of vehicles; trackBy: trackByVehicleId">
+      <img [src]="vehicle.image" [alt]="vehicle.name" class="vehicle-img" />
       <div class="vehicle-details">
         <div class="card-title">
-          <h3>2020 Toyota Camry</h3>
+          <h3>{{ vehicle.year }} {{ vehicle.name }}</h3>
           <div class="card-actions">
-            <i class="bi bi-pencil-square"></i>
-            <i class="bi bi-trash"></i>
+            <i class="fas fa-edit"></i>
+            <i class="fas fa-trash"></i>
           </div>
         </div>
-        <p class="plate-info">Red • ABC-123</p>
+        <p class="plate-info">{{ vehicle.color }} • {{ vehicle.plateNumber }}</p>
         <div class="info-row">
           <span>Current Mileage:</span>
-          <span class="miles">45,000 miles</span>
+          <span class="miles">{{ vehicle.currentMileage }} miles</span>
         </div>
         <div class="info-row">
           <span>Next Service Due:</span>
-          <span class="service-due">Oil Change (500 miles)</span>
+          <span class="service-due">{{ vehicle.nextServiceDue }}</span>
         </div>
         <button class="service-btn">Schedule Service</button>
       </div>
     </div>
-
-    <!-- Honda -->
-    <div class="vehicle-card">
-      <img src="./assets/vehicles-img/honda_cr_v.jpeg" alt="Honda CR-V" class="vehicle-img" />
-      <div class="vehicle-details">
-        <div class="card-title">
-          <h3>2019 Honda CR-V</h3>
-          <div class="card-actions">
-            <i class="bi bi-pencil-square"></i>
-            <i class="bi bi-trash"></i>
-          </div>
-        </div>
-        <p class="plate-info">Black • XYZ-789</p>
-        <div class="info-row">
-          <span>Current Mileage:</span>
-          <span class="miles">38,000 miles</span>
-        </div>
-        <div class="info-row">
-          <span>Next Service Due:</span>
-          <span class="service-due">Oil Change (500 miles)</span>
-        </div>
-        <button class="service-btn">Schedule Service</button>
-      </div>
-    </div>
-
-    <!-- Jeep -->
-    <div class="vehicle-card">
-      <img src="./assets/vehicles-img/2019_jeep_regenda.jpeg" alt="Jeep Renegade" class="vehicle-img" />
-      <div class="vehicle-details">
-        <div class="card-title">
-          <h3>2019 Jeep Renegade</h3>
-          <div class="card-actions">
-            <i class="bi bi-pencil-square"></i>
-            <i class="bi bi-trash"></i>
-          </div>
-        </div>
-        <p class="plate-info">Blue • FGH-652</p>
-        <div class="info-row">
-          <span>Current Mileage:</span>
-          <span class="miles">41,200 miles</span>
-        </div>
-        <div class="info-row">
-          <span>Next Service Due:</span>
-          <span class="service-due">Battery Check (800 miles)</span>
-        </div>
-        <button class="service-btn">Schedule Service</button>
-      </div>
-    </div>
-
-    <!-- BMW -->
-    <div class="vehicle-card">
-      <img src="./assets/vehicles-img/2022_BMW.jpg" alt="BMW X3" class="vehicle-img" />
-      <div class="vehicle-details">
-        <div class="card-title">
-          <h3>2022 BMW X3</h3>
-          <div class="card-actions">
-            <i class="bi bi-pencil-square"></i>
-            <i class="bi bi-trash"></i>
-          </div>
-        </div>
-        <p class="plate-info">White • YPX-395</p>
-        <div class="info-row">
-          <span>Current Mileage:</span>
-          <span class="miles">32,500 miles</span>
-        </div>
-        <div class="info-row">
-          <span>Next Service Due:</span>
-          <span class="service-due">Engine Check (1,500 miles)</span>
-        </div>
-        <button class="service-btn">Schedule Service</button>
-      </div>
-    </div>
-
   </div>
 </div>
-
-<!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

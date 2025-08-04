@@ -113,13 +113,14 @@
 }
 
 .nav-tab:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.08);
   color: var(--light);
 }
 
 .nav-tab.active {
-  color: var(--primary-color);
-  background-color: var(--hover-primary);
+  color: var(--light);
+  background: linear-gradient(135deg, var(--primary-color), #d32f2f);
+  box-shadow: 0 4px 15px rgba(232, 48, 48, 0.3);
 }
 
 .nav-tab.active::after {
@@ -128,8 +129,9 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  background-color: var(--primary-color);
+  height: 4px;
+  background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.8), #fff);
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.4);
 }
 
 .nav-tab i {

@@ -147,8 +147,16 @@
     </div>
   </div>
 
-  <!-- Other Tab Contents (Placeholder) -->
-  <div class="tab-content" *ngIf="activeTab !== 'dashboard'">
+  <!-- Other Tab Contents -->
+  <div class="tab-content" *ngIf="activeTab === 'vehicles'">
+    <app-vehicles></app-vehicles>
+  </div>
+
+  <div class="tab-content" *ngIf="activeTab === 'history'">
+    <app-service-history></app-service-history>
+  </div>
+
+  <div class="tab-content" *ngIf="activeTab === 'profile'">
     <div class="coming-soon">
       <i class="fas fa-construction"></i>
       <h3>Coming Soon</h3>
