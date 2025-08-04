@@ -1,21 +1,21 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background-color: var(--);
-  color: #f0f0f0;
+  background-color: var(--light);
+  color: var(--light-font-color);
 }
 
-.about-us {
+.about-us .container {
   display: flex;
   flex-wrap: wrap;
+  flex-direction: row;
   align-items: center;
   padding: 50px;
   gap: 30px;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
 .about-content {
-  flex: 1;
   min-width: 300px;
   max-width: 500px;
   transition: var(--time-transition);
@@ -23,11 +23,11 @@ body {
 
 .about-content h1 {
   margin-bottom: 2rem;
-  word-spacing: 1;
+  word-spacing: 1px;
   font-size: 2rem;
-  text-indent: 0px;
-  width: 70vh;
-  text-wrap: wrap;
+  width: 100%;
+  max-width: 500px;
+  overflow-wrap: break-word;
   color: var(--light);
 }
 
@@ -48,17 +48,41 @@ body {
   color: white;
   font-size: 0.85rem;
   margin-top: 2rem;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
 }
 
-@media (max-width:992px) {
-  .about-us {
-    display: flex;
-    flex-direction: row;
+.btn:hover {
+  background-color: darkorange;
+}
+
+@media (max-width: 992px) {
+  .about-us .container {
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    text-align: center;
   }
 
   .about-content h1 {
     font-size: 1.8rem;
-    width: 40vh;
+    max-width: 100%;
+  }
+
+  .about-content {
+    width: 100%;
+    text-align: left;
+  }
+
+  .about-image {
+    width: 100%;
+  }
+
+  .head-of-section {
+    max-width: 100%;
   }
 
   .about-content p {
