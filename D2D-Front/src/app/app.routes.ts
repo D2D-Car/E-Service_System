@@ -8,6 +8,7 @@ import { ServicesComponent } from '../Components/Landing/services/services.compo
 import { TechniciansComponent } from '../Components/Landing/technicians/technicians.component';
 import { DashboardComponent } from '../Components/Customer/dashboard/dashboard.component';
 import { VehiclesComponent } from '../Components/Customer/vehicles/vehicles.component';
+import { ServiceHistoryComponent } from '../Components/Customer/service-history/service-history.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -18,5 +19,6 @@ export const routes: Routes = [
   { path: 'services', component: ServicesComponent },
   { path: 'technicians', component: TechniciansComponent },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'vehicles', component: VehiclesComponent }
+  { path: 'vehicles', component: VehiclesComponent },
+  { path: 'service-history', component: ServiceHistoryComponent }
 ];

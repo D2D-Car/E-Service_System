@@ -1,10 +1,11 @@
-<body>
-    <main class="main-content">
-        <div class="container">
-            <div class="page-header">
-                <h1 class="page-title">Service History</h1>
-                <p class="page-subtitle">Track your vehicle maintenance and service records</p>
-            </div>
+<main class="main-content">
+  <div class="container">
+    <div class="page-header">
+      <h1 class="page-title">Service History</h1>
+      <p class="page-subtitle">
+        Track your vehicle maintenance and service records
+      </p>
+    </div>
  <div class="filters-section">
                 <div class="filter-group">
                     <select class="filter-select" id="serviceFilter">
@@ -15,7 +16,6 @@
                         <option value="engine-repair">Engine Repair</option>
                         <option value="transmission">Transmission</option>
                     </select>
-
                     <select class="filter-select" id="vehicleFilter">
                         <option value="all">All Vehicles</option>
                         <option value="toyota-camry">Toyota Camry</option>
@@ -24,237 +24,57 @@
                         <option value="bmw-x3">BMW X3</option>
                     </select>
                 </div>
-
                 <button class="export-btn" id="exportBtn">
                     <span>⬇</span>
                     Export History
                 </button>
             </div>
+    <div class="service-list">
+      <div
+        *ngFor="let service of services"
+        class="service-card"
+        [attr.data-type]="service.type"
+        [attr.data-vehicle]="service.vehicleKey">
+        <div class="service-header">
+          <div class="service-title-group">
+            <h3 class="service-title">{{ service.title }}</h3>
+            <span class="status-badge">{{ service.status }}</span>
+          </div>
+          <div class="price-rating-group">
+            <span class="service-price">${{ service.price }}</span>
+            <div class="rating">
+              <span
+                class="star"
+                *ngFor="let star of [0, 1, 2, 3, 4]; let i = index"
+                [class.empty]="i >= service.rating"
+                >★</span
+              >
+            </div>
+          </div>
         </div>
-            <div class="service-list" id="serviceList">
-            <!-- Service Card 1: Oil Change & Filter -->
-            <div class="service-card" data-type="oil-change" data-vehicle="toyotacamry">
-                <div class="service-header">
-                    <div class="service-title-group">
-                        <h3 class="service-title">Oil Change & Filter</h3>
-                        <span class="status-badge">Completed</span>
-                    </div>
-                    <div class="price-rating-group">
-                        <span class="service-price">$65</span>
-                        <div class="rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="service-details">
-                    <div class="detail-item">
-                        <span class="detail-icon">📅</span>
-                        <span>January 5, 2024</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-icon">👨‍🔧</span>
-                        <span>Mike Johnson</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-icon">🚗</span>
-                        <span>Toyota Camry</span>
-                    </div>
-                </div>
-
-                <div class="notes-section">
-                    <div class="notes-label">Service Notes</div>
-                    <div class="notes-text">Excellent service, very professional. Oil changed to synthetic blend, filter replaced with premium filter.</div>
-                </div>
-
-                <div class="action-buttons">
-                    <a href="#" class="btn btn-primary">Book Again</a>
-                    <a href="#" class="btn btn-secondary">Download Invoice</a>
-                </div>
-            </div>
-
-            <!-- Service Card 2: Brake Service -->
-            <div class="service-card" data-type="brake-service" data-vehicle="hondacrv">
-                <div class="service-header">
-                    <div class="service-title-group">
-                        <h3 class="service-title">Brake Service</h3>
-                        <span class="status-badge">Completed</span>
-                    </div>
-                    <div class="price-rating-group">
-                        <span class="service-price">$120</span>
-                        <div class="rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star empty">★</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="service-details">
-                    <div class="detail-item">
-                        <span class="detail-icon">📅</span>
-                        <span>December 20, 2023</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-icon">👨‍🔧</span>
-                        <span>David Chen</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-icon">🚗</span>
-                        <span>Honda CR-V</span>
-                    </div>
-                </div>
-
-                <div class="notes-section">
-                    <div class="notes-label">Service Notes</div>
-                    <div class="notes-text">Good work on brake pads replacement. Front brake pads were completely worn out, replaced with ceramic pads.</div>
-                </div>
-
-                <div class="action-buttons">
-                    <a href="#" class="btn btn-primary">Book Again</a>
-                    <a href="#" class="btn btn-secondary">Download Invoice</a>
-                </div>
-            </div>
-
-            <!-- Service Card 3: Tire Rotation & Balance -->
-            <div class="service-card" data-type="tire-service" data-vehicle="toyotacamry">
-                <div class="service-header">
-                    <div class="service-title-group">
-                        <h3 class="service-title">Tire Rotation & Balance</h3>
-                        <span class="status-badge">Completed</span>
-                    </div>
-                    <div class="price-rating-group">
-                        <span class="service-price">$85</span>
-                        <div class="rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="service-details">
-                    <div class="detail-item">
-                        <span class="detail-icon">📅</span>
-                        <span>November 15, 2023</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-icon">👨‍🔧</span>
-                        <span>Sarah Wilson</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-icon">🚗</span>
-                        <span>Toyota Camry</span>
-                    </div>
-                </div>
-
-                <div class="notes-section">
-                    <div class="notes-label">Service Notes</div>
-                    <div class="notes-text">Professional service, completed on time. All tires rotated and balanced, pressure adjusted to manufacturer specs.</div>
-                </div>
-
-                <div class="action-buttons">
-                    <a href="#" class="btn btn-primary">Book Again</a>
-                    <a href="#" class="btn btn-secondary">Download Invoice</a>
-                </div>
-            </div>
-
-            <!-- Service Card 4: Engine Diagnostic -->
-            <div class="service-card" data-type="engine-repair" data-vehicle="hondacrv">
-                <div class="service-header">
-                    <div class="service-title-group">
-                        <h3 class="service-title">Engine Diagnostic</h3>
-                        <span class="status-badge">Completed</span>
-                    </div>
-                    <div class="price-rating-group">
-                        <span class="service-price">$150</span>
-                        <div class="rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star empty">★</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="service-details">
-                    <div class="detail-item">
-                        <span class="detail-icon">📅</span>
-                        <span>October 22, 2023</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-icon">👨‍🔧</span>
-                        <span>Robert Martinez</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-icon">🚗</span>
-                        <span>Honda CR-V</span>
-                    </div>
-                </div>
-
-                <div class="notes-section">
-                    <div class="notes-label">Service Notes</div>
-                    <div class="notes-text">Thorough diagnosis completed. Found minor vacuum leak, replaced hose. Engine running smoothly now.</div>
-                </div>
-
-                <div class="action-buttons">
-                    <a href="#" class="btn btn-primary">Book Again</a>
-                    <a href="#" class="btn btn-secondary">Download Invoice</a>
-                </div>
-            </div>
-
-            <!-- Service Card 5: Transmission Service -->
-            <div class="service-card" data-type="transmission" data-vehicle="fordf150">
-                <div class="service-header">
-                    <div class="service-title-group">
-                        <h3 class="service-title">Transmission Service</h3>
-                        <span class="status-badge">Completed</span>
-                    </div>
-                    <div class="price-rating-group">
-                        <span class="service-price">$180</span>
-                        <div class="rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="service-details">
-                    <div class="detail-item">
-                        <span class="detail-icon">📅</span>
-                        <span>September 18, 2023</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-icon">👨‍🔧</span>
-                        <span>Jennifer Adams</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-icon">🚗</span>
-                        <span>Ford F-150</span>
-                    </div>
-                </div>
-
-                <div class="notes-section">
-                    <div class="notes-label">Service Notes</div>
-                    <div class="notes-text">Complete transmission flush and filter replacement. Fluid was due for change, now shifting much smoother.</div>
-                </div>
-
-                <div class="action-buttons">
-                    <a href="#" class="btn btn-primary">Book Again</a>
-                    <a href="#" class="btn btn-secondary">Download Invoice</a>
-                </div>
-            </div>
+        <div class="service-details">
+          <div class="detail-item">
+            <span class="detail-icon">📅</span>
+            <span>{{ service.date }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-icon">👨‍🔧</span>
+            <span>{{ service.technician }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-icon">🚗</span>
+            <span>{{ service.vehicle }}</span>
+          </div>
         </div>
-
+        <div class="notes-section">
+          <div class="notes-label">Service Notes</div>
+          <div class="notes-text">{{ service.notes }}</div>
+        </div>
+        <div class="action-buttons">
+          <a href="#" class="btn btn-primary">Book Again</a>
+          <a href="#" class="btn btn-secondary">Download Invoice</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
