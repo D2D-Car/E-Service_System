@@ -7,19 +7,12 @@ import { CommonModule } from '@angular/common';
 import { TechniciansComponent } from '../Components/Landing/technicians/technicians.component';
 import { FooterComponent } from '../Components/Landing/footer/footer.component';
 import { HomeComponent } from "../Components/Landing/home/home.component";
-<<<<<<< HEAD
 import { ServiceHistoryComponent } from '../Components/Customer/service-history/service-history.component';
-
-@Component({
-  selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, ServicesComponent, NavbarComponent, TechniciansComponent, FooterComponent, HomeComponent , ServiceHistoryComponent],
-=======
 import { FeedbackComponent } from '../Components/Landing/feedback/feedback.component';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, ServicesComponent, NavbarComponent, TechniciansComponent, FeedbackComponent, FooterComponent],
->>>>>>> 87531ffc1ab25204f53b294256a71afa45248a85
+  imports: [CommonModule, RouterOutlet, ServicesComponent, NavbarComponent, TechniciansComponent, FeedbackComponent, FooterComponent, HomeComponent, ServiceHistoryComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
