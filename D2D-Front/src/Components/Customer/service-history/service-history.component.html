@@ -1,85 +1,80 @@
-<div class="service-history-container">
-  <div class="page-header">
-    <h1 class="page-title">Service History</h1>
-    <p class="page-subtitle">Track your vehicle maintenance and service records</p>
-  </div>
-
-  <div class="filters-section">
-    <div class="filter-group">
-      <select class="filter-select" id="serviceFilter">
-        <option value="all">All Services</option>
-        <option value="oil-change">Oil Change & Filter</option>
-        <option value="brake-service">Brake Service</option>
-        <option value="tire-service">Tire Service</option>
-        <option value="engine-repair">Engine Repair</option>
-      </select>
-
-      <select class="filter-select" id="vehicleFilter">
-        <option value="all">All Vehicles</option>
-        <option value="toyota-camry">Toyota Camry</option>
-        <option value="honda-crv">Honda CR-V</option>
-      </select>
+<main class="main-content">
+  <div class="container">
+    <div class="page-header">
+      <h1 class="page-title">Service History</h1>
+      <p class="page-subtitle">
+        Track your vehicle maintenance and service records
+      </p>
     </div>
-
-    <button class="export-btn">
-      <i class="fas fa-download"></i>
-      Export History
-    </button>
-  </div>
-
-  <div class="service-list">
-    <!-- Service Cards Loop -->
-    <div class="service-card" *ngFor="let service of serviceHistory; trackBy: trackByServiceId">
-      <div class="service-header">
-        <div class="service-title-group">
-          <h3 class="service-title">{{ service.title }}</h3>
-          <span class="status-badge">{{ service.status }}</span>
-        </div>
-        <div class="price-rating-group">
-          <span class="service-price">${{ service.price }}</span>
-          <div class="rating">
-            <i *ngFor="let star of getStarArray(service.rating); let i = index"
-              [class]="star ? 'fas fa-star' : 'far fa-star'">
-            </i>
+ <div class="filters-section">
+                <div class="filter-group">
+                    <select class="filter-select" id="serviceFilter">
+                        <option value="all">All Services</option>
+                        <option value="oil-change">Oil Change & Filter</option>
+                        <option value="brake-service">Brake Service</option>
+                        <option value="tire-service">Tire Service</option>
+                        <option value="engine-repair">Engine Repair</option>
+                        <option value="transmission">Transmission</option>
+                    </select>
+                    <select class="filter-select" id="vehicleFilter">
+                        <option value="all">All Vehicles</option>
+                        <option value="toyota-camry">Toyota Camry</option>
+                        <option value="honda-crv">Honda CR-V</option>
+                        <option value="ford-f150">Ford F-150</option>
+                        <option value="bmw-x3">BMW X3</option>
+                    </select>
+                </div>
+                <button class="export-btn" id="exportBtn">
+                    <span>⬇</span>
+                    Export History
+                </button>
+            </div>
+    <div class="service-list">
+      <div
+        *ngFor="let service of services"
+        class="service-card"
+        [attr.data-type]="service.type"
+        [attr.data-vehicle]="service.vehicleKey">
+        <div class="service-header">
+          <div class="service-title-group">
+            <h3 class="service-title">{{ service.title }}</h3>
+            <span class="status-badge">{{ service.status }}</span>
+          </div>
+          <div class="price-rating-group">
+            <span class="service-price">${{ service.price }}</span>
+            <div class="rating">
+              <span
+                class="star"
+                *ngFor="let star of [0, 1, 2, 3, 4]; let i = index"
+                [class.empty]="i >= service.rating"
+                >★</span
+              >
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="service-details">
-        <div class="detail-item">
-          <span class="detail-label">Date</span>
-          <span class="detail-value">{{ service.date }}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Technician</span>
-          <span class="detail-value">{{ service.technician }}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Vehicle</span>
-          <span class="detail-value">{{ service.vehicle }}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Location</span>
-          <span class="detail-value">{{ service.location }}</span>
-        </div>
-      </div>
-
-      <div class="service-meta">
-        <div class="meta-info">
-          <div class="meta-item">
-            <i class="fas fa-clock"></i>
-            <span>{{ service.duration }}</span>
+        <div class="service-details">
+          <div class="detail-item">
+            <span class="detail-icon">📅</span>
+            <span>{{ service.date }}</span>
           </div>
-          <div class="meta-item">
-            <i class="fas fa-tools"></i>
-            <span>{{ service.serviceType }}</span>
+          <div class="detail-item">
+            <span class="detail-icon">👨‍🔧</span>
+            <span>{{ service.technician }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-icon">🚗</span>
+            <span>{{ service.vehicle }}</span>
           </div>
         </div>
-        <div class="service-actions">
-          <button class="action-btn">Book Again</button>
-          <button class="action-btn primary">Download Invoice</button>
+        <div class="notes-section">
+          <div class="notes-label">Service Notes</div>
+          <div class="notes-text">{{ service.notes }}</div>
+        </div>
+        <div class="action-buttons">
+          <a href="#" class="btn btn-primary">Book Again</a>
+          <a href="#" class="btn btn-secondary">Download Invoice</a>
         </div>
       </div>
     </div>
   </div>
-</div>
+</main>

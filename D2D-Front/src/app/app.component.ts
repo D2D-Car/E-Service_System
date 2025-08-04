@@ -7,13 +7,25 @@ import { CommonModule } from '@angular/common';
 import { TechniciansComponent } from '../Components/Landing/technicians/technicians.component';
 import { FooterComponent } from '../Components/Landing/footer/footer.component';
 import { FeedbackComponent } from '../Components/Landing/feedback/feedback.component';
+import { AboutComponent } from '../Components/Landing/about/about.component';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, ServicesComponent, NavbarComponent, TechniciansComponent, FeedbackComponent, FooterComponent],
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    ServicesComponent,
+    NavbarComponent,
+    TechniciansComponent,
+    FeedbackComponent,
+    FooterComponent,
+    AboutComponent
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
+
 export class AppComponent {
   title = 'D2D Car';
   public isHomePage = false;
