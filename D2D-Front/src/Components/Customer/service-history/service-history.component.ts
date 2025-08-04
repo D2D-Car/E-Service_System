@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 interface ServiceHistory {
   id: number;
@@ -17,7 +18,7 @@ interface ServiceHistory {
 
 @Component({
   selector: 'app-service-history',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './service-history.component.html',
   styleUrl: './service-history.component.css',
 })
@@ -89,6 +90,75 @@ export class ServiceHistoryComponent {
       serviceType: 'AC Repair & Recharge',
     },
   ];
+
+  // Modal state
+  showAddServiceModal: boolean = false;
+
+  // New service object
+  newService: ServiceHistory = {
+    id: 0,
+    title: '',
+    status: 'Completed',
+    price: 0,
+    rating: 5,
+    date: '',
+    technician: '',
+    vehicle: '',
+    location: 'Main Branch',
+    duration: '60 mins',
+    serviceType: 'General Service',
+  };
+
+  // Modal methods
+  openAddServiceModal(): void {
+    this.showAddServiceModal = true;
+    this.resetNewService();
+  }
+
+  closeAddServiceModal(): void {
+    this.showAddServiceModal = false;
+    this.resetNewService();
+  }
+
+  resetNewService(): void {
+    this.newService = {
+      id: 0,
+      title: '',
+      status: 'Completed',
+      price: 0,
+      rating: 5,
+      date: '',
+      technician: '',
+      vehicle: '',
+      location: 'Main Branch',
+      duration: '60 mins',
+      serviceType: 'General Service',
+    };
+  }
+
+  addNewService(): void {
+    // Generate new ID
+    const newId = Math.max(...this.serviceHistory.map((s) => s.id)) + 1;
+
+    // Set the new service properties
+    this.newService.id = newId;
+
+    // Format date to readable format
+    if (this.newService.date) {
+      const date = new Date(this.newService.date);
+      this.newService.date = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    }
+
+    // Add to the beginning of the array (most recent first)
+    this.serviceHistory.unshift({ ...this.newService });
+
+    // Close modal and reset form
+    this.closeAddServiceModal();
+  }
 
   // Helper method to generate star array for rating
   getStarArray(rating: number): boolean[] {
