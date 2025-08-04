@@ -1,0 +1,120 @@
+.vehicles-container {
+  padding: 2rem;
+  background-color: var(--background-color);
+  color: #ffffff;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.header h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.add-vehicle-btn {
+  background-color: var(--primary-color);
+  color: var(--light);
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-vehicle-btn:hover {
+  background-color: var(--hover-primary);
+}
+
+.vehicle-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.vehicle-card {
+  background-color: var(--card-bg-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.vehicle-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.vehicle-details {
+  padding: 1rem;
+}
+
+.card-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.3rem;
+}
+
+.card-title h3 {
+  font-size: 1.2rem;
+  margin: 0;
+  color: #ffffff;
+}
+
+.card-actions i {
+  margin-left: 8px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.card-actions i:hover {
+  color: var(--primary-color);
+}
+
+.plate-info {
+  font-size: 0.95rem;
+  margin: 0.4rem 0;
+  color: #cccccc;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.4rem 0;
+  font-size: 0.95rem;
+  color: #ffffff;
+}
+
+.miles {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.service-due {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.service-btn {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.6rem;
+  background-color: var(--primary-color);
+  color: var(--light);
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.service-btn:hover {
+  background-color: var(--hover-primary);
+}
