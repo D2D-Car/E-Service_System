@@ -35,7 +35,7 @@ export class DriversComponent {
   vehicle: 'Kia Sportage',
   license: 'DR-9981',
   joined: '2022-09-18',
-  image: './assets/drivers-img/driver3.jpg'
+  image: './assets/drivers-img/driver3.jpeg'
   }
 ];
 }

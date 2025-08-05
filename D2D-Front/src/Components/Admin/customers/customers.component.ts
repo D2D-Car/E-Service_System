@@ -30,7 +30,7 @@ export class CustomersComponent {
   email: 'kareem.fouad@example.com',
   address: '10 El-Salam St, Tanta',
   joined: '2023-05-22',
-  image: './assets/customers-img/customer3.jpg'
+  image: './assets/customers-img/customer3.jpeg'
  }
 ];
 }
