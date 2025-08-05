@@ -1,5 +1,54 @@
-//TODO @use "../node_modules/bootstrap/scss/bootstrap" as *;
+@use "../node_modules/bootstrap/scss/bootstrap"as *;
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+@media(max-width: 420px) {
+  .row>* {
+    padding: {
+      right: 0 !important;
+      left: 0 important;
+    }
+  }
+}
+
+.technicians-section,
+.drivers-section,
+.customers-section {
+  padding: 1.5rem !important;
+}
+
+// =====================================
+// SCSS Variables (Must be defined first)
+// =====================================
+$primary: #ff3b3be8;
+$background-darkgray: #1C1C1E;
+$dark: #0a0a0a;
+$secondary: #5b272a;
+$light: #ffffff;
+$text-color: #333;
+$card-bg-color: #2c2c2c;
+$icon-bg-color: #ff3b3be8;
+$icon-border-color: #ff3b3b96;
+$background-color: #1a1a1a;
+$light-font-color: #c0c0c0;
+$hover-primary: #fa33338c;
+
+// Status Colors
+$success-color: #4caf50;
+$success-bg: rgba(76, 175, 80, 0.2);
+$warning-color: #ffc107;
+$warning-bg: rgba(255, 193, 7, 0.2);
+$danger-color: #f44336;
+$danger-bg: rgba(244, 67, 54, 0.2);
+
+// Icon Gradient Colors
+$services-gradient-start: #ffa726;
+$services-gradient-end: #ff8a65;
+$money-gradient-start: #66bb6a;
+$money-gradient-end: #4caf50;
+$loyalty-gradient-start: #42a5f5;
+$loyalty-gradient-end: #1e88e5;
+$member-gradient-start: #ab47bc;
+$member-gradient-end: #8e24aa;
 
 // Global Theme Variables
 :root {
@@ -229,37 +278,6 @@ body.admin-page {
   overflow: hidden;
 }
 
-$primary: #ff3b3be8;
-$background-darkgray: #1C1C1E;
-$dark: #0a0a0a;
-$secondary: #5b272a;
-$light: #ffffff;
-$text-color: #333;
-$card-bg-color: #2c2c2c;
-$icon-bg-color: #ff3b3be8;
-$icon-border-color: #ff3b3b96;
-$background-color: #1a1a1a;
-$light-font-color: #c0c0c0;
-$hover-primary: #fa33338c;
-
-// Status Colors
-$success-color: #4caf50;
-$success-bg: rgba(76, 175, 80, 0.2);
-$warning-color: #ffc107;
-$warning-bg: rgba(255, 193, 7, 0.2);
-$danger-color: #f44336;
-$danger-bg: rgba(244, 67, 54, 0.2);
-
-// Icon Gradient Colors
-$services-gradient-start: #ffa726;
-$services-gradient-end: #ff8a65;
-$money-gradient-start: #66bb6a;
-$money-gradient-end: #4caf50;
-$loyalty-gradient-start: #42a5f5;
-$loyalty-gradient-end: #1e88e5;
-$member-gradient-start: #ab47bc;
-$member-gradient-end: #8e24aa;
-
 :root {
   --primary-color: #{$primary};
   --secondary-color: #{$secondary};
@@ -281,26 +299,10 @@ $member-gradient-end: #8e24aa;
   --danger-bg: #{$danger-bg};
 
   // Icon Gradients
-  --services-gradient: linear-gradient(135deg,
-  --services-gradient: linear-gradient(135deg,
-    #{$services-gradient-start},
-    #{$services-gradient-end});
-  --money-gradient: linear-gradient(135deg,
-    #{$services-gradient-end});
-  --money-gradient: linear-gradient(135deg,
-    #{$money-gradient-start},
-    #{$money-gradient-end});
-  --loyalty-gradient: linear-gradient(135deg,
-    #{$money-gradient-end});
-  --loyalty-gradient: linear-gradient(135deg,
-    #{$loyalty-gradient-start},
-    #{$loyalty-gradient-end});
-  --member-gradient: linear-gradient(135deg,
-    #{$loyalty-gradient-end});
-  --member-gradient: linear-gradient(135deg,
-    #{$member-gradient-start},
-    #{$member-gradient-end});
-    #{$member-gradient-end});
+  --services-gradient: linear-gradient(135deg, #{$services-gradient-start}, #{$services-gradient-end});
+  --money-gradient: linear-gradient(135deg, #{$money-gradient-start}, #{$money-gradient-end});
+  --loyalty-gradient: linear-gradient(135deg, #{$loyalty-gradient-start}, #{$loyalty-gradient-end});
+  --member-gradient: linear-gradient(135deg, #{$member-gradient-start}, #{$member-gradient-end});
 
   --padding: 1rem;
   --border-radius: 16px;
@@ -343,63 +345,6 @@ body {
     font-size: 40px;
     color: var(--light);
   }
-}
-
-::-webkit-scrollbar {
-  width: 15px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--card-bg-color);
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
-  border-radius: 8px;
-  border: 3px solid var(--card-bg-color);
-}
-
-* {
-  box-sizing: border-box;
-}
-
-/* Global Theme Variables for Admin Dashboard */
-body.light-theme,
-.light-theme {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --text-primary: #333;
-  --text-secondary: #64748b;
-  --border-color: #e2e8f0;
-  --shadow: rgba(0, 0, 0, 0.05);
-  --scrollbar-track: #f1f5f9;
-  --scrollbar-thumb: #cbd5e1;
-  --scrollbar-thumb-hover: #94a3b8;
-  --hover-bg: #f1f5f9;
-}
-
-body.dark-theme,
-.dark-theme {
-  --bg-primary: #0f0f0f;
-  /* YouTube's main dark background */
-  --bg-secondary: #181818;
-  /* YouTube's secondary dark background */
-  --text-primary: #ffffff;
-  /* Pure white text like YouTube */
-  --text-secondary: #aaaaaa;
-  /* YouTube's secondary text color */
-  --border-color: #303030;
-  /* YouTube's border color */
-  --shadow: rgba(0, 0, 0, 0.5);
-  --scrollbar-track: #0f0f0f;
-  /* YouTube scrollbar track */
-  --scrollbar-thumb: #717171;
-  /* YouTube scrollbar thumb */
-  --scrollbar-thumb-hover: #aaaaaa;
-  /* YouTube scrollbar hover */
-  --hover-bg: #272727;
-  /* YouTube's hover background */
 }
 
 .services-icon {
