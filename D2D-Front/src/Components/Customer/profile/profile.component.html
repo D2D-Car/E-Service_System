@@ -1,1 +1,203 @@
-<p>profile works!</p>
+
+<div class="container">
+      <div class="profile-card">
+        <div class="card-header">
+          <h2 class="page-title">Personal Information</h2>
+          <div class="customer-badge" [class]="'badge-' + currentCustomer.customerType.toLowerCase()">
+            {{ currentCustomer.customerType }}
+          </div>
+        </div>
+
+        <form [formGroup]="customerForm" (ngSubmit)="onSubmit()" class="profile-form">
+          
+
+          <div class="photo-section">
+            <div class="photo-container">
+              <img [src]="currentCustomer.avatar" [alt]="currentCustomer.fullName" class="profile-photo">
+              <div class="photo-overlay">
+                <input type="file" id="photoInput" (change)="onPhotoChange($event)" accept="image/*" hidden>
+                <label for="photoInput" class="change-photo-btn">
+                  
+                  Change Photo
+                </label>
+              </div>
+            </div>
+            <p class="photo-note">JPG, PNG max 5MB</p>
+          </div>
+
+      
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fullName">Full Name</label>
+              <input 
+                type="text" 
+                id="fullName" 
+                formControlName="fullName"
+                class="form-control"
+                [class.error]="customerForm.get('fullName')?.invalid && customerForm.get('fullName')?.touched"
+              >
+              <div class="error-message" *ngIf="customerForm.get('fullName')?.invalid && customerForm.get('fullName')?.touched">
+                Full name is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input 
+                type="email" 
+                id="email" 
+                formControlName="email"
+                class="form-control"
+                [class.error]="customerForm.get('email')?.invalid && customerForm.get('email')?.touched"
+              >
+              <div class="error-message" *ngIf="customerForm.get('email')?.invalid && customerForm.get('email')?.touched">
+                Please enter a valid email
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input 
+                type="tel" 
+                id="phone" 
+                formControlName="phone"
+                class="form-control"
+                [class.error]="customerForm.get('phone')?.invalid && customerForm.get('phone')?.touched"
+              >
+              <div class="error-message" *ngIf="customerForm.get('phone')?.invalid && customerForm.get('phone')?.touched">
+                Phone number is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="totalServices">Total Services</label>
+              <input 
+                type="number" 
+                id="totalServices" 
+                formControlName="totalServices"
+                class="form-control"
+                readonly
+              >
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="carBrand">Car Brand</label>
+              <select id="carBrand" formControlName="carBrand" class="form-control">
+                <option value="">Select Brand</option>
+                <option value="Toyota">Toyota</option>
+                <option value="BMW">BMW</option>
+                <option value="Mercedes">Mercedes</option>
+                <option value="Audi">Audi</option>
+                <option value="Honda">Honda</option>
+                <option value="Nissan">Nissan</option>
+                <option value="Hyundai">Hyundai</option>
+                <option value="Kia">Kia</option>
+                <option value="Ford">Ford</option>
+                <option value="Chevrolet">Chevrolet</option>
+                <option value="Volkswagen">Volkswagen</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="carModel">Car Model</label>
+              <input 
+                type="text" 
+                id="carModel" 
+                formControlName="carModel"
+                class="form-control"
+                placeholder="e.g., Corolla, X5, C-Class"
+              >
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="carYear">Car Year</label>
+              <select id="carYear" formControlName="carYear" class="form-control">
+                <option value="">Select Year</option>
+                <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="customerType">Customer Type</label>
+              <select id="customerType" formControlName="customerType" class="form-control">
+                <option value="Regular">Regular</option>
+                <option value="Premium">Premium</option>
+                <option value="VIP">VIP</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="serviceArea">Service Area</label>
+            <select id="serviceArea" formControlName="serviceArea" class="form-control">
+              <option value="">Select Area</option>
+              <option value="Downtown Area">Downtown Area</option>
+              <option value="North District">North District</option>
+              <option value="South District">South District</option>
+              <option value="East District">East District</option>
+              <option value="West District">West District</option>
+              <option value="Business District">Business District</option>
+              <option value="Residential Area">Residential Area</option>
+              <option value="Industrial Zone">Industrial Zone</option>
+            </select>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="address">Full Address</label>
+            <textarea 
+              id="address" 
+              formControlName="address"
+              class="form-control textarea"
+              rows="3"
+              placeholder="Enter complete address..."
+            ></textarea>
+          </div>
+
+          
+          <div class="customer-stats">
+            <h3>Customer Statistics</h3>
+            <div class="stats-grid">
+              <div class="stat-card">
+            
+                <div class="stat-info">
+                  <span class="stat-label">Join Date</span>
+                  <span class="stat-value">{{ currentCustomer.joinDate }}</span>
+                </div>
+              </div>
+              
+              <div class="stat-card">
+               
+                <div class="stat-info">
+                  <span class="stat-label">Last Service</span>
+                  <span class="stat-value">{{ currentCustomer.lastService }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" [disabled]="customerForm.invalid">
+              
+              Update Profile
+            </button>
+            
+            <button type="button" class="btn btn-secondary" (click)="onCancel()">
+              
+              Cancel
+            </button>
+            
+            <button type="button" class="btn btn-danger" (click)="onDelete()">
+             
+              Delete Customer
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>

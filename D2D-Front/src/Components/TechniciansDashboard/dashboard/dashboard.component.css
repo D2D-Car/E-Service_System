@@ -10,6 +10,7 @@
   --border-radius: 16px;
   --box-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.3);
   --time-transition: all 0.3s ease;
+  --icon-border-color: rgba(255, 255, 255, 0.1); /* أضفناها لو ناقصة */
 }
 
 /* ----------- MAIN CONTAINER ----------- */
@@ -141,7 +142,7 @@
   font-size: 1.1rem;
 }
 
-/* ----------- AVAILABILITY SECTION (DASHBOARD ONLY) ----------- */
+/* ----------- AVAILABILITY SECTION ----------- */
 .availability-section {
   background-color: var(--card-bg-color);
   border-radius: var(--border-radius);
@@ -151,17 +152,13 @@
   justify-content: space-between;
   align-items: center;
   box-shadow: var(--box-shadow-hover);
-  border: 1px solid transparent; /* نضيف بوردر شفاف كبداية */
+  border: 1px solid transparent;
   transition: all 0.3s ease;
 }
 
 .availability-section:hover {
-  border-color: var(--primary-color); /* يتغيّر للأحمر عند الهوفر */
-  box-shadow: 0 0 12px rgba(229, 57, 53, 0.4); /* تأثير ظل أحمر بسيط */
-}
-
-
-.availability-section:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 12px rgba(229, 57, 53, 0.4);
   transform: translateY(-3px);
 }
 
@@ -188,11 +185,6 @@
   outline: none;
   transition: all 0.3s ease;
 }
-
-.availability-section:hover {
-  border-color: var(--primary-color); 
-}
-
 
 /* ----------- STATS GRID ----------- */
 .dashboard-content {
@@ -224,7 +216,6 @@
   box-shadow: var(--box-shadow-hover);
   border-color: var(--icon-border-color);
 }
-
 
 .card-icon {
   width: 60px;
@@ -282,17 +273,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.1); /* لون البورد الافتراضي */
+  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .service-card:hover {
   transform: translateY(-5px) scale(1.02);
   background-color: rgba(255, 255, 255, 0.05);
-  border-color: var(--primary-color); /* يتغير للون الأحمر بتاع الموقع */
+  border-color: var(--primary-color);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
-
 
 .service-details h4 {
   margin: 0 0 0.5rem;
@@ -356,15 +346,12 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 }
 
-
-
 .action-card.add-service {
   background: linear-gradient(135deg, #ff8a65 0%, #ff7043 100%);
 }
 .action-card.book-service:hover {
   background: linear-gradient(135deg, #ff7043 0%, #ff5722 100%);
 }
-
 
 .action-card.view-reports {
   background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
@@ -399,7 +386,8 @@
 }
 
 /* ----------- RESPONSIVE ----------- */
-@media (max-width: 768px) {.stats-grid {
+@media (max-width: 768px) {
+  .stats-grid {
     grid-template-columns: 1fr;
   }
 

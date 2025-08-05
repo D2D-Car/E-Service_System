@@ -8,7 +8,8 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./technicians.component.css']
 })
 export class TechniciansComponent {
-  technicians = [
+  
+   technicians = [
     {
       name: 'John Doe',
       experience: 7,
@@ -80,4 +81,14 @@ export class TechniciansComponent {
       image: 'assets/technicians-img/tech10.jpg'
     }
   ];
+
+  visibleCount = 3;
+
+  showMore() {
+    this.visibleCount = this.technicians.length;
+  }
+
+  showLess() {
+    this.visibleCount = 3;
+  }
 }
