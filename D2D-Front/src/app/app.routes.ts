@@ -20,32 +20,48 @@ import { FinancialComponent } from '../Components/Admin/financial/financial.comp
 import { TechnicianEarningsComponent } from '../Components/TechniciansDashboard/earnings/earnings.component';
 import { TechniciansDashboardComponent } from '../Components/TechniciansDashboard/dashboard/dashboard.component';
 import { JobsComponent } from '../Components/TechniciansDashboard/jobs/jobs.component';
+import { SignUpComponent } from '../Components/Auth/sign-up/sign-up.component';
+import { LoginComponent as AuthLoginComponent } from '../Components/Auth/login/login.component';
+import { PendingVerificationComponent } from '../Components/Auth/pending-verification/pending-verification.component';
+import { AuthGuard } from '../Guards/auth.guard';
 
 export const routes: Routes = [
   // Main website routes
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'signUp', component: RegisterComponent },
+  
+  // Authentication routes
+  {
+    path: 'auth',
+    children: [
+      { path: 'login', component: AuthLoginComponent },
+      { path: 'sign-up', component: SignUpComponent },
+      { path: 'pending-verification', component: PendingVerificationComponent }
+    ]
+  },
+  
+  // Legacy routes for backward compatibility
+  { path: 'login', redirectTo: '/auth/login', pathMatch: 'full' },
+  { path: 'signUp', redirectTo: '/auth/sign-up', pathMatch: 'full' },
+  
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: FeedbackComponent },
   { path: 'services', component: ServicesComponent },
   { path: 'technicians', component: LandingTechniciansComponent },
   { path: 'technician/dashboard', component: TechniciansDashboardComponent },
- {path:'jobs',component:JobsComponent},
-
-  {path:'technicianearnings',component:TechnicianEarningsComponent},
+  { path: 'jobs', component: JobsComponent },
+  { path: 'technicianearnings', component: TechnicianEarningsComponent },
   
-
-  // Customer Dashboard (Dashboard Demo - like before)
-  { path: 'dashboard', component: CustomerDashboardComponent },
-  { path: 'vehicles', component: VehiclesComponent },
-  { path: 'service-history', component: ServiceHistoryComponent },
+  // Protected Customer Dashboard routes
+  { path: 'dashboard', component: CustomerDashboardComponent, canActivate: [AuthGuard] },
+  { path: 'vehicles', component: VehiclesComponent, canActivate: [AuthGuard] },
+  { path: 'service-history', component: ServiceHistoryComponent, canActivate: [AuthGuard] },
 
   // Professional Admin Dashboard with Child Routes
   {
     path: 'admin',
     component: AdminDashboardComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardHomeComponent },
