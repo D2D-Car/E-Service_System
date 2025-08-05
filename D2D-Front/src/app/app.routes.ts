@@ -17,6 +17,9 @@ import { TechniciansComponent } from '../Components/Admin/technicians/technician
 import { OrdersComponent } from '../Components/Admin/orders/orders.component';
 import { StockComponent } from '../Components/Admin/stock/stock.component';
 import { FinancialComponent } from '../Components/Admin/financial/financial.component';
+import { TechnicianEarningsComponent } from '../Components/TechniciansDashboard/earnings/earnings.component';
+import { TechniciansDashboardComponent } from '../Components/TechniciansDashboard/dashboard/dashboard.component';
+import { JobsComponent } from '../Components/TechniciansDashboard/jobs/jobs.component';
 
 export const routes: Routes = [
   // Main website routes
@@ -28,6 +31,11 @@ export const routes: Routes = [
   { path: 'contact', component: FeedbackComponent },
   { path: 'services', component: ServicesComponent },
   { path: 'technicians', component: LandingTechniciansComponent },
+  { path: 'technician/dashboard', component: TechniciansDashboardComponent },
+ {path:'jobs',component:JobsComponent},
+
+  {path:'technicianearnings',component:TechnicianEarningsComponent},
+  
 
   // Customer Dashboard (Dashboard Demo - like before)
   { path: 'dashboard', component: CustomerDashboardComponent },
