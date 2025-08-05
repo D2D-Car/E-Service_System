@@ -23,13 +23,12 @@ import { FinancialComponent } from '../Components/Admin/financial/financial.comp
 import { DashboardComponent as CustomerDashboardComponent } from '../Components/Customer/dashboard/dashboard.component';
 import { VehiclesComponent } from '../Components/Customer/vehicles/vehicles.component';
 import { ServiceHistoryComponent } from '../Components/Customer/service-history/service-history.component';
-import { ProfileComponent as CustomerProfileComponent } from '../Components/Customer/profile/profile.component';
 
 // Technician Dashboard Components
 import { TechniciansDashboardComponent } from '../Components/TechniciansDashboard/dashboard/dashboard.component';
 import { JobsComponent } from '../Components/TechniciansDashboard/jobs/jobs.component';
 import { TechnicianEarningsComponent } from '../Components/TechniciansDashboard/earnings/earnings.component';
-import { ProfileComponent as TechnicianProfileComponent } from '../Components/TechniciansDashboard/profile/profile.component';
+import { TechnicianProfileComponent } from '../Components/TechniciansDashboard/profile/technician-profile.component';
 
 export const routes: Routes = [
   // Landing Page Routes
@@ -51,17 +50,7 @@ export const routes: Routes = [
       { path: 'dashboard', component: CustomerDashboardComponent },
       { path: 'vehicles', component: VehiclesComponent },
       { path: 'service-history', component: ServiceHistoryComponent },
-      { path: 'profile', component: CustomerProfileComponent },
     ],
-  },
-
-  // Legacy Customer Routes (redirects to new structure)
-  { path: 'dashboard', redirectTo: '/customer/dashboard', pathMatch: 'full' },
-  { path: 'vehicles', redirectTo: '/customer/vehicles', pathMatch: 'full' },
-  {
-    path: 'service-history',
-    redirectTo: '/customer/service-history',
-    pathMatch: 'full',
   },
 
   // Technician Dashboard with Child Routes
@@ -75,14 +64,6 @@ export const routes: Routes = [
       { path: 'earnings', component: TechnicianEarningsComponent },
       { path: 'profile', component: TechnicianProfileComponent },
     ],
-  },
-
-  // Legacy Technician Routes (redirects to new structure)
-  { path: 'jobs', redirectTo: '/technician/jobs', pathMatch: 'full' },
-  {
-    path: 'technician-earnings',
-    redirectTo: '/technician/earnings',
-    pathMatch: 'full',
   },
 
   // Admin Dashboard with Child Routes
@@ -99,6 +80,21 @@ export const routes: Routes = [
       { path: 'stock', component: StockComponent },
       { path: 'financial', component: FinancialComponent },
     ],
+  },
+
+  // Legacy Routes (for backward compatibility)
+  { path: 'dashboard', redirectTo: '/customer/dashboard', pathMatch: 'full' },
+  { path: 'vehicles', redirectTo: '/customer/vehicles', pathMatch: 'full' },
+  {
+    path: 'service-history',
+    redirectTo: '/customer/service-history',
+    pathMatch: 'full',
+  },
+  { path: 'jobs', redirectTo: '/technician/jobs', pathMatch: 'full' },
+  {
+    path: 'technicianearnings',
+    redirectTo: '/technician/earnings',
+    pathMatch: 'full',
   },
 
   // Fallback - redirect to home page for unknown routes
