@@ -115,7 +115,7 @@ $member-gradient-end: #8e24aa;
 // =====================================
 // Theme Variants
 // =====================================
-// Dark theme - YouTube Dark Mode Style
+// Dark theme - Professional Dark Mode Style
 body.dark-theme,
 .dark-theme {
   --bg-primary: #0f0f0f;
@@ -135,8 +135,11 @@ body.dark-theme,
   --primary-color: #ff3b3be8;
   --primary-hover: #ff5555;
   --success-color: #10b981;
+  --success-bg: rgba(16, 185, 129, 0.2);
   --warning-color: #f59e0b;
+  --warning-bg: rgba(245, 158, 11, 0.2);
   --danger-color: #f87171;
+  --danger-bg: rgba(248, 113, 113, 0.2);
   --scrollbar-track: #0f0f0f;
   --scrollbar-thumb: #717171;
   --scrollbar-thumb-hover: #aaaaaa;
@@ -162,15 +165,14 @@ body.light-theme,
   --primary-color: #ff3b3be8;
   --primary-hover: #dc2626;
   --success-color: #059669;
+  --success-bg: rgba(5, 150, 105, 0.2);
   --warning-color: #d97706;
+  --warning-bg: rgba(217, 119, 6, 0.2);
   --danger-color: #dc2626;
-
-  --sidebar-bg: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-  --primary-color: #ff3b3be8;
-  --primary-hover: #d12626;
-  --success-color: #10b981;
-  --warning-color: #f59e0b;
-  --danger-color: #ef4444;
+  --danger-bg: rgba(220, 38, 38, 0.2);
+  --scrollbar-track: #f1f5f9;
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-thumb-hover: #94a3b8;
 }
 
 // =====================================
