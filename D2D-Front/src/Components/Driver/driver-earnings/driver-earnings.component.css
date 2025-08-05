@@ -219,7 +219,7 @@
 .summary {
   display: grid;
   max-width: 92%;
-  justify-content: repeat(auto-fill, minmax(500px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
   margin: 1rem auto;
   gap: 1rem;
 }
@@ -230,10 +230,15 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 15px;
   width: 100%;
-  max-width: 50%;
+  max-width: 100%;
   box-sizing: border-box;
   color: var(--light-font-color);
   transition: var(--time-transition);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  filter: drop-shadow(1px 1px 1px var(--primary-color));
 }
 
 .card h3 {

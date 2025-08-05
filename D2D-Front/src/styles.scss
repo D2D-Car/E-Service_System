@@ -3,6 +3,7 @@
 
 // Global Theme Variables
 :root {
+
   // Light theme (default) - Enhanced for accessibility
   --bg-primary: #ffffff;
   --bg-secondary: #f8fafc;
@@ -204,25 +205,14 @@ $member-gradient-end: #8e24aa;
 
   // Icon Gradients
   --services-gradient: linear-gradient(135deg,
-  --services-gradient: linear-gradient(135deg,
     #{$services-gradient-start},
     #{$services-gradient-end});
   --money-gradient: linear-gradient(135deg,
     #{$services-gradient-end});
-  --money-gradient: linear-gradient(135deg,
-    #{$money-gradient-start},
-    #{$money-gradient-end});
   --loyalty-gradient: linear-gradient(135deg,
     #{$money-gradient-end});
-  --loyalty-gradient: linear-gradient(135deg,
-    #{$loyalty-gradient-start},
-    #{$loyalty-gradient-end});
   --member-gradient: linear-gradient(135deg,
     #{$loyalty-gradient-end});
-  --member-gradient: linear-gradient(135deg,
-    #{$member-gradient-start},
-    #{$member-gradient-end});
-    #{$member-gradient-end});
 
   --padding: 1rem;
   --border-radius: 16px;

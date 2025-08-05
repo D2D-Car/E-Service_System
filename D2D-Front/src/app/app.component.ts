@@ -24,7 +24,7 @@ import { TestimonialsComponent } from "../Components/Landing/testimonials/testim
     FooterComponent,
     AboutComponent,
     TestimonialsComponent
-],
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
@@ -52,6 +52,13 @@ export class AppComponent {
         } else {
           document.body.classList.remove('admin-page');
         }
+
+        const url = event.urlAfterRedirects;
+        this.isDashboardPage =
+          url.startsWith('/driver') ||
+          url.startsWith('/admin') ||
+          url.startsWith('/technician') ||
+          url.startsWith('/customer');
       });
   }
 
