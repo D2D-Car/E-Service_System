@@ -1,1 +1,39 @@
-<p>drivers works!</p>
+
+<section class="technicians-section">
+  <h2 class="section-title">Our Professional Drivers</h2>
+  <p class="section-subtitle">Safe, skilled, and always on time</p>
+
+  <div class="cards-container">
+    <div class="driv-card" *ngFor="let driver of drivers">
+      <div class="card border border-secondary h-100">
+
+        <div class="card-header">
+          <div class="driv-contact-buttons">
+            <button class="soft-btn">📞</button>
+            <button class="soft-btn">✉</button>
+          </div>
+
+          <img [src]="driver.image" class="driv-img-circle" [alt]="driver.name">
+          <h5 class="driv-name">{{ driver.name }}</h5>
+        </div>
+
+        <div class="card-body">
+          <hr class="divider-line" />
+          <p class="card-text mb-1">Phone: {{ driver.phone }}</p>
+          <p class="card-text mb-1">Email: {{ driver.email }}</p>
+          <p class="card-text mb-1">Vehicle: {{ driver.vehicle }}</p>
+          <p class="card-text mb-1">License No: {{ driver.license }}</p>
+          <p class="join-date">Joined: {{ driver.joined }}</p>
+
+          <div class="action-footer">
+            <div class="action-buttons">
+              <button class="book-btn">Profile</button>
+              <button class="book-btn remove-btn">Remove</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

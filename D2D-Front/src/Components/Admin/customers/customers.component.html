@@ -1,1 +1,37 @@
-<p>customers works!</p>
+
+<section class="technicians-section">
+  <h2 class="section-title">Our Valued Customers</h2>
+  <p class="section-subtitle">We’re proud to serve these amazing individuals</p>
+
+  <div class="cards-container">
+    <div class="cust-card" *ngFor="let cust of customers">
+      <div class="card border border-secondary h-100">
+
+        <div class="card-header">
+          <div class="cust-contact-buttons">
+            <button class="soft-btn">📞</button>
+            <button class="soft-btn">✉</button>
+          </div>
+
+          <img [src]="cust.image" class="cust-img-circle" [alt]="cust.name">
+          <h5 class="cust-name">{{ cust.name }}</h5>
+        </div>
+
+        <div class="card-body">
+          <hr class="divider-line" />
+          <p class="card-text mb-1">Phone: {{ cust.phone }}</p>
+          <p class="card-text mb-1">Email: {{ cust.email }}</p>
+          <p class="join-date">Joined: {{ cust.joined }}</p>
+
+          <div class="action-footer">
+            <div class="action-buttons">
+              <button class="book-btn">Profile</button>
+              <button class="book-btn remove-btn">Remove</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -22,9 +22,9 @@ export class VehiclesComponent {
   vehicles: Vehicle[] = [
     {
       id: 1,
-      name: 'Toyota Camry',
+      name: 'Dodge',
       year: 2021,
-      color: 'White',
+      color: 'Dark',
       plateNumber: 'ABC-123',
       currentMileage: '45,000',
       nextServiceDue: 'Oil Change (500 miles)',

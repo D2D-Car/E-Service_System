@@ -148,13 +148,14 @@
       transition: all 0.3s ease;
        background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
+    color:var(--light);
     }
 
     .form-control:focus {
       outline: none;
-     
-      background: var(--light);
-      box-shadow: 0 0 0 3px var(--primary-color);
+  background: var(--light);
+  color: #333;
+  box-shadow: 0 0 0 3px var(--primary-color)
     }
 
     .form-control.error {
