@@ -43,7 +43,7 @@ export class AppComponent {
           event.urlAfterRedirects.includes('/dashboard') ||
           event.urlAfterRedirects.includes('/admin');
         this.isAdminPage = event.urlAfterRedirects.includes('/admin');
-        
+
         // Add/remove admin-page class to body
         if (this.isAdminPage) {
           document.body.classList.add('admin-page');

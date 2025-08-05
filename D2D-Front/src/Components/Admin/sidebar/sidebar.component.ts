@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { ThemeService } from '../../../Services/theme.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
@@ -23,29 +22,13 @@ interface MenuItem {
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   @Input() collapsed = false;
-  @Input() isDarkMode = true; // Default to dark theme
-  
+
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private router: Router,
-    private themeService: ThemeService
-  ) {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
-    // Subscribe to theme changes
-    this.themeService.isDarkMode$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(isDark => {
-        this.isDarkMode = isDark;
-      });
-
-    // Subscribe to sidebar state changes
-    this.themeService.sidebarCollapsed$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(collapsed => {
-        this.collapsed = collapsed;
-      });
+    // Component initialization
   }
 
   ngOnDestroy() {

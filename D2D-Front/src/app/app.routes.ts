@@ -7,6 +7,7 @@ import { FeedbackComponent } from '../Components/Landing/feedback/feedback.compo
 import { ServicesComponent } from '../Components/Landing/services/services.component';
 import { TechniciansComponent as LandingTechniciansComponent } from '../Components/Landing/technicians/technicians.component';
 import { DashboardComponent as AdminDashboardComponent } from '../Components/Admin/dashboard/dashboard.component';
+import { DashboardHomeComponent } from '../Components/Admin/dashboard-home/dashboard-home.component';
 import { DashboardComponent as CustomerDashboardComponent } from '../Components/Customer/dashboard/dashboard.component';
 import { VehiclesComponent } from '../Components/Customer/vehicles/vehicles.component';
 import { ServiceHistoryComponent } from '../Components/Customer/service-history/service-history.component';
@@ -39,7 +40,7 @@ export const routes: Routes = [
     component: AdminDashboardComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: AdminDashboardComponent },
+      { path: 'dashboard', component: DashboardHomeComponent },
       { path: 'customers', component: CustomersComponent },
       { path: 'drivers', component: DriversComponent },
       { path: 'technicians', component: TechniciansComponent },
