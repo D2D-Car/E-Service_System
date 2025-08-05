@@ -1,306 +1,137 @@
-.container {
- padding: 20px;
-    background-color: var(--background-color);
-      min-height: 100vh;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+ .profile-card {
+            background-color: var(--card-bg-color);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border: none;
+        }
 
-    .profile-card {
-      max-width: 900px;
-      margin: 0 auto;
-      background-color: var(--card-bg-color);
-      border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-    }
+        .card-header-custom {
+            border-bottom: 2px solid var(--light);
+        }
 
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-      padding-bottom: 20px;
-      border-bottom: 2px solid var(--light);
-    }
+        .page-title {
+            color: var(--light);
+        }
 
-    .page-title {
-      font-size: 2rem;
-      color: var(--light);
-      margin: 0;
-    }
+        .customer-badge {
+            border-radius: 20px;
+            padding: 10px;
+            font-weight: bold;
+        }
 
-    .customer-badge {
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-weight: bold;
-      font-size: 0.9rem;
-    }
+        .badge-premium {
+            background: linear-gradient(45deg, #81c784, #66bb6a);
+        }
 
-    /* .badge-regular {
-      background: linear-gradient(45deg, #64b5f6, #42a5f5);
-      color: white;
-    } */
+        .badge-vip {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #333;
+        }
 
-    .badge-premium {
-      background: linear-gradient(45deg, #81c784, #66bb6a);
-      color: white;
-    }
+        .badge-regular {
+            background: linear-gradient(45deg, #64b5f6, #42a5f5);
+        }
 
-    .badge-vip {
-      background: linear-gradient(45deg, #ffd700, #ffed4e);
-      color: #333;
-    }
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+           
+        }
 
-    .photo-section {
-      text-align: center;
-      margin-bottom: 30px;
-    }
+        .photo-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
 
-    .photo-container {
-      position: relative;
-      display: inline-block;
-      margin-bottom: 10px;
-    }
+        .photo-container:hover .photo-overlay {
+            opacity: 1;
+        }
 
-    .profile-photo {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-     
-      object-fit: cover;
-    }
+        .change-photo-btn {
+            background:  var(--primary-color);
+            color: var(--light-font-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            border: none;
+            transition: all 0.3s ease;
+        }
 
-    .photo-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: var(--light);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
+        .change-photo-btn:hover {
+            transform: scale(1.05);
+        }
 
-    .photo-container:hover .photo-overlay {
-      opacity: 1;
-    }
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--light);
+            border-radius: 10px;
+        }
 
-    .change-photo-btn {
-      background: linear-gradient(45deg,var(--primary-color));
-      color: white;
-      padding: 8px 16px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 0.8rem;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      border: none;
-      transition: all 0.3s ease;
-    }
+        .form-control:focus {
+            background: var(--light-font-color);
+            color: #333;
+            box-shadow: 0 0 0 3px var(--primary-color);
+            border-color: var(--primary-color);
+        }
 
-    .change-photo-btn:hover {
-      transform: scale(1.05);
-    }
+        .form-control.is-invalid {
+            border-color: var(--light);
+            background: var(--light-font-color);
+            color: #333;
+        }
 
-    .photo-note {
-      color: var(--light-font-color);
-      font-size: 0.85rem;
-    }
+        .form-label {
+            font-weight: 600;
+            color: var(--light-font-color);
+        }
 
-    .profile-form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
+        .invalid-feedback {
+            color: var(--light);
+        }
 
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
+        .customer-stats {
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2));
+            border-radius: 15px;
+        }
 
-    .form-group {
-      display: flex;
-      flex-direction: column;
-    }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
 
-    .form-group.full-width {
-      grid-column: 1 / -1;
-    }
+        .btn-primary-custom {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 25px;
+        }
 
-    label {
-      font-weight: 600;
-      color: var(--light-font-color);
-      margin-bottom: 8px;
-      font-size: 0.95rem;
-    }
+        .btn-secondary-custom {
+            background: linear-gradient(45deg, #78909c, #607d8b);
+            border: none;
+            border-radius: 25px;
+        }
 
-    .form-control {
-      padding: 12px 16px;
-      
-      border-radius: 10px;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-       background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color:var(--light);
-    }
+        .btn-danger-custom {
+            background: linear-gradient(45deg, #ef5350, #e53935);
+            border: none;
+            border-radius: 25px;
+        }
 
-    .form-control:focus {
-      outline: none;
-  background: var(--light);
-  color: #333;
-  box-shadow: 0 0 0 3px var(--primary-color)
-    }
-
-    .form-control.error {
-      border-color: var(--primary-color);
-      background: var(--light);
-    }
-
-    .textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    .error-message {
-      color: var(--primary-color);
-      font-size: 0.85rem;
-      margin-top: 5px;
-    }
-
-    .customer-stats {
-      background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), (255, 255, 255, 0.2));
-      padding: 20px;
-      border-radius: 15px;
-      margin: 20px 0;
-    }
-
-    .customer-stats h3 {
-      color: var(--light);
-      margin-bottom: 15px;
-      text-align: center;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-    }
-
-    .stat-card {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 15px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    .stat-icon {
-      font-size: 1.5rem;
-    }
-
-    .stat-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .stat-label {
-      font-size: 0.85rem;
-      color: var(--light);
-    }
-
-    .stat-value {
-      font-weight: bold;
-      color: var(--light);
-    }
-
-    .form-actions {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 2px solid #f0f4f8;
-    }
-
-    .btn {
-      padding: 12px 24px;
-      border: none;
-      border-radius: 25px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.95rem;
-    }
-
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .btn-primary {
-      background: linear-gradient(45deg, #667eea, #764ba2);
-      color: white;
-    }
-
-    .btn-secondary {
-      background: linear-gradient(45deg, #78909c, #607d8b);
-      color: white;
-    }
-
-    .btn-danger {
-      background: linear-gradient(45deg, #ef5350, #e53935);
-      color: white;
-    }
-
-    .btn:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-
-    .icon {
-      font-size: 1rem;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 10px;
-      }
-
-      .profile-card {
-        padding: 20px;
-      }
-
-      .form-row {
-        grid-template-columns: 1fr;
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .form-actions {
-        flex-direction: column;
-      }
-
-      .page-title {
-        font-size: 1.5rem;
-      }
-
-      .card-header {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-      }
-    }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
