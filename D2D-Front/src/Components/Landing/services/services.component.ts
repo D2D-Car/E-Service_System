@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
 })
 export class ServicesComponent implements OnInit {
-  showAll = false; // 👈 Add this line
+  showAll = false;
 
   services = [
     {
@@ -54,7 +54,6 @@ export class ServicesComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  // 👇 Add this toggle method
   toggleShowAll() {
     this.showAll = !this.showAll;
   }
