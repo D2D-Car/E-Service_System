@@ -496,3 +496,130 @@
   outline: 2px solid white;
   outline-offset: 2px;
 }
+
+/* Mobile Responsive Design */
+@media (max-width: 480px) {
+  .professional-sidebar {
+    display: none; /* Completely hide sidebar on mobile by default */
+    top: 60px;
+    width: 100%;
+    left: 0;
+    transition: all 0.3s ease;
+    z-index: 1001;
+    background: var(--bg-primary);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    position: fixed;
+  }
+
+  .professional-sidebar.mobile-open {
+    display: flex; /* Show sidebar when mobile-open class is added */
+    flex-direction: column;
+  }
+
+  .professional-sidebar.collapsed {
+    display: none;
+  }
+
+  .professional-sidebar.collapsed.mobile-open {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-header {
+    padding: 20px;
+    background: var(--bg-primary);
+  }
+
+  .brand-section {
+    justify-content: center;
+  }
+
+  .nav-link {
+    padding: 16px 20px;
+    margin: 4px 16px;
+  }
+
+  .nav-text {
+    display: block !important;
+    opacity: 1 !important;
+  }
+
+  .nav-group-title {
+    padding: 16px 20px 8px;
+    margin: 0 16px;
+  }
+
+  .quick-actions-section {
+    padding: 20px;
+  }
+
+  .quick-actions-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .sidebar-footer {
+    padding: 20px;
+    background: var(--bg-primary);
+  }
+}
+
+@media (max-width: 768px) {
+  .professional-sidebar {
+    display: none; /* Completely hide sidebar on tablet by default */
+    top: 65px;
+    width: 280px;
+    left: 0;
+    transition: all 0.3s ease;
+    z-index: 1001;
+    background: var(--bg-primary);
+    position: fixed;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .professional-sidebar.mobile-open {
+    display: flex; /* Show sidebar when mobile-open class is added */
+    flex-direction: column;
+  }
+
+  .professional-sidebar.collapsed {
+    display: none;
+  }
+
+  .professional-sidebar.collapsed.mobile-open {
+    display: flex;
+    flex-direction: column;
+    width: 70px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .professional-sidebar {
+    width: 280px;
+  }
+
+  .professional-sidebar.collapsed {
+    width: 70px;
+  }
+}
+
+/* Mobile overlay for sidebar */
+@media (max-width: 768px) {
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+}

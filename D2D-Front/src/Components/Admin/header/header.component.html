@@ -3,8 +3,13 @@
     <!-- Left Section -->
     <div class="header-left">
       <button class="sidebar-toggle-btn" (click)="toggleSidebar()" title="Toggle Sidebar">
-        <div class="toggle-icon" [class.rotated]="sidebarCollapsed">
+        <!-- Desktop icon -->
+        <div class="toggle-icon desktop-icon" [class.rotated]="sidebarCollapsed">
           <i class="fas fa-chevron-left"></i>
+        </div>
+        <!-- Mobile hamburger icon -->
+        <div class="toggle-icon mobile-icon">
+          <i class="fas fa-bars"></i>
         </div>
       </button>
     </div>

@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  HostListener,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from '../header/header.component';
@@ -14,14 +20,24 @@ import { Subject } from 'rxjs';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+  @ViewChild(SidebarComponent) sidebarComponent!: SidebarComponent;
+
   sidebarCollapsed: boolean = false;
   showDashboardContent: boolean = true;
+  isMobile: boolean = false;
 
   private destroy$ = new Subject<void>();
 
   constructor(private router: Router) {}
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
+  }
+
   ngOnInit() {
+    this.checkScreenSize();
+
     // Listen to router events to determine when to show dashboard content
     this.router.events
       .pipe(
@@ -35,8 +51,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
   }
 
+  private checkScreenSize() {
+    this.isMobile = window.innerWidth <= 768;
+  }
+
   onSidebarToggle() {
-    this.sidebarCollapsed = !this.sidebarCollapsed;
+    if (this.isMobile) {
+      // On mobile, toggle the mobile sidebar overlay
+      if (this.sidebarComponent) {
+        this.sidebarComponent.toggleMobileSidebar();
+      }
+    } else {
+      // On desktop, toggle collapse state
+      this.sidebarCollapsed = !this.sidebarCollapsed;
+    }
   }
 
   ngOnDestroy() {

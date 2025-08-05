@@ -1,4 +1,5 @@
-<app-navbar></app-navbar>
+<!-- Show navbar only when NOT on admin pages -->
+<app-navbar *ngIf="!isAdminPage"></app-navbar>
 
 <!-- Admin Dashboard Button -->
 <div style="position: fixed; top: 120px; right: 20px; z-index: 1000;">

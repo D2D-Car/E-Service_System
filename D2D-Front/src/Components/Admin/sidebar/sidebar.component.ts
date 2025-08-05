@@ -1,4 +1,10 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+  HostListener,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
@@ -23,17 +29,44 @@ interface MenuItem {
 export class SidebarComponent implements OnInit, OnDestroy {
   @Input() collapsed = false;
 
+  isMobile = false;
+  mobileOpen = false;
+
   private destroy$ = new Subject<void>();
 
   constructor(private router: Router) {}
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
+  }
+
   ngOnInit() {
-    // Component initialization
+    this.checkScreenSize();
   }
 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private checkScreenSize() {
+    this.isMobile = window.innerWidth <= 768;
+    if (!this.isMobile) {
+      this.mobileOpen = false;
+    }
+  }
+
+  toggleMobileSidebar() {
+    if (this.isMobile) {
+      this.mobileOpen = !this.mobileOpen;
+    }
+  }
+
+  closeMobileSidebar() {
+    if (this.isMobile) {
+      this.mobileOpen = false;
+    }
   }
 
   menuItems: MenuItem[] = [
@@ -110,6 +143,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
   ];
 
   handleQuickAction(action: string): void {
+    this.closeMobileSidebar(); // Close sidebar when navigating on mobile
+
     switch (action) {
       case 'newOrder':
         this.router.navigate(['/admin/orders']);
@@ -121,6 +156,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
         this.router.navigate(['/admin/financial']);
         break;
     }
+  }
+
+  onMenuItemClick() {
+    this.closeMobileSidebar(); // Close sidebar when menu item is clicked on mobile
   }
 
   logout(): void {

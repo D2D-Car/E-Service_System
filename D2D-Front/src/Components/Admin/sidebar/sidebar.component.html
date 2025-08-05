@@ -1,4 +1,7 @@
-<aside class="professional-sidebar" [class.collapsed]="collapsed">
+<!-- Mobile Overlay -->
+<div class="sidebar-overlay" [class.active]="mobileOpen" (click)="closeMobileSidebar()"></div>
+
+<aside class="professional-sidebar" [class.collapsed]="collapsed" [class.mobile-open]="mobileOpen">
 
   <!-- Navigation Menu -->
   <nav class="sidebar-nav">
@@ -8,7 +11,8 @@
       </div>
       <ul class="nav-list">
         <li *ngFor="let item of menuItems" class="nav-item">
-          <a [routerLink]="item.route" routerLinkActive="active" class="nav-link" [title]="collapsed ? item.label : ''">
+          <a [routerLink]="item.route" routerLinkActive="active" class="nav-link" [title]="collapsed ? item.label : ''"
+            (click)="onMenuItemClick()">
             <div class="nav-icon">
               <i [class]="item.icon"></i>
             </div>

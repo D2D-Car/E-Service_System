@@ -8,6 +8,18 @@
   padding: 2rem 0;
 }
 
+/* Hide navbar when on admin dashboard pages */
+body.admin-page .navbar,
+.admin-dashboard .navbar {
+  display: none !important;
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 1rem 0;
+  }
+}
+
 .brand-highlight {
   color: var(--primary-color);
 }
@@ -17,6 +29,13 @@
   position: relative;
   transition: all 0.2s ease-in-out;
   text-align: center;
+}
+
+@media (max-width: 1118px) {
+  .brand-text {
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
 }
 
 .nav-link.active {
@@ -139,12 +158,12 @@
     gap: 0.75rem;
   }
 
-  .navbar-brand {
+  /* .navbar-brand {
     flex: 1 1 100%;
     display: flex;
     justify-content: center;
     margin-bottom: 0.5rem;
-  }
+  } */
 
   .nav-item {
     width: 100%;

@@ -14,9 +14,11 @@
   left: 280px; /* Sidebar width */
   right: 0;
   bottom: 0;
-  background: var(--bg-secondary);
+  background: var(
+    --bg-primary
+  ); /* Changed from bg-secondary to bg-primary to remove dark section */
   transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden; /* Remove scrollbar from content area */
+  overflow: auto; /* Allow scrolling when needed */
 }
 
 .content-area.sidebar-collapsed {
@@ -25,9 +27,9 @@
 
 .content-wrapper {
   width: 100%;
-  height: 100%;
+  min-height: 100%; /* Ensure full height */
   padding: 20px;
-  overflow: hidden; /* Prevent scrollbars in wrapper */
+  box-sizing: border-box;
 }
 
 /* Empty Dashboard Content */
@@ -142,17 +144,98 @@
   line-height: 1.6;
 }
 
-/* Responsive Design - Clean admin layout */
+/* Responsive Design - Mobile-first approach */
+@media (max-width: 480px) {
+  .dashboard-layout {
+    height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .content-area {
+    left: 0 !important; /* Force remove sidebar space */
+    top: 60px; /* Reduced header height for mobile */
+    padding: 0;
+    background: var(--bg-primary); /* Ensure consistent background */
+    overflow-y: auto;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+  }
+
+  .content-area.sidebar-collapsed {
+    left: 0 !important; /* Force remove sidebar space even when collapsed */
+  }
+
+  .content-wrapper {
+    padding: 10px;
+    min-height: calc(100vh - 60px); /* Full viewport height minus header */
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .empty-dashboard {
+    padding: 30px 20px;
+    margin: 10px;
+    border-radius: 15px;
+    background: var(--bg-primary);
+  }
+
+  .empty-dashboard h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+
+  .empty-dashboard p {
+    font-size: 1rem;
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+}
+
 @media (max-width: 768px) {
+  .content-area {
+    left: 0 !important; /* Force remove sidebar space */
+    top: 65px;
+    background: var(--bg-primary); /* Ensure consistent background */
+    position: fixed;
+    right: 0;
+    bottom: 0;
+  }
+
+  .content-area.sidebar-collapsed {
+    left: 0 !important; /* Force remove sidebar space even when collapsed */
+  }
+
+  .content-wrapper {
+    padding: 15px;
+    min-height: calc(100vh - 65px); /* Full viewport height minus header */
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .empty-dashboard {
+    padding: 40px 25px;
+    background: var(--bg-primary);
+  }
+
+  .empty-dashboard h2 {
+    font-size: 2rem;
+  }
+
+  .empty-dashboard p {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 1024px) {
   .content-area {
     left: 70px;
   }
 
   .content-area.sidebar-collapsed {
     left: 0;
-  }
-
-  .content-wrapper {
-    padding: 15px;
   }
 }
