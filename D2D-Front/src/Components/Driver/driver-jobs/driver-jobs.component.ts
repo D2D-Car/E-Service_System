@@ -17,7 +17,7 @@ interface ITripStatus {
 @Component({
   selector: 'app-driver-jobs',
   standalone: true,
-  imports: [CommonModule, DriverSharedComponent],
+  imports: [CommonModule],
   templateUrl: './driver-jobs.component.html',
   styleUrl: './driver-jobs.component.css'
 })

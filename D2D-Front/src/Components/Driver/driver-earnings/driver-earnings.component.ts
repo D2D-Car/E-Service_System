@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-driver-earnings',
-  imports: [CommonModule, DriverSharedComponent],
+  imports: [CommonModule],
   templateUrl: './driver-earnings.component.html',
   styleUrl: './driver-earnings.component.css'
 })
