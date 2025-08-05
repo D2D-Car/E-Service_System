@@ -10,32 +10,120 @@ import { Component } from '@angular/core';
 })
 export class DriversComponent {
   drivers = [
-  {
-    name: 'Ahmed Salem',
-    phone: '0105551234',
-    email: 'ahmed.salem@gmail.com',
-    vehicle: 'Toyota Corolla',
-    license: 'DR-4587',
-    joined: '2021-11-15',
-    image: './assets/drivers-img/driver1.jpg'
-  },
-  {
-    name: 'Mona Ehab',
-    phone: '0109998765',
-    email: 'mona.ehab@gmail.com',
-    vehicle: 'Hyundai Elantra',
-    license: 'DR-8890',
-    joined: '2022-06-01',
-    image: './assets/drivers-img/driver2.jpg'
-  },
-  {
-  name: 'Nadia Hassan',
-  phone: '0102244668',
-  email: 'nadia.hassan@example.com',
-  vehicle: 'Kia Sportage',
-  license: 'DR-9981',
-  joined: '2022-09-18',
-  image: './assets/drivers-img/driver3.jpeg'
+    {
+      id: 1,
+      name: 'Mahmoud Reda',
+      licenseNumber: 'EG-DL-123456',
+      experience: '5 Years',
+      image: './assets/dashboard-img/friend-01.jpg',
+      joined: 'Jan 2022',
+      rating: 4.8,
+      totalTrips: 1250,
+      vehicleType: 'Sedan',
+    },
+    {
+      id: 2,
+      name: 'Omar Khaled',
+      licenseNumber: 'EG-DL-789012',
+      experience: '3 Years',
+      image: './assets/dashboard-img/friend-02.jpg',
+      joined: 'May 2023',
+      rating: 4.6,
+      totalTrips: 890,
+      vehicleType: 'SUV',
+    },
+    {
+      id: 3,
+      name: 'Hassan Ali',
+      licenseNumber: 'EG-DL-345678',
+      experience: '7 Years',
+      image: './assets/dashboard-img/friend-03.jpg',
+      joined: 'Aug 2021',
+      rating: 4.9,
+      totalTrips: 2100,
+      vehicleType: 'Pickup',
+    },
+    {
+      id: 4,
+      name: 'Ahmed Nasser',
+      licenseNumber: 'EG-DL-901234',
+      experience: '2 Years',
+      image: './assets/dashboard-img/friend-04.jpg',
+      joined: 'Oct 2023',
+      rating: 4.4,
+      totalTrips: 520,
+      vehicleType: 'Sedan',
+    },
+    {
+      id: 5,
+      name: 'Youssef Ibrahim',
+      licenseNumber: 'EG-DL-567890',
+      experience: '4 Years',
+      image: './assets/dashboard-img/friend-05.jpg',
+      joined: 'Dec 2022',
+      rating: 4.7,
+      totalTrips: 950,
+      vehicleType: 'Van',
+    },
+    {
+      id: 6,
+      name: 'Karim Fouad',
+      licenseNumber: 'EG-DL-234567',
+      experience: '6 Years',
+      image: './assets/dashboard-img/friend-01.jpg',
+      joined: 'Mar 2021',
+      rating: 4.8,
+      totalTrips: 1680,
+      vehicleType: 'SUV',
+    },
+    {
+      id: 7,
+      name: 'Tamer Said',
+      licenseNumber: 'EG-DL-678901',
+      experience: '8 Years',
+      image: './assets/dashboard-img/friend-02.jpg',
+      joined: 'Jun 2020',
+      rating: 5.0,
+      totalTrips: 2850,
+      vehicleType: 'Pickup',
+    },
+    {
+      id: 8,
+      name: 'Mostafa Ahmed',
+      licenseNumber: 'EG-DL-012345',
+      experience: '3 Years',
+      image: './assets/dashboard-img/friend-03.jpg',
+      joined: 'Sep 2023',
+      rating: 4.5,
+      totalTrips: 720,
+      vehicleType: 'Sedan',
+    },
+  ];
+
+  callDriver(driver: any) {
+    console.log('Viewing license for driver:', driver.name);
+    alert(`License: ${driver.licenseNumber} - ${driver.experience} experience`);
   }
-];
+
+  emailDriver(driver: any) {
+    console.log('Viewing trips for driver:', driver.name);
+    alert(
+      `${driver.name} has completed ${driver.totalTrips} trips with ${driver.rating}⭐ rating`
+    );
+  }
+
+  viewDriverProfile(driver: any) {
+    console.log('Viewing profile of driver:', driver.name);
+    // Add navigation logic here
+  }
+
+  removeDriver(driver: any) {
+    const confirmRemove = confirm(
+      `Are you sure you want to remove ${driver.name}?`
+    );
+    if (confirmRemove) {
+      this.drivers = this.drivers.filter((d) => d.id !== driver.id);
+      console.log('Driver removed:', driver.name);
+    }
+  }
 }

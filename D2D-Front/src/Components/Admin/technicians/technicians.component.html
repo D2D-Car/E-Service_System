@@ -1,45 +1,64 @@
 <section class="technicians-section">
-  <h2 class="section-title">Our Expert Technicians</h2>
+  <h2 class="section-title">OUR EXPERT TECHNICIANS</h2>
   <p class="section-subtitle">Highly skilled professionals dedicated to quality service</p>
 
-  <div class="cards-container">
-    <div class="tech-card" *ngFor="let tech of technicians">
-      <div class="card border border-secondary h-100">
+  <div class="container-fluid">
+    <div class="row g-4">
+      <div class="col-xl-3 col-lg-4 col-md-6 col-12" *ngFor="let tech of technicians">
+        <div class="card">
 
-        <div class="card-header">
-          <div class="tech-contact-buttons">
-            <button class="soft-btn">📞</button>
-            <button class="soft-btn">✉</button>
+          <!-- Contact buttons in top right -->
+          <div class="contact-buttons">
+            <button class="contact-btn phone-btn" (click)="callTechnician(tech)" title="Certification">
+              <i class="fas fa-certificate"></i>
+            </button>
+            <button class="contact-btn email-btn" (click)="emailTechnician(tech)" title="Jobs">
+              <i class="fas fa-tasks"></i>
+            </button>
           </div>
 
-          <img [src]="tech.image" class="tech-img-circle" [alt]="tech.name">
-          <h5 class="tech-name">{{ tech.name }}</h5>
-        </div>
+          <!-- Remove button (icon only) -->
+          <button class="remove-btn-icon" (click)="removeTechnician(tech)" title="Remove Technician">
+            <i class="fas fa-times"></i>
+          </button>
 
-        <div class="card-body">
-          <hr class="divider-line" />
+          <!-- Status indicator -->
+          <div class="status-indicator" [ngClass]="{
+                 'available': tech.status === 'Available',
+                 'busy': tech.status === 'Busy',
+                 'on-break': tech.status === 'On Break'
+               }" [title]="tech.status">
+            {{ tech.status }}
+          </div>
 
-          <p class="card-description">{{ tech.service }}</p>
-          <p class="card-text mb-1">Experience: {{ tech.experience }}</p>
-          <p class="card-text mb-1">Rating: {{ tech.rating }} / 5</p>
-          <p class="card-text mb-1">Completed Orders: {{ tech.completedOrders }}</p>
-          <p class="card-text mb-1">
-            Status: 
-            <span [ngClass]="tech.status === 'Available' ? 'text-success' : 'text-danger'">
-              {{ tech.status }}
-            </span>
-          </p>
+          <!-- Profile image -->
+          <img [src]="tech.image" class="profile-img" [alt]="tech.name">
 
-          <p class="card-text text-warning stars">
-            <ng-container *ngFor="let star of [].constructor(tech.rating)">★</ng-container>
-            <ng-container *ngFor="let star of [].constructor(5 - tech.rating)">☆</ng-container>
-          </p>
-          <p class="join-date">Joined: {{ tech.joined }}</p>
-          <div class="action-footer">
-            <div class="action-buttons">
-              <button class="book-btn">Profile</button>
-              <button class="book-btn remove-btn">Remove</button>
+          <!-- Name -->
+          <h5 class="technician-name">{{ tech.name }}</h5>
+
+          <!-- Technician info with icons -->
+          <div class="contact-info">
+            <div class="contact-item">
+              <i class="fas fa-tools contact-icon"></i>
+              <span class="contact-text">{{ tech.specialty }}</span>
             </div>
+            <div class="contact-item">
+              <i class="fas fa-medal contact-icon"></i>
+              <span class="contact-text">{{ tech.certification }}</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-star contact-icon"></i>
+              <span class="contact-text">{{ tech.rating }}⭐ ({{ tech.completedJobs }} jobs)</span>
+            </div>
+          </div>
+
+          <!-- Join date -->
+          <div class="join-date">Working Since: {{ tech.joined }}</div>
+
+          <!-- Action buttons -->
+          <div class="action-footer">
+            <button class="profile-btn" (click)="viewTechnicianProfile(tech)">PROFILE</button>
           </div>
 
         </div>

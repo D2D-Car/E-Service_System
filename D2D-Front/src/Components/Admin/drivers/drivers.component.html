@@ -1,35 +1,55 @@
+<section class="drivers-section">
+  <h2 class="section-title">OUR VALUED DRIVERS</h2>
+  <p class="section-subtitle">We're proud to serve these amazing professionals</p>
 
-<section class="technicians-section">
-  <h2 class="section-title">Our Professional Drivers</h2>
-  <p class="section-subtitle">Safe, skilled, and always on time</p>
+  <div class="container-fluid">
+    <div class="row g-4">
+      <div class="col-xl-3 col-lg-4 col-md-6 col-12" *ngFor="let driver of drivers">
+        <div class="card">
 
-  <div class="cards-container">
-    <div class="driv-card" *ngFor="let driver of drivers">
-      <div class="card border border-secondary h-100">
-
-        <div class="card-header">
-          <div class="driv-contact-buttons">
-            <button class="soft-btn">📞</button>
-            <button class="soft-btn">✉</button>
+          <!-- Contact buttons in top right -->
+          <div class="contact-buttons">
+            <button class="contact-btn phone-btn" (click)="callDriver(driver)" title="License">
+              <i class="fas fa-id-card"></i>
+            </button>
+            <button class="contact-btn email-btn" (click)="emailDriver(driver)" title="Trips">
+              <i class="fas fa-route"></i>
+            </button>
           </div>
 
-          <img [src]="driver.image" class="driv-img-circle" [alt]="driver.name">
-          <h5 class="driv-name">{{ driver.name }}</h5>
-        </div>
+          <!-- Remove button (icon only) -->
+          <button class="remove-btn-icon" (click)="removeDriver(driver)" title="Remove Driver">
+            <i class="fas fa-times"></i>
+          </button>
 
-        <div class="card-body">
-          <hr class="divider-line" />
-          <p class="card-text mb-1">Phone: {{ driver.phone }}</p>
-          <p class="card-text mb-1">Email: {{ driver.email }}</p>
-          <p class="card-text mb-1">Vehicle: {{ driver.vehicle }}</p>
-          <p class="card-text mb-1">License No: {{ driver.license }}</p>
-          <p class="join-date">Joined: {{ driver.joined }}</p>
+          <!-- Profile image -->
+          <img [src]="driver.image" class="profile-img" [alt]="driver.name">
 
-          <div class="action-footer">
-            <div class="action-buttons">
-              <button class="book-btn">Profile</button>
-              <button class="book-btn remove-btn">Remove</button>
+          <!-- Name -->
+          <h5 class="driver-name">{{ driver.name }}</h5>
+
+          <!-- Contact info with icons -->
+          <div class="contact-info">
+            <div class="contact-item">
+              <i class="fas fa-id-card contact-icon"></i>
+              <span class="contact-text">{{ driver.licenseNumber }}</span>
             </div>
+            <div class="contact-item">
+              <i class="fas fa-calendar contact-icon"></i>
+              <span class="contact-text">{{ driver.experience }}</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-car contact-icon"></i>
+              <span class="contact-text">{{ driver.vehicleType }}</span>
+            </div>
+          </div>
+
+          <!-- Join date -->
+          <div class="join-date">Driving Since: {{ driver.joined }}</div>
+
+          <!-- Action buttons -->
+          <div class="action-footer">
+            <button class="profile-btn" (click)="viewDriverProfile(driver)">PROFILE</button>
           </div>
 
         </div>

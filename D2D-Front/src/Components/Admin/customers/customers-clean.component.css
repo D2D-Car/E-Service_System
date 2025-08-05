@@ -1,5 +1,5 @@
-/* Drivers Section - Unified Styling with Theme Support */
-.drivers-section {
+/* Customers Section - Unified Styling with Theme Support */
+.customers-section {
   background-color: var(--bg-primary);
   padding: 2rem;
   min-height: 100vh;
@@ -40,8 +40,10 @@
   font-weight: 300;
 }
 
-/* Bootstrap Grid Container */
-.container-fluid {
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
   max-width: 100%;
   margin: 0 auto;
   padding: 0;
@@ -126,7 +128,7 @@
   display: block;
 }
 
-.driver-name {
+.customer-name {
   color: var(--text-primary);
   font-size: 1.1rem;
   font-weight: 600;
@@ -198,7 +200,53 @@
   transform: translateY(-2px);
 }
 
-/* Mobile optimizations for small screens */
+/* Perfect Responsive Design */
+@media (max-width: 1400px) {
+  .cards-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .cards-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  .customers-section {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .cards-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .profile-img {
+    width: 65px;
+    height: 65px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cards-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .card {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .customers-section {
+    padding: 1rem;
+  }
+}
+
 @media (max-width: 480px) {
   .section-title {
     font-size: 1.8rem;
