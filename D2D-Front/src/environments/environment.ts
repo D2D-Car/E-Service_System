@@ -12,5 +12,10 @@ export const environment = {
   },
   recaptcha: {
     siteKey: "your-recaptcha-site-key"
+  },
+  // Add these options to handle connection issues
+  firebaseOptions: {
+    experimentalForceLongPolling: true, // For connection stability
+    ignoreUndefinedProperties: true
   }
 };
