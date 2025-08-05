@@ -1,1 +1,49 @@
-<p>technicians works!</p>
+<section class="technicians-section">
+  <h2 class="section-title">Our Expert Technicians</h2>
+  <p class="section-subtitle">Highly skilled professionals dedicated to quality service</p>
+
+  <div class="cards-container">
+    <div class="tech-card" *ngFor="let tech of technicians">
+      <div class="card border border-secondary h-100">
+
+        <div class="card-header">
+          <div class="tech-contact-buttons">
+            <button class="soft-btn">📞</button>
+            <button class="soft-btn">✉</button>
+          </div>
+
+          <img [src]="tech.image" class="tech-img-circle" [alt]="tech.name">
+          <h5 class="tech-name">{{ tech.name }}</h5>
+        </div>
+
+        <div class="card-body">
+          <hr class="divider-line" />
+
+          <p class="card-description">{{ tech.service }}</p>
+          <p class="card-text mb-1">Experience: {{ tech.experience }}</p>
+          <p class="card-text mb-1">Rating: {{ tech.rating }} / 5</p>
+          <p class="card-text mb-1">Completed Orders: {{ tech.completedOrders }}</p>
+          <p class="card-text mb-1">
+            Status: 
+            <span [ngClass]="tech.status === 'Available' ? 'text-success' : 'text-danger'">
+              {{ tech.status }}
+            </span>
+          </p>
+
+          <p class="card-text text-warning stars">
+            <ng-container *ngFor="let star of [].constructor(tech.rating)">★</ng-container>
+            <ng-container *ngFor="let star of [].constructor(5 - tech.rating)">☆</ng-container>
+          </p>
+          <p class="join-date">Joined: {{ tech.joined }}</p>
+          <div class="action-footer">
+            <div class="action-buttons">
+              <button class="book-btn">Profile</button>
+              <button class="book-btn remove-btn">Remove</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

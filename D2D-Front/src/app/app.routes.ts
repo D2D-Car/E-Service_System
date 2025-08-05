@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+
+// Landing Page Components
 import { HomeComponent } from '../Components/Landing/home/home.component';
 import { LoginComponent } from '../Components/Landing/login/login.component';
 import { RegisterComponent } from '../Components/Landing/register/register.component';
@@ -6,27 +8,34 @@ import { AboutComponent } from '../Components/Landing/about/about.component';
 import { FeedbackComponent } from '../Components/Landing/feedback/feedback.component';
 import { ServicesComponent } from '../Components/Landing/services/services.component';
 import { TechniciansComponent as LandingTechniciansComponent } from '../Components/Landing/technicians/technicians.component';
+
+// Admin Components
 import { DashboardComponent as AdminDashboardComponent } from '../Components/Admin/dashboard/dashboard.component';
 import { DashboardHomeComponent } from '../Components/Admin/dashboard-home/dashboard-home.component';
-import { DashboardComponent as CustomerDashboardComponent } from '../Components/Customer/dashboard/dashboard.component';
-import { VehiclesComponent } from '../Components/Customer/vehicles/vehicles.component';
-import { ServiceHistoryComponent } from '../Components/Customer/service-history/service-history.component';
 import { CustomersComponent } from '../Components/Admin/customers/customers.component';
 import { DriversComponent } from '../Components/Admin/drivers/drivers.component';
-import { TechniciansComponent } from '../Components/Admin/technicians/technicians.component';
+import { TechniciansComponent as AdminTechniciansComponent } from '../Components/Admin/technicians/technicians.component';
 import { OrdersComponent } from '../Components/Admin/orders/orders.component';
 import { StockComponent } from '../Components/Admin/stock/stock.component';
 import { FinancialComponent } from '../Components/Admin/financial/financial.component';
-import { TechnicianEarningsComponent } from '../Components/TechniciansDashboard/earnings/earnings.component';
+
+// Customer Components
+import { DashboardComponent as CustomerDashboardComponent } from '../Components/Customer/dashboard/dashboard.component';
+import { VehiclesComponent } from '../Components/Customer/vehicles/vehicles.component';
+import { ServiceHistoryComponent } from '../Components/Customer/service-history/service-history.component';
+
+// Technician Dashboard Components
 import { TechniciansDashboardComponent } from '../Components/TechniciansDashboard/dashboard/dashboard.component';
 import { JobsComponent } from '../Components/TechniciansDashboard/jobs/jobs.component';
 import { SignUpComponent } from '../Components/Auth/sign-up/sign-up.component';
 import { LoginComponent as AuthLoginComponent } from '../Components/Auth/login/login.component';
 import { PendingVerificationComponent } from '../Components/Auth/pending-verification/pending-verification.component';
 import { AuthGuard } from '../Guards/auth.guard';
+import { TechnicianEarningsComponent } from '../Components/TechniciansDashboard/earnings/earnings.component';
+import { TechnicianProfileComponent } from '../Components/TechniciansDashboard/profile/technician-profile.component';
 
 export const routes: Routes = [
-  // Main website routes
+  // Landing Page Routes
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
   
@@ -48,6 +57,33 @@ export const routes: Routes = [
   { path: 'contact', component: FeedbackComponent },
   { path: 'services', component: ServicesComponent },
   { path: 'technicians', component: LandingTechniciansComponent },
+
+  // Customer Dashboard with Child Routes
+  {
+    path: 'customer',
+    component: CustomerDashboardComponent,
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: CustomerDashboardComponent },
+      { path: 'vehicles', component: VehiclesComponent },
+      { path: 'service-history', component: ServiceHistoryComponent },
+    ],
+  },
+
+  // Technician Dashboard with Child Routes
+  {
+    path: 'technician',
+    component: TechniciansDashboardComponent,
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: TechniciansDashboardComponent },
+      { path: 'jobs', component: JobsComponent },
+      { path: 'earnings', component: TechnicianEarningsComponent },
+      { path: 'profile', component: TechnicianProfileComponent },
+    ],
+  },
+
+  // Admin Dashboard with Child Routes
   { path: 'technician/dashboard', component: TechniciansDashboardComponent },
   { path: 'jobs', component: JobsComponent },
   { path: 'technicianearnings', component: TechnicianEarningsComponent },
@@ -67,11 +103,26 @@ export const routes: Routes = [
       { path: 'dashboard', component: DashboardHomeComponent },
       { path: 'customers', component: CustomersComponent },
       { path: 'drivers', component: DriversComponent },
-      { path: 'technicians', component: TechniciansComponent },
+      { path: 'technicians', component: AdminTechniciansComponent },
       { path: 'orders', component: OrdersComponent },
       { path: 'stock', component: StockComponent },
       { path: 'financial', component: FinancialComponent },
     ],
+  },
+
+  // Legacy Routes (for backward compatibility)
+  { path: 'dashboard', redirectTo: '/customer/dashboard', pathMatch: 'full' },
+  { path: 'vehicles', redirectTo: '/customer/vehicles', pathMatch: 'full' },
+  {
+    path: 'service-history',
+    redirectTo: '/customer/service-history',
+    pathMatch: 'full',
+  },
+  { path: 'jobs', redirectTo: '/technician/jobs', pathMatch: 'full' },
+  {
+    path: 'technicianearnings',
+    redirectTo: '/technician/earnings',
+    pathMatch: 'full',
   },
 
   // Fallback - redirect to home page for unknown routes

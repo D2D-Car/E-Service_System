@@ -13,44 +13,72 @@ export class TechniciansComponent {
     {
       name: 'John Doe',
       experience: 7,
-      specialty: 'Brake Repair',
+      service: 'Brake Repair',
       rating: 4,
-image: 'assets/technicians-img/tech1.jpg' 
-   },
+      image: 'assets/technicians-img/tech1.jpg'
+    },
     {
       name: 'Karl Lee',
       experience: 10,
-      specialty: 'Transmission Fixing',
+      service: 'Transmission Fixing',
       rating: 5,
-image: 'assets/technicians-img/tech2.jpg' 
+      image: 'assets/technicians-img/tech2.jpg'
     },
     {
       name: 'Mike Ross',
       experience: 5,
-      specialty: 'Suspension & Alignment',
+      service: 'Suspension & Alignment',
       rating: 3,
-image: 'assets/technicians-img/tech3.jpg' 
+      image: 'assets/technicians-img/tech3.jpg'
     },
     {
       name: 'Ethan Brown',
       experience: 8,
-      specialty: 'Engine Diagnostics',
+      service: 'Engine Diagnostics',
       rating: 4,
-image: 'assets/technicians-img/tech4.jpg' 
+      image: 'assets/technicians-img/tech4.jpg'
     },
     {
       name: 'Logan Wilson',
       experience: 6,
-      specialty: 'AC Repair',
+      service: 'AC Repair',
       rating: 5,
-image: 'assets/technicians-img/tech5.jpg' 
+      image: 'assets/technicians-img/tech5.jpg'
     },
     {
       name: 'Liam Johnson',
       experience: 9,
-      specialty: 'Electrical Systems',
+      service: 'Electrical Systems',
       rating: 4,
-image: 'assets/technicians-img/tech6.jpg' 
+      image: 'assets/technicians-img/tech6.jpg'
+    },
+    {
+      name: 'James Wilson',
+      experience: 11,
+      service: 'Battery Replacement',
+      rating: 5,
+      image: 'assets/technicians-img/tech7.jpg'
+    },
+    {
+      name: 'Jackson Moore',
+      experience: 4,
+      service: 'Oil Change',
+      rating: 3,
+      image: 'assets/technicians-img/tech8.jpg'
+    },
+    {
+      name: 'Robert King',
+      experience: 12,
+      service: 'Tire Services',
+      rating: 5,
+      image: 'assets/technicians-img/tech9.jpg'
+    },
+    {
+      name: 'Grace Miller',
+      experience: 7,
+      service: 'Headlight Restoration',
+      rating: 4,
+      image: 'assets/technicians-img/tech10.jpg'
     }
   ];
 
