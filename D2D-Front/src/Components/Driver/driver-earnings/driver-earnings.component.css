@@ -219,7 +219,7 @@
 .summary {
   display: grid;
   max-width: 92%;
-  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
   margin: 1rem auto;
   gap: 1rem;
 }
@@ -315,10 +315,16 @@
   justify-content: flex-end;
 }
 
-
 .payouts .item span:last-child {
   color: #2ecc71;
   font-size: 14px;
+}
+
+@media (max-width: 1024px) {
+  .card {
+    max-width: 100%;
+    width: 100%;
+  }
 }
 
 @media (max-width: 768px) {
@@ -326,9 +332,15 @@
     padding: 10px;
   }
 
-  .card {
-    width: 100%;
+  .summary {
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
     max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .card {
+    max-width: 100%;
+    width: 100%;
   }
 
   .item {
@@ -341,6 +353,18 @@
 }
 
 @media (max-width: 480px) {
+  .summary {
+    grid-template-columns: 1fr;
+    max-width: 92%;
+    margin: 0 auto;
+  }
+
+  .card {
+    max-width: 100%;
+    width: 100%;
+    padding: 10px;
+  }
+
   .item {
     flex-direction: column;
     align-items: flex-start;
