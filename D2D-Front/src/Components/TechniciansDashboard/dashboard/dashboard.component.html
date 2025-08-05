@@ -170,7 +170,13 @@
   </div>
 
   <!-- Other Tabs -->
-  <div class="tab-content" *ngIf="activeTab === 'Jobs'"></div>
-  <div class="tab-content" *ngIf="activeTab === 'Earnings'"></div>
-  <div class="tab-content" *ngIf="activeTab === 'Profile'"></div>
+  <div class="tab-content" *ngIf="activeTab === 'Jobs'">
+    <app-jobs></app-jobs>
+  </div>
+  <div class="tab-content" *ngIf="activeTab === 'Earnings'">
+    <app-earnings></app-earnings>
+  </div>
+  <div class="tab-content" *ngIf="activeTab === 'Profile'">
+    <app-technician-profile></app-technician-profile>
+  </div>
 </div>
