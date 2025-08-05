@@ -20,7 +20,8 @@ import { FinancialComponent } from '../Components/Admin/financial/financial.comp
 import { TechnicianEarningsComponent } from '../Components/TechniciansDashboard/earnings/earnings.component';
 import { TechniciansDashboardComponent } from '../Components/TechniciansDashboard/dashboard/dashboard.component';
 import { JobsComponent } from '../Components/TechniciansDashboard/jobs/jobs.component';
-
+import { TestimonialsComponent } from '../Components/Landing/testimonials/testimonials.component';
+import { Component } from '@angular/core';
 export const routes: Routes = [
   // Main website routes
   { path: '', component: HomeComponent },
@@ -33,6 +34,7 @@ export const routes: Routes = [
   { path: 'technicians', component: LandingTechniciansComponent },
   { path: 'technician/dashboard', component: TechniciansDashboardComponent },
  {path:'jobs',component:JobsComponent},
+ {path: 'testimonials' , component:TestimonialsComponent},
 
   {path:'technicianearnings',component:TechnicianEarningsComponent},
   

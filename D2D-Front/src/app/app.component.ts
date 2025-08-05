@@ -9,6 +9,7 @@ import { FooterComponent } from '../Components/Landing/footer/footer.component';
 import { HomeComponent } from '../Components/Landing/home/home.component';
 import { FeedbackComponent } from '../Components/Landing/feedback/feedback.component';
 import { AboutComponent } from '../Components/Landing/about/about.component';
+import { TestimonialsComponent } from "../Components/Landing/testimonials/testimonials.component";
 
 @Component({
   selector: 'app-root',
@@ -22,7 +23,8 @@ import { AboutComponent } from '../Components/Landing/about/about.component';
     FeedbackComponent,
     FooterComponent,
     AboutComponent,
-  ],
+    TestimonialsComponent
+],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
