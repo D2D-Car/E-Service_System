@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ThemeService {
   private readonly THEME_KEY = 'admin-dashboard-theme';
-  
+
   private isDarkModeSubject = new BehaviorSubject<boolean>(false);
   public isDarkMode$ = this.isDarkModeSubject.asObservable();
 
