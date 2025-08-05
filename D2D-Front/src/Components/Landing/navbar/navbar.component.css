@@ -8,12 +8,6 @@
   padding: 2rem 0;
 }
 
-/* Hide navbar when on admin dashboard pages */
-body.admin-page .navbar,
-.admin-dashboard .navbar {
-  display: none !important;
-}
-
 @media (max-width: 480px) {
   .navbar {
     padding: 1rem 0;
@@ -31,7 +25,7 @@ body.admin-page .navbar,
   text-align: center;
 }
 
-@media (max-width: 1118px) {
+@media (max-width: 992px) {
   .brand-text {
     font-size: 0.8rem;
     font-weight: bold;
