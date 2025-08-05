@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, User, sendEmailVerification, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, updateProfile } from '@angular/fire/auth';
 import { Firestore, doc, setDoc, getDoc, updateDoc } from '@angular/fire/firestore';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, from, of } from 'rxjs';
 import { Router } from '@angular/router';
+import { map, switchMap, catchError } from 'rxjs/operators';
 
 export interface UserData {
   uid: string;
@@ -18,17 +19,17 @@ export interface UserData {
   providedIn: 'root'
 })
 export class AuthService {
+  private auth = inject(Auth);
+  private firestore = inject(Firestore);
+  private router = inject(Router);
+
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
   
   private userDataSubject = new BehaviorSubject<UserData | null>(null);
   public userData$ = this.userDataSubject.asObservable();
 
-  constructor(
-    private auth: Auth,
-    private firestore: Firestore,
-    private router: Router
-  ) {
+  constructor() {
     // Listen to auth state changes
     this.auth.onAuthStateChanged(async (user) => {
       this.currentUserSubject.next(user);
