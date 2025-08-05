@@ -9,6 +9,10 @@ import { TechniciansComponent } from '../Components/Landing/technicians/technici
 import { DashboardComponent } from '../Components/Customer/dashboard/dashboard.component';
 import { VehiclesComponent } from '../Components/Customer/vehicles/vehicles.component';
 import { ServiceHistoryComponent } from '../Components/Customer/service-history/service-history.component';
+import { DriverDashboardComponent } from '../Components/Driver/driver-dashboard/driver-dashboard.component';
+import { DriverJobsComponent } from '../Components/Driver/driver-jobs/driver-jobs.component';
+import { DriverEarningsComponent } from '../Components/Driver/driver-earnings/driver-earnings.component';
+import { DriverProfileComponent } from '../Components/Driver/driver-profile/driver-profile.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -20,5 +24,9 @@ export const routes: Routes = [
   { path: 'technicians', component: TechniciansComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'vehicles', component: VehiclesComponent },
-  { path: 'service-history', component: ServiceHistoryComponent }
+  { path: 'service-history', component: ServiceHistoryComponent },
+  { path: 'driver-dashboard', component: DriverDashboardComponent },
+  { path: 'driver-jobs', component: DriverJobsComponent },
+  { path: 'driver-earnings', component: DriverEarningsComponent },
+  { path: 'driver-profile', component: DriverProfileComponent }
 ];

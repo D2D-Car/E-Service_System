@@ -20,7 +20,8 @@ import { AboutComponent } from '../Components/Landing/about/about.component';
     TechniciansComponent,
     FeedbackComponent,
     FooterComponent,
-    AboutComponent
+    AboutComponent,
+    
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

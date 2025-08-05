@@ -6,29 +6,11 @@
   margin: 0;
 }
 
-.services-icon {
-  background: var(--services-gradient);
-}
-
-.money-icon {
-  background: var(--money-gradient);
-}
-
-.loyalty-icon {
-  background: var(--loyalty-gradient);
-}
-
-.member-icon {
-  background: var(--member-gradient);
-}
-
 /* Header Banner */
 .header-banner {
-  background: linear-gradient(
-    135deg,
-    var(--primary-color) 0%,
-    var(--secondary-color) 100%
-  );
+  background: linear-gradient(135deg,
+      var(--primary-color) 0%,
+      var(--secondary-color) 100%);
   padding: 2rem 2rem 3rem;
   position: relative;
   overflow: hidden;

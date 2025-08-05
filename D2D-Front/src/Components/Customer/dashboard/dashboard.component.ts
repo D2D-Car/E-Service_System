@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { VehiclesComponent } from '../vehicles/vehicles.component';
 import { ServiceHistoryComponent } from '../service-history/service-history.component';
+import { CommonModule } from '@angular/common';
 
 interface UpcomingService {
   day: string;
