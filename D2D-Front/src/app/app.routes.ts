@@ -22,9 +22,6 @@ import { DashboardComponent as CustomerDashboardComponent } from '../Components/
 import { VehiclesComponent } from '../Components/Customer/vehicles/vehicles.component';
 import { ServiceHistoryComponent } from '../Components/Customer/service-history/service-history.component';
 import { DriverDashboardComponent } from '../Components/Driver/driver-dashboard/driver-dashboard.component';
-import { DriverJobsComponent } from '../Components/Driver/driver-jobs/driver-jobs.component';
-import { DriverEarningsComponent } from '../Components/Driver/driver-earnings/driver-earnings.component';
-import { DriverProfileComponent } from '../Components/Driver/driver-profile/driver-profile.component';
 
 // Technician Dashboard Components
 import { TechniciansDashboardComponent } from '../Components/TechniciansDashboard/dashboard/dashboard.component';
@@ -35,6 +32,10 @@ import { PendingVerificationComponent } from '../Components/Auth/pending-verific
 import { AuthGuard } from '../Guards/auth.guard';
 import { TechnicianEarningsComponent } from '../Components/TechniciansDashboard/earnings/earnings.component';
 import { TechnicianProfileComponent } from '../Components/TechniciansDashboard/profile/technician-profile.component';
+import { DriverJobsComponent } from '../Components/Driver/driver-jobs/driver-jobs.component';
+import { DriverEarningsComponent } from '../Components/Driver/driver-earnings/driver-earnings.component';
+import { DriverProfileComponent } from '../Components/Driver/driver-profile/driver-profile.component';
+import { DriverSharedComponent } from '../Components/Driver/driver-shared/driver-shared.component';
 
 export const routes: Routes = [
   // Landing Page Routes
@@ -109,7 +110,16 @@ export const routes: Routes = [
   { path: 'service-history', redirectTo: '/customer/service-history', pathMatch: 'full' },
   { path: 'jobs', redirectTo: '/technician/jobs', pathMatch: 'full' },
   { path: 'technicianearnings', redirectTo: '/technician/earnings', pathMatch: 'full' },
-
-  // Fallback - redirect to home page for unknown routes
-  { path: '**', redirectTo: '/home' },
+  {
+    path: 'driver',
+    component: DriverSharedComponent,
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DriverDashboardComponent },
+      { path: 'job', component: DriverJobsComponent },
+      { path: 'earnings', component: DriverEarningsComponent },
+      { path: 'profile', component: DriverProfileComponent },
+    ],
+  },
+  { path: '**', redirectTo: '/home' }
 ];

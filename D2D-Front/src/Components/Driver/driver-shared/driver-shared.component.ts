@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 interface IStatistics {
   icon: string;
   title: string;
@@ -46,23 +45,22 @@ export class DriverSharedComponent {
       color: "member-icon"
     }
   ];
-
   constructor(private router: Router) { }
 
   setActiveTab(tab: string) {
     this.activeTab = tab;
     switch (tab) {
       case 'dashboard':
-        this.router.navigate(['/driver-dashboard']);
+        this.router.navigate(['/driver/dashboard']);
         break;
       case 'jobs':
-        this.router.navigate(['/driver-jobs']);
+        this.router.navigate(['/driver/job']);
         break;
       case 'earnings':
-        this.router.navigate(['/driver-earnings']);
+        this.router.navigate(['/driver/earnings']);
         break;
       case 'profile':
-        this.router.navigate(['/driver-profile']);
+        this.router.navigate(['/driver/profile']);
         break;
     }
   }

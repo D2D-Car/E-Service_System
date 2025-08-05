@@ -17,19 +17,22 @@
   <span class="availability">Available</span>
 </div>
 <div class="nav-tabs">
-  <button class="nav-tab active" [class.active]="activeTab === 'dashboard'" (click)="setActiveTab('dashboard')">
+  <button class="nav-tab" routerLink="/driver/dashboard" routerLinkActive="active">
     <i class="fas fa-tachometer-alt"></i>
     Dashboard
   </button>
-  <button class="nav-tab" [class.active]="activeTab === 'jobs'" (click)="setActiveTab('jobs')">
+
+  <button class="nav-tab" routerLink="/driver/job" routerLinkActive="active">
     <i class="fa-solid fa-toolbox"></i>
     Jobs
   </button>
-  <button class="nav-tab" [class.active]="activeTab === 'earnings'" (click)="setActiveTab('earnings')">
+
+  <button class="nav-tab" routerLink="/driver/earnings" routerLinkActive="active">
     <i class="fa-solid fa-dollar-sign"></i>
     Earnings
   </button>
-  <button class="nav-tab" [class.active]="activeTab === 'profile'" (click)="setActiveTab('profile')">
+
+  <button class="nav-tab" routerLink="/driver/profile" routerLinkActive="active">
     <i class="fas fa-user-cog"></i>
     Profile
   </button>
@@ -64,3 +67,5 @@
   </div>
   <!-- Statistics -->
 </div>
+
+<router-outlet></router-outlet>

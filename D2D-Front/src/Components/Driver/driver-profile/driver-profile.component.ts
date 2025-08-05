@@ -3,7 +3,7 @@ import { DriverSharedComponent } from "../driver-shared/driver-shared.component"
 
 @Component({
   selector: 'app-driver-profile',
-  imports: [DriverSharedComponent],
+  imports: [],
   templateUrl: './driver-profile.component.html',
   styleUrl: './driver-profile.component.css'
 })
