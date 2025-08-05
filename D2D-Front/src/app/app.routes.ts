@@ -2,8 +2,6 @@ import { Routes } from '@angular/router';
 
 // Landing Page Components
 import { HomeComponent } from '../Components/Landing/home/home.component';
-import { LoginComponent } from '../Components/Landing/login/login.component';
-import { RegisterComponent } from '../Components/Landing/register/register.component';
 import { AboutComponent } from '../Components/Landing/about/about.component';
 import { FeedbackComponent } from '../Components/Landing/feedback/feedback.component';
 import { ServicesComponent } from '../Components/Landing/services/services.component';
@@ -38,6 +36,10 @@ export const routes: Routes = [
   // Landing Page Routes
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'contact', component: FeedbackComponent },
+  { path: 'services', component: ServicesComponent },
+  { path: 'technicians', component: LandingTechniciansComponent },
   
   // Authentication routes
   {
@@ -52,16 +54,12 @@ export const routes: Routes = [
   // Legacy routes for backward compatibility
   { path: 'login', redirectTo: '/auth/login', pathMatch: 'full' },
   { path: 'signUp', redirectTo: '/auth/sign-up', pathMatch: 'full' },
-  
-  { path: 'about', component: AboutComponent },
-  { path: 'contact', component: FeedbackComponent },
-  { path: 'services', component: ServicesComponent },
-  { path: 'technicians', component: LandingTechniciansComponent },
 
   // Customer Dashboard with Child Routes
   {
     path: 'customer',
     component: CustomerDashboardComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: CustomerDashboardComponent },
@@ -74,6 +72,7 @@ export const routes: Routes = [
   {
     path: 'technician',
     component: TechniciansDashboardComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: TechniciansDashboardComponent },
@@ -84,16 +83,6 @@ export const routes: Routes = [
   },
 
   // Admin Dashboard with Child Routes
-  { path: 'technician/dashboard', component: TechniciansDashboardComponent },
-  { path: 'jobs', component: JobsComponent },
-  { path: 'technicianearnings', component: TechnicianEarningsComponent },
-  
-  // Protected Customer Dashboard routes
-  { path: 'dashboard', component: CustomerDashboardComponent, canActivate: [AuthGuard] },
-  { path: 'vehicles', component: VehiclesComponent, canActivate: [AuthGuard] },
-  { path: 'service-history', component: ServiceHistoryComponent, canActivate: [AuthGuard] },
-
-  // Professional Admin Dashboard with Child Routes
   {
     path: 'admin',
     component: AdminDashboardComponent,
@@ -110,20 +99,12 @@ export const routes: Routes = [
     ],
   },
 
-  // Legacy Routes (for backward compatibility)
+  // Legacy Routes (redirects for backward compatibility)
   { path: 'dashboard', redirectTo: '/customer/dashboard', pathMatch: 'full' },
   { path: 'vehicles', redirectTo: '/customer/vehicles', pathMatch: 'full' },
-  {
-    path: 'service-history',
-    redirectTo: '/customer/service-history',
-    pathMatch: 'full',
-  },
+  { path: 'service-history', redirectTo: '/customer/service-history', pathMatch: 'full' },
   { path: 'jobs', redirectTo: '/technician/jobs', pathMatch: 'full' },
-  {
-    path: 'technicianearnings',
-    redirectTo: '/technician/earnings',
-    pathMatch: 'full',
-  },
+  { path: 'technicianearnings', redirectTo: '/technician/earnings', pathMatch: 'full' },
 
   // Fallback - redirect to home page for unknown routes
   { path: '**', redirectTo: '/home' },
