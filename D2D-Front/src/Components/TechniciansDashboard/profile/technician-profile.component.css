@@ -1,17 +1,19 @@
+/* Technician Profile Component Styles */
 .container {
   padding: 20px;
   background-color: var(--background-color);
   min-height: 100vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .profile-card {
   max-width: 900px;
+  width: 100%;
   margin: 0 auto;
   background-color: var(--card-bg-color);
   border-radius: 20px;
   padding: 30px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
 .card-header {
@@ -37,18 +39,18 @@
 }
 
 .badge-junior {
-  background: linear-gradient(45deg, #64b5f6, #42a5f5);
+  background: linear-gradient(45deg, #90caf9, #64b5f6);
   color: white;
 }
 
 .badge-senior {
-  background: linear-gradient(45deg, #81c784, #66bb6a);
+  background: linear-gradient(45deg, #a5d6a7, #81c784);
   color: white;
 }
 
 .badge-expert {
-  background: linear-gradient(45deg, #ffd700, #ffed4e);
-  color: #333;
+  background: linear-gradient(45deg, #ffb74d, #ff9800);
+  color: white;
 }
 
 .photo-section {
@@ -147,6 +149,7 @@ label {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: var(--light);
+  min-height: 44px;
 }
 
 .form-control:focus {
@@ -159,7 +162,6 @@ label {
 .form-control.error {
   border-color: var(--primary-color);
   background: var(--light);
-  color: #333;
 }
 
 .textarea {
@@ -173,80 +175,12 @@ label {
   margin-top: 5px;
 }
 
-.technician-stats {
-  background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2));
-  padding: 20px;
-  border-radius: 15px;
-  margin: 20px 0;
-}
-
-.technician-stats h3 {
-  color: var(--light);
-  margin-bottom: 15px;
-  text-align: center;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-}
-
-.stat-card {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 15px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.stat-info {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.stat-label {
-  font-size: 0.85rem;
-  color: var(--light);
-  margin-bottom: 5px;
-}
-
-.stat-value {
-  font-weight: bold;
-  color: var(--light);
-}
-
-.rating-display {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.stars {
-  display: flex;
-  gap: 2px;
-}
-
-.filled-star {
-  color: #ffd700;
-  font-size: 1.2rem;
-}
-
-.empty-star {
-  color: #ccc;
-  font-size: 1.2rem;
-}
-
-.rating-value {
-  font-size: 0.9rem;
-  color: var(--light);
-}
-
 .certifications-section {
-  background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2));
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.2)
+  );
   padding: 20px;
   border-radius: 15px;
   margin: 20px 0;
@@ -266,12 +200,99 @@ label {
 }
 
 .certification-badge {
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  background: linear-gradient(45deg, #4fc3f7, #29b6f6);
   color: white;
   padding: 8px 16px;
   border-radius: 20px;
   font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.ratings-section {
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.2)
+  );
+  padding: 20px;
+  border-radius: 15px;
+  margin: 20px 0;
+}
+
+.ratings-section h3 {
+  color: var(--light);
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.rating-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.rating-label {
+  color: var(--light);
   font-weight: 500;
+}
+
+.rating-stars {
+  color: #ffc107;
+  font-size: 1.1rem;
+}
+
+.technician-stats {
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.2)
+  );
+  padding: 20px;
+  border-radius: 15px;
+  margin: 20px 0;
+}
+
+.technician-stats h3 {
+  color: var(--light);
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--light);
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  font-weight: bold;
+  color: var(--light);
 }
 
 .form-actions {
@@ -294,6 +315,9 @@ label {
   align-items: center;
   gap: 8px;
   font-size: 0.95rem;
+  min-height: 44px;
+  justify-content: center;
+  text-align: center;
 }
 
 .btn:disabled {
@@ -318,7 +342,29 @@ label {
 
 .btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .profile-card {
+    max-width: 100%;
+    width: calc(100% - 40px);
+    margin: 0 20px;
+  }
+
+  .form-row {
+    gap: 15px;
+  }
+
+  .stats-grid {
+    gap: 12px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -327,11 +373,15 @@ label {
   }
 
   .profile-card {
+    max-width: 100%;
+    width: calc(100% - 20px);
     padding: 20px;
+    margin: 0 10px;
   }
 
   .form-row {
     grid-template-columns: 1fr;
+    gap: 15px;
   }
 
   .stats-grid {
@@ -340,6 +390,7 @@ label {
 
   .form-actions {
     flex-direction: column;
+    gap: 10px;
   }
 
   .page-title {
@@ -352,7 +403,177 @@ label {
     text-align: center;
   }
 
+  .technician-badge {
+    align-self: center;
+  }
+
+  .profile-photo {
+    width: 100px;
+    height: 100px;
+  }
+
+  .form-control {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  label {
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+
   .certifications-list {
-    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .certification-badge {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 5px;
+  }
+
+  .profile-card {
+    max-width: 100%;
+    width: calc(100% - 10px);
+    padding: 15px;
+    margin: 0 5px;
+    border-radius: 15px;
+  }
+
+  .page-title {
+    font-size: 1.3rem;
+  }
+
+  .technician-badge {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+
+  .profile-photo {
+    width: 80px;
+    height: 80px;
+  }
+
+  .change-photo-btn {
+    font-size: 0.7rem;
+    padding: 6px 12px;
+  }
+
+  .form-control {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+
+  .textarea {
+    min-height: 60px;
+  }
+
+  label {
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+  }
+
+  .btn {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+
+  .certifications-section,
+  .ratings-section,
+  .technician-stats {
+    padding: 15px;
+    margin: 15px 0;
+  }
+
+  .certifications-section h3,
+  .ratings-section h3,
+  .technician-stats h3 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+
+  .stat-card,
+  .rating-item {
+    padding: 10px;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+  }
+
+  .stat-value {
+    font-size: 0.9rem;
+  }
+
+  .certification-badge {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
+
+  .rating-stars {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-card {
+    max-width: 100%;
+    width: 100%;
+    padding: 12px;
+    margin: 0;
+  }
+
+  .page-title {
+    font-size: 1.2rem;
+  }
+
+  .form-row {
+    gap: 10px;
+  }
+
+  .form-group {
+    margin-bottom: 10px;
+  }
+
+  .profile-photo {
+    width: 70px;
+    height: 70px;
+  }
+
+  .certifications-section,
+  .ratings-section,
+  .technician-stats {
+    padding: 12px;
+    margin: 12px 0;
+  }
+
+  .stat-card,
+  .rating-item {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .form-actions {
+    gap: 8px;
+    margin-top: 20px;
+    padding-top: 15px;
+  }
+
+  .certifications-list {
+    gap: 6px;
+  }
+
+  .certification-badge {
+    font-size: 0.7rem;
+    padding: 4px 8px;
   }
 }

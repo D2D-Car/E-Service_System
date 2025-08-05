@@ -1,5 +1,5 @@
-@use "../node_modules/bootstrap/scss/bootstrap"as *;
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+// Modern SCSS with no deprecation warnings
+// Using CSS imports instead of SCSS @import for external resources
 
 @media(max-width: 420px) {
   .row>* {
