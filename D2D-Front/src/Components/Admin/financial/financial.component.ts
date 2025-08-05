@@ -54,26 +54,29 @@ export class FinancialComponent {
 
   initializeDashboard(): void {
     setTimeout(() => {
-      (document.getElementById('moneyProgress') as HTMLElement).style.width = '80%';
+      (document.getElementById('moneyProgress') as HTMLElement).style.width =
+        '80%';
     }, 500);
 
     setTimeout(() => {
-      (document.getElementById('projectsProgress') as HTMLElement).style.width = '59%';
+      (document.getElementById('projectsProgress') as HTMLElement).style.width =
+        '59%';
     }, 800);
 
     setTimeout(() => {
-      (document.getElementById('teamProgress') as HTMLElement).style.width = '75%';
+      (document.getElementById('teamProgress') as HTMLElement).style.width =
+        '75%';
     }, 1100);
 
-    this.animateNumber('moneyValue', 0, 20000, 2000, '$');
-    this.animateNumber('projectsValue', 0, 24, 2000);
+    this.animateNumber('moneyValue', 0, 18340, 2000, '$');
+    this.animateNumber('projectsValue', 0, 23, 2000);
     this.animateNumber('teamValue', 0, 12, 2000);
 
     setTimeout(() => {
       this.animateNumber('totalTickets', 0, 2403, 1500);
-      this.animateNumber('pendingTickets', 0, 500, 1500);
-      this.animateNumber('closedTickets', 0, 1900, 1500);
-      this.animateNumber('deletedTickets', 0, 100, 1500);
+      this.animateNumber('pendingTickets', 0, 340, 1500);
+      this.animateNumber('closedTickets', 0, 1540, 1500);
+      this.animateNumber('deletedTickets', 0, 103, 1500);
     }, 500);
   }
 
@@ -109,15 +112,22 @@ export class FinancialComponent {
     setTimeout(() => {
       element.style.transform = 'scale(1)';
 
-      const progressBar = element.querySelector('.progress-bar') as HTMLElement;
-      const percentage = element.querySelector('.percentage') as HTMLElement;
+      const progressBar = element.querySelector(
+        '.progress-fill'
+      ) as HTMLElement;
+      const percentage = element.querySelector(
+        '.progress-percentage'
+      ) as HTMLElement;
       const currentWidth = parseInt(progressBar.style.width);
       const newWidth = Math.min(currentWidth + Math.random() * 10, 100);
       progressBar.style.width = `${newWidth}%`;
       percentage.textContent = `${Math.floor(newWidth)}%`;
+
       if (type === 'money') {
         const valueEl = document.getElementById('moneyValue');
-        const current = parseInt(valueEl?.textContent?.replace(/,/g, '') || '0');
+        const current = parseInt(
+          valueEl?.textContent?.replace(/,/g, '') || '0'
+        );
         const newValue = current + Math.floor(Math.random() * 1000);
         this.animateNumber('moneyValue', current, newValue, 1000, '$');
       } else if (type === 'projects') {
@@ -133,13 +143,19 @@ export class FinancialComponent {
       }
     }, 100);
   }
+
   animateCard(element: HTMLElement, type: string): void {
     element.style.transform = 'scale(0.95) rotateY(5deg)';
     setTimeout(() => {
       element.style.transform = 'scale(1) rotateY(0deg)';
-      const numberElement = element.querySelector('.stat-number') as HTMLElement;
-      const current = parseInt(numberElement?.textContent?.replace(/,/g, '') || '0');
+      const numberElement = element.querySelector(
+        '.stat-number'
+      ) as HTMLElement;
+      const current = parseInt(
+        numberElement?.textContent?.replace(/,/g, '') || '0'
+      );
       let change = 0;
+
       if (type === 'pending') {
         change = Math.floor(Math.random() * 10) - 5;
       } else if (type === 'closed') {
@@ -149,34 +165,57 @@ export class FinancialComponent {
       } else {
         change = Math.floor(Math.random() * 15);
       }
+
       const newValue = Math.max(0, current + change);
       this.animateNumber(numberElement.id, current, newValue, 800);
+
       if (type !== 'total') {
         setTimeout(() => this.updateTotal(), 800);
       }
     }, 150);
   }
+
   updateTotal(): void {
-    const pending = parseInt(document.getElementById('pendingTickets')?.textContent?.replace(/,/g, '') || '0');
-    const closed = parseInt(document.getElementById('closedTickets')?.textContent?.replace(/,/g, '') || '0');
-    const deleted = parseInt(document.getElementById('deletedTickets')?.textContent?.replace(/,/g, '') || '0');
-    const current = parseInt(document.getElementById('totalTickets')?.textContent?.replace(/,/g, '') || '0');
+    const pending = parseInt(
+      document
+        .getElementById('pendingTickets')
+        ?.textContent?.replace(/,/g, '') || '0'
+    );
+    const closed = parseInt(
+      document
+        .getElementById('closedTickets')
+        ?.textContent?.replace(/,/g, '') || '0'
+    );
+    const deleted = parseInt(
+      document
+        .getElementById('deletedTickets')
+        ?.textContent?.replace(/,/g, '') || '0'
+    );
+    const current = parseInt(
+      document.getElementById('totalTickets')?.textContent?.replace(/,/g, '') ||
+        '0'
+    );
     const newTotal = pending + closed + deleted;
+
     if (newTotal !== current) {
       this.animateNumber('totalTickets', current, newTotal, 600);
     }
   }
+
   updateAllData(): void {
     const types = ['money', 'projects', 'team'];
-    const targetItems = document.querySelectorAll('.target-item');
-    targetItems.forEach((item, index) => {
+    const targetCards = document.querySelectorAll('.target-card');
+
+    targetCards.forEach((item, index) => {
       setTimeout(() => {
         this.updateTarget(item as HTMLElement, types[index]);
       }, index * 200);
     });
+
     setTimeout(() => {
       const statCards = document.querySelectorAll('.stat-card');
       const statTypes = ['total', 'pending', 'closed', 'deleted'];
+
       statCards.forEach((card, index) => {
         setTimeout(() => {
           this.animateCard(card as HTMLElement, statTypes[index]);
