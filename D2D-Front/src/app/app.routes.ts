@@ -21,6 +21,8 @@ import { TechnicianEarningsComponent } from '../Components/TechniciansDashboard/
 import { TechniciansDashboardComponent } from '../Components/TechniciansDashboard/dashboard/dashboard.component';
 import { JobsComponent } from '../Components/TechniciansDashboard/jobs/jobs.component';
 import { TestimonialsComponent } from '../Components/Landing/testimonials/testimonials.component';
+import { CustomerProfileComponent } from '../Components/Customer/profile/profile.component';
+import { TechnicianProfileComponent } from '../Components/TechniciansDashboard/profile/technician-profile.component';
 import { Component } from '@angular/core';
 export const routes: Routes = [
   // Main website routes
@@ -37,12 +39,16 @@ export const routes: Routes = [
  {path: 'testimonials' , component:TestimonialsComponent},
 
   {path:'technicianearnings',component:TechnicianEarningsComponent},
+
+  //Tech
+  {path:'technicianprofile',component:TechnicianProfileComponent},
   
 
   // Customer Dashboard (Dashboard Demo - like before)
   { path: 'dashboard', component: CustomerDashboardComponent },
   { path: 'vehicles', component: VehiclesComponent },
   { path: 'service-history', component: ServiceHistoryComponent },
+  {path:'customerprofile',component:CustomerProfileComponent},
 
   // Professional Admin Dashboard with Child Routes
   {
