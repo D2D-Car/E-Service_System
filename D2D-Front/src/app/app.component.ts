@@ -55,10 +55,10 @@ export class AppComponent {
 
         const url = event.urlAfterRedirects;
         this.isDashboardPage =
-          url.startsWith('/driver') ||
-          url.startsWith('/admin') ||
-          url.startsWith('/technician') ||
-          url.startsWith('/customer');
+          url.includes('/driver/') ||
+          url.includes('/admin/') ||
+          url.includes('/technician/') ||
+          url.includes('/customer/');
       });
   }
 
