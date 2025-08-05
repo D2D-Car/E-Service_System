@@ -28,5 +28,14 @@ export class DriversComponent {
     joined: '2022-06-01',
     image: './assets/drivers-img/driver2.jpg'
   },
+  {
+  name: 'Nadia Hassan',
+  phone: '0102244668',
+  email: 'nadia.hassan@example.com',
+  vehicle: 'Kia Sportage',
+  license: 'DR-9981',
+  joined: '2022-09-18',
+  image: './assets/drivers-img/driver3.jpg'
+  }
 ];
 }
