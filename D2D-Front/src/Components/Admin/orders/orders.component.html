@@ -1,1 +1,141 @@
-<p>orders works!</p>
+<div class="orders-container">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <h1>Orders</h1>
+
+      <!-- Date Filter Dropdown -->
+      <div class="dropdown">
+        <button class="btn btn-outline-light dropdown-toggle" (click)="toggleDateDropdown()">
+          📅 {{ selectedDateRange }}
+        </button>
+        <ul *ngIf="showDateDropdown" class="dropdown-menu show">
+          <li><a class="dropdown-item" (click)="selectDateRange('Jan 1 - Jan 30, 2024')">Jan 1 - Jan 30, 2024</a></li>
+          <li><a class="dropdown-item" (click)="selectDateRange('Feb 1 - Feb 28, 2024')">Feb 1 - Feb 28, 2024</a></li>
+          <li><a class="dropdown-item" (click)="selectDateRange('Mar 1 - Mar 31, 2024')">Mar 1 - Mar 31, 2024</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="header-right">
+     
+
+      <!-- More Actions Dropdown -->
+     <div class="dropdown">
+  <button class="btn btn-outline-light dropdown-toggle" (click)="toggleMoreActions()">
+    {{ selectedAction }}
+  </button>
+  <ul *ngIf="showMoreActions" class="dropdown-menu show">
+    <li><a class="dropdown-item" (click)="selectMoreAction('Export CSV')">Export CSV</a></li>
+    <li><a class="dropdown-item" (click)="selectMoreAction('Create Order')">Create Order</a></li>
+    <li><a class="dropdown-item" (click)="selectMoreAction('Other Action')">Other Action</a></li>
+  </ul>
+</div>
+
+
+      <button class="create-order-btn" (click)="createOrder()">
+        Create order
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-container">
+    <div class="stat-card">
+      <span class="stat-label">Total Orders</span>
+      <div class="stat-value">{{totalOrders}}</div>
+      <div class="stat-change positive">
+        ▲ 25.2% last week
+        <div class="mini-chart yellow"></div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Order Items over time</span>
+      <div class="stat-value">{{orderItems}}</div>
+      <div class="stat-change positive">
+        ▲ 15.2% last week
+        <div class="mini-chart blue"></div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Returns Orders</span>
+      <div class="stat-value">{{returnOrders}}</div>
+      <div class="stat-change negative">
+        ▼ -1.2% last week
+        <div class="mini-chart red"></div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Fulfilled orders over time</span>
+      <div class="stat-value">{{fulfilledOrders}}</div>
+      <div class="stat-change positive">
+        ▲ 12.2% last week
+        <div class="mini-chart green"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-container">
+    <div class="filters-left btn-group">
+      <button 
+        *ngFor="let filter of filters"
+        class="btn btn-outline-light"
+        [class.active]="selectedFilter === filter"
+        (click)="setFilter(filter)">
+        {{filter}}
+      </button>
+  
+    </div>
+  </div>
+
+<div class="table-container">
+  <table class="orders-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Order</th>
+        <th>Date</th>
+        <th>Customer</th>
+        <th>Payment</th>
+        <th>Total</th>
+        <th>Delivery</th>
+        <th>Items</th>
+        <th>Fulfillment</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of filteredOrders">
+        <td><input type="checkbox"></td>
+        <td>{{order.id}}</td>
+        <td>{{order.date}}</td>
+        <td>{{order.customer}}</td>
+        <td>
+          <span class="status-badge" 
+            [class.pending]="order.payment === 'Pending'" 
+            [class.success]="order.payment === 'Success'">
+            {{order.payment}}
+          </span>
+        </td>
+        <td>${{order.total.toFixed(2)}}</td>
+        <td>{{order.delivery}}</td>
+        <td>{{order.items}} items</td>
+        <td>
+          <span class="fulfillment-badge" 
+            [class.unfulfilled]="order.fulfillment === 'Unfulfilled'" 
+            [class.fulfilled]="order.fulfillment === 'Fulfilled'">
+            {{order.fulfillment}}
+          </span>
+        </td>
+   <td>
+  <button class="action-btn delete" (click)="deleteOrder(order.id)">
+    <i class="fas fa-trash"></i>
+  </button>
+</td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+

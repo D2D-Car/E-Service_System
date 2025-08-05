@@ -1,1 +1,15 @@
-<p>dashboard works!</p>
+<div class="dashboard-layout">
+
+  <app-header [sidebarCollapsed]="sidebarCollapsed" (sidebarToggle)="onSidebarToggle()">
+  </app-header>
+
+  <app-sidebar [collapsed]="sidebarCollapsed">
+  </app-sidebar>
+
+  <main class="content-area" [class.sidebar-collapsed]="sidebarCollapsed">
+    <div class="content-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
+</div>

@@ -1,10 +1,20 @@
-<section class="technicians-section ">
+<section class="technicians-section">
   <h2 class="section-title">Our Expert Technicians</h2>
-  <p class="section-subtitle">Highly skilled professionals dedicated to quality service</p>
+  <p class="section-subtitle">
+    Highly skilled professionals dedicated to quality service
+  </p>
+
   <div class="cards-container">
-    <div class="tech-card" *ngFor="let tech of technicians">
+    <div
+      class="tech-card"
+      *ngFor="let tech of technicians | slice: 0:visibleCount"
+    >
       <div class="card bg-dark text-white border border-secondary h-100">
-        <img [src]="tech.image" class="card-img-top tech-img" [alt]="tech.name">
+        <img
+          [src]="tech.image"
+          class="card-img-top tech-img"
+          [alt]="tech.name"
+        />
         <div class="card-body">
           <h5 class="card-title">{{ tech.name }}</h5>
           <p class="card-text mb-1">
@@ -18,5 +28,22 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="buttons" style="text-align: center; margin-top: 2rem;">
+    <button
+      *ngIf="visibleCount < technicians.length"
+      (click)="showMore()"
+      class="book-btn"
+    >
+      Show More
+    </button>
+    <button
+      *ngIf="visibleCount >= technicians.length && technicians.length > 3"
+      (click)="showLess()"
+      class="book-btn"
+    >
+      Show Less
+    </button>
   </div>
 </section>

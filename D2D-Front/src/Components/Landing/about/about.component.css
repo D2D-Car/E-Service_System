@@ -4,7 +4,6 @@ body {
   background-color: var(--light);
   color: var(--light-font-color);
 }
-
 .about-us .container {
   display: flex;
   flex-wrap: wrap;
