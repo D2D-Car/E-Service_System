@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { VehiclesComponent } from '../vehicles/vehicles.component';
 import { ServiceHistoryComponent } from '../service-history/service-history.component';
+import { CustomerProfileComponent } from "../profile/profile.component";
+import { CommonModule } from '@angular/common';
 
 interface UpcomingService {
   day: string;
@@ -23,7 +24,7 @@ interface RecentActivity {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, VehiclesComponent, ServiceHistoryComponent],
+  imports: [CommonModule, VehiclesComponent, ServiceHistoryComponent, CustomerProfileComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })

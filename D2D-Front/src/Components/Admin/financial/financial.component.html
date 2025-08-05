@@ -1,1 +1,83 @@
-<p>financial works!</p>
+<body>
+    <div class="dashboard">
+        <div class="section">
+            <h2 class="section-title">Yearly Targets</h2>
+            <p class="section-subtitle">Targets Of The Year</p>
+            <div class="target-item" onclick="updateTarget(this, 'money')">
+                <div class="target-icon money-icon">$</div>
+                <div class="target-content">
+                    <div class="target-label">Money</div>
+                    <div class="target-value">$<span id="moneyValue">20,000</span></div>
+                    <div class="progress-container">
+                        <div class="progress-bar progress-blue" id="moneyProgress" style="width: 0%"></div>
+                        <div class="percentage" id="moneyPercentage">80%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="target-item" onclick="updateTarget(this, 'projects')">
+                <div class="target-icon projects-icon">&lt;/&gt;</div>
+                <div class="target-content">
+                    <div class="target-label">Projects</div>
+                    <div class="target-value"><span id="projectsValue">24</span></div>
+                    <div class="progress-container">
+                        <div class="progress-bar progress-orange" id="projectsProgress" style="width: 0%"></div>
+                        <div class="percentage" id="projectsPercentage">59%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="target-item" onclick="updateTarget(this, 'team')">
+                <div class="target-icon team-icon">👥</div>
+                <div class="target-content">
+                    <div class="target-label">Team</div>
+                    <div class="target-value"><span id="teamValue">12</span></div>
+                    <div class="progress-container">
+                        <div class="progress-bar progress-green" id="teamProgress" style="width: 0%"></div>
+                        <div class="percentage" id="teamPercentage">75%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <h2 class="section-title">Tickets Statistics</h2>
+            <p class="section-subtitle">Everything About Support Tickets</p> 
+            <div class="stats-grid">
+                <div class="stat-card" onclick="animateCard(this, 'total')">
+                    <div class="stat-icon total-icon">📋</div>
+                    <div class="stat-number" id="totalTickets">2403</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-card" onclick="animateCard(this, 'pending')">
+                   <div class="static-loading-circle">
+ <div class="static-loading-circle">
+  <span style="transform: rotate(0deg) translate(24px);"></span>
+  <span style="transform: rotate(30deg) translate(24px);"></span>
+  <span style="transform: rotate(60deg) translate(24px);"></span>
+  <span style="transform: rotate(90deg) translate(24px);"></span>
+  <span style="transform: rotate(120deg) translate(24px);"></span>
+  <span style="transform: rotate(150deg) translate(24px);"></span>
+  <span style="transform: rotate(180deg) translate(24px);"></span>
+  <span style="transform: rotate(210deg) translate(24px);"></span>
+  <span style="transform: rotate(240deg) translate(24px);"></span>
+  <span style="transform: rotate(270deg) translate(24px);"></span>
+  <span style="transform: rotate(300deg) translate(24px);"></span>
+  <span style="transform: rotate(330deg) translate(24px);"></span>
+</div>
+</div>
+                    <div class="stat-number" id="pendingTickets">500</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+
+                <div class="stat-card" onclick="animateCard(this, 'closed')">
+                    <div class="check-circle"> ✓ </div>
+                    <div class="stat-number" id="closedTickets">1900</div>
+                    <div class="stat-label">Closed</div>
+                </div>
+                <div class="stat-card" onclick="animateCard(this, 'deleted')">
+                    <div class="x-box">✖</div>
+                    <div class="stat-number" id="deletedTickets">100</div>
+                    <div class="stat-label">Deleted</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>

@@ -5,12 +5,10 @@
 }
 
 .hero-section {
-  background: linear-gradient(
-      90deg,
+  background: linear-gradient(90deg,
       rgba(0, 0, 0, 0.95) 0%,
       rgba(0, 0, 0, 0.7) 50%,
-      var(--background-color) 100%
-    ),
+      var(--background-color) 100%),
     url("/assets/home-img/Background.png") no-repeat center center / cover;
   display: flex;
   align-items: center;
@@ -29,6 +27,16 @@
   background: inherit;
   z-index: -1;
   animation: zoomEffect 20s infinite alternate;
+}
+
+.driver-dashboard-button button {
+  background-color: var(--primary-color);
+  padding: 1rem 0.75rem;
+}
+
+.driver-dashboard-button button a {
+  color: var(--light-font-color);
+  text-decoration: none;
 }
 
 @keyframes zoomEffect {
@@ -255,11 +263,9 @@
 }
 
 .btn-primary {
-  background: linear-gradient(
-    135deg,
-    var(--primary-color),
-    var(--secondary-color)
-  );
+  background: linear-gradient(135deg,
+      var(--primary-color),
+      var(--secondary-color));
   color: var(--light);
   padding: 12px 24px;
   border-radius: 8px;

@@ -204,16 +204,24 @@ $member-gradient-end: #8e24aa;
 
   // Icon Gradients
   --services-gradient: linear-gradient(135deg,
+  --services-gradient: linear-gradient(135deg,
     #{$services-gradient-start},
+    #{$services-gradient-end});
+  --money-gradient: linear-gradient(135deg,
     #{$services-gradient-end});
   --money-gradient: linear-gradient(135deg,
     #{$money-gradient-start},
     #{$money-gradient-end});
   --loyalty-gradient: linear-gradient(135deg,
+    #{$money-gradient-end});
+  --loyalty-gradient: linear-gradient(135deg,
     #{$loyalty-gradient-start},
     #{$loyalty-gradient-end});
   --member-gradient: linear-gradient(135deg,
+    #{$loyalty-gradient-end});
+  --member-gradient: linear-gradient(135deg,
     #{$member-gradient-start},
+    #{$member-gradient-end});
     #{$member-gradient-end});
 
   --padding: 1rem;
@@ -314,4 +322,20 @@ body.dark-theme,
   /* YouTube scrollbar hover */
   --hover-bg: #272727;
   /* YouTube's hover background */
+}
+
+.services-icon {
+  background: var(--services-gradient);
+}
+
+.money-icon {
+  background: var(--money-gradient);
+}
+
+.loyalty-icon {
+  background: var(--loyalty-gradient);
+}
+
+.member-icon {
+  background: var(--member-gradient);
 }

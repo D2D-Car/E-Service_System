@@ -1,7 +1,32 @@
 .technicians-section {
   background-color: var(--background-color);
-  padding: 4rem 1rem;
+  padding: 2rem 1rem;
   transition: var(--time-transition);
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: calc(
+    100vh - 120px
+  ); /* Adjust based on your header/navbar height */
+}
+
+/* Custom Scrollbar Styling */
+.technicians-section::-webkit-scrollbar {
+  width: 8px;
+}
+
+.technicians-section::-webkit-scrollbar-track {
+  background: var(--background-color);
+  border-radius: 10px;
+}
+
+.technicians-section::-webkit-scrollbar-thumb {
+  background: #e63946;
+  border-radius: 10px;
+}
+
+.technicians-section::-webkit-scrollbar-thumb:hover {
+  background: #c82333;
 }
 
 .section-title {
@@ -18,7 +43,7 @@
   letter-spacing: 1px;
 }
 
-@media (max-width:992px) {
+@media (max-width: 992px) {
   .section-title {
     font-size: 1rem;
     max-width: 80%;
@@ -56,18 +81,22 @@
 }
 
 .cards-container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
-  justify-content: center;
+  padding: 0 1rem;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 .card {
-  width: 300px;
+  width: 100%;
+  max-width: 300px;
+  min-height: 450px;
   background-color: #1d1d1d;
   overflow: hidden;
   transition: box-shadow 0.3s ease;
-  
+  margin: 0 auto;
 }
 
 .card:hover {
@@ -148,7 +177,7 @@
 
 .action-footer {
   display: flex;
-  justify-content:center;
+  justify-content: center;
   align-items: center;
   margin-top: 15px;
   padding: 0 10px;

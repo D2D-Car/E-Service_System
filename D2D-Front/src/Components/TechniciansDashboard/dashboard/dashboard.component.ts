@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TechnicianEarningsComponent } from "../earnings/earnings.component";
+import { JobsComponent } from "../jobs/jobs.component";
+import { TechnicianProfileComponent } from "../profile/technician-profile.component";
 
 @Component({
   selector: 'app-technicians-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TechnicianEarningsComponent, JobsComponent, TechnicianProfileComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })

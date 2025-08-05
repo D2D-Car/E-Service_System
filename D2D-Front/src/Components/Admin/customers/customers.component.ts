@@ -24,5 +24,13 @@ export class CustomersComponent {
     joined: '2023-07-22',
     image: './assets/customers-img/customer2.jpg'
   },
+  {
+  name: 'Kareem Fouad',
+  phone: '0119988776',
+  email: 'kareem.fouad@example.com',
+  address: '10 El-Salam St, Tanta',
+  joined: '2023-05-22',
+  image: './assets/customers-img/customer3.jpeg'
+ }
 ];
 }
