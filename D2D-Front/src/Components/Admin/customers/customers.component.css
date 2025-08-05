@@ -1,7 +1,10 @@
 .technicians-section {
   background-color: var(--background-color);
+  height: calc(100vh - 64px);
   padding: 4rem 1rem;
   transition: var(--time-transition);
+  overflow-y: auto;
+  position: relative;
 }
 
 .section-title {

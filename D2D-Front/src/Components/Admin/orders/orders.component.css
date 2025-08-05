@@ -1,9 +1,11 @@
 .orders-container {
   padding: 24px;
   background-color: var(--background-color);
-  min-height: 100vh;
+  height: calc(100vh - 64px);
   font-family: 'Inter', sans-serif;
   color: var(--light);
+  overflow-y: auto;
+  position: relative;
 }
 
 /* Header */
