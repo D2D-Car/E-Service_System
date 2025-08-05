@@ -59,7 +59,7 @@ export const routes: Routes = [
   {
     path: 'customer',
     component: CustomerDashboardComponent,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: CustomerDashboardComponent },
@@ -72,7 +72,7 @@ export const routes: Routes = [
   {
     path: 'technician',
     component: TechniciansDashboardComponent,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: TechniciansDashboardComponent },
@@ -86,7 +86,7 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminDashboardComponent,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardHomeComponent },
