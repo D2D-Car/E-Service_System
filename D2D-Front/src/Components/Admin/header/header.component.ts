@@ -5,11 +5,12 @@ import {
   Input,
   OnInit,
   OnDestroy,
+  HostListener,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { ThemeService } from '../../../Services/theme.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 interface Admin {
   name: string;
@@ -41,11 +42,13 @@ interface Notification {
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  @Input() isDarkMode: boolean = true; // Default to dark theme
   @Input() sidebarCollapsed: boolean = false;
   @Output() sidebarToggle = new EventEmitter<void>();
+  @Output() themeToggle = new EventEmitter<void>();
 
+  autoTheme: boolean = false;
   private destroy$ = new Subject<void>();
-  isDarkMode: boolean = false;
 
   showNotifications = false;
   showAdminDropdown = false;
@@ -56,7 +59,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private themeService: ThemeService) {}
 
   ngOnInit() {
-    // Subscribe to theme changes
+    // Sync with theme service
     this.themeService.isDarkMode$
       .pipe(takeUntil(this.destroy$))
       .subscribe((isDark) => {
@@ -67,6 +70,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  // Handle escape key press to close dropdowns
+  @HostListener('document:keydown.escape', ['$event'])
+  onEscapeKey(event: KeyboardEvent) {
+    if (this.showNotifications) {
+      this.closeNotifications();
+    }
+    if (this.showAdminDropdown) {
+      this.closeAdminDropdown();
+    }
   }
 
   admins: Admin[] = [
@@ -162,7 +176,43 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   toggleTheme(): void {
+    console.log('Theme toggle clicked! Current mode:', this.isDarkMode);
+    // Use theme service for centralized theme management
     this.themeService.toggleTheme();
+    console.log('New theme mode:', this.themeService.isDarkMode);
+    // Still emit for parent component compatibility
+    this.themeToggle.emit();
+  }
+
+  selectTheme(theme: 'light' | 'dark' | 'auto'): void {
+    console.log('Theme selected:', theme);
+
+    switch (theme) {
+      case 'light':
+        this.autoTheme = false;
+        if (this.isDarkMode) {
+          this.themeService.toggleTheme();
+        }
+        break;
+      case 'dark':
+        this.autoTheme = false;
+        if (!this.isDarkMode) {
+          this.themeService.toggleTheme();
+        }
+        break;
+      case 'auto':
+        this.autoTheme = true;
+        // Detect system preference
+        const prefersDark = window.matchMedia(
+          '(prefers-color-scheme: dark)'
+        ).matches;
+        if (this.isDarkMode !== prefersDark) {
+          this.themeService.toggleTheme();
+        }
+        break;
+    }
+
+    this.themeToggle.emit();
   }
 
   toggleNotifications(): void {

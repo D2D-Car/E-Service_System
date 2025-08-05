@@ -1,15 +1,10 @@
-<header class="professional-header">
+<header class="professional-header" [class.dark-theme]="isDarkMode" [class.light-theme]="!isDarkMode">
   <div class="header-container">
     <!-- Left Section -->
     <div class="header-left">
       <button class="sidebar-toggle-btn" (click)="toggleSidebar()" title="Toggle Sidebar">
-        <!-- Desktop icon -->
-        <div class="toggle-icon desktop-icon" [class.rotated]="sidebarCollapsed">
+        <div class="toggle-icon" [class.rotated]="sidebarCollapsed">
           <i class="fas fa-chevron-left"></i>
-        </div>
-        <!-- Mobile hamburger icon -->
-        <div class="toggle-icon mobile-icon">
-          <i class="fas fa-bars"></i>
         </div>
       </button>
     </div>
@@ -37,15 +32,25 @@
         <button class="quick-action-btn" title="Settings">
           <i class="fas fa-cog"></i>
         </button>
-        <!-- Theme Toggle Button -->
-        <button class="theme-toggle-btn" (click)="toggleTheme()"
-          [title]="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
-          <span class="theme-icon">{{ isDarkMode ? '☀️' : '🌙' }}</span>
+      </div>
+
+      <!-- Modern Theme Toggle -->
+      <div class="modern-theme-toggle">
+        <button class="theme-option" [class.active]="!isDarkMode && !autoTheme" (click)="selectTheme('light')"
+          title="Light Mode">
+          <span class="theme-emoji">☀️</span>
+        </button>
+        <button class="theme-option" [class.active]="isDarkMode && !autoTheme" (click)="selectTheme('dark')"
+          title="Dark Mode">
+          <span class="theme-emoji">🌙</span>
         </button>
       </div>
 
       <!-- Notifications -->
-      <div class="notifications-container">
+      <div class="notifications-container" [class.show-dropdown]="showNotifications">
+        <!-- Mobile backdrop -->
+        <div class="mobile-backdrop" *ngIf="showNotifications" (click)="closeNotifications()"></div>
+
         <button class="notification-btn" (click)="toggleNotifications()" title="Notifications">
           <i class="fa-solid fa-bell" [class.has-notifications]="hasNotifications"></i>
           <span class="notification-badge" *ngIf="notificationCount > 0">{{notificationCount}}</span>
@@ -88,7 +93,10 @@
       </div>
 
       <!-- User Profile -->
-      <div class="user-profile-container">
+      <div class="user-profile-container" [class.show-dropdown]="showAdminDropdown">
+        <!-- Mobile backdrop -->
+        <div class="mobile-backdrop" *ngIf="showAdminDropdown" (click)="closeAdminDropdown()"></div>
+
         <div class="profile-selector" (click)="toggleAdminDropdown()">
           <div class="profile-avatar">
             <img [src]="currentAdmin.avatar" [alt]="currentAdmin.name" class="avatar-img">
