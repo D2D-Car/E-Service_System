@@ -9,6 +9,8 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
 })
 export class ServicesComponent implements OnInit {
+  showAll = false; // 👈 Add this line
+
   services = [
     {
       icon: './assets/services-img/brake-disc.png',
@@ -51,4 +53,9 @@ export class ServicesComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  // 👇 Add this toggle method
+  toggleShowAll() {
+    this.showAll = !this.showAll;
+  }
 }
