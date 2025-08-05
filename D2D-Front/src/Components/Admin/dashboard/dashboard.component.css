@@ -14,11 +14,9 @@
   left: 280px; /* Sidebar width */
   right: 0;
   bottom: 0;
-  background: var(
-    --bg-primary
-  ); /* Changed from bg-secondary to bg-primary to remove dark section */
+  background: var(--bg-secondary);
   transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: auto; /* Allow scrolling when needed */
+  overflow: hidden; /* Remove scrollbar from content area */
 }
 
 .content-area.sidebar-collapsed {
@@ -27,9 +25,9 @@
 
 .content-wrapper {
   width: 100%;
-  min-height: 100%; /* Ensure full height */
+  height: 100%;
   padding: 20px;
-  box-sizing: border-box;
+  overflow: hidden; /* Prevent scrollbars in wrapper */
 }
 
 /* Empty Dashboard Content */
@@ -152,32 +150,25 @@
   }
 
   .content-area {
-    left: 0 !important; /* Force remove sidebar space */
+    left: 0;
     top: 60px; /* Reduced header height for mobile */
     padding: 0;
-    background: var(--bg-primary); /* Ensure consistent background */
-    overflow-y: auto;
-    position: fixed;
-    right: 0;
-    bottom: 0;
   }
 
   .content-area.sidebar-collapsed {
-    left: 0 !important; /* Force remove sidebar space even when collapsed */
+    left: 0;
   }
 
   .content-wrapper {
     padding: 10px;
-    min-height: calc(100vh - 60px); /* Full viewport height minus header */
-    box-sizing: border-box;
-    width: 100%;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
   }
 
   .empty-dashboard {
     padding: 30px 20px;
     margin: 10px;
     border-radius: 15px;
-    background: var(--bg-primary);
   }
 
   .empty-dashboard h2 {
@@ -197,28 +188,20 @@
 
 @media (max-width: 768px) {
   .content-area {
-    left: 0 !important; /* Force remove sidebar space */
+    left: 0;
     top: 65px;
-    background: var(--bg-primary); /* Ensure consistent background */
-    position: fixed;
-    right: 0;
-    bottom: 0;
   }
 
   .content-area.sidebar-collapsed {
-    left: 0 !important; /* Force remove sidebar space even when collapsed */
+    left: 0;
   }
 
   .content-wrapper {
     padding: 15px;
-    min-height: calc(100vh - 65px); /* Full viewport height minus header */
-    box-sizing: border-box;
-    width: 100%;
   }
 
   .empty-dashboard {
     padding: 40px 25px;
-    background: var(--bg-primary);
   }
 
   .empty-dashboard h2 {
