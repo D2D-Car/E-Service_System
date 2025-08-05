@@ -40,7 +40,7 @@ export const routes: Routes = [
   { path: 'contact', component: FeedbackComponent },
   { path: 'services', component: ServicesComponent },
   { path: 'technicians', component: LandingTechniciansComponent },
-  
+
   // Authentication routes
   {
     path: 'auth',
@@ -50,7 +50,7 @@ export const routes: Routes = [
       { path: 'pending-verification', component: PendingVerificationComponent }
     ]
   },
-  
+
   // Legacy routes for backward compatibility
   { path: 'login', redirectTo: '/auth/login', pathMatch: 'full' },
   { path: 'signUp', redirectTo: '/auth/sign-up', pathMatch: 'full' },
