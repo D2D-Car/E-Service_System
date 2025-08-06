@@ -24,7 +24,7 @@ interface Technician {
 export class TechniciansComponent {
   selectedStatus: string = 'all';
   isNavbarCollapsed: boolean = false;
-  allTechnicians = [
+  allTechnicians: Technician[] = [
     {
       id: 1,
       name: 'Mohamed Hassan',
@@ -122,7 +122,8 @@ export class TechniciansComponent {
       completedJobs: 210,
     },
   ];
-  technicians: any[] = [];
+  
+  technicians: Technician[] = [];
 
   constructor() {
     this.technicians = [...this.allTechnicians];
@@ -148,24 +149,24 @@ export class TechniciansComponent {
     }
   }
 
-  callTechnician(tech: any) {
+  callTechnician(tech: Technician) {
     console.log('Viewing certification for technician:', tech.name);
     alert(`${tech.name} - ${tech.certification} in ${tech.specialty}`);
   }
 
-  emailTechnician(tech: any) {
+  emailTechnician(tech: Technician) {
     console.log('Viewing jobs for technician:', tech.name);
     alert(
       `${tech.name} completed ${tech.completedJobs} jobs with ${tech.rating}⭐ rating`
     );
   }
 
-  viewTechnicianProfile(tech: any) {
+  viewTechnicianProfile(tech: Technician) {
     console.log('Viewing profile for:', tech.name);
     // Add navigation logic here
   }
 
-  removeTechnician(tech: any) {
+  removeTechnician(tech: Technician) {
     const confirmRemove = confirm(
       `Are you sure you want to remove ${tech.name}?`
     );
