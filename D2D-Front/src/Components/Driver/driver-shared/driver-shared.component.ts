@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 interface IStatistics {
   icon: string;
@@ -13,10 +14,11 @@ interface IStatistics {
   standalone: true,
   templateUrl: './driver-shared.component.html',
   styleUrls: ['./driver-shared.component.css'],
-  imports: [RouterModule, CommonModule]
+  imports: [RouterModule, CommonModule,FormsModule]
 })
 
 export class DriverSharedComponent {
+  availabilityStatus: string = 'Available';
   activeTab: string = 'dashboard';
 
   statistics: IStatistics[] = [
