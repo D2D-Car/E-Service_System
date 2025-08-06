@@ -14,7 +14,9 @@
       <h3>This Week</h3>
     </div>
   </div>
-  <span class="availability">Available</span>
+  <span class="availability" [ngClass]="availabilityStatus === 'Available' ? 'available' : 'unavailable'">
+    {{ availabilityStatus }}
+  </span>
 </div>
 <div class="nav-tabs">
   <button class="nav-tab" routerLink="/driver/dashboard" routerLinkActive="active">
@@ -42,7 +44,7 @@
   <div class="availability-container">
     <div class="availability-toggle">
       <div class="availability-label">Availability Status</div>
-      <select class="availability-select">
+      <select class="availability-select" [(ngModel)]="availabilityStatus">
         <option value="available">Available</option>
         <option value="unavailable">Unavailable</option>
       </select>

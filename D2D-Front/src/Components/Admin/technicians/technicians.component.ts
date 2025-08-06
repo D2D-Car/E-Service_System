@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-technicians',
@@ -8,8 +8,11 @@ import { Component } from '@angular/core';
   templateUrl: './technicians.component.html',
   styleUrl: './technicians.component.css',
 })
-export class TechniciansComponent {
-  technicians = [
+export class TechniciansComponent implements OnInit {
+  isNavbarCollapsed = true;
+  selectedStatus = 'All';
+
+  allTechnicians = [
     {
       id: 1,
       name: 'Mohamed Hassan',
@@ -108,7 +111,29 @@ export class TechniciansComponent {
     },
   ];
 
-  // Action methods
+  technicians = [...this.allTechnicians]; // initialize with full list
+
+  toggleNavbar(): void {
+    this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  }
+
+  ngOnInit(): void {
+    this.setTheme();
+  }
+
+
+  filterTrips(status: string): void {
+    this.selectedStatus = status;
+
+    if (status === 'All') {
+      this.technicians = [...this.allTechnicians];
+    } else {
+      this.technicians = this.allTechnicians.filter(
+        tech => tech.status.toLowerCase() === status.toLowerCase()
+      );
+    }
+  }
+
   callTechnician(tech: any) {
     console.log('Viewing certification for technician:', tech.name);
     alert(`${tech.name} - ${tech.certification} in ${tech.specialty}`);
@@ -123,7 +148,6 @@ export class TechniciansComponent {
 
   viewTechnicianProfile(tech: any) {
     console.log('Viewing profile for:', tech.name);
-    // Add navigation logic here
   }
 
   removeTechnician(tech: any) {
@@ -131,8 +155,16 @@ export class TechniciansComponent {
       `Are you sure you want to remove ${tech.name}?`
     );
     if (confirmRemove) {
-      this.technicians = this.technicians.filter((t) => t.id !== tech.id);
-      console.log('Technician removed:', tech.name);
+      this.allTechnicians = this.allTechnicians.filter(t => t.id !== tech.id);
+      this.filterTrips(this.selectedStatus);
     }
   }
+
+  setTheme(): void {
+    const theme = localStorage.getItem('theme') || 'dark';
+    const body = document.body;
+    body.classList.remove('dark-theme', 'light-theme');
+    body.classList.add(`${theme}-theme`);
+  }
 }
+

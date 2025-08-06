@@ -1,0 +1,271 @@
+.roadmap-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.roadmap-header {
+  margin-bottom: 24px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.title-section {
+  flex: 1;
+}
+
+.roadmap-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 4px 0;
+}
+
+.phase-description {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.date-selector {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+
+.date-text {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.controls-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.toggle-group {
+  display: flex;
+  background: var(--bg-secondary);
+  border-radius: 20px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 6px 16px;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  margin: 0;
+}
+
+.toggle-label input {
+  display: none;
+}
+
+.toggle-label.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+.toggle-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: inherit;
+}
+
+.toggle-label:not(.active) .toggle-text {
+  color: var(--text-secondary);
+}
+
+.period-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.period-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.period-btn.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.period-btn:hover:not(.active) {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.gantt-chart {
+  display: flex;
+  gap: 16px;
+}
+
+.phase-labels {
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.phase-label {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.chart-area {
+  flex: 1;
+  position: relative;
+}
+
+.chart-grid {
+  position: relative;
+  height: 288px; /* 6 phases * 48px */
+}
+
+.grid-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+}
+
+.grid-line {
+  flex: 1;
+  border-right: 1px solid var(--border-color);
+  opacity: 0.3;
+}
+
+.grid-line:last-child {
+  border-right: none;
+}
+
+.phase-bars {
+  position: relative;
+  z-index: 2;
+}
+
+.phase-row {
+  height: 40px;
+  position: relative;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.phase-bar {
+  height: 20px;
+  border-radius: 4px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+}
+
+.phase-bar:hover {
+  opacity: 0.8;
+  transform: translateY(-50%) scale(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+  .header-content {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  
+  .controls-section {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+  
+  .gantt-chart {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .phase-labels {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .phase-label {
+    height: auto;
+    padding: 4px 8px;
+    background: var(--bg-secondary);
+    border-radius: 4px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 767px) {
+  .roadmap-card {
+    padding: 20px;
+  }
+  
+  .roadmap-title {
+    font-size: 18px;
+  }
+  
+  .toggle-group {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .period-buttons {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Dark theme adjustments */
+.dark-theme .roadmap-card {
+  background: var(--card-bg-dark);
+  border-color: var(--border-color-dark);
+}
+
+.dark-theme .date-selector {
+  background: var(--bg-primary-dark);
+  border-color: var(--border-color-dark);
+}
+
+.dark-theme .toggle-group {
+  background: var(--bg-primary-dark);
+}
+
+.dark-theme .period-btn {
+  background: var(--bg-primary-dark);
+  border-color: var(--border-color-dark);
+}

@@ -1,0 +1,58 @@
+<div class="roadmap-card">
+  <div class="roadmap-header">
+    <div class="header-content">
+      <div class="title-section">
+        <h2 class="roadmap-title">Project Roadmap</h2>
+        <p class="phase-description">Track project phases and milestones over time</p>
+      </div>
+      <div class="date-selector">
+        <span class="date-text">{{ currentPeriod }} 2024</span>
+      </div>
+    </div>
+
+    <div class="controls-section">
+      <div class="toggle-group">
+        <label class="toggle-label" [class.active]="showAll">
+          <input type="radio" name="view" [checked]="showAll" (change)="toggleView(true)">
+          <span class="toggle-text">Show All</span>
+        </label>
+        <label class="toggle-label" [class.active]="!showAll">
+          <input type="radio" name="view" [checked]="!showAll" (change)="toggleView(false)">
+          <span class="toggle-text">Active Only</span>
+        </label>
+      </div>
+
+      <div class="period-buttons">
+        <button *ngFor="let period of periods" class="period-btn" [class.active]="currentPeriod === period"
+          (click)="setPeriod(period)">
+          {{ period }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="gantt-chart">
+    <div class="phase-labels">
+      <div class="phase-label" *ngFor="let phase of getDisplayPhases()">
+        {{ phase.name }}
+      </div>
+    </div>
+
+    <div class="chart-area">
+      <div class="chart-grid">
+        <div class="grid-lines">
+          <div class="grid-line" *ngFor="let month of getMonthsInPeriod()"></div>
+        </div>
+
+        <div class="phase-bars">
+          <div class="phase-row" *ngFor="let phase of getDisplayPhases()">
+            <div class="phase-bar" [style.left.%]="getPhasePosition(phase).left"
+              [style.width.%]="getPhasePosition(phase).width" [style.background-color]="phase.color"
+              [title]="phase.name + ': ' + phase.startDate + ' - ' + phase.endDate + ' (' + phase.progress + '% complete)'">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

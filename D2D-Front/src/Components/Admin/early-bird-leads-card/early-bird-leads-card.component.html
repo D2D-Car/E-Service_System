@@ -1,0 +1,49 @@
+<div class="early-bird-card">
+  <div class="card-header">
+    <div class="badge-container">
+      <span class="coming-soon-badge">{{ comingSoonBadge }}</span>
+    </div>
+    <h3 class="card-title">{{ title }}</h3>
+    <p class="card-subtitle">{{ subtitle }}</p>
+  </div>
+
+  <div class="card-content">
+    <p class="description">{{ description }}</p>
+
+    <div class="features-list">
+      <h4 class="features-title">What's Included:</h4>
+      <ul class="features">
+        <li *ngFor="let feature of features" class="feature-item">
+          <i class="bi bi-check-circle-fill feature-icon"></i>
+          <span>{{ feature }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="preview-stats">
+      <h4 class="stats-title">Expected Performance:</h4>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-value">{{ previewStats.interested }}+</div>
+          <div class="stat-label">Interested Users</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ previewStats.signups }}+</div>
+          <div class="stat-label">Email Signups</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ previewStats.conversionRate }}%</div>
+          <div class="stat-label">Conversion Rate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <button class="notify-btn" disabled>
+      <i class="bi bi-bell"></i>
+      Notify Me When Available
+    </button>
+    <p class="availability-note">This feature will be available in Q2 2024</p>
+  </div>
+</div>

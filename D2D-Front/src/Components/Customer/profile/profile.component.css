@@ -11,6 +11,14 @@
     font-weight: bold;
 }
 
+    .badge-premium {
+        background: linear-gradient(45deg, #81c784, #66bb6a);
+    }
+
+    .badge-vip {
+        background: linear-gradient(45deg, #ffd700, #ffed4e);
+        color: #333;
+    }
 .btn-download button {
     background-color: rgb(28, 99, 176);
     color: var(--light-font-color);
@@ -18,6 +26,31 @@
     border: none;
 }
 
+    .badge-regular {
+        background: linear-gradient(45deg, #64b5f6, #42a5f5);
+    }
+
+    .profile-photo {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+
+    }
+
+    .photo-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
 .btn-download button:hover {
     transform: translateY(-5px);
 }
@@ -43,6 +76,49 @@
     margin-bottom: 3rem;
 }
 
+    .photo-container:hover .photo-overlay {
+        opacity: 1;
+    }
+
+    .change-photo-btn {
+        background: var(--primary-color);
+        color: var(--light-font-color);
+        padding: 8px 16px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .change-photo-btn:hover {
+        transform: scale(1.05);
+    }
+
+    .form-control {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: var(--light);
+        border-radius: 10px;
+    }
+
+    .form-control:focus {
+        background: var(--light-font-color);
+        color: #333;
+        box-shadow: 0 0 0 3px var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .form-control.is-invalid {
+        border-color: var(--light);
+        background: var(--light-font-color);
+        color: #333;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--light-font-color);
+    }
 .profile-header h3 {
     margin: 0;
     color: var(--light-font-color);
@@ -87,6 +163,14 @@
     color: var(--light-font-color);
 }
 
+    .invalid-feedback {
+        color: var(--light);
+    }
+
+    .customer-stats {
+        background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2));
+        border-radius: 15px;
+    }
 .form-control {
     padding: 0.75rem 1rem;
     border: 1px solid var(--secondary-color);
