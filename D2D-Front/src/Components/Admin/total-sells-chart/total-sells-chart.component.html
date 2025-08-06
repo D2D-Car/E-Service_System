@@ -1,0 +1,92 @@
+<div class="chart-container">
+  <div class="chart-header">
+    <div class="header-content">
+      <div class="title-section">
+        <h3 class="chart-title">Total sells</h3>
+        <p class="chart-subtitle">Payment received across all channels</p>
+      </div>
+      <div class="controls-section">
+        <div class="date-range-selector">
+          <select class="form-select" [(ngModel)]="selectedDateRange" (change)="onDateRangeChange(selectedDateRange)">
+            <option value="Mar 1 - 31, 2022">Mar 1 - 31, 2022</option>
+            <option value="Apr 1 - 30, 2022">Apr 1 - 30, 2022</option>
+            <option value="May 1 - 31, 2022">May 1 - 31, 2022</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-content">
+    <div class="chart-wrapper">
+      <!-- Temporary chart placeholder until Chart.js is working -->
+      <div class="chart-placeholder">
+        <svg width="100%" height="100%" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- Grid lines -->
+          <defs>
+            <pattern id="grid" width="50" height="30" patternUnits="userSpaceOnUse">
+              <path d="M 50 0 L 0 0 0 30" fill="none" stroke="rgba(107, 114, 128, 0.1)" stroke-width="1" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" />
+
+          <!-- Current Period Line (Blue) -->
+          <polyline fill="none" stroke="#6366f1" stroke-width="3"
+            points="50,250 150,220 250,230 350,120 450,80 550,140 650,180" />
+
+          <!-- Previous Period Line (Green, Dashed) -->
+          <polyline fill="none" stroke="#10b981" stroke-width="3" stroke-dasharray="8,4"
+            points="50,270 150,280 250,250 350,180 450,130 550,100 650,140" />
+
+          <!-- Data points for Current Period -->
+          <circle cx="50" cy="250" r="5" fill="#6366f1" stroke="#ffffff" stroke-width="3" />
+          <circle cx="150" cy="220" r="5" fill="#6366f1" stroke="#ffffff" stroke-width="3" />
+          <circle cx="250" cy="230" r="5" fill="#6366f1" stroke="#ffffff" stroke-width="3" />
+          <circle cx="350" cy="120" r="5" fill="#6366f1" stroke="#ffffff" stroke-width="3" />
+          <circle cx="450" cy="80" r="5" fill="#6366f1" stroke="#ffffff" stroke-width="3" />
+          <circle cx="550" cy="140" r="5" fill="#6366f1" stroke="#ffffff" stroke-width="3" />
+          <circle cx="650" cy="180" r="5" fill="#6366f1" stroke="#ffffff" stroke-width="3" />
+
+          <!-- Data points for Previous Period -->
+          <circle cx="50" cy="270" r="5" fill="#10b981" stroke="#ffffff" stroke-width="3" />
+          <circle cx="150" cy="280" r="5" fill="#10b981" stroke="#ffffff" stroke-width="3" />
+          <circle cx="250" cy="250" r="5" fill="#10b981" stroke="#ffffff" stroke-width="3" />
+          <circle cx="350" cy="180" r="5" fill="#10b981" stroke="#ffffff" stroke-width="3" />
+          <circle cx="450" cy="130" r="5" fill="#10b981" stroke="#ffffff" stroke-width="3" />
+          <circle cx="550" cy="100" r="5" fill="#10b981" stroke="#ffffff" stroke-width="3" />
+          <circle cx="650" cy="140" r="5" fill="#10b981" stroke="#ffffff" stroke-width="3" />
+
+          <!-- X-axis labels -->
+          <text x="50" y="295" text-anchor="middle" fill="var(--text-secondary)" font-size="12">01 May</text>
+          <text x="250" y="295" text-anchor="middle" fill="var(--text-secondary)" font-size="12">15 May</text>
+          <text x="650" y="295" text-anchor="middle" fill="var(--text-secondary)" font-size="12">30 May</text>
+        </svg>
+      </div>
+
+      <!-- Canvas for Chart.js (hidden until working) -->
+      <canvas #chartCanvas baseChart [data]="lineChartData" [options]="lineChartOptions" [type]="lineChartType"
+        style="display: none;">
+      </canvas>
+    </div>
+
+    <!-- Custom Legend -->
+    <div class="custom-legend">
+      <div class="legend-item">
+        <span class="legend-color current"></span>
+        <span class="legend-label">Current Period</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color previous"></span>
+        <span class="legend-label">Previous Period</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customize Button -->
+  <div class="customize-btn">
+    <div class="customize-content">
+      <i class="bi bi-gear"></i>
+      <span class="customize-text">CUSTOMIZE</span>
+    </div>
+  </div>
+</div>

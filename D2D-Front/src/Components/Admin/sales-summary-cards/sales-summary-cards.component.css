@@ -1,0 +1,140 @@
+.summary-cards-container {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.summary-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px 24px;
+  min-width: 280px;
+  transition: all var(--time-transition);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-value {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.number {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.label {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.card-status {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Card specific border styles */
+.card-success {
+  border-left: 4px solid #22c55e;
+}
+
+.card-warning {
+  border-left: 4px solid #f59e0b;
+}
+
+.card-danger {
+  border-left: 4px solid #ef4444;
+}
+
+/* Status color matching */
+.card-success .card-status {
+  color: #22c55e;
+}
+
+.card-warning .card-status {
+  color: #f59e0b;
+}
+
+.card-danger .card-status {
+  color: #ef4444;
+}
+
+/* Dark theme adjustments */
+.dark-theme .summary-card {
+  background: var(--bg-secondary);
+  border-color: #374151;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .summary-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .summary-cards-container {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .summary-cards-container {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .summary-card {
+    min-width: unset;
+    padding: 16px 20px;
+  }
+
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+
+  .number {
+    font-size: 28px;
+  }
+
+  .label {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  .summary-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+    padding: 20px;
+  }
+
+  .card-icon {
+    align-self: center;
+  }
+}

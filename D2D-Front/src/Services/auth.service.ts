@@ -9,7 +9,7 @@ export interface UserData {
   uid: string;
   email: string;
   displayName: string;
-  role: 'user' | 'admin' | 'technician';
+  role: 'user' | 'admin' | 'technician' | 'driver';
   createdAt: Date;
   lastLoginAt: Date;
   emailVerified: boolean;
@@ -42,7 +42,7 @@ export class AuthService {
   }
 
   // Sign up with email and password
-  async signUp(email: string, password: string, displayName: string): Promise<void> {
+  async signUp(email: string, password: string, displayName: string, userType: string = 'user'): Promise<UserData> {
     try {
       const credential = await createUserWithEmailAndPassword(this.auth, email, password);
       
@@ -57,7 +57,7 @@ export class AuthService {
         uid: credential.user.uid,
         email: credential.user.email!,
         displayName,
-        role: 'user',
+        role: userType as 'user' | 'admin' | 'technician' | 'driver',
         createdAt: new Date(),
         lastLoginAt: new Date(),
         emailVerified: false
@@ -66,32 +66,42 @@ export class AuthService {
       await setDoc(doc(this.firestore, 'users', credential.user.uid), userData);
       this.userDataSubject.next(userData);
       
+      return userData;
     } catch (error: any) {
       throw this.handleAuthError(error);
     }
   }
 
   // Sign in with email and password
-  async signIn(email: string, password: string): Promise<void> {
+  async signIn(email: string, password: string): Promise<UserData> {
     try {
       const credential = await signInWithEmailAndPassword(this.auth, email, password);
       
       // Update last login time
       await this.updateLastLogin(credential.user.uid);
       
+      // Load and return user data
+      const userDoc = await getDoc(doc(this.firestore, 'users', credential.user.uid));
+      if (userDoc.exists()) {
+        const userData = userDoc.data() as UserData;
+        this.userDataSubject.next(userData);
+        return userData;
+      }
+      
+      throw new Error('User data not found');
     } catch (error: any) {
       throw this.handleAuthError(error);
     }
   }
 
   // Sign in with Google
-  async signInWithGoogle(): Promise<void> {
+  async signInWithGoogle(): Promise<UserData> {
     try {
       const provider = new GoogleAuthProvider();
       const credential = await signInWithPopup(this.auth, provider);
       
       // Check if user exists in Firestore, if not create profile
-      await this.createUserProfileIfNotExists(credential.user);
+      return await this.createUserProfileIfNotExists(credential.user);
       
     } catch (error: any) {
       throw this.handleAuthError(error);
@@ -99,13 +109,13 @@ export class AuthService {
   }
 
   // Sign in with Facebook
-  async signInWithFacebook(): Promise<void> {
+  async signInWithFacebook(): Promise<UserData> {
     try {
       const provider = new FacebookAuthProvider();
       const credential = await signInWithPopup(this.auth, provider);
       
       // Check if user exists in Firestore, if not create profile
-      await this.createUserProfileIfNotExists(credential.user);
+      return await this.createUserProfileIfNotExists(credential.user);
       
     } catch (error: any) {
       throw this.handleAuthError(error);
@@ -113,39 +123,79 @@ export class AuthService {
   }
 
   // Send email verification
-  async sendEmailVerification(): Promise<void> {
-    const user = this.auth.currentUser;
-    if (user) {
-      await sendEmailVerification(user);
+  async sendEmailVerification(): Promise<{ success: boolean; message: string }> {
+    try {
+      const user = this.auth.currentUser;
+      
+      if (!user) {
+        return { success: false, message: 'No authenticated user found. Please sign in first.' };
+      }
+      
+      // Check if email is already verified
+      if (user.emailVerified) {
+        return { success: true, message: 'Your email is already verified.' };
+      }
+      
+      // Send the verification email
+      await sendEmailVerification(user, {
+        url: window.location.origin + '/auth/login',
+        handleCodeInApp: false
+      });
+      
+      return { 
+        success: true, 
+        message: 'Verification email sent successfully. Please check your inbox.' 
+      };
+      
+    } catch (error: any) {
+      console.error('Error sending verification email:', error);
+      
+      // Handle specific error cases
+      if (error.code === 'auth/too-many-requests') {
+        return { 
+          success: false, 
+          message: 'Too many verification attempts. Please try again later.' 
+        };
+      }
+      
+      return { 
+        success: false, 
+        message: 'Failed to send verification email. Please try again later.' 
+      };
     }
   }
 
   // Check email verification status
   async checkEmailVerification(): Promise<boolean> {
-    const user = this.auth.currentUser;
-    if (user) {
-      await user.reload();
-      const isVerified = user.emailVerified;
-      
-      // Update user data in Firestore
-      if (isVerified) {
-        await updateDoc(doc(this.firestore, 'users', user.uid), {
-          emailVerified: true
-        });
+    try {
+      const user = this.auth.currentUser;
+      if (user) {
+        await user.reload();
+        const isVerified = user.emailVerified;
         
-        // Update local user data
-        const currentData = this.userDataSubject.value;
-        if (currentData) {
-          this.userDataSubject.next({
-            ...currentData,
+        // Update user data in Firestore
+        if (isVerified) {
+          await updateDoc(doc(this.firestore, 'users', user.uid), {
             emailVerified: true
           });
+          
+          // Update local user data
+          const currentData = this.userDataSubject.value;
+          if (currentData) {
+            this.userDataSubject.next({
+              ...currentData,
+              emailVerified: true
+            });
+          }
         }
+        
+        return isVerified;
       }
-      
-      return isVerified;
+      return false;
+    } catch (error) {
+      console.error('Error checking email verification:', error);
+      return false;
     }
-    return false;
   }
 
   // Sign out
@@ -198,7 +248,7 @@ export class AuthService {
     }
   }
 
-  private async createUserProfileIfNotExists(user: User): Promise<void> {
+  private async createUserProfileIfNotExists(user: User): Promise<UserData> {
     const userDoc = await getDoc(doc(this.firestore, 'users', user.uid));
     
     if (!userDoc.exists()) {
@@ -214,8 +264,12 @@ export class AuthService {
       
       await setDoc(doc(this.firestore, 'users', user.uid), userData);
       this.userDataSubject.next(userData);
+      return userData;
     } else {
       await this.updateLastLogin(user.uid);
+      const userData = userDoc.data() as UserData;
+      this.userDataSubject.next(userData);
+      return userData;
     }
   }
 

@@ -1,15 +1,30 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
+interface Technician {
+  id: number;
+  name: string;
+  specialty: string;
+  certification: string;
+  image: string;
+  joined: string;
+  experience: string;
+  status: string;
+  rating: number;
+  completedJobs: number;
+}
+
 @Component({
   selector: 'app-technicians',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './technicians.component.html',
-  styleUrl: './technicians.component.css',
+  styleUrls: ['./technicians.component.css'],
 })
 export class TechniciansComponent {
-  technicians = [
+  selectedStatus: string = 'all';
+  isNavbarCollapsed: boolean = false;
+  allTechnicians: Technician[] = [
     {
       id: 1,
       name: 'Mohamed Hassan',
@@ -107,32 +122,64 @@ export class TechniciansComponent {
       completedJobs: 210,
     },
   ];
+  
+  technicians: Technician[] = [];
 
-  // Action methods
-  callTechnician(tech: any) {
+  constructor() {
+    this.technicians = [...this.allTechnicians];
+  }
+
+  toggleNavbar(): void {
+    this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  }
+
+  ngOnInit(): void {
+    this.setTheme();
+  }
+
+  filterTrips(status: string): void {
+    this.selectedStatus = status;
+
+    if (status === 'All') {
+      this.technicians = [...this.allTechnicians];
+    } else {
+      this.technicians = this.allTechnicians.filter(
+        (tech) => tech.status.toLowerCase() === status.toLowerCase()
+      );
+    }
+  }
+
+  callTechnician(tech: Technician) {
     console.log('Viewing certification for technician:', tech.name);
     alert(`${tech.name} - ${tech.certification} in ${tech.specialty}`);
   }
 
-  emailTechnician(tech: any) {
+  emailTechnician(tech: Technician) {
     console.log('Viewing jobs for technician:', tech.name);
     alert(
       `${tech.name} completed ${tech.completedJobs} jobs with ${tech.rating}⭐ rating`
     );
   }
 
-  viewTechnicianProfile(tech: any) {
+  viewTechnicianProfile(tech: Technician) {
     console.log('Viewing profile for:', tech.name);
     // Add navigation logic here
   }
 
-  removeTechnician(tech: any) {
+  removeTechnician(tech: Technician) {
     const confirmRemove = confirm(
       `Are you sure you want to remove ${tech.name}?`
     );
     if (confirmRemove) {
       this.technicians = this.technicians.filter((t) => t.id !== tech.id);
-      console.log('Technician removed:', tech.name);
+      this.filterTrips(this.selectedStatus);
     }
+  }
+
+  setTheme(): void {
+    const theme = localStorage.getItem('theme') || 'dark';
+    const body = document.body;
+    body.classList.remove('dark-theme', 'light-theme');
+    body.classList.add(`${theme}-theme`);
   }
 }
