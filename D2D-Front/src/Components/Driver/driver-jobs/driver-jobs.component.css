@@ -1,5 +1,8 @@
 /* start navbar */
 .navbar {
+  width: 100%;
+  max-width: 92%;
+  margin: 0 auto;
   background-color: var(--background-color);
   height: 10vh;
   padding: 1rem 1rem;

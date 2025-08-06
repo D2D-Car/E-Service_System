@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './driver-earnings.component.css'
 })
 export class DriverEarningsComponent {
-   selectedPeriod: string = 'Today';
+  selectedPeriod: string = 'Today';
 
   stats: { [key: string]: any } = {
     'Today': {

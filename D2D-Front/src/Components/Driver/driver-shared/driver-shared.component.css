@@ -230,7 +230,7 @@
 @media (max-width: 480px) {
   .availability-container {
     margin: 10px;
-    padding: 15px;
+    padding: 15px 0;
   }
 
   .availability-label {
@@ -249,8 +249,9 @@
 
 /* Statistics */
 .statistics-container {
-  max-width: 100%;
-  margin: 3rem 2rem 0 2rem;
+  width: 100%;
+  max-width: 92%;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   gap: 20px;
@@ -318,7 +319,7 @@
 }
 
 .card-title p {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   margin: 0;
   word-break: break-word;
@@ -340,18 +341,22 @@
   }
 
   .card {
-    height: auto;
-    padding: 1rem;
+    height: auto; 
+    margin-bottom: 1rem; 
+    padding: 1rem 1rem;
+  }
+
+  .card-inner {
+    padding: 0 1rem;
   }
 }
+
 
 @media (max-width: 768px) {
   .statistics-container {
     flex-direction: column;
     justify-content: center;
     gap: 1rem;
-    margin-bottom: 1rem;
-    padding: 0 1rem;
   }
 
   .card {
