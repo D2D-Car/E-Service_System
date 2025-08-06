@@ -12,14 +12,14 @@
     <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" class="auth-form">
       <!-- Display Name Field -->
       <div class="form-group">
-        <label for="displayName">Display Name</label>
+        <label for="displayName">Full Name</label>
         <div class="input-wrapper">
           <i class="fas fa-user input-icon"></i>
           <input
             type="text"
             id="displayName"
             formControlName="displayName"
-            placeholder="Enter your display name"
+            placeholder="Enter your full name"
             [class.error]="signUpForm.get('displayName')?.invalid && signUpForm.get('displayName')?.touched"
           />
         </div>
@@ -55,7 +55,7 @@
             [type]="showPassword ? 'text' : 'password'"
             id="password"
             formControlName="password"
-            placeholder="Enter your password"
+            placeholder="Create a strong password"
             [class.error]="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched"
           />
           <button
@@ -97,18 +97,14 @@
       </div>
 
       <!-- Terms and Conditions -->
-      <div class="form-group checkbox-group">
+      <div class="checkbox-group">
         <label class="checkbox-label">
-          <input
-            type="checkbox"
-            formControlName="acceptTerms"
-            [class.error]="signUpForm.get('acceptTerms')?.invalid && signUpForm.get('acceptTerms')?.touched"
-          />
+          <input type="checkbox" formControlName="acceptTerms" />
           <span class="checkmark"></span>
-          I agree to the <a href="#" class="link">Terms & Conditions</a> and <a href="#" class="link">Privacy Policy</a>
+          I agree to the Terms of Service and Privacy Policy
         </label>
-        <div class="error-message" *ngIf="signUpForm.get('acceptTerms')?.invalid && signUpForm.get('acceptTerms')?.touched">
-          You must accept the terms and conditions
+        <div class="error-message" *ngIf="getFieldError('acceptTerms')">
+          {{ getFieldError('acceptTerms') }}
         </div>
       </div>
 
@@ -159,7 +155,7 @@
       </button>
     </div>
 
-    <!-- Login Link -->
+    <!-- Sign In Link -->
     <div class="auth-footer">
       <p>Already have an account? <a routerLink="/auth/login" class="link">Sign In</a></p>
     </div>

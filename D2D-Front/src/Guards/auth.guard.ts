@@ -27,4 +27,19 @@ export class AuthGuard implements CanActivate {
       })
     );
   }
+
+  // Helper method to route users to their appropriate dashboard
+  private routeToUserDashboard(userType: string): UrlTree {
+    switch (userType) {
+      case 'admin':
+        return this.router.createUrlTree(['/admin']);
+      case 'driver':
+        return this.router.createUrlTree(['/driver']);
+      case 'technician':
+        return this.router.createUrlTree(['/technician']);
+      case 'user':
+      default:
+        return this.router.createUrlTree(['/customer']);
+    }
+  }
 }

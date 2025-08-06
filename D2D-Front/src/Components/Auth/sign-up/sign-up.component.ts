@@ -51,7 +51,9 @@ export class SignUpComponent {
 
       try {
         const { displayName, email, password } = this.signUpForm.value;
-        await this.authService.signUp(email, password, displayName);
+        await this.authService.signUp(email, password, displayName, 'user');
+        
+        // Always route to pending verification after signup
         this.router.navigate(['/auth/pending-verification']);
       } catch (error: any) {
         this.errorMessage = error;
@@ -66,8 +68,13 @@ export class SignUpComponent {
     this.errorMessage = '';
 
     try {
-      await this.authService.signInWithGoogle();
-      this.router.navigate(['/dashboard']);
+      const userData = await this.authService.signInWithGoogle();
+      // Check if email is verified for social logins
+      if (userData.emailVerified) {
+        this.routeToUserDashboard(userData.role);
+      } else {
+        this.router.navigate(['/auth/pending-verification']);
+      }
     } catch (error: any) {
       this.errorMessage = error;
     } finally {
@@ -80,8 +87,13 @@ export class SignUpComponent {
     this.errorMessage = '';
 
     try {
-      await this.authService.signInWithFacebook();
-      this.router.navigate(['/dashboard']);
+      const userData = await this.authService.signInWithFacebook();
+      // Check if email is verified for social logins
+      if (userData.emailVerified) {
+        this.routeToUserDashboard(userData.role);
+      } else {
+        this.router.navigate(['/auth/pending-verification']);
+      }
     } catch (error: any) {
       this.errorMessage = error;
     } finally {
@@ -106,5 +118,23 @@ export class SignUpComponent {
       if (field.errors['passwordMismatch']) return 'Passwords do not match';
     }
     return '';
+  }
+
+  private routeToUserDashboard(userType: string): void {
+    switch (userType) {
+      case 'admin':
+        this.router.navigate(['/admin']);
+        break;
+      case 'driver':
+        this.router.navigate(['/driver']);
+        break;
+      case 'technician':
+        this.router.navigate(['/technician']);
+        break;
+      case 'customer':
+      default:
+        this.router.navigate(['/customer']);
+        break;
+    }
   }
 }

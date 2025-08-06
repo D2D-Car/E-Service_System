@@ -55,7 +55,8 @@ export class PendingVerificationComponent implements OnInit, OnDestroy {
       try {
         const isVerified = await this.authService.checkEmailVerification();
         if (isVerified) {
-          this.router.navigate(['/dashboard']);
+          // Always route to customer dashboard for verified users
+          this.router.navigate(['/customer']);
         }
       } catch (error) {
         console.error('Error checking verification:', error);
@@ -71,12 +72,17 @@ export class PendingVerificationComponent implements OnInit, OnDestroy {
     this.resendSuccess = false;
 
     try {
-      await this.authService.sendEmailVerification();
-      this.resendSuccess = true;
-      this.resendMessage = 'Verification email sent successfully!';
+      const result = await this.authService.sendEmailVerification();
+      this.resendSuccess = result.success;
+      this.resendMessage = result.message;
+      
+      // If email was sent successfully, show a more specific message
+      if (result.success) {
+        this.resendMessage = 'Verification email sent successfully! Please check your inbox and spam folder.';
+      }
     } catch (error: any) {
       this.resendSuccess = false;
-      this.resendMessage = 'Failed to send verification email. Please try again.';
+      this.resendMessage = error.message || 'Failed to send verification email. Please try again.';
     } finally {
       this.isResending = false;
     }

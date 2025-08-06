@@ -4,41 +4,6 @@
 
   <div class="container-fluid">
     <div class="row g-4">
-      <!-- navbar -->
-      <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-          <button class="navbar-toggler" type="button" (click)="toggleNavbar()" aria-controls="navbarNav"
-            [attr.aria-expanded]="!isNavbarCollapsed" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" [class.show]="!isNavbarCollapsed" id="navbarNav">
-            <ul class="navbar-nav" id="navTabs">
-              <li class="nav-item">
-                <a class="nav-link" [class.active]="selectedStatus === 'All'" (click)="filterTrips('All')">
-                  All Technicians
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" [class.active]="selectedStatus === 'Available'" (click)="filterTrips('Available')">
-                  Available
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" [class.active]="selectedStatus === 'Busy'" (click)="filterTrips('Busy')">
-                  Busy
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" [class.active]="selectedStatus === 'On Break'" (click)="filterTrips('On Break')">
-                  On Break
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </div>
-    <div class="row g-4">
       <div class="col-xl-3 col-lg-4 col-md-6 col-12" *ngFor="let tech of technicians">
         <div class="card">
 
@@ -52,27 +17,27 @@
             </button>
           </div>
 
-          <!-- Remove button -->
+          <!-- Remove button (icon only) -->
           <button class="remove-btn-icon" (click)="removeTechnician(tech)" title="Remove Technician">
             <i class="fas fa-times"></i>
           </button>
 
           <!-- Status indicator -->
           <div class="status-indicator" [ngClass]="{
-              'available': tech.status === 'Available',
-              'busy': tech.status === 'Busy',
-              'on-break': tech.status === 'On Break'
-            }" [title]="tech.status">
+                 'available': tech.status === 'Available',
+                 'busy': tech.status === 'Busy',
+                 'on-break': tech.status === 'On Break'
+               }" [title]="tech.status">
             {{ tech.status }}
           </div>
 
           <!-- Profile image -->
           <img [src]="tech.image" class="profile-img" [alt]="tech.name">
 
-          <!-- Technician name -->
+          <!-- Name -->
           <h5 class="technician-name">{{ tech.name }}</h5>
 
-          <!-- Technician info -->
+          <!-- Technician info with icons -->
           <div class="contact-info">
             <div class="contact-item">
               <i class="fas fa-tools contact-icon"></i>

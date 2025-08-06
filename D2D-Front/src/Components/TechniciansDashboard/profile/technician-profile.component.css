@@ -1,245 +1,156 @@
-.navbar {
-            background-color: var(--card-bg-color) !important;
-            height: 4rem;
-            max-width: 95%;
-            margin: 0.8rem auto;
-            border-radius: 10px;
-        }
-
-        .navbar-brand {
-            color: var(--light-font-color) !important;
-            font-weight: bold;
-        }
-
-        .btn-download button {
-            background-color: rgb(28, 99, 176);
-            color: var(--light-font-color);
-            transition: var(--time-transition);
+ 
+ .container{padding: 25px;}
+.profile-card {
+         
+            background-color: var(--card-bg-color);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             border: none;
         }
 
-        .btn-download button:hover {
-            transform: translateY(-5px);
+        .card-header-custom {
+            border-bottom: 2px solid var(--light);
         }
 
-        /* Profile Styles */
-        .profile-section {
-            width: 100%;
-            max-width: 92%;
-            margin: 2rem auto;
-            background-color: var(--card-bg-color);
-            border-radius: 10px;
-            padding: 2rem;
-            color: var(--light-font-color);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .profile-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--secondary-color);
-            margin-bottom: 3rem;
-        }
-
-        .profile-header h3 {
-            margin: 0;
-            color: var(--light-font-color);
-        }
-
-        .edit-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            cursor: pointer;
+        .page-title {
+            color: var(--light);
         }
 
         .technician-badge {
             border-radius: 20px;
-            padding: 8px 16px;
+            padding: 10px;
             font-weight: bold;
-            font-size: 0.9rem;
         }
 
         .badge-junior {
             background: linear-gradient(45deg, #90caf9, #64b5f6);
-            color: #fff;
         }
 
         .badge-senior {
             background: linear-gradient(45deg, #a5d6a7, #81c784);
-            color: #fff;
         }
 
         .badge-expert {
             background: linear-gradient(45deg, #ffb74d, #ff9800);
-            color: #fff;
         }
 
-        /* Profile Image */
-        .profile-image-container {
-            position: relative;
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+          
         }
 
-        .profile-image {
-            width: 8rem;
-            height: 8rem;
-            object-fit: cover;
-            border: 3px solid var(--primary-color);
-            position: relative;
-            z-index: 1;
+        .photo-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-   
+        .photo-container:hover .photo-overlay {
+            opacity: 1;
+        }
 
-        /* Form Styles */
+        .change-photo-btn {
+            background: var(--primary-color);
+            color: var(--light-font-colorg);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .change-photo-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--light);
+            border-radius: 10px;
+        }
+
+        .form-control:focus {
+            background: var(--light-font-color);
+            color: #333;
+            box-shadow: 0 0 0 3px var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .form-control.is-invalid {
+            border-color: var(--light);
+            background: var(--light-font-color);
+            color: #333;
+        }
+
         .form-label {
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
             font-weight: 600;
             color: var(--light-font-color);
         }
 
-        .form-control {
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--secondary-color);
-            border-radius: 5px;
-        background-color: var(--dark);
-            color: var(--light-font-color);
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
+        .invalid-feedback {
+            color: var(--light);
         }
 
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(48, 113, 216, 0.2);
+        .technician-stats {
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2));
+            border-radius: 15px;
         }
 
-        /* Statistics Styles */
-        .stats-container {
-            max-width: 92%;
-            margin: 2rem auto;
-            background-color: var(--card-bg-color);
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
+        .certifications-section {
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2));
+            border-radius: 15px;
         }
 
         .stat-card {
-            background-color: var(--card-bg-color);
-            padding: 1.5rem;
-            margin: 1rem;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        .stat-card.join-date {
-            background: linear-gradient(135deg, rgba(46, 204, 113, 0.1) 0%, rgba(46, 204, 113, 0.2) 100%);
-            border-left: 4px solid #2ecc71;
-        }
-
-        .stat-card.last-service {
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(52, 152, 219, 0.2) 100%);
-            border-left: 4px solid #3498db;
-        }
-
-        .stat-card.rating {
-            background: linear-gradient(135deg, rgba(241, 196, 15, 0.1) 0%, rgba(241, 196, 15, 0.2) 100%);
-            border-left: 4px solid #f1c40f;
-        }
-
-        .stat-card.hourly-rate {
-            background: linear-gradient(135deg, rgba(155, 89, 182, 0.1) 0%, rgba(155, 89, 182, 0.2) 100%);
-            border-left: 4px solid #9b59b6;
-        }
-
-        .stat-icon {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 20%;
-            margin: 0 auto;
-            margin-bottom: 15px;
-            padding: 1rem 2rem;
-            font-size: 2rem;
-            border-radius: 10%;
-        }
-
-        .stat-icon i {
-            font-size: 22px;
-            padding: 14px;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .join-date .stat-icon i {
-            background-color: rgba(46, 204, 113, 0.2);
-            color: #2ecc71;
-        }
-
-        .last-service .stat-icon i {
-            background-color: rgba(52, 152, 219, 0.2);
-            color: #3498db;
-        }
-
-        .rating .stat-icon i {
-            background-color: rgba(241, 196, 15, 0.2);
-            color: #f1c40f;
-        }
-
-        .hourly-rate .stat-icon i {
-            background-color: rgba(155, 89, 182, 0.2);
-            color: #9b59b6;
-        }
-
-        .stat-value {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .join-date .stat-value {
-            color: #2ecc71;
-        }
-
-        .last-service .stat-value {
-            color: #3498db;
-        }
-
-        .rating .stat-value {
-            color: #f1c40f;
-        }
-
-        .hourly-rate .stat-value {
-            color: #9b59b6;
-        }
-
-        .stat-label {
-            font-size: 14px;
-            color: var(--light-font-color);
-            opacity: 0.8;
+        .certification-badge {
+            background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
         }
 
         .rating-stars {
             color: #ffc107;
-            margin-right: 0.5rem;
         }
 
-        .filled-star {
-            color: #ffc107;
+        .btn-primary-custom {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 25px;
         }
 
-        .empty-star {
-            color: #666;
+        .btn-secondary-custom {
+            background: linear-gradient(45deg, #78909c, #607d8b);
+            border: none;
+            border-radius: 25px;
+        }
+
+        .btn-danger-custom {
+            background: linear-gradient(45deg, #ef5350, #e53935);
+            border: none;
+            border-radius: 25px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }

@@ -10,7 +10,9 @@ export const environment = {
     appId: "1:49961156364:web:40dd7d0207127ca2d65329",
     measurementId: "G-XS6P2WGWNY"
   },
-  recaptcha: {
-    siteKey: "your-recaptcha-site-key"
+  // Firebase connection settings
+  firebaseSettings: {
+    experimentalForceLongPolling: false,
+    ignoreUndefinedProperties: true
   }
 };
