@@ -1,0 +1,122 @@
+.chat-demo-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all var(--time-transition);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  z-index: 1000;
+  line-height: 1;
+  white-space: nowrap;
+  position: relative;
+}
+
+.chat-demo-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+}
+
+.chat-demo-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.chat-demo-btn i {
+  font-size: 16px;
+}
+
+.online-indicator {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  background: #10b981;
+  border: 2px solid white;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Dark theme adjustments */
+.dark-theme .chat-demo-btn {
+  background: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.dark-theme .chat-demo-btn:hover {
+  background: var(--primary-hover);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .chat-demo-btn {
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .chat-demo-btn i {
+    font-size: 14px;
+  }
+
+  .online-indicator {
+    top: 6px;
+    right: 6px;
+    width: 6px;
+    height: 6px;
+  }
+}
+
+@media (max-width: 576px) {
+  .chat-demo-btn {
+    bottom: 16px;
+    right: 16px;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .chat-demo-btn span {
+    display: none;
+  }
+
+  .chat-demo-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .online-indicator {
+    top: 4px;
+    right: 4px;
+  }
+}

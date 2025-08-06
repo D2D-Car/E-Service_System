@@ -1,3 +1,55 @@
+// =====================================
+// CSS CUSTOM PROPERTIES (CSS Variables)
+// =====================================
+:root {
+  // Light Theme (Default)
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --card-bg: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-tertiary: #94a3b8;
+  --border-color: #e2e8f0;
+  --primary-color: #6366f1;
+  --primary-hover: #5855eb;
+  --accent-color: #8b5cf6;
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --error-color: #ef4444;
+  --info-color: #06b6d4;
+
+  // Dark Theme Variables (will be overridden by .dark-theme class)
+  --bg-primary-dark: #0f172a;
+  --bg-secondary-dark: #1e293b;
+  --card-bg-dark: #1e293b;
+  --text-primary-dark: #f1f5f9;
+  --text-secondary-dark: #cbd5e1;
+  --text-tertiary-dark: #94a3b8;
+  --border-color-dark: #334155;
+}
+
+// Dark Theme Class Override
+body.dark-theme {
+  --bg-primary: var(--bg-primary-dark);
+  --bg-secondary: var(--bg-secondary-dark);
+  --card-bg: var(--card-bg-dark);
+  --text-primary: var(--text-primary-dark);
+  --text-secondary: var(--text-secondary-dark);
+  --text-tertiary: var(--text-tertiary-dark);
+  --border-color: var(--border-color-dark);
+}
+
+// Light Theme Class (explicit)
+body.light-theme {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --card-bg: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-tertiary: #94a3b8;
+  --border-color: #e2e8f0;
+}
+
 // Modern SCSS with no deprecation warnings
 // Using CSS imports instead of SCSS @import for external resources
 

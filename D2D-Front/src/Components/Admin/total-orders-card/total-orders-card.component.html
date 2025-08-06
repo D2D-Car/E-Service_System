@@ -1,0 +1,34 @@
+<div class="analytics-card total-orders-card">
+  <div class="card-header">
+    <div class="title-section">
+      <h4 class="card-title">Total orders</h4>
+      <p class="card-subtitle">Last 7 days</p>
+    </div>
+    <div class="chart-mini">
+      <canvas baseChart [data]="barChartData" [options]="barChartOptions" [type]="barChartType">
+      </canvas>
+    </div>
+  </div>
+
+  <div class="card-content">
+    <div class="stats-main">
+      <span class="main-value">{{ orderStats.total }}</span>
+      <span class="change-indicator" [ngClass]="orderStats.changeType">
+        {{ orderStats.change }}
+      </span>
+    </div>
+
+    <div class="stats-breakdown">
+      <div class="stat-item completed">
+        <span class="stat-dot"></span>
+        <span class="stat-label">Completed</span>
+        <span class="stat-value">{{ orderStats.completedPercentage }}%</span>
+      </div>
+      <div class="stat-item pending">
+        <span class="stat-dot"></span>
+        <span class="stat-label">Pending payment</span>
+        <span class="stat-value">{{ orderStats.pendingPercentage }}%</span>
+      </div>
+    </div>
+  </div>
+</div>

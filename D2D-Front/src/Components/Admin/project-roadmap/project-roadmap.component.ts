@@ -37,7 +37,7 @@ export class ProjectRoadmapComponent {
       name: 'Planning', 
       startWeek: 1, 
       duration: 4, 
-      color: '#3b82f6',
+      color: '#6366f1',
       startDate: '2024-01-01',
       endDate: '2024-01-31',
       progress: 100
@@ -82,7 +82,7 @@ export class ProjectRoadmapComponent {
       name: 'Review II', 
       startWeek: 11, 
       duration: 2, 
-      color: '#06b6d4',
+      color: '#64748b',
       startDate: '2024-05-16',
       endDate: '2024-05-31',
       progress: 0

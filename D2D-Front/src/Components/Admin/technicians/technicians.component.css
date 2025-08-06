@@ -44,7 +44,7 @@
 
 /* start header */
 .navbar {
-  background-color: var(--background-color);
+  /* background-color: var(--background-color); */
   height: 4rem;
   max-width: 95%;
   margin: 0.8rem auto;
@@ -65,7 +65,7 @@
   transform: translateY(-5px);
 }
 
-@media (max-width:992px) {
+@media (max-width: 992px) {
   .btn-download button {
     margin: 2rem 0;
   }
@@ -272,7 +272,6 @@
 }
 
 @keyframes pulse {
-
   0%,
   100% {
     opacity: 1;
