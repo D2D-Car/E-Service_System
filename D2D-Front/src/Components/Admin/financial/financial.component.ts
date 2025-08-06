@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-financial',
@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './financial.component.html',
   styleUrl: './financial.component.css',
 })
-export class FinancialComponent implements OnInit {
+export class FinancialComponent {
   touchStartY: number = 0;
 
   ngOnInit(): void {
@@ -90,19 +90,13 @@ export class FinancialComponent implements OnInit {
     const element = document.getElementById(elementId);
     if (!element) return;
 
-    // Ensure we have valid numbers
-    const safeStart = isNaN(start) ? 0 : start;
-    const safeEnd = isNaN(end) ? 0 : end;
-
     const startTime = performance.now();
 
     const update = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
       const easeOutCubic = 1 - Math.pow(1 - progress, 3);
-      const current = Math.floor(
-        safeStart + (safeEnd - safeStart) * easeOutCubic
-      );
+      const current = Math.floor(start + (end - start) * easeOutCubic);
       element.textContent = prefix + current.toLocaleString();
 
       if (progress < 1) {
@@ -131,20 +125,19 @@ export class FinancialComponent implements OnInit {
 
       if (type === 'money') {
         const valueEl = document.getElementById('moneyValue');
-        const currentText = valueEl?.textContent?.replace(/[$,]/g, '') || '0';
-        const current = parseInt(currentText) || 0;
+        const current = parseInt(
+          valueEl?.textContent?.replace(/,/g, '') || '0'
+        );
         const newValue = current + Math.floor(Math.random() * 1000);
         this.animateNumber('moneyValue', current, newValue, 1000, '$');
       } else if (type === 'projects') {
         const valueEl = document.getElementById('projectsValue');
-        const current = parseInt(valueEl?.textContent || '0') || 0;
+        const current = parseInt(valueEl?.textContent || '0');
         const newValue = current + Math.floor(Math.random() * 3);
         this.animateNumber('projectsValue', current, newValue, 1000);
       } else if (type === 'team') {
         const valueEl = document.getElementById('teamValue');
-        const currentText =
-          valueEl?.textContent?.replace(/Members/g, '').trim() || '0';
-        const current = parseInt(currentText) || 0;
+        const current = parseInt(valueEl?.textContent || '0');
         const newValue = current + Math.floor(Math.random() * 2);
         this.animateNumber('teamValue', current, newValue, 1000);
       }
@@ -158,8 +151,9 @@ export class FinancialComponent implements OnInit {
       const numberElement = element.querySelector(
         '.stat-number'
       ) as HTMLElement;
-      const current =
-        parseInt(numberElement?.textContent?.replace(/,/g, '') || '0') || 0;
+      const current = parseInt(
+        numberElement?.textContent?.replace(/,/g, '') || '0'
+      );
       let change = 0;
 
       if (type === 'pending') {
@@ -182,30 +176,25 @@ export class FinancialComponent implements OnInit {
   }
 
   updateTotal(): void {
-    const pending =
-      parseInt(
-        document
-          .getElementById('pendingTickets')
-          ?.textContent?.replace(/,/g, '') || '0'
-      ) || 0;
-    const closed =
-      parseInt(
-        document
-          .getElementById('closedTickets')
-          ?.textContent?.replace(/,/g, '') || '0'
-      ) || 0;
-    const deleted =
-      parseInt(
-        document
-          .getElementById('deletedTickets')
-          ?.textContent?.replace(/,/g, '') || '0'
-      ) || 0;
-    const current =
-      parseInt(
-        document
-          .getElementById('totalTickets')
-          ?.textContent?.replace(/,/g, '') || '0'
-      ) || 0;
+    const pending = parseInt(
+      document
+        .getElementById('pendingTickets')
+        ?.textContent?.replace(/,/g, '') || '0'
+    );
+    const closed = parseInt(
+      document
+        .getElementById('closedTickets')
+        ?.textContent?.replace(/,/g, '') || '0'
+    );
+    const deleted = parseInt(
+      document
+        .getElementById('deletedTickets')
+        ?.textContent?.replace(/,/g, '') || '0'
+    );
+    const current = parseInt(
+      document.getElementById('totalTickets')?.textContent?.replace(/,/g, '') ||
+        '0'
+    );
     const newTotal = pending + closed + deleted;
 
     if (newTotal !== current) {
