@@ -8,8 +8,8 @@
     </div>
     <h1 class="page-title">Stock</h1>
     <div class="search-container">
-      <input type="text" placeholder="Search parts..." class="search-input" 
-             [(ngModel)]="searchText" (keyup)="applyFilter()">
+      <input type="text" placeholder="Search parts..." class="search-input" [(ngModel)]="searchText"
+        (keyup)="applyFilter()">
     </div>
   </div>
 
@@ -88,7 +88,7 @@
     <!-- Service Issues Chart -->
     <div class="chart-section">
       <h2>Common Parts & Costs</h2>
-      
+
       <!-- Bar Chart -->
       <div class="chart-container">
         <div class="chart-title">Parts Frequency</div>
@@ -104,7 +104,10 @@
       <div class="service-costs">
         <div *ngFor="let cost of serviceCosts" class="cost-item">
           <div class="cost-info">
-            <div class="cost-circle" [style.background]="cost.color"></div>
+            <span class="ball" [style.background]="cost.color"></span>
+            <div class="cost-circle" [style.background]="cost.color">
+              <span class="static-point"></span>
+            </div>
             <div class="cost-details">
               <div class="cost-name">{{cost.service}}</div>
               <div class="cost-meta">{{cost.count}} Parts</div>
