@@ -1,0 +1,14 @@
+<div class="summary-cards-container">
+  <div class="summary-card" *ngFor="let card of summaryCards" [ngClass]="'card-' + card.colorClass">
+    <div class="card-icon" [ngClass]="'icon-' + card.colorClass">
+      <i class="fas" [ngClass]="card.icon"></i>
+    </div>
+    <div class="card-content">
+      <div class="card-value">
+        <span class="number">{{ card.value }}</span>
+        <span class="label">{{ card.label }}</span>
+      </div>
+      <div class="card-status">{{ card.status }}</div>
+    </div>
+  </div>
+</div>
