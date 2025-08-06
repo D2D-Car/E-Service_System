@@ -1,257 +1,150 @@
- <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 col-lg-10 col-xl-8">
-                <div class="card profile-card">
-                    <div class="card-body p-4 p-md-5">
-                      
-                        <div class="card-header-custom d-flex justify-content-between align-items-center pb-3 mb-4">
-                            <h2 class="page-title h2 mb-0">Technician Information</h2>
-                            <div class="technician-badge" [class]="'badge-' + currentTechnician.technicianType.toLowerCase()">
-                                {{ currentTechnician.technicianType }}
+<div class="container-fluid py-4">
+        <!-- Header -->
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <a class="navbar-brand">Technician Profile</a>
+                <div class="btn-download">
+                    <button type="button" class="btn">
+                        <i class="fa-solid fa-gear"></i> Profile Settings
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-header">
+                <h3>Technician Information</h3>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="technician-badge badge-senior">Senior</div>
+                    <a class="edit-link" onclick="toggleEdit()">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span id="editText">Edit Profile</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-3 col-md-4 text-center mb-4">
+                    <div class="profile-image-container">
+                        <img src="assets/technicians-img/tech1.jpg" 
+                             class="profile-image rounded-circle mb-3" alt="Technician">
+                    </div>
+                </div>
+
+                <div class="col-lg-9 col-md-8">
+                    <form id="technicianForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="fullName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="fullName" name="fullName" 
+                                       value="Ahmed Hassan" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" 
+                                       value="ahmed.hassan@email.com" disabled>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" 
+                                       value="+20 123 456 7890" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="completedServices" class="form-label">Completed Services</label>
+                                <input type="number" class="form-control" id="completedServices" 
+                                       name="completedServices" value="156" readonly>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="specialization" class="form-label">Specialization</label>
+                                <input type="text" class="form-control" id="specialization" 
+                                       name="specialization" value="Electrical" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="experience" class="form-label">Experience (Years)</label>
+                                <input type="number" class="form-control" id="experience" 
+                                       name="experience" value="8" min="0" disabled>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="hourlyRate" class="form-label">Hourly Rate (USD)</label>
+                                <input type="number" class="form-control" id="hourlyRate" 
+                                       name="hourlyRate" value="120" min="50" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="technicianType" class="form-label">Technician Level</label>
+                                <input type="text" class="form-control" id="technicianType" 
+                                       name="technicianType" value="Senior" disabled>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="workingArea" class="form-label">Working Area</label>
+                                <input type="text" class="form-control" id="workingArea" 
+                                       name="workingArea" value="Downtown Area" disabled>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="address" class="form-label">Full Address</label>
+                                <textarea class="form-control" id="address" name="address" 
+                                          rows="3" disabled>123 Main Street, Downtown Area, Cairo, Egypt</textarea>
                             </div>
                         </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-                        <form [formGroup]="technicianForm" (ngSubmit)="onSubmit()">
-                       
-                            <div class="text-center mb-4">
-                                <div class="position-relative d-inline-block mb-3 photo-container">
-                                    <img [src]="currentTechnician.avatar" [alt]="currentTechnician.fullName" class="profile-photo">
-                                    <div class="photo-overlay">
-                                        <input type="file" id="photoInput" (change)="onPhotoChange($event)" accept="image/*" class="d-none">
-                                        <label for="photoInput" class="change-photo-btn">
-                                            <i class="fas fa-camera me-1"></i>
-                                            Change Photo
-                                        </label>
-                                    </div>
-                                </div>
-                                
+        <!-- Statistics Cards -->
+        <div class="stats-container">
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card join-date">
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-calendar-days"></i>
+                        </div>
+                        <div class="stat-value">2022-03-15</div>
+                        <div class="stat-label">Join Date</div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card last-service">
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <div class="stat-value">2024-08-01</div>
+                        <div class="stat-label">Last Service</div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card rating">
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <div class="stat-value">
+                            <div class="rating-stars d-inline">
+                                <span class="filled-star">★</span>
+                                <span class="filled-star">★</span>
+                                <span class="filled-star">★</span>
+                                <span class="filled-star">★</span>
+                                <span class="filled-star">★</span>
                             </div>
-
-                        
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label for="fullName" class="form-label">Full Name</label>
-                                    <input 
-                                        type="text" 
-                                        class="form-control" 
-                                        id="fullName" 
-                                        formControlName="fullName"
-                                        [class.is-invalid]="technicianForm.get('fullName')?.invalid && technicianForm.get('fullName')?.touched"
-                                    >
-                                    <div class="invalid-feedback" *ngIf="technicianForm.get('fullName')?.invalid && technicianForm.get('fullName')?.touched">
-                                        Full name is required (minimum 3 characters)
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input 
-                                        type="email" 
-                                        class="form-control" 
-                                        id="email" 
-                                        formControlName="email"
-                                        [class.is-invalid]="technicianForm.get('email')?.invalid && technicianForm.get('email')?.touched"
-                                    >
-                                    <div class="invalid-feedback" *ngIf="technicianForm.get('email')?.invalid && technicianForm.get('email')?.touched">
-                                        Please enter a valid email
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="phone" class="form-label">Phone</label>
-                                    <input 
-                                        type="tel" 
-                                        class="form-control" 
-                                        id="phone" 
-                                        formControlName="phone"
-                                        [class.is-invalid]="technicianForm.get('phone')?.invalid && technicianForm.get('phone')?.touched"
-                                    >
-                                    <div class="invalid-feedback" *ngIf="technicianForm.get('phone')?.invalid && technicianForm.get('phone')?.touched">
-                                        Phone number is required
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="completedServices" class="form-label">Completed Services</label>
-                                    <input 
-                                        type="number" 
-                                        class="form-control" 
-                                        id="completedServices" 
-                                        formControlName="completedServices"
-                                        readonly
-                                    >
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="specialization" class="form-label">Specialization</label>
-                                    <select 
-                                        id="specialization" 
-                                        formControlName="specialization" 
-                                        class="form-select form-control"
-                                        [class.is-invalid]="technicianForm.get('specialization')?.invalid && technicianForm.get('specialization')?.touched"
-                                    >
-                                        <option value="">Select Specialization</option>
-                                        <option *ngFor="let spec of specializations" [value]="spec">{{ spec }}</option>
-                                    </select>
-                                    <div class="invalid-feedback" *ngIf="technicianForm.get('specialization')?.invalid && technicianForm.get('specialization')?.touched">
-                                        Specialization is required
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="experience" class="form-label">Experience (Years)</label>
-                                    <input 
-                                        type="number" 
-                                        class="form-control" 
-                                        id="experience" 
-                                        formControlName="experience"
-                                        min="0" 
-                                        [class.is-invalid]="technicianForm.get('experience')?.invalid && technicianForm.get('experience')?.touched"
-                                    >
-                                    <div class="invalid-feedback" *ngIf="technicianForm.get('experience')?.invalid && technicianForm.get('experience')?.touched">
-                                        Experience is required
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="hourlyRate" class="form-label">Hourly Rate (EGP)</label>
-                                    <input 
-                                        type="number" 
-                                        class="form-control" 
-                                        id="hourlyRate" 
-                                        formControlName="hourlyRate"
-                                        min="50" 
-                                        [class.is-invalid]="technicianForm.get('hourlyRate')?.invalid && technicianForm.get('hourlyRate')?.touched"
-                                    >
-                                    <div class="invalid-feedback" *ngIf="technicianForm.get('hourlyRate')?.invalid && technicianForm.get('hourlyRate')?.touched">
-                                        Hourly rate is required (minimum 50 EGP)
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="technicianType" class="form-label">Technician Level</label>
-                                    <select id="technicianType" formControlName="technicianType" class="form-select form-control">
-                                        <option value="Junior">Junior</option>
-                                        <option value="Senior">Senior</option>
-                                        <option value="Expert">Expert</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-12">
-                                    <label for="workingArea" class="form-label">Working Area</label>
-                                    <select id="workingArea" formControlName="workingArea" class="form-select form-control">
-                                        <option value="">Select Area</option>
-                                        <option value="Downtown Area">Downtown Area</option>
-                                        <option value="North District">North District</option>
-                                        <option value="South District">South District</option>
-                                        <option value="East District">East District</option>
-                                        <option value="West District">West District</option>
-                                        <option value="Business District">Business District</option>
-                                        <option value="Residential Area">Residential Area</option>
-                                        <option value="Industrial Zone">Industrial Zone</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-12">
-                                    <label for="address" class="form-label">Full Address</label>
-                                    <textarea 
-                                        id="address" 
-                                        class="form-control" 
-                                        formControlName="address"
-                                        rows="3" 
-                                        placeholder="Enter complete address..."
-                                    ></textarea>
-                                </div>
-                            </div>
-
-                            
-                            <div class="technician-stats p-4 mt-4">
-                                <h3 class="h5 text-center mb-3">Technician Statistics</h3>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <div class="stat-card p-3">
-                                            <div class="d-flex align-items-center">
-                                               
-                                                <div>
-                                                    <small class="text-muted d-block">Join Date</small>
-                                                    <strong>{{ currentTechnician.joinDate }}</strong>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-md-6">
-                                        <div class="stat-card p-3">
-                                            <div class="d-flex align-items-center">
-                                               
-                                                <div>
-                                                    <small class="text-muted d-block">Last Service</small>
-                                                    <strong>{{ currentTechnician.lastService }}</strong>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="stat-card p-3">
-                                            <div class="d-flex align-items-center">
-                                              
-                                                <div>
-                                                    <small class="text-muted d-block">Rating</small>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="rating-stars me-2">
-                                                            <span *ngFor="let star of getStars(currentTechnician.rating)" 
-                                                                  [class]="star === '★' ? 'filled-star' : 'empty-star'">{{ star }}</span>
-                                                        </div>
-                                                        <strong>({{ currentTechnician.rating }})</strong>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="stat-card p-3">
-                                            <div class="d-flex align-items-center">
-                                              
-                                                <div>
-                                                    <small class="text-muted d-block">Hourly Rate</small>
-                                                    <strong>{{ currentTechnician.hourlyRate }} EGP</strong>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                          
-                            <div class="certifications-section p-4 mt-4">
-                                <h3 class="h5 text-center mb-3">Certifications</h3>
-                                <div class="d-flex flex-wrap justify-content-center gap-2">
-                                    <span *ngFor="let cert of currentTechnician.certifications" class="badge certification-badge px-3 py-2">
-                                        {{ cert }}
-                                    </span>
-                                </div>
-                            </div>
-
-                       
-                            <div class="d-flex justify-content-center gap-3 mt-4 pt-3">
-                                <button type="submit" class="btn btn-primary-custom px-4" [disabled]="technicianForm.invalid">
-                                   
-                                    Update Profile
-                                </button>
-                                
-                                <button type="button" class="btn btn-secondary-custom px-4" (click)="onCancel()">
-                                   
-                                    Cancel
-                                </button>
-                                
-                                <button type="button" class="btn btn-danger-custom px-4" (click)="onDelete()">
-                                    
-                                    Delete Technician
-                                </button>
-                            </div>
-                        </form>
+                            4.8
+                        </div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card hourly-rate">
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-money-bill"></i>
+                        </div>
+                        <div class="stat-value">120 USD</div>
+                        <div class="stat-label">Hourly Rate</div>
                     </div>
                 </div>
             </div>
