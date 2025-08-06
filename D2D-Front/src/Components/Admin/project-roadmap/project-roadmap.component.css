@@ -203,25 +203,25 @@
     gap: 16px;
     align-items: stretch;
   }
-  
+
   .controls-section {
     flex-direction: column;
     gap: 12px;
     align-items: stretch;
   }
-  
+
   .gantt-chart {
     flex-direction: column;
     gap: 12px;
   }
-  
+
   .phase-labels {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
   }
-  
+
   .phase-label {
     height: auto;
     padding: 4px 8px;
@@ -235,16 +235,16 @@
   .roadmap-card {
     padding: 20px;
   }
-  
+
   .roadmap-title {
     font-size: 18px;
   }
-  
+
   .toggle-group {
     width: 100%;
     justify-content: center;
   }
-  
+
   .period-buttons {
     width: 100%;
     justify-content: center;
