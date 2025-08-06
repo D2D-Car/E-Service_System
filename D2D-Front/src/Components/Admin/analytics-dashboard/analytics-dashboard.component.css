@@ -1,0 +1,95 @@
+.analytics-dashboard {
+  padding: 32px;
+  background: var(--bg-secondary);
+  min-height: 100vh;
+  position: relative;
+}
+
+.container-fluid {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  grid-template-areas:
+    "total-orders new-customers"
+    "top-coupons paying-vs-non-paying";
+}
+
+.grid-item {
+  min-height: 320px;
+}
+
+.chart-total-orders {
+  grid-area: total-orders;
+}
+
+.chart-new-customers {
+  grid-area: new-customers;
+}
+
+.chart-top-coupons {
+  grid-area: top-coupons;
+}
+
+.chart-paying-vs-non-paying {
+  grid-area: paying-vs-non-paying;
+}
+
+/* Dark theme adjustments */
+.dark-theme .analytics-dashboard {
+  background: var(--bg-primary);
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .analytics-dashboard {
+    padding: 24px;
+  }
+
+  .analytics-grid {
+    gap: 20px;
+  }
+
+  .grid-item {
+    min-height: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .analytics-dashboard {
+    padding: 20px;
+  }
+
+  .analytics-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    grid-template-areas:
+      "total-orders"
+      "new-customers"
+      "top-coupons"
+      "paying-vs-non-paying";
+  }
+
+  .grid-item {
+    min-height: 260px;
+  }
+}
+
+@media (max-width: 576px) {
+  .analytics-dashboard {
+    padding: 16px;
+  }
+
+  .analytics-grid {
+    gap: 12px;
+  }
+
+  .grid-item {
+    min-height: 240px;
+  }
+}

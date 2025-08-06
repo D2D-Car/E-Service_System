@@ -1,0 +1,32 @@
+<div class="analytics-card paying-chart-card">
+  <div class="card-header">
+    <div class="title-section">
+      <h4 class="card-title">Paying vs non paying</h4>
+      <p class="card-subtitle">Last 7 days</p>
+    </div>
+  </div>
+
+  <div class="chart-section">
+    <div class="half-donut-container">
+      <!-- SVG Half Donut Chart -->
+      <svg class="half-donut-chart" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background arc -->
+        <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#e5e7eb" stroke-width="12"
+          stroke-linecap="round" />
+
+        <!-- Progress arc -->
+        <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#6366f1" stroke-width="12" stroke-linecap="round"
+          stroke-dasharray="251.2" [attr.stroke-dashoffset]="251.2 - (251.2 * progressPercentage / 100)"
+          class="progress-arc" />
+      </svg>
+    </div>
+  </div>
+
+  <div class="legend-section">
+    <div class="legend-item" *ngFor="let item of paymentData">
+      <span class="legend-dot" [style.background-color]="item.color"></span>
+      <span class="legend-label">{{ item.label }}</span>
+      <span class="legend-value">{{ item.percentage }}%</span>
+    </div>
+  </div>
+</div>

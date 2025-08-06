@@ -121,7 +121,6 @@ export class TechniciansComponent implements OnInit {
     this.setTheme();
   }
 
-
   filterTrips(status: string): void {
     this.selectedStatus = status;
 
@@ -129,7 +128,7 @@ export class TechniciansComponent implements OnInit {
       this.technicians = [...this.allTechnicians];
     } else {
       this.technicians = this.allTechnicians.filter(
-        tech => tech.status.toLowerCase() === status.toLowerCase()
+        (tech) => tech.status.toLowerCase() === status.toLowerCase()
       );
     }
   }
@@ -155,7 +154,7 @@ export class TechniciansComponent implements OnInit {
       `Are you sure you want to remove ${tech.name}?`
     );
     if (confirmRemove) {
-      this.allTechnicians = this.allTechnicians.filter(t => t.id !== tech.id);
+      this.allTechnicians = this.allTechnicians.filter((t) => t.id !== tech.id);
       this.filterTrips(this.selectedStatus);
     }
   }
@@ -167,4 +166,3 @@ export class TechniciansComponent implements OnInit {
     body.classList.add(`${theme}-theme`);
   }
 }
-
