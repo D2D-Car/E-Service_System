@@ -1,5 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ThemeService } from '../../../Services/theme.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 interface Technician {
   id: number;
@@ -21,9 +24,10 @@ interface Technician {
   templateUrl: './technicians.component.html',
   styleUrls: ['./technicians.component.css'],
 })
-export class TechniciansComponent {
+export class TechniciansComponent implements OnInit, OnDestroy {
   selectedStatus: string = 'all';
   isNavbarCollapsed: boolean = false;
+  private readonly destroy$ = new Subject<void>();
   allTechnicians: Technician[] = [
     {
       id: 1,
@@ -122,10 +126,10 @@ export class TechniciansComponent {
       completedJobs: 210,
     },
   ];
-  
+
   technicians: Technician[] = [];
 
-  constructor() {
+  constructor(private readonly themeService: ThemeService) {
     this.technicians = [...this.allTechnicians];
   }
 
@@ -134,7 +138,18 @@ export class TechniciansComponent {
   }
 
   ngOnInit(): void {
-    this.setTheme();
+    // Subscribe to theme changes from the theme service
+    this.themeService.isDarkMode$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isDark) => {
+        // Theme is automatically applied by the service
+        // No need to manually apply theme here
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   filterTrips(status: string): void {
@@ -174,12 +189,5 @@ export class TechniciansComponent {
       this.technicians = this.technicians.filter((t) => t.id !== tech.id);
       this.filterTrips(this.selectedStatus);
     }
-  }
-
-  setTheme(): void {
-    const theme = localStorage.getItem('theme') || 'dark';
-    const body = document.body;
-    body.classList.remove('dark-theme', 'light-theme');
-    body.classList.add(`${theme}-theme`);
   }
 }

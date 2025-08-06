@@ -1,37 +1,42 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Inject,
+  PLATFORM_ID,
+} from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { SalesSummaryCardsComponent } from '../sales-summary-cards/sales-summary-cards.component';
-import { TotalSellsChartComponent } from '../total-sells-chart/total-sells-chart.component';
-import { ProjectSummaryCardsComponent } from '../project-summary-cards/project-summary-cards.component';
-import { ProjectRoadmapComponent } from '../project-roadmap/project-roadmap.component';
-import { EarlyBirdLeadsCardComponent } from '../early-bird-leads-card/early-bird-leads-card.component';
+import { ThemeService } from '../../../Services/theme.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-home',
   standalone: true,
-  imports: [
-    CommonModule,
-    TotalSellsChartComponent,
-    ProjectSummaryCardsComponent,
-    ProjectRoadmapComponent,
-    EarlyBirdLeadsCardComponent,
-  ],
+  imports: [CommonModule],
   templateUrl: './dashboard-home.component.html',
   styleUrls: ['./dashboard-home.component.css'],
 })
-export class DashboardHomeComponent implements OnInit {
+export class DashboardHomeComponent implements OnInit, OnDestroy {
   isDarkMode = false;
   currentTime = new Date();
   greeting = '';
+  private readonly destroy$ = new Subject<void>();
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    @Inject(PLATFORM_ID) private readonly platformId: Object,
+    private readonly themeService: ThemeService
+  ) {}
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      // Check for saved theme preference or default to light mode
-      const savedTheme = localStorage.getItem('theme');
-      this.isDarkMode = savedTheme === 'dark';
-      this.applyTheme();
+      // Subscribe to theme changes from the theme service
+      this.themeService.isDarkMode$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((isDark) => {
+          this.isDarkMode = isDark;
+          // Theme is automatically applied by the service
+        });
 
       // Set greeting based on time
       this.setGreeting();
@@ -44,26 +49,14 @@ export class DashboardHomeComponent implements OnInit {
     }
   }
 
-  toggleTheme(): void {
-    this.isDarkMode = !this.isDarkMode;
-    this.applyTheme();
-
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
-    }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  private applyTheme(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      const body = document.body;
-      if (this.isDarkMode) {
-        body.classList.add('dark-theme');
-        body.classList.remove('light-theme');
-      } else {
-        body.classList.add('light-theme');
-        body.classList.remove('dark-theme');
-      }
-    }
+  toggleTheme(): void {
+    // Use the theme service to toggle theme
+    this.themeService.toggleTheme();
   }
 
   private setGreeting(): void {
