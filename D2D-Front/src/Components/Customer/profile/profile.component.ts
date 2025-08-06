@@ -42,7 +42,7 @@ export class CustomerProfileComponent implements OnInit {
       carYear: 2020,
       serviceArea: 'Downtown Area',
       totalServices: 8,
-      avatar: 'https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg',
+      avatar: 'assets/customers-img/customer1.jpg',
       joinDate: '10/02/2021',
       lastService: '01/15/2025',
       customerType: 'Premium'

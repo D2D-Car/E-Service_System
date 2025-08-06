@@ -27,8 +27,8 @@
               }
             ],
             "styles": [
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "src/styles.scss"
             ],
             "scripts": [
@@ -36,7 +36,10 @@
               "node_modules/popper.js/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/@fortawesome/fontawesome-free/js/all.min.js"
-            ]
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": []
+            }
           },
           "configurations": {
             "production": {
