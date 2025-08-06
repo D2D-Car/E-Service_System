@@ -118,38 +118,6 @@
           <div class="action-icon">
             <i class="fas fa-plus"></i>
           </div>
-
-          <div class="action-content">
-            <h3>Book New Service</h3>
-            <p>Schedule your next car service</p>
-          </div>
-        </div>
-
-       
-<div class="action-card contact-support">
-  <div class="action-icon">
-    <i class="fas fa-comments"></i>
-  </div>
-
-  <a href="tel:+12345678900" style="text-decoration: none; color: inherit;">
-    <div class="action-content" style="cursor: pointer;">
-      <h3>Contact Support</h3>
-      <p>Get help with your services</p>
-    </div>
-  </a>
-</div>
-      <a href="assets/PDF/INVOICE.pdf" download="Invoice_MohamedReda.pdf" style="text-decoration: none; color: inherit;">
-  <div class="action-card download-invoice" style="cursor: pointer;">
-    <div class="action-icon">
-      <i class="fas fa-download"></i>
-    </div>
-    <div class="action-content">
-      <h3>Download Invoice</h3>
-      <p>Get your service receipts</p>
-    </div>
-  </div>
-</a>
-
           <div class="action-content" (click)="openAddServiceModal()">
               Book New Service 
               <p>
@@ -174,7 +142,6 @@
             <p>Get your service receipts</p>
           </div>
         </div>
-
       </div>
       <!-- Modal rendered at the root of quick-actions for proper overlay -->
       <div class="modal-overlay" *ngIf="showAddServiceModal" (click)="closeAddServiceModal()" (keydown.escape)="closeAddServiceModal()">
@@ -227,7 +194,7 @@
               <button type="button" class="btn btn-secondary" (click)="closeAddServiceModal()">Cancel</button>
               <button type="submit" class="btn btn-danger" [disabled]="addServiceForm.invalid">
                 <i class="fas fa-plus"></i>
-                 Add Service
+                + Add Service
               </button>
             </div>
           </form>
