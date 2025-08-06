@@ -1,12 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
-interface IStatistics {
-  icon: string;
-  title: string;
-  total: number;
-  color: string;
-}
+import { AvailabilityStatusService } from '../../../Services/Driver/availability-status.service';
+
 
 @Component({
   selector: 'app-driver-shared',
@@ -16,36 +12,17 @@ interface IStatistics {
   imports: [RouterModule, CommonModule]
 })
 
-export class DriverSharedComponent {
+export class DriverSharedComponent implements OnInit{
   activeTab: string = 'dashboard';
+  availabilityStatus: string = 'Available';
 
-  statistics: IStatistics[] = [
-    {
-      icon: "fa-solid fa-dollar-sign",
-      title: "Today's Earnings",
-      total: 245,
-      color: "money-icon"
-    },
-    {
-      icon: "fas fa-chart-line",
-      title: "This Week",
-      total: 1680,
-      color: "services-icon"
-    },
-    {
-      icon: "fas fa-chart-line",
-      title: "This Month",
-      total: 6420,
-      color: "loyalty-icon"
-    },
-    {
-      icon: "fa-solid fa-toolbox",
-      title: "Total Jobs",
-      total: 340,
-      color: "member-icon"
-    }
-  ];
-  constructor(private router: Router) { }
+  constructor(private router: Router, private availabilityService: AvailabilityStatusService) { }
+
+  ngOnInit() {
+    this.availabilityService.availabilityStatus$.subscribe(status => {
+      this.availabilityStatus = status;
+    });
+  }
 
   setActiveTab(tab: string) {
     this.activeTab = tab;

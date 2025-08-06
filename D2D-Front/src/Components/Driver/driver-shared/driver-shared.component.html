@@ -14,7 +14,7 @@
       <h3>This Week</h3>
     </div>
   </div>
-  <span class="availability">Available</span>
+  <span class="availability">{{ availabilityStatus }}</span>
 </div>
 <div class="nav-tabs">
   <button class="nav-tab" routerLink="/driver/dashboard" routerLinkActive="active">
@@ -37,35 +37,4 @@
     Profile
   </button>
 </div>
-<div class="container">
-  <!-- Abvailability Status -->
-  <div class="availability-container">
-    <div class="availability-toggle">
-      <div class="availability-label">Availability Status</div>
-      <select class="availability-select">
-        <option value="available">Available</option>
-        <option value="unavailable">Unavailable</option>
-      </select>
-    </div>
-    <div class="toggle-text">Toggle your availability to receive new jobs</div>
-  </div>
-  <!-- Abvailability Status -->
-
-  <!-- Statistics -->
-  <div class="statistics-container">
-    <div class="card" *ngFor="let statistic of statistics">
-      <div class="card-inner">
-        <div class="icon {{statistic.color}}">
-          <i class="{{statistic.icon}}"></i>
-        </div>
-        <div class="card-title">
-          <h3>{{statistic.title}}</h3>
-          <p>${{statistic.total}}</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Statistics -->
-</div>
-
 <router-outlet></router-outlet>

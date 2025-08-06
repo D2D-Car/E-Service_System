@@ -350,6 +350,10 @@
   .item.total {
     font-size: 16px;
   }
+  
+  .payouts{
+    margin-bottom: 1.5rem;
+  }
 }
 
 @media (max-width: 480px) {

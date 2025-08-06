@@ -11,40 +11,6 @@
     </div>
   </nav>
   <!-- end header -->
-  <!-- start navbar -->
-  <nav class="navbar tabs navbar-expand-lg">
-    <div class="container-fluid">
-      <button class="navbar-toggler" type="button" (click)="toggleNavbar()" aria-controls="navbarNav"
-        [attr.aria-expanded]="!isNavbarCollapsed" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" [class.show]="!isNavbarCollapsed" id="navbarNav">
-        <ul class="navbar-nav" id="navTabs">
-          <li class="nav-item">
-            <a class="nav-link" [class.active]="activeLink === 'personal'" (click)="setActiveLink('personal')">
-              <i class="fa-regular fa-user"></i> Personal Info
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" [class.active]="activeLink === 'vehicle'" (click)="setActiveLink('vehicle')">
-              <i class="fa-solid fa-car-side"></i> Vehicle Details
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" [class.active]="activeLink === 'documents'" (click)="setActiveLink('documents')">
-              <i class="fa-solid fa-file"></i> Documents
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" [class.active]="activeLink === 'performance'" (click)="setActiveLink('performance')">
-              <i class="fa-solid fa-medal"></i> Performance
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <!-- end navbar -->
   <!-- start driver-profile -->
   <div class="profile">
     <div class="profile-header">
