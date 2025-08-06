@@ -99,8 +99,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       status: 'away',
     },
     {
-      name: 'Youssef ElBaz',
-      email: 'youssef.elbaz@d2d.com',
+      name: 'Yousef Elbaz',
+      email: 'yousef.elbaz@d2d.com',
       role: 'Manager',
       avatar: '/assets/dashboard-img/team-01.png',
       status: 'busy',

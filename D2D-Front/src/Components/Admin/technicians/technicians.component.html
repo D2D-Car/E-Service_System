@@ -2,12 +2,23 @@
   <h2 class="section-title">OUR EXPERT TECHNICIANS</h2>
   <p class="section-subtitle">Highly skilled professionals dedicated to quality service</p>
 
+  <!-- Filter Navigation -->
+  <div class="filters-container">
+    <div class="filters-navbar">
+      <button *ngFor="let filter of filters" class="filter-btn" [class.active]="selectedFilter === filter"
+        (click)="setFilter(filter)">
+        <span class="filter-text">{{filter}}</span>
+        <span class="filter-count">{{getStatusCount(filter)}}</span>
+      </button>
+    </div>
+  </div>
+
   <div class="container-fluid">
     <div class="row g-4">
-      <div class="col-xl-3 col-lg-4 col-md-6 col-12" *ngFor="let tech of technicians">
+      <div class="col-xl-3 col-lg-4 col-md-6 col-12" *ngFor="let tech of filteredTechnicians">
         <div class="card">
 
-          <!-- Contact buttons in top right -->
+          <!-- Quick info buttons in top right -->
           <div class="contact-buttons">
             <button class="contact-btn phone-btn" (click)="callTechnician(tech)" title="Certification">
               <i class="fas fa-certificate"></i>
@@ -16,11 +27,6 @@
               <i class="fas fa-tasks"></i>
             </button>
           </div>
-
-          <!-- Remove button (icon only) -->
-          <button class="remove-btn-icon" (click)="removeTechnician(tech)" title="Remove Technician">
-            <i class="fas fa-times"></i>
-          </button>
 
           <!-- Status indicator -->
           <div class="status-indicator" [ngClass]="{
@@ -63,6 +69,18 @@
 
         </div>
       </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="filteredTechnicians.length === 0" class="empty-state">
+      <div class="empty-icon">👨‍🔧</div>
+      <div class="empty-title">No Technicians Found</div>
+      <div class="empty-description">
+        There are no technicians with "{{selectedFilter}}" status.
+      </div>
+      <button class="empty-action" (click)="setFilter('All')">
+        Show All Technicians
+      </button>
     </div>
   </div>
 </section>

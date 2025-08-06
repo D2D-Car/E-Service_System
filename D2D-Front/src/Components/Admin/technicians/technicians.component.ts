@@ -9,6 +9,16 @@ import { Component } from '@angular/core';
   styleUrl: './technicians.component.css',
 })
 export class TechniciansComponent {
+  // Filter properties
+  filters = ['All', 'Available', 'Busy', 'On Break'];
+  selectedFilter = 'All';
+  filteredTechnicians: any[] = [];
+
+  // Theme toggle properties
+  isDarkTheme = false;
+  themeIcon = '🌙';
+  themeText = 'Dark Mode';
+
   technicians = [
     {
       id: 1,
@@ -107,6 +117,77 @@ export class TechniciansComponent {
       completedJobs: 210,
     },
   ];
+
+  constructor() {
+    this.filteredTechnicians = this.technicians;
+    // Check for saved theme preference
+    this.loadThemePreference();
+  }
+
+  // Theme toggle methods
+  toggleTheme() {
+    this.isDarkTheme = !this.isDarkTheme;
+    this.updateThemeDisplay();
+    this.applyTheme();
+    this.saveThemePreference();
+  }
+
+  private loadThemePreference() {
+    const savedTheme = localStorage.getItem('technician-theme');
+    if (savedTheme) {
+      this.isDarkTheme = savedTheme === 'dark';
+      this.updateThemeDisplay();
+      this.applyTheme();
+    }
+  }
+
+  private saveThemePreference() {
+    localStorage.setItem(
+      'technician-theme',
+      this.isDarkTheme ? 'dark' : 'light'
+    );
+  }
+
+  private updateThemeDisplay() {
+    if (this.isDarkTheme) {
+      this.themeIcon = '☀️';
+      this.themeText = 'Light Mode';
+    } else {
+      this.themeIcon = '🌙';
+      this.themeText = 'Dark Mode';
+    }
+  }
+
+  private applyTheme() {
+    const body = document.body;
+    if (this.isDarkTheme) {
+      body.classList.add('dark-theme');
+      body.classList.remove('light-theme');
+    } else {
+      body.classList.add('light-theme');
+      body.classList.remove('dark-theme');
+    }
+  }
+
+  // Filter methods
+  setFilter(filter: string) {
+    this.selectedFilter = filter;
+    if (filter === 'All') {
+      this.filteredTechnicians = this.technicians;
+    } else {
+      this.filteredTechnicians = this.technicians.filter(
+        (tech) => tech.status === filter
+      );
+    }
+  }
+
+  // Get count for each status
+  getStatusCount(status: string): number {
+    if (status === 'All') {
+      return this.technicians.length;
+    }
+    return this.technicians.filter((tech) => tech.status === status).length;
+  }
 
   // Action methods
   callTechnician(tech: any) {
