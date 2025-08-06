@@ -1,102 +1,5 @@
 <div class="container-fluid py-4">
-        <!-- Header -->
-        <nav class="navbar navbar-expand-lg">
-            <div class="container-fluid">
-                <a class="navbar-brand">Technician Profile</a>
-                <div class="btn-download">
-                    <button type="button" class="btn">
-                        <i class="fa-solid fa-gear"></i> Profile Settings
-                    </button>
-                </div>
-            </div>
-        </nav>
-
-        <!-- Profile Section -->
-        <div class="profile-section">
-            <div class="profile-header">
-                <h3>Technician Information</h3>
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <div class="technician-badge badge-senior">Senior</div>
-                    <a class="edit-link" onclick="toggleEdit()">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                        <span id="editText">Edit Profile</span>
-                    </a>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-3 col-md-4 text-center mb-4">
-                    <div class="profile-image-container">
-                        <img src="assets/technicians-img/tech1.jpg" 
-                             class="profile-image rounded-circle mb-3" alt="Technician">
-                    </div>
-                </div>
-
-                <div class="col-lg-9 col-md-8">
-                    <form id="technicianForm">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="fullName" class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="fullName" name="fullName" 
-                                       value="Ahmed Hassan" disabled>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" 
-                                       value="ahmed.hassan@email.com" disabled>
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <label for="phone" class="form-label">Phone</label>
-                                <input type="tel" class="form-control" id="phone" name="phone" 
-                                       value="+20 123 456 7890" disabled>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="completedServices" class="form-label">Completed Services</label>
-                                <input type="number" class="form-control" id="completedServices" 
-                                       name="completedServices" value="156" readonly>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label for="specialization" class="form-label">Specialization</label>
-                                <input type="text" class="form-control" id="specialization" 
-                                       name="specialization" value="Electrical" disabled>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="experience" class="form-label">Experience (Years)</label>
-                                <input type="number" class="form-control" id="experience" 
-                                       name="experience" value="8" min="0" disabled>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label for="hourlyRate" class="form-label">Hourly Rate (USD)</label>
-                                <input type="number" class="form-control" id="hourlyRate" 
-                                       name="hourlyRate" value="120" min="50" disabled>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="technicianType" class="form-label">Technician Level</label>
-                                <input type="text" class="form-control" id="technicianType" 
-                                       name="technicianType" value="Senior" disabled>
-                            </div>
-
-                            <div class="col-12">
-                                <label for="workingArea" class="form-label">Working Area</label>
-                                <input type="text" class="form-control" id="workingArea" 
-                                       name="workingArea" value="Downtown Area" disabled>
-                            </div>
-
-                            <div class="col-12">
-                                <label for="address" class="form-label">Full Address</label>
-                                <textarea class="form-control" id="address" name="address" 
-                                          rows="3" disabled>123 Main Street, Downtown Area, Cairo, Egypt</textarea>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Statistics Cards -->
+        <!-- Statistics Cards - Now at the top -->
         <div class="stats-container">
             <div class="row g-4">
                 <div class="col-lg-3 col-md-6">
@@ -148,5 +51,90 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-header">
+                <h3>Technician Information</h3>
+                <div class="technician-badge badge-senior">Senior</div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-3 col-md-4 text-center mb-4">
+                    <div class="profile-image-container">
+                        <img src="assets/technicians-img/tech1.jpg" 
+                             class="profile-image rounded-circle mb-3" alt="Technician">
+                    </div>
+                </div>
+
+                <div class="col-lg-9 col-md-8">
+                    <form id="technicianForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="fullName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="fullName" name="fullName" 
+                                       value="Ahmed Hassan" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" 
+                                       value="ahmed.hassan@email.com" disabled>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" 
+                                       value="+20 123 456 7890" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="completedServices" class="form-label">Completed Services</label>
+                                <input type="number" class="form-control" id="completedServices" 
+                                       name="completedServices" value="156" disabled>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="specialization" class="form-label">Specialization</label>
+                                <input type="text" class="form-control" id="specialization" 
+                                       name="specialization" value="Electrical" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="experience" class="form-label">Experience (Years)</label>
+                                <input type="number" class="form-control" id="experience" 
+                                       name="experience" value="8" min="0" disabled>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="hourlyRate" class="form-label">Hourly Rate (USD)</label>
+                                <input type="number" class="form-control" id="hourlyRate" 
+                                       name="hourlyRate" value="120" min="50" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="technicianType" class="form-label">Technician Level</label>
+                                <input type="text" class="form-control" id="technicianType" 
+                                       name="technicianType" value="Senior" disabled>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="workingArea" class="form-label">Working Area</label>
+                                <input type="text" class="form-control" id="workingArea" 
+                                       name="workingArea" value="Downtown Area" disabled>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="address" class="form-label">Full Address</label>
+                                <textarea class="form-control" id="address" name="address" 
+                                          rows="3" disabled>123 Main Street, Downtown Area, Cairo, Egypt</textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Edit Profile Button -->
+            <button type="button" class="edit-profile-btn" id="editBtn" (click)="toggleEdit()">
+    <i class="fa-solid fa-pen-to-square"></i>
+    <span>Edit Profile</span>
+</button>
         </div>
     </div>

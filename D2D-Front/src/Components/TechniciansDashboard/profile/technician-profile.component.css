@@ -1,245 +1,286 @@
-.navbar {
-            background-color: var(--card-bg-color) !important;
-            height: 4rem;
-            max-width: 95%;
-            margin: 0.8rem auto;
-            border-radius: 10px;
-        }
+.stats-container {
+    max-width: 92%;
+    margin: 2rem auto;
+    background-color: var(--card-bg-color);
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
 
-        .navbar-brand {
-            color: var(--light-font-color) !important;
-            font-weight: bold;
-        }
+.stat-card {
+    background-color: var(--card-bg-color);
+    padding: 1.5rem;
+    margin: 1rem;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-        .btn-download button {
-            background-color: rgb(28, 99, 176);
-            color: var(--light-font-color);
-            transition: var(--time-transition);
-            border: none;
-        }
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
 
-        .btn-download button:hover {
-            transform: translateY(-5px);
-        }
+.stat-card.join-date {
+    background: linear-gradient(135deg, rgba(46, 204, 113, 0.1) 0%, rgba(46, 204, 113, 0.2) 100%);
+    border-left: 4px solid #2ecc71;
+}
 
-        /* Profile Styles */
-        .profile-section {
-            width: 100%;
-            max-width: 92%;
-            margin: 2rem auto;
-            background-color: var(--card-bg-color);
-            border-radius: 10px;
-            padding: 2rem;
-            color: var(--light-font-color);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+.stat-card.last-service {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(52, 152, 219, 0.2) 100%);
+    border-left: 4px solid #3498db;
+}
 
-        .profile-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--secondary-color);
-            margin-bottom: 3rem;
-        }
+.stat-card.rating {
+    background: linear-gradient(135deg, rgba(241, 196, 15, 0.1) 0%, rgba(241, 196, 15, 0.2) 100%);
+    border-left: 4px solid #f1c40f;
+}
 
-        .profile-header h3 {
-            margin: 0;
-            color: var(--light-font-color);
-        }
+.stat-card.hourly-rate {
+    background: linear-gradient(135deg, rgba(155, 89, 182, 0.1) 0%, rgba(155, 89, 182, 0.2) 100%);
+    border-left: 4px solid #9b59b6;
+}
 
-        .edit-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            cursor: pointer;
-        }
+.stat-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    padding: 1rem 2rem;
+    font-size: 2rem;
+    border-radius: 10%;
+}
 
-        .technician-badge {
-            border-radius: 20px;
-            padding: 8px 16px;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
+.stat-icon i {
+    font-size: 22px;
+    padding: 14px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
 
-        .badge-junior {
-            background: linear-gradient(45deg, #90caf9, #64b5f6);
-            color: #fff;
-        }
+.join-date .stat-icon i {
+    background-color: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+}
 
-        .badge-senior {
-            background: linear-gradient(45deg, #a5d6a7, #81c784);
-            color: #fff;
-        }
+.last-service .stat-icon i {
+    background-color: rgba(52, 152, 219, 0.2);
+    color: #3498db;
+}
 
-        .badge-expert {
-            background: linear-gradient(45deg, #ffb74d, #ff9800);
-            color: #fff;
-        }
+.rating .stat-icon i {
+    background-color: rgba(241, 196, 15, 0.2);
+    color: #f1c40f;
+}
 
-        /* Profile Image */
-        .profile-image-container {
-            position: relative;
-        }
+.hourly-rate .stat-icon i {
+    background-color: rgba(155, 89, 182, 0.2);
+    color: #9b59b6;
+}
 
-        .profile-image {
-            width: 8rem;
-            height: 8rem;
-            object-fit: cover;
-            border: 3px solid var(--primary-color);
-            position: relative;
-            z-index: 1;
-        }
+.stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
 
-   
+.join-date .stat-value {
+    color: #2ecc71;
+}
 
-        /* Form Styles */
-        .form-label {
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--light-font-color);
-        }
+.last-service .stat-value {
+    color: #3498db;
+}
 
-        .form-control {
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--secondary-color);
-            border-radius: 5px;
-        background-color: var(--dark);
-            color: var(--light-font-color);
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
+.rating .stat-value {
+    color: #f1c40f;
+}
 
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(48, 113, 216, 0.2);
-        }
+.hourly-rate .stat-value {
+    color: #9b59b6;
+}
 
-        /* Statistics Styles */
-        .stats-container {
-            max-width: 92%;
-            margin: 2rem auto;
-            background-color: var(--card-bg-color);
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-        }
+.stat-label {
+    font-size: 14px;
+    color: var(--light-font-color);
+    opacity: 0.8;
+}
 
-        .stat-card {
-            background-color: var(--card-bg-color);
-            padding: 1.5rem;
-            margin: 1rem;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+.rating-stars {
+    color: #ffc107;
+    margin-right: 0.5rem;
+}
 
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
+.filled-star {
+    color: #ffc107;
+}
 
-        .stat-card.join-date {
-            background: linear-gradient(135deg, rgba(46, 204, 113, 0.1) 0%, rgba(46, 204, 113, 0.2) 100%);
-            border-left: 4px solid #2ecc71;
-        }
+.empty-star {
+    color: #666;
+}
 
-        .stat-card.last-service {
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(52, 152, 219, 0.2) 100%);
-            border-left: 4px solid #3498db;
-        }
+/* Profile Styles */
+.profile-section {
+    width: 100%;
+    max-width: 92%;
+    margin: 2rem auto;
+    background-color: var(--card-bg-color);
+    border-radius: 10px;
+    padding: 2rem;
+    color: var(--light-font-color);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: relative;
+}
 
-        .stat-card.rating {
-            background: linear-gradient(135deg, rgba(241, 196, 15, 0.1) 0%, rgba(241, 196, 15, 0.2) 100%);
-            border-left: 4px solid #f1c40f;
-        }
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--secondary-color);
+    margin-bottom: 3rem;
+}
 
-        .stat-card.hourly-rate {
-            background: linear-gradient(135deg, rgba(155, 89, 182, 0.1) 0%, rgba(155, 89, 182, 0.2) 100%);
-            border-left: 4px solid #9b59b6;
-        }
+.profile-header h3 {
+    margin: 0;
+    color: var(--light-font-color);
+}
 
-        .stat-icon {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 20%;
-            margin: 0 auto;
-            margin-bottom: 15px;
-            padding: 1rem 2rem;
-            font-size: 2rem;
-            border-radius: 10%;
-        }
+.technician-badge {
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
 
-        .stat-icon i {
-            font-size: 22px;
-            padding: 14px;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
+.badge-junior {
+    background: linear-gradient(45deg, #90caf9, #64b5f6);
+    color: #fff;
+}
 
-        .join-date .stat-icon i {
-            background-color: rgba(46, 204, 113, 0.2);
-            color: #2ecc71;
-        }
+.badge-senior {
+    background: linear-gradient(45deg, #a5d6a7, #81c784);
+    color: #fff;
+}
 
-        .last-service .stat-icon i {
-            background-color: rgba(52, 152, 219, 0.2);
-            color: #3498db;
-        }
+.badge-expert {
+    background: linear-gradient(45deg, #ffb74d, #ff9800);
+    color: #fff;
+}
 
-        .rating .stat-icon i {
-            background-color: rgba(241, 196, 15, 0.2);
-            color: #f1c40f;
-        }
+/* Profile Image */
+.profile-image-container {
+    position: relative;
+}
 
-        .hourly-rate .stat-icon i {
-            background-color: rgba(155, 89, 182, 0.2);
-            color: #9b59b6;
-        }
+.profile-image {
+    width: 8rem;
+    height: 8rem;
+    object-fit: cover;
+    border: 3px solid var(--primary-color);
+    position: relative;
+    z-index: 1;
+}
 
-        .stat-value {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
+/* Form Styles */
+.form-label {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--light-font-color);
+}
 
-        .join-date .stat-value {
-            color: #2ecc71;
-        }
+.form-control {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    background-color: var(--dark);
+    color: var(--light-font-color);
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
 
-        .last-service .stat-value {
-            color: #3498db;
-        }
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(48, 113, 216, 0.2);
+    background-color: var(--dark);
+    color: var(--light-font-color);
+}
 
-        .rating .stat-value {
-            color: #f1c40f;
-        }
+/* Edit Button Styles */
+.edit-profile-btn {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: var(--primary-color);
+    color: var(--light-font-color);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: var(--time-transition);
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(48, 113, 216, 0.3);
+}
 
-        .hourly-rate .stat-value {
-            color: #9b59b6;
-        }
+.edit-profile-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(48, 113, 216, 0.4);
+    background-color: #2563eb;
+}
 
-        .stat-label {
-            font-size: 14px;
-            color: var(--light-font-color);
-            opacity: 0.8;
-        }
+.edit-profile-btn i {
+    margin-right: 0.5rem;
+}
 
-        .rating-stars {
-            color: #ffc107;
-            margin-right: 0.5rem;
-        }
+/* Save/Cancel buttons (hidden by default) */
+.form-actions {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    display: none;
+    gap: 1rem;
+}
 
-        .filled-star {
-            color: #ffc107;
-        }
+.form-actions.active {
+    display: flex;
+}
 
-        .empty-star {
-            color: #666;
-        }
+.btn-save {
+    background-color: #10b981;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: var(--time-transition);
+    cursor: pointer;
+}
+
+.btn-save:hover {
+    background-color: #059669;
+    transform: translateY(-2px);
+}
+
+.btn-cancel {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: var(--time-transition);
+    cursor: pointer;
+}
+
+.btn-cancel:hover {
+    background-color: #dc2626;
+    transform: translateY(-2px);
+}
