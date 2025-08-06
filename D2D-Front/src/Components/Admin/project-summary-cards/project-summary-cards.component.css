@@ -24,25 +24,6 @@
   height: 100%;
 }
 
-.icon-section {
-  flex-shrink: 0;
-}
-
-.icon-wrapper {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.9;
-}
-
-.icon-wrapper i {
-  font-size: 24px;
-  color: white;
-}
-
 .info-section {
   flex: 1;
   display: flex;

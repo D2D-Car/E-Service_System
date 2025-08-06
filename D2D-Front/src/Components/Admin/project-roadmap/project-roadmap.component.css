@@ -4,6 +4,7 @@
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
 }
 
 .roadmap-header {
@@ -250,22 +251,48 @@
   }
 }
 
-/* Dark theme adjustments */
-.dark-theme .roadmap-card {
-  background: var(--card-bg-dark);
-  border-color: var(--border-color-dark);
+/* Dark theme adjustments - Using dashboard dark theme variables */
+body.dark-theme .roadmap-card {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.dark-theme .date-selector {
-  background: var(--bg-primary-dark);
-  border-color: var(--border-color-dark);
+body.dark-theme .date-selector {
+  background: var(--bg-primary);
+  border-color: var(--border-color);
 }
 
-.dark-theme .toggle-group {
-  background: var(--bg-primary-dark);
+body.dark-theme .toggle-group {
+  background: var(--bg-primary);
 }
 
-.dark-theme .period-btn {
-  background: var(--bg-primary-dark);
-  border-color: var(--border-color-dark);
+body.dark-theme .period-btn {
+  background: var(--bg-primary);
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+body.dark-theme .period-btn.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+body.dark-theme .period-btn:hover:not(.active) {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+body.dark-theme .phase-label {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+body.dark-theme .grid-line {
+  border-color: var(--border-color);
+}
+
+body.dark-theme .toggle-label:not(.active) .toggle-text {
+  color: var(--text-secondary);
 }

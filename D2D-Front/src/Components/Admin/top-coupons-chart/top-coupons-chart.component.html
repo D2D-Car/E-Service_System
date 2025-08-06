@@ -1,0 +1,40 @@
+<div class="analytics-card top-coupons-card">
+  <div class="card-header">
+    <div class="title-section">
+      <h4 class="card-title">Top coupons</h4>
+      <p class="card-subtitle">Last 7 days</p>
+    </div>
+  </div>
+
+  <div class="chart-section">
+    <div class="chart-container">
+      <!-- Simple SVG Chart -->
+      <div class="simple-chart">
+        <div class="chart-center">
+          <span class="center-percentage">{{ mainPercentage }}%</span>
+        </div>
+        <svg viewBox="0 0 100 100" class="donut-chart">
+          <circle
+            cx="50"
+            cy="50"
+            r="40"
+            fill="none"
+            stroke="#6366f1"
+            stroke-width="20"
+            stroke-dasharray="180 251"
+            stroke-dashoffset="0">
+          </circle>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend">
+      <div class="legend-item" *ngFor="let item of couponData">
+        <div class="legend-indicator" [style.background-color]="item.color"></div>
+        <span class="legend-label">{{ item.label }}</span>
+        <span class="legend-value">{{ item.percentage }}%</span>
+      </div>
+    </div>
+  </div>
+</div>

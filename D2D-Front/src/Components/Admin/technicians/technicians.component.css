@@ -41,6 +41,130 @@
 }
 
 /* Bootstrap Grid Container */
+
+/* start header */
+.navbar {
+  /* background-color: var(--background-color); */
+  height: 4rem;
+  max-width: 95%;
+  margin: 0.8rem auto;
+}
+
+.navbar-brand {
+  color: var(--light-font-color);
+  font-weight: bold;
+}
+
+.btn-download button {
+  background-color: rgb(28, 99, 176);
+  color: var(--light-font-color);
+  transition: var(--time-transition);
+}
+
+.btn-download button:hover {
+  transform: translateY(-5px);
+}
+
+@media (max-width: 992px) {
+  .btn-download button {
+    margin: 2rem 0;
+  }
+}
+
+/* end header */
+/* Start Navbar */
+.navbar {
+  background-color: var(--bg-secondary);
+  height: 10vh;
+  width: 100%;
+  max-width: 98%;
+  margin: 0 auto 1.5rem auto;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  border-radius: 5px 5px 0 0;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.nav-link {
+  margin-right: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.75rem 1rem;
+  color: var(--text-primary);
+  transition: all 0.2s ease-in-out;
+  text-align: center;
+  white-space: nowrap;
+  border-radius: 2px;
+}
+
+.nav-link.active {
+  color: var(--accent-color);
+  border-bottom: 3px solid var(--accent-color);
+  opacity: 0.9;
+}
+
+.nav-link:hover {
+  background-color: var(--hover-bg);
+  cursor: pointer;
+  color: var(--text-primary);
+  border-bottom: 3px solid var(--primary-color);
+  border-radius: 4px;
+}
+
+.navbar-toggler {
+  border-color: var(--border-color);
+}
+
+.navbar-toggler-icon {
+  filter: brightness(0) invert(1);
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+}
+
+.theme-option {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  margin: 0 0.25rem;
+  opacity: 0.5;
+}
+
+.theme-option.active {
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .navbar {
+    height: auto;
+    padding: 0.5rem 1rem;
+  }
+
+  .navbar-collapse {
+    width: 100%;
+  }
+
+  .navbar-nav {
+    width: 100%;
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+
+  .nav-link {
+    margin: 0.25rem 0;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+/* End Navbar */
 .container-fluid {
   max-width: 100%;
   margin: 0 auto;
