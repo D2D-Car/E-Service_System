@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ServiceHistoryService } from '../dashboard/service-history.service';
 
 interface ServiceHistory {
   id: number;
@@ -18,156 +19,107 @@ interface ServiceHistory {
 
 @Component({
   selector: 'app-service-history',
-  imports: [CommonModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './service-history.component.html',
-  styleUrl: './service-history.component.css',
+  styleUrls: ['./service-history.component.css'],
 })
-export class ServiceHistoryComponent {
-  serviceHistory: ServiceHistory[] = [
-    {
-      id: 1,
-      title: 'Oil Change & Filter',
-      status: 'Completed',
-      price: 65,
-      rating: 5,
-      date: 'January 5, 2024',
-      technician: 'Mike Johnson',
-      vehicle: 'Toyota Camry',
-      location: 'Downtown Branch',
-      duration: '45 mins',
-      serviceType: 'Premium Service',
-    },
-    {
-      id: 2,
-      title: 'Brake Service',
-      status: 'Completed',
-      price: 185,
-      rating: 5,
-      date: 'December 15, 2023',
-      technician: 'Ahmed Hassan',
-      vehicle: 'Honda CR-V',
-      location: 'Mall Branch',
-      duration: '2 hours',
-      serviceType: 'Full Brake Replacement',
-    },
-    {
-      id: 3,
-      title: 'Tire Replacement',
-      status: 'Completed',
-      price: 320,
-      rating: 4,
-      date: 'November 28, 2023',
-      technician: 'Omar Khaled',
-      vehicle: 'Toyota Camry',
-      location: 'Airport Branch',
-      duration: '1.5 hours',
-      serviceType: 'All-Season Tires',
-    },
-    {
-      id: 4,
-      title: 'Engine Diagnostic',
-      status: 'Completed',
-      price: 150,
-      rating: 4,
-      date: 'October 22, 2023',
-      technician: 'Sarah Wilson',
-      vehicle: 'Honda CR-V',
-      location: 'City Center Branch',
-      duration: '1 hour',
-      serviceType: 'Computer Diagnostic',
-    },
-    {
-      id: 5,
-      title: 'AC Service',
-      status: 'Completed',
-      price: 120,
-      rating: 5,
-      date: 'September 10, 2023',
-      technician: 'Mohamed Ali',
-      vehicle: 'Toyota Camry',
-      location: 'Downtown Branch',
-      duration: '90 mins',
-      serviceType: 'AC Repair & Recharge',
-    },
-  ];
-
-  // Modal state
+export class ServiceHistoryComponent implements OnInit {
+  serviceHistory: ServiceHistory[] = [];
   showAddServiceModal: boolean = false;
+  addServiceForm: FormGroup;
 
-  // New service object
-  newService: ServiceHistory = {
-    id: 0,
-    title: '',
-    status: 'Completed',
-    price: 0,
-    rating: 5,
-    date: '',
-    technician: '',
-    vehicle: '',
-    location: 'Main Branch',
-    duration: '60 mins',
-    serviceType: 'General Service',
-  };
+  // فلترة
+  selectedServiceType: string = 'all';
+  selectedVehicle: string = 'all';
 
-  // Modal methods
+  constructor(
+    public serviceHistoryService: ServiceHistoryService,
+    private fb: FormBuilder
+  ) {
+    this.addServiceForm = this.fb.group({
+      title: ['', Validators.required],
+      price: [0, [Validators.required, Validators.min(0)]],
+      technician: ['', Validators.required],
+      vehicle: ['', Validators.required],
+      date: ['', Validators.required],
+      rating: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
+    });
+  }
+
+  ngOnInit() {
+    this.serviceHistoryService.history$.subscribe((history: ServiceHistory[]) => {
+      this.serviceHistory = history;
+    });
+  }
+
+  get filteredServices(): ServiceHistory[] {
+    return this.serviceHistory.filter(service => {
+      const matchesServiceType =
+        this.selectedServiceType === 'all' || service.serviceType === this.selectedServiceType;
+      const matchesVehicle =
+        this.selectedVehicle === 'all' || service.vehicle.includes(this.selectedVehicle);
+      return matchesServiceType && matchesVehicle;
+    });
+  }
+
   openAddServiceModal(): void {
     this.showAddServiceModal = true;
-    this.resetNewService();
+    this.addServiceForm.reset({
+      title: '',
+      price: 0,
+      technician: '',
+      vehicle: '',
+      date: '',
+      rating: 5,
+    });
   }
 
   closeAddServiceModal(): void {
     this.showAddServiceModal = false;
-    this.resetNewService();
-  }
-
-  resetNewService(): void {
-    this.newService = {
-      id: 0,
+    this.addServiceForm.reset({
       title: '',
-      status: 'Completed',
       price: 0,
-      rating: 5,
-      date: '',
       technician: '',
       vehicle: '',
-      location: 'Main Branch',
-      duration: '60 mins',
-      serviceType: 'General Service',
-    };
+      date: '',
+      rating: 5,
+    });
   }
 
   addNewService(): void {
-    // Generate new ID
-    const newId = Math.max(...this.serviceHistory.map((s) => s.id)) + 1;
-
-    // Set the new service properties
-    this.newService.id = newId;
-
-    // Format date to readable format
-    if (this.newService.date) {
-      const date = new Date(this.newService.date);
-      this.newService.date = date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      });
+    if (this.addServiceForm.valid) {
+      const formValue = this.addServiceForm.value;
+      
+      const newServiceObj = {
+        id: Date.now(),
+        title: formValue.title,
+        status: 'Completed',
+        price: formValue.price,
+        rating: formValue.rating,
+        date: this.formatDate(formValue.date),
+        technician: formValue.technician,
+        vehicle: formValue.vehicle,
+        location: 'Main Branch',
+        duration: '60 mins',
+        serviceType: 'General Service'
+      };
+      
+      this.serviceHistoryService.addService(newServiceObj);
+      this.closeAddServiceModal();
     }
-
-    // Add to the beginning of the array (most recent first)
-    this.serviceHistory.unshift({ ...this.newService });
-
-    // Close modal and reset form
-    this.closeAddServiceModal();
   }
 
-  // Helper method to generate star array for rating
-  getStarArray(rating: number): boolean[] {
-    return Array(5)
-      .fill(false)
-      .map((_, index) => index < rating);
+  private formatDate(dateString: string): string {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
   }
 
-  // TrackBy function for performance optimization
   trackByServiceId(index: number, service: ServiceHistory): number {
     return service.id;
   }

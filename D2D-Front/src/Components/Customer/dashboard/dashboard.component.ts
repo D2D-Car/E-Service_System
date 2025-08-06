@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { VehiclesComponent } from '../vehicles/vehicles.component';
 import { ServiceHistoryComponent } from '../service-history/service-history.component';
 import { CustomerProfileComponent } from "../profile/profile.component";
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ServiceHistoryService } from './service-history.service';
 
 interface UpcomingService {
   day: string;
@@ -22,13 +24,27 @@ interface RecentActivity {
   time: string;
 }
 
+interface ServiceHistory {
+  id: number;
+  title: string;
+  status: string;
+  price: number;
+  rating: number;
+  date: string;
+  technician: string;
+  vehicle: string;
+  location: string;
+  duration: string;
+  serviceType: string;
+}
+
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, VehiclesComponent, ServiceHistoryComponent, CustomerProfileComponent],
+  imports: [CommonModule, VehiclesComponent, ServiceHistoryComponent, CustomerProfileComponent, ReactiveFormsModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   activeTab: string = 'dashboard';
 
   // Sample data for upcoming services
@@ -92,6 +108,98 @@ export class DashboardComponent {
       time: '1 week ago',
     },
   ];
+
+  // Modal state
+  showAddServiceModal: boolean = false;
+
+  addServiceForm: FormGroup;
+
+  constructor(
+    private fb: FormBuilder,
+    private serviceHistoryService: ServiceHistoryService
+  ) {
+    this.addServiceForm = this.fb.group({
+      title: ['', Validators.required],
+      price: [0, [Validators.required, Validators.min(0)]],
+      technician: ['', Validators.required],
+      vehicle: ['', Validators.required],
+      date: ['', Validators.required],
+      rating: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
+    });
+  }
+
+  ngOnInit() {
+    // Only need to initialize the form once, so remove this if already in constructor
+    // this.addServiceForm = this.fb.group({
+    //   title: ['', Validators.required],
+    //   price: ['', Validators.required],
+    //   technician: ['', Validators.required],
+    //   vehicle: ['', Validators.required],
+    //   date: ['', Validators.required],
+    //   rating: ['', Validators.required]
+    // });
+  }
+
+  openAddServiceModal(): void {
+    this.showAddServiceModal = true;
+    this.addServiceForm.reset({
+      title: '',
+      price: 0,
+      technician: '',
+      vehicle: '',
+      date: '',
+      rating: 5,
+    });
+  }
+
+  closeAddServiceModal(): void {
+    this.showAddServiceModal = false;
+    this.addServiceForm.reset({
+      title: '',
+      price: 0,
+      technician: '',
+      vehicle: '',
+      date: '',
+      rating: 5,
+    });
+  }
+
+  addNewService(): void {
+    if (this.addServiceForm.valid) {
+      const formValue = this.addServiceForm.value;
+      
+      // Create new service object
+      const newService = {
+        id: Date.now(), // Generate unique ID
+        title: formValue.title,
+        status: 'Completed',
+        price: formValue.price,
+        rating: formValue.rating,
+        date: this.formatDate(formValue.date),
+        technician: formValue.technician,
+        vehicle: formValue.vehicle,
+        location: 'Main Branch',
+        duration: '60 mins',
+        serviceType: 'General Service'
+      };
+
+      // Add to service history using the service
+      this.serviceHistoryService.addService(newService);
+      
+      // Close modal and reset form
+      this.closeAddServiceModal();
+    }
+  }
+
+  private formatDate(dateString: string): string {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  }
 
   setActiveTab(tab: string): void {
     this.activeTab = tab;

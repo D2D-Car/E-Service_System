@@ -616,7 +616,10 @@ body {
     width: 100%;
   }
 
-  .chart-section, .parts-section {
+
+  .chart-section,
+  .parts-section {
+
     padding: 16px;
   }
 
@@ -631,7 +634,8 @@ body {
     flex-direction: column;
     gap: 12px;
   }
-  
+
+
   .search-container {
     flex-direction: column;
     width: 100%;
@@ -722,4 +726,3 @@ body {
     font-size: 10px;
   }
 }
-

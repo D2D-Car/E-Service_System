@@ -5,7 +5,9 @@
   <!-- زر Add Driver -->
   <div class="add-driver-container">
     <button class="add-driver-btn" (click)="openAddDriverModal()">
-     Add New Driver
+
+      Add New Driver
+
     </button>
   </div>
 
@@ -29,32 +31,47 @@
 
           <div class="form-group">
             <label>License Number</label>
-            <input type="text" placeholder="License Number" [(ngModel)]="newDriver.licenseNumber" name="licenseNumber" required />
+            <input type="text" placeholder="License Number" [(ngModel)]="newDriver.licenseNumber" name="licenseNumber"
+              required />
+
           </div>
 
           <div class="form-group">
             <label>Experience</label>
-            <input type="text" placeholder="Experience (e.g. 5 Years)" [(ngModel)]="newDriver.experience" name="experience" required />
+            <input type="text" placeholder="Experience (e.g. 5 Years)" [(ngModel)]="newDriver.experience"
+              name="experience" required />
           </div>
 
           <div class="form-group">
             <label>Vehicle Type</label>
-            <input type="text" placeholder="Vehicle Type" [(ngModel)]="newDriver.vehicleType" name="vehicleType" required />
+
+            <input type="text" placeholder="Vehicle Type" [(ngModel)]="newDriver.vehicleType" name="vehicleType"
+              required />
+
           </div>
 
           <div class="form-group">
             <label>Joined</label>
-            <input type="text" placeholder="Joined (e.g. Jan 2024)" [(ngModel)]="newDriver.joined" name="joined" required />
+
+            <input type="text" placeholder="Joined (e.g. Jan 2024)" [(ngModel)]="newDriver.joined" name="joined"
+              required />
+
           </div>
 
           <div class="form-group">
             <label>Rating</label>
-            <input type="number" placeholder="Rating (e.g. 4.8)" [(ngModel)]="newDriver.rating" name="rating" step="0.1" required />
+
+            <input type="number" placeholder="Rating (e.g. 4.8)" [(ngModel)]="newDriver.rating" name="rating" step="0.1"
+              required />
+
           </div>
 
           <div class="form-group">
             <label>Total Trips</label>
-            <input type="number" placeholder="Total Trips" [(ngModel)]="newDriver.totalTrips" name="totalTrips" required />
+
+            <input type="number" placeholder="Total Trips" [(ngModel)]="newDriver.totalTrips" name="totalTrips"
+              required />
+
           </div>
 
           <div class="form-group">
@@ -114,7 +131,8 @@
               <i class="fas fa-car contact-icon"></i>
               <span class="contact-text">Vehicle: {{ driver.vehicleType }}</span>
             </div>
-         
+
+
           </div>
           <div class="join-date">Driving Since: {{ driver.joined }}</div>
           <div class="action-footer">
