@@ -38,10 +38,24 @@
 /* ---- القسم الرئيسي للتقنيين ---- */
 .technicians-section {
   background-color: var(--bg-primary);
-  padding: 2rem;
+  padding: 1rem;
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Better container for all screen sizes */
+.container-fluid {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 0.5rem;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .section-title {
@@ -77,6 +91,154 @@
   font-weight: 300;
 }
 
+/* Modern Filter Navigation */
+.filters-container {
+  margin-bottom: 3rem;
+  display: flex;
+  justify-content: center;
+  padding: 0 1rem;
+}
+
+.filters-navbar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 0.5rem;
+  background: var(--bg-secondary);
+  padding: 0.75rem;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  width: 100%;
+  max-width: 530px;
+  position: relative;
+  transition: all var(--time-transition);
+}
+
+.filters-navbar::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all var(--time-transition);
+  position: relative;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  justify-content: center;
+  width: 100%;
+}
+
+.filter-btn:hover:not(.active) {
+  background: var(--hover-bg);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.filter-btn.active {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--primary-hover)
+  );
+  color: white;
+  box-shadow: var(--box-shadow-hover);
+  transform: translateY(-1px);
+  position: relative;
+}
+
+.filter-btn.active::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+  pointer-events: none;
+}
+
+.filter-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.filter-count {
+  background: var(--hover-bg);
+  color: var(--text-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.6rem;
+  border-radius: 10px;
+  min-width: 24px;
+  text-align: center;
+  line-height: 1;
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--border-color);
+  transition: all var(--time-transition);
+}
+
+.filter-btn.active .filter-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filter-btn:not(.active) .filter-count {
+  background: var(--primary-color);
+  color: white;
+  border: 1px solid var(--primary-color);
+}
+
+/* Theme Integration with Global Styles */
+.dark-theme .filters-navbar,
+body.dark-theme .filters-navbar {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
+}
+
+.dark-theme .filter-btn,
+body.dark-theme .filter-btn {
+  color: var(--text-secondary);
+}
+
+.dark-theme .filter-btn:hover:not(.active),
+body.dark-theme .filter-btn:hover:not(.active) {
+  background: var(--hover-bg);
+  color: var(--text-primary);
+}
+
+.light-theme .filters-navbar,
+body.light-theme .filters-navbar {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
+}
+
+.light-theme .filter-btn,
+body.light-theme .filter-btn {
+  color: var(--text-secondary);
+}
+
+.light-theme .filter-btn:hover:not(.active),
+body.light-theme .filter-btn:hover:not(.active) {
+  background: var(--hover-bg);
+  color: var(--text-primary);
+}
+
+/* Bootstrap Grid Container */
 .container-fluid {
   max-width: 100%;
   margin: 0 auto;
@@ -325,8 +487,12 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .modal-content {
@@ -343,8 +509,14 @@
 }
 
 @keyframes slideIn {
-  from { opacity: 0; transform: translateY(-50px) scale(0.9); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* رأس المودال */
@@ -406,7 +578,7 @@
 }
 
 /* ---- إصلاح بسيط ومباشر لألوان الحقول ---- */
-.form-grid input, 
+.form-grid input,
 .form-grid select,
 .form-grid textarea {
   padding: 12px;
@@ -418,7 +590,7 @@
   transition: 0.3s;
 }
 
-.form-grid input:focus, 
+.form-grid input:focus,
 .form-grid select:focus,
 .form-grid textarea:focus {
   border-color: var(--primary-color);
@@ -780,75 +952,38 @@ input[autocomplete]:focus {
   transform: translateY(-1px);
 }
 
-/* معاينة الصورة */
-.image-preview {
-  width: 120px;
-  height: 120px;
-  border-radius: 12px;
-  margin-top: 15px;
-  object-fit: cover;
-  border: 2px solid var(--primary-color);
-  box-shadow: 0 4px 12px rgba(226, 54, 54, 0.2);
-  transition: all 0.3s ease;
+/* Mobile optimizations for small screens */
+@media (max-width: 1024px) {
+  .filters-container {
+    padding: 0 0.75rem;
+  }
+
+  .filters-navbar {
+    max-width: 100%;
+    padding: 0.6rem;
+    gap: 0.4rem;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  }
+
+  .filter-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
 }
 
-.image-preview:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(226, 54, 54, 0.3);
-}
-
-/* أزرار التحكم */
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border-color);
-}
-
-.submit-technician-btn {
-  background: var(--primary-color);
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  min-width: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.submit-technician-btn:hover:not(:disabled) {
-  background: var(--primary-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(226, 54, 54, 0.3);
-}
-
-.submit-technician-btn:disabled {
-  background: var(--text-muted);
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-  opacity: 0.6;
-}
-
-/* للشاشات الصغيرة */
 @media (max-width: 768px) {
-  .form-grid {
-    grid-template-columns: 1fr;
+  .filters-container {
+    margin-bottom: 2rem;
+    padding: 0 0.5rem;
   }
   .full-width {
     grid-column: span 1;
   }
-  .modal-content {
-    width: 95%;
-    padding: 1.5rem;
+
+  .filter-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 12px;
   }
   .status-preview {
     font-size: 0.75rem;
@@ -857,14 +992,58 @@ input[autocomplete]:focus {
 }
 
 @media (max-width: 480px) {
+  .technicians-section {
+    padding: 0.5rem 0.25rem;
+  }
+
+  .container-fluid {
+    padding: 0 0.125rem;
+  }
+
   .section-title {
     font-size: 1.8rem;
+    margin-bottom: 0.5rem;
   }
   .section-subtitle {
     font-size: 1rem;
+    margin-bottom: 1.5rem;
   }
+
+  .filters-container {
+    padding: 0 0.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .filters-navbar {
+    padding: 0.5rem;
+    border-radius: 14px;
+    gap: 0.25rem;
+    max-width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filter-btn {
+    padding: 0.5rem 0.75rem;
+    border-radius: 10px;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .filter-text {
+    font-size: 0.75rem;
+    line-height: 1;
+  }
+
+  .filter-count {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.4rem;
+    margin: 0;
+    border-radius: 6px;
+  }
+
   .card {
-    padding: 16px;
+    padding: 12px;
+    margin-bottom: 1rem;
   }
   .profile-img {
     width: 60px;
@@ -877,10 +1056,52 @@ input[autocomplete]:focus {
   .profile-btn {
     width: 100%;
   }
-  .status-indicator {
+}
+
+/* Extra small mobile devices */
+@media (max-width: 360px) {
+  .section-title {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .filters-container {
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+
+  .filters-navbar {
+    padding: 0.6rem 0.4rem;
+    gap: 0.4rem;
+    border-radius: 12px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filter-btn {
+    padding: 0.4rem 0.6rem;
+    flex-direction: column;
+    gap: 0.2rem;
+    width: 100%;
+    border-radius: 8px;
+  }
+
+  .filter-text {
+    font-size: 0.7rem;
+    line-height: 1;
+  }
+
+  .filter-count {
     font-size: 0.6rem;
-    padding: 4px 8px;
-    min-width: 60px;
+    padding: 0.15rem 0.3rem;
+    border-radius: 5px;
+  }
+
+  .card {
+    padding: 12px;
   }
   .modal-content {
     width: 98%;
@@ -893,5 +1114,71 @@ input[autocomplete]:focus {
   .submit-technician-btn {
     width: 100%;
   }
-} 
+}
 
+/* Very small screens */
+@media (max-width: 320px) {
+  .section-title {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .filters-container {
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+
+  .filters-navbar {
+    padding: 0.3rem 0.1rem;
+    gap: 0.15rem;
+    border-radius: 10px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filter-btn {
+    padding: 0.3rem 0.5rem;
+    flex-direction: column;
+    gap: 0.15rem;
+    width: 100%;
+    border-radius: 6px;
+  }
+
+  .filter-text {
+    font-size: 0.65rem;
+    line-height: 1;
+  }
+
+  .filter-count {
+    font-size: 0.55rem;
+    padding: 0.1rem 0.25rem;
+    border-radius: 4px;
+  }
+
+  .card {
+    padding: 10px;
+  }
+
+  .profile-img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .technician-name {
+    font-size: 0.9rem;
+  }
+
+  .action-footer {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .profile-btn {
+    width: 100%;
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+}
