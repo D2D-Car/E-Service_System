@@ -161,7 +161,7 @@ export class TechniciansComponent implements OnInit {
   }
 
   setTheme(): void {
-    const theme = localStorage.getItem('theme') || 'light';
+    const theme = localStorage.getItem('theme') || 'dark';
     const body = document.body;
     body.classList.remove('dark-theme', 'light-theme');
     body.classList.add(`${theme}-theme`);
