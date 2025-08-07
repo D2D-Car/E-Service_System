@@ -114,34 +114,47 @@
     <div class="quick-actions">
       <h2>Quick Actions</h2>
       <div class="action-cards">
-        <a href="tel:+12345678900" style="text-decoration: none; color: inherit;">
-          <div class="action-card contact-support">
-            <div class="action-icon">
-              <i class="fas fa-comments"></i>
-            </div>
-            <div class="action-content">
-              <h3>Contact Support</h3>
-              <p>Get help with your services</p>
-            </div>
+        <div class="action-card book-service">
+          <div class="action-icon">
+            <i class="fas fa-plus"></i>
           </div>
-        </a>
-        <a href="assets/PDF/INVOICE.pdf" download="Invoice_MohamedReda.pdf"
-          style="text-decoration: none; color: inherit;">
-          <div class="action-card download-invoice" style="cursor: pointer;">
-            <div class="action-icon">
-              <i class="fas fa-download"></i>
+          <div class="action-content" (click)="openAddServiceModal()">
+              Book New Service 
+              <p>
+                Schedule your next car service</p>
             </div>
-            <div class="action-content">
-              <h3>Download Invoice</h3>
-              <p>Get your service receipts</p>
-            </div>
-              
-          </div>
-        </a>
+          </div>    
+
+    
+
+<a href="tel:+12345678900" style="text-decoration: none; color: inherit;">
+  <div class="action-card contact-support">
+    <div class="action-icon">
+      <i class="fas fa-comments"></i>
+    </div>
+    <div class="action-content">
+      <h3>Contact Support</h3>
+      <p>Get help with your services</p>
+    </div>
+  </div>
+</a>
+     <a href="assets/PDF/INVOICE.pdf" download="Invoice_MohamedReda.pdf" style="text-decoration: none; color: inherit;">
+  <div class="action-card download-invoice" style="cursor: pointer;">
+    <div class="action-icon">
+      <i class="fas fa-download"></i>
+    </div>
+    <div class="action-content">
+      <h3>Download Invoice</h3>
+      <p>Get your service receipts</p>
+    </div>
+  </div>
+</a>
+
+     
+
       </div>
       <!-- Modal rendered at the root of quick-actions for proper overlay -->
-      <div class="modal-overlay" *ngIf="showAddServiceModal" (click)="closeAddServiceModal()"
-        (keydown.escape)="closeAddServiceModal()">
+      <div class="modal-overlay" *ngIf="showAddServiceModal" (click)="closeAddServiceModal()" (keydown.escape)="closeAddServiceModal()">
         <div class="modal-content" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
           <div class="modal-header">
             <h3>Add New Service</h3>
@@ -153,25 +166,21 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="serviceTitle">Service Title</label>
-                <input type="text" id="serviceTitle" name="serviceTitle" formControlName="title" required
-                  placeholder="e.g., Oil Change & Filter">
+                <input type="text" id="serviceTitle" name="serviceTitle" formControlName="title" required placeholder="e.g., Oil Change & Filter">
               </div>
               <div class="form-group">
                 <label for="servicePrice">Price ($)</label>
-                <input type="number" id="servicePrice" name="servicePrice" formControlName="price" required
-                  placeholder="0.00">
+                <input type="number" id="servicePrice" name="servicePrice" formControlName="price" required placeholder="0.00">
               </div>
             </div>
             <div class="form-row">
               <div class="form-group">
                 <label for="technician">Technician</label>
-                <input type="text" id="technician" name="technician" formControlName="technician" required
-                  placeholder="e.g., John Smith">
+                <input type="text" id="technician" name="technician" formControlName="technician" required placeholder="e.g., John Smith">
               </div>
               <div class="form-group">
                 <label for="vehicle">Vehicle</label>
-                <input type="text" id="vehicle" name="vehicle" formControlName="vehicle" required
-                  placeholder="e.g., Toyota Camry">
+                <input type="text" id="vehicle" name="vehicle" formControlName="vehicle" required placeholder="e.g., Toyota Camry">
               </div>
             </div>
             <div class="form-row">
@@ -195,7 +204,7 @@
               <button type="button" class="btn btn-secondary" (click)="closeAddServiceModal()">Cancel</button>
               <button type="submit" class="btn btn-danger" [disabled]="addServiceForm.invalid">
                 <i class="fas fa-plus"></i>
-                + Add Service
+               Add Service
               </button>
             </div>
           </form>

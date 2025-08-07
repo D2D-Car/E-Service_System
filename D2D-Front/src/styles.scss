@@ -1,6 +1,9 @@
 // Modern SCSS with no deprecation warnings
 // Using CSS imports instead of SCSS @import for external resources
 
+// Leaflet CSS import
+@import 'leaflet/dist/leaflet.css';
+
 @media(max-width: 420px) {
   .row>* {
     padding: {

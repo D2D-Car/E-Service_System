@@ -1,3 +1,4 @@
+//html
 <section class="drivers-section">
   <h2 class="section-title">OUR VALUED DRIVERS</h2>
   <p class="section-subtitle">We're proud to serve these amazing professionals</p>
@@ -9,7 +10,7 @@
     </button>
   </div>
 
-  <!-- المودال -->
+  <!-- مودال إضافة السائق -->
   <div class="modal-overlay" *ngIf="showAddDriverModal" (click)="closeAddDriverModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
@@ -86,6 +87,103 @@
           <button type="submit" class="submit-driver-btn" [disabled]="!driverForm.valid">Submit</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- مودال عرض تفاصيل السائق -->
+  <div class="modal-overlay" *ngIf="showDriverProfileModal" (click)="closeDriverProfileModal()">
+    <div class="profile-modal-content" (click)="$event.stopPropagation()">
+      <div class="profile-modal-header">
+        <h3><i class="fas fa-user-circle"></i> Driver Profile</h3>
+        <button class="close-btn" (click)="closeDriverProfileModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="profile-modal-body" *ngIf="selectedDriver">
+        <!-- صورة السائق -->
+        <div class="profile-image-section">
+          <img [src]="selectedDriver.image" [alt]="selectedDriver.name" class="profile-modal-image">
+          <div class="rating-badge">
+            <i class="fas fa-star"></i>
+            <span>{{ selectedDriver.rating }}</span>
+          </div>
+        </div>
+
+        <!-- معلومات السائق -->
+        <div class="profile-info-section">
+          <h2 class="driver-profile-name">{{ selectedDriver.name }}</h2>
+          <p class="driver-profile-subtitle">Professional Driver</p>
+          
+          <div class="profile-stats">
+            <div class="stat-item">
+              <div class="stat-number">{{ selectedDriver.totalTrips }}</div>
+              <div class="stat-label">Total Trips</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{ selectedDriver.rating }}</div>
+              <div class="stat-label">Rating</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{ selectedDriver.experience }}</div>
+              <div class="stat-label">Experience</div>
+            </div>
+          </div>
+
+          <div class="profile-details">
+            <div class="detail-row">
+              <div class="detail-icon">
+                <i class="fas fa-id-card"></i>
+              </div>
+              <div class="detail-content">
+                <span class="detail-label">License Number</span>
+                <span class="detail-value">{{ selectedDriver.licenseNumber }}</span>
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-icon">
+                <i class="fas fa-car"></i>
+              </div>
+              <div class="detail-content">
+                <span class="detail-label">Vehicle Type</span>
+                <span class="detail-value">{{ selectedDriver.vehicleType }}</span>
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-icon">
+                <i class="fas fa-calendar-alt"></i>
+              </div>
+              <div class="detail-content">
+                <span class="detail-label">Driving Since</span>
+                <span class="detail-value">{{ selectedDriver.joined }}</span>
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="detail-content">
+                <span class="detail-label">Email Address</span>
+                <span class="detail-value">{{ selectedDriver.email }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="profile-actions">
+            <button class="action-btn primary-btn" (click)="contactDriver(selectedDriver)">
+              <i class="fas fa-phone"></i>
+              Contact Driver
+            </button>
+            <button class="action-btn secondary-btn" (click)="sendMessage(selectedDriver)">
+              <i class="fas fa-envelope"></i>
+              Send Message
+            </button>
+          </div> -->
+        </div>
+      </div>
     </div>
   </div>
 

@@ -5,10 +5,12 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { routes } from './app.routes';
+import { ThemeService } from '../Services/theme.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
+    ThemeService, // Add theme service to providers
     // Firebase providers with better error handling
     provideFirebaseApp(() => {
       try {
@@ -18,7 +20,7 @@ export const appConfig: ApplicationConfig = {
         // Return a minimal config to prevent app crash
         return initializeApp({
           projectId: 'd2ddatabase',
-          apiKey: 'AIzaSyBef27wt27Y59ko3iTHE97Ap2UL-DpOhR0'
+          apiKey: 'AIzaSyBef27wt27Y59ko3iTHE97Ap2UL-DpOhR0',
         });
       }
     }),
@@ -38,6 +40,6 @@ export const appConfig: ApplicationConfig = {
         console.warn('Firestore initialization error:', error);
         return getFirestore();
       }
-    })
-  ]
+    }),
+  ],
 };
