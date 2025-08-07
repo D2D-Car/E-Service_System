@@ -14,8 +14,8 @@
         <div class="card-title">
           <h3>{{ vehicle.year }} {{ vehicle.name }}</h3>
           <div class="card-actions">
-            <i class="fas fa-edit"></i>
-            <i class="fas fa-trash"></i>
+            <i class="fas fa-edit" (click)="editVehicle(vehicle)"></i>
+            <i class="fas fa-trash" (click)="confirmDelete(vehicle.id)"></i> 
           </div>
         </div>
         <p class="plate-info">{{ vehicle.color }} • {{ vehicle.plateNumber }}</p>
