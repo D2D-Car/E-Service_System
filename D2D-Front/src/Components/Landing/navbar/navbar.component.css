@@ -18,6 +18,21 @@
   color: var(--primary-color);
 }
 
+.navbar-brand img {
+  transition: transform 0.3s ease;
+  filter: brightness(1.1);
+}
+
+.navbar-brand:hover img {
+  transform: scale(1.05);
+}
+
+.brand-text {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--light);
+}
+
 .nav-link {
   margin: 0 10px;
   position: relative;
@@ -151,13 +166,6 @@
     flex-wrap: wrap;
     gap: 0.75rem;
   }
-
-  /* .navbar-brand {
-    flex: 1 1 100%;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 0.5rem;
-  } */
 
   .nav-item {
     width: 100%;
