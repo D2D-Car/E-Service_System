@@ -171,7 +171,7 @@
 .service-btn {
   margin-top: 1.5rem;
   width: 100%;
-  padding: 0.875rem;
+  padding: 0.75rem 1.5rem;
   background: linear-gradient(135deg, var(--primary-color), #d32f2f);
   color: var(--light);
   border: none;
@@ -181,12 +181,20 @@
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(232, 48, 48, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .service-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(232, 48, 48, 0.4);
   background: linear-gradient(135deg, #d32f2f, var(--primary-color));
+}
+
+.service-btn i {
+  font-size: 1.1rem;
 }
 
 /* Modal Styles - matching the service modal design */
@@ -276,7 +284,8 @@
 }
 
 .form-group input,
-.form-group select {
+.form-group select,
+.form-group textarea {
   background: #2a2a2a;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 6px;
@@ -287,14 +296,22 @@
 }
 
 .form-group input:focus,
-.form-group select:focus {
+.form-group select:focus,
+.form-group textarea:focus {
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0 0 0 2px rgba(232, 48, 48, 0.2);
 }
 
-.form-group input::placeholder {
+.form-group input::placeholder,
+.form-group textarea::placeholder {
   color: var(--light-font-color);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
 }
 
 .form-group select {
