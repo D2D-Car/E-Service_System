@@ -14,7 +14,15 @@
       <h3>This Week</h3>
     </div>
   </div>
-  <span class="availability">{{ availabilityStatus }}</span>
+  <span 
+  class="availability" 
+  [ngClass]="{
+    'available': availabilityStatus === 'Available',
+    'unavailable': availabilityStatus === 'Unavailable',
+  }">
+  {{ availabilityStatus }}
+</span>
+
 </div>
 <div class="nav-tabs">
   <button class="nav-tab" routerLink="/driver/dashboard" routerLinkActive="active">
