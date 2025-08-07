@@ -10,7 +10,8 @@
   --border-radius: 16px;
   --box-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.3);
   --time-transition: all 0.3s ease;
-  --icon-border-color: rgba(255, 255, 255, 0.1); /* أضفناها لو ناقصة */
+  --icon-border-color: rgba(255, 255, 255, 0.1);
+  /* أضفناها لو ناقصة */
 }
 
 /* ----------- MAIN CONTAINER ----------- */
@@ -46,6 +47,7 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 .profile-image:hover {
   transform: scale(1.08);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
@@ -114,6 +116,18 @@
   justify-content: center;
   gap: 0.5rem;
   position: relative;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.nav-tabs::-webkit-scrollbar {
+  height: 6px;
+}
+
+.nav-tabs::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 3px;
 }
 
 .nav-tab:hover {
@@ -141,6 +155,33 @@
 .nav-tab i {
   font-size: 1.1rem;
 }
+
+@media (max-width: 767px) {
+  .nav-tabs {
+    overflow-x: auto;          
+    -webkit-overflow-scrolling: touch; 
+    scrollbar-width: thin;      
+  }
+
+  .nav-tabs::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .nav-tabs::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+  }
+
+  .nav-tabs::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .nav-tab {
+    flex: 0 0 auto;       
+    white-space: nowrap; 
+  }
+}
+
 
 /* ----------- AVAILABILITY SECTION ----------- */
 .availability-section {
@@ -198,10 +239,12 @@
 .available {
   background-color: var(--success-color) !important;
 }
+
 .busy {
   background-color: var(--warning-color) !important;
   color: #333 !important;
 }
+
 .offline {
   background-color: var(--danger-color) !important;
 }
@@ -362,13 +405,14 @@
 
 .action-card:hover {
   transform: translateY(-6px) scale(1.02);
-  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 }
 
 .action-card.add-service {
   background: linear-gradient(135deg, #ff8a65 0%, #ff7043 100%);
 }
+
 .action-card.book-service:hover {
   background: linear-gradient(135deg, #ff7043 0%, #ff5722 100%);
 }
