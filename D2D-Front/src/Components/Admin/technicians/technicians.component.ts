@@ -8,17 +8,20 @@ import { AuthService } from '../../../Services/auth.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './technicians.component.html',
-  styleUrl: './technicians.component.css',
+  styleUrls: ['./technicians.component.css']
 })
 export class TechniciansComponent {
   constructor(private authService: AuthService) {}
 
   showAddTechnicianModal = false;
-  showPassword = false; 
+  showProfileModal = false;
+  showPassword = false;
   selectedFilter = 'All';
   filters = ['All', 'Available', 'Busy', 'On Break'];
+  isDarkMode = false;
 
   previewImage: string | null = null;
+  selectedTechnician: any = null;
 
   newTechnician = {
     name: '',
@@ -181,7 +184,22 @@ export class TechniciansComponent {
   closeAddTechnicianModal() {
     this.showAddTechnicianModal = false;
     this.previewImage = null;
-    this.showPassword = false; // إعادة تعيين إظهار كلمة المرور
+    this.showPassword = false;
+  }
+
+  viewTechnicianProfile(tech: any) {
+    this.selectedTechnician = tech;
+    this.showProfileModal = true;
+    this.isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  closeProfileModal() {
+    this.showProfileModal = false;
+    this.selectedTechnician = null;
+  }
+
+  toggleDarkMode() {
+    this.isDarkMode = !this.isDarkMode;
   }
 
   onImageSelected(event: any) {
@@ -213,7 +231,6 @@ export class TechniciansComponent {
     }
 
     try {
-      // Create technician account in Firebase
       await this.authService.signUp(
         this.newTechnician.email,
         this.newTechnician.password,
@@ -292,10 +309,6 @@ export class TechniciansComponent {
 
   emailTechnician(tech: any) {
     alert(`${tech.name} has completed ${tech.completedJobs} jobs with ${tech.rating}⭐ rating`);
-  }
-
-  viewTechnicianProfile(tech: any) {
-    console.log('Viewing profile of technician:', tech.name);
   }
 
   removeTechnician(tech: any) {
