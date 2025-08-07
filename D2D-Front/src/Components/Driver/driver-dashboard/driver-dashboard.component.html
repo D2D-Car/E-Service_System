@@ -1,4 +1,32 @@
 <div class="container">
+  <!-- Abvailability Status -->
+  <div class="availability-container">
+    <div class="availability-toggle">
+      <div class="availability-label">Availability Status</div>
+      <select class="availability-select" [value]="availablityStatus" (change)="onStatusChange($event)">
+        <option value="Available">Available</option>
+        <option value="Unavailable">Unavailable</option>
+      </select>
+    </div>
+    <div class="toggle-text">Toggle your availability to receive new jobs</div>
+  </div>
+  <!-- Abvailability Status -->
+
+  <!-- Statistics -->
+  <div class="statistics-container">
+    <div class="card" *ngFor="let statistic of statistics">
+      <div class="card-inner">
+        <div class="icon {{statistic.color}}">
+          <i class="{{statistic.icon}}"></i>
+        </div>
+        <div class="card-title">
+          <h3>{{statistic.title}}</h3>
+          <p>${{statistic.total}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Statistics -->
   <!-- Stats -->
   <div class="stats-container px-0">
     <div class="stat-card earnings">

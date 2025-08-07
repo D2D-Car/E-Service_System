@@ -1,12 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
-interface IStatistics {
-  icon: string;
-  title: string;
-  total: number;
-  color: string;
-}
+import { AvailabilityStatusService } from '../../../Services/Driver/availability-status.service';
+import { UserDataService, UserProfile } from '../../../Services/user-data.service';
+import { AuthService } from '../../../Services/auth.service';
+
 
 @Component({
   selector: 'app-driver-shared',
@@ -16,36 +14,51 @@ interface IStatistics {
   imports: [RouterModule, CommonModule]
 })
 
-export class DriverSharedComponent {
+export class DriverSharedComponent implements OnInit{
   activeTab: string = 'dashboard';
+  availabilityStatus: string = 'Available';
+  driverProfile: any = {
+    name: 'Loading...',
+    rating: 0,
+    totalJobs: 0,
+    earningsToday: 0,
+    earningsWeek: 0
+  };
 
-  statistics: IStatistics[] = [
-    {
-      icon: "fa-solid fa-dollar-sign",
-      title: "Today's Earnings",
-      total: 245,
-      color: "money-icon"
-    },
-    {
-      icon: "fas fa-chart-line",
-      title: "This Week",
-      total: 1680,
-      color: "services-icon"
-    },
-    {
-      icon: "fas fa-chart-line",
-      title: "This Month",
-      total: 6420,
-      color: "loyalty-icon"
-    },
-    {
-      icon: "fa-solid fa-toolbox",
-      title: "Total Jobs",
-      total: 340,
-      color: "member-icon"
+  constructor(
+    private router: Router, 
+    private availabilityService: AvailabilityStatusService,
+    private userDataService: UserDataService,
+    private authService: AuthService
+  ) { }
+
+  async ngOnInit() {
+    this.availabilityService.availabilityStatus$.subscribe(status => {
+      this.availabilityStatus = status;
+    });
+    
+    await this.loadDriverProfile();
+  }
+
+  private async loadDriverProfile() {
+    try {
+      const currentUser = this.authService.getCurrentUser();
+      if (currentUser) {
+        const userProfile = await this.userDataService.getUserProfile(currentUser.uid);
+        if (userProfile) {
+          this.driverProfile = {
+            name: userProfile.displayName || 'Driver',
+            rating: userProfile.rating || 0,
+            totalJobs: userProfile.totalTrips || 0,
+            earningsToday: 245, // These would come from earnings service
+            earningsWeek: 1680
+          };
+        }
+      }
+    } catch (error) {
+      console.error('Error loading driver profile:', error);
     }
-  ];
-  constructor(private router: Router) { }
+  }
 
   setActiveTab(tab: string) {
     this.activeTab = tab;

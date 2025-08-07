@@ -38,9 +38,17 @@ export class LoginComponent {
         const { email, password } = this.loginForm.value;
         await this.authService.signIn(email, password);
         
-        // Check if email is verified
-        if (this.authService.isEmailVerified()) {
-          this.router.navigate(['/dashboard']);
+        // Get user role and navigate accordingly
+        const userRole = this.authService.getUserRole();
+        
+        if (userRole === 'admin') {
+          this.router.navigate(['/admin']);
+        } else if (userRole === 'technician') {
+          this.router.navigate(['/technician/dashboard']);
+        } else if (userRole === 'driver') {
+          this.router.navigate(['/driver/dashboard']);
+        } else if (this.authService.isEmailVerified()) {
+          this.router.navigate(['/customer/dashboard']);
         } else {
           this.router.navigate(['/auth/pending-verification']);
         }
@@ -58,7 +66,19 @@ export class LoginComponent {
 
     try {
       await this.authService.signInWithGoogle();
-      this.router.navigate(['/dashboard']);
+      
+      // Get user role and navigate accordingly
+      const userRole = this.authService.getUserRole();
+      
+      if (userRole === 'admin') {
+        this.router.navigate(['/admin']);
+      } else if (userRole === 'technician') {
+        this.router.navigate(['/technician/dashboard']);
+      } else if (userRole === 'driver') {
+        this.router.navigate(['/driver/dashboard']);
+      } else {
+        this.router.navigate(['/customer/dashboard']);
+      }
     } catch (error: any) {
       this.errorMessage = error;
     } finally {
@@ -72,7 +92,19 @@ export class LoginComponent {
 
     try {
       await this.authService.signInWithFacebook();
-      this.router.navigate(['/dashboard']);
+      
+      // Get user role and navigate accordingly
+      const userRole = this.authService.getUserRole();
+      
+      if (userRole === 'admin') {
+        this.router.navigate(['/admin']);
+      } else if (userRole === 'technician') {
+        this.router.navigate(['/technician/dashboard']);
+      } else if (userRole === 'driver') {
+        this.router.navigate(['/driver/dashboard']);
+      } else {
+        this.router.navigate(['/customer/dashboard']);
+      }
     } catch (error: any) {
       this.errorMessage = error;
     } finally {

@@ -99,8 +99,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       status: 'away',
     },
     {
-      name: 'Youssef ElBaz',
-      email: 'youssef.elbaz@d2d.com',
+      name: 'Yousef Elbaz',
+      email: 'yousef.elbaz@d2d.com',
       role: 'Manager',
       avatar: '/assets/dashboard-img/team-01.png',
       status: 'busy',
@@ -305,8 +305,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     // Simulate logout process
     setTimeout(() => {
-      // Add actual logout logic here (clear tokens, redirect, etc.)
+      // Call the actual logout method from AuthService
+      // You can inject AuthService here if needed
       console.log('User logged out successfully');
+      // For now, redirect to login
+      window.location.href = '/auth/login';
     }, 500);
 
     this.showAdminDropdown = false;

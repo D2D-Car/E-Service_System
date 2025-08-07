@@ -1,20 +1,20 @@
 <div class="profile-bar">
   <img src="/assets/driver-shared-img/client.jpg" alt="Profile" class="profile-image">
   <div class="profile-info">
-    <p class="header">Mike Johnson</p>
-    <p class="rating">★ 4.9 (127 reviews) · 340 jobs completed</p>
+    <p class="header">{{ driverProfile.name }}</p>
+    <p class="rating">★ {{ driverProfile.rating }} (127 reviews) · {{ driverProfile.totalJobs }} jobs completed</p>
   </div>
   <div class="earnings d-flex justify-content-between">
     <div class="today">
-      <p>$245</p>
+      <p>${{ driverProfile.earningsToday }}</p>
       <h3>Today</h3>
     </div>
     <div class="week">
-      <p>$1680</p>
+      <p>${{ driverProfile.earningsWeek }}</p>
       <h3>This Week</h3>
     </div>
   </div>
-  <span class="availability">Available</span>
+  <span class="availability">{{ availabilityStatus }}</span>
 </div>
 <div class="nav-tabs">
   <button class="nav-tab" routerLink="/driver/dashboard" routerLinkActive="active">
@@ -37,35 +37,4 @@
     Profile
   </button>
 </div>
-<div class="container">
-  <!-- Abvailability Status -->
-  <div class="availability-container">
-    <div class="availability-toggle">
-      <div class="availability-label">Availability Status</div>
-      <select class="availability-select">
-        <option value="available">Available</option>
-        <option value="unavailable">Unavailable</option>
-      </select>
-    </div>
-    <div class="toggle-text">Toggle your availability to receive new jobs</div>
-  </div>
-  <!-- Abvailability Status -->
-
-  <!-- Statistics -->
-  <div class="statistics-container">
-    <div class="card" *ngFor="let statistic of statistics">
-      <div class="card-inner">
-        <div class="icon {{statistic.color}}">
-          <i class="{{statistic.icon}}"></i>
-        </div>
-        <div class="card-title">
-          <h3>{{statistic.title}}</h3>
-          <p>${{statistic.total}}</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Statistics -->
-</div>
-
 <router-outlet></router-outlet>
