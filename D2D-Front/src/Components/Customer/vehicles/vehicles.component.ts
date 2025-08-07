@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ServiceHistoryService } from '../dashboard/service-history.service';
 
 interface Vehicle {
   id: number;
@@ -14,22 +13,6 @@ interface Vehicle {
   image: string;
   email: string;
   password: string;
-}
-
-interface Service {
-  id?: number;
-  title: string;
-  serviceType: string;
-  date: string;
-  time: string;
-  price: number;
-  technician: string;
-  description: string;
-  status?: string;
-  rating?: number;
-  vehicle?: string;
-  location?: string;
-  duration?: string;
 }
 
 @Component({
@@ -80,10 +63,8 @@ export class VehiclesComponent {
 
   // Modal state
   showAddVehicleModal = false;
-  showScheduleServiceModal = false;
   imagePreview: string | null = null;
   selectedImageFile: File | null = null;
-  selectedVehicle: Vehicle | null = null;
   
   // New vehicle form data
   newVehicle: Omit<Vehicle, 'id'> = {
@@ -97,19 +78,6 @@ export class VehiclesComponent {
     email: '',
     password: ''
   };
-
-  // New service form data
-  newService: Omit<Service, 'id'> = {
-    title: '',
-    serviceType: '',
-    date: '',
-    time: '',
-    price: 0,
-    technician: '',
-    description: ''
-  };
-
-  constructor(private serviceHistoryService: ServiceHistoryService) {}
 
   // TrackBy function for performance optimization
   trackByVehicleId(index: number, vehicle: Vehicle): number {
@@ -131,60 +99,14 @@ export class VehiclesComponent {
       email: '',
       password: ''
     };
+    // Reset image preview
+    this.imagePreview = null;
+    this.selectedImageFile = null;
   }
 
   // Close add vehicle modal
   closeAddVehicleModal(): void {
     this.showAddVehicleModal = false;
-  }
-
-  // Open schedule service modal
-  openScheduleServiceModal(vehicle: Vehicle): void {
-    this.selectedVehicle = vehicle;
-    this.showScheduleServiceModal = true;
-    // Reset form
-    this.newService = {
-      title: '',
-      serviceType: '',
-      date: '',
-      time: '',
-      price: 0,
-      technician: '',
-      description: ''
-    };
-  }
-
-  // Close schedule service modal
-  closeScheduleServiceModal(): void {
-    this.showScheduleServiceModal = false;
-    this.selectedVehicle = null;
-  }
-
-  // Schedule service
-  scheduleService(): void {
-    if (this.selectedVehicle && this.newService.title && this.newService.serviceType) {
-      const serviceToAdd: Service = {
-        id: Date.now(),
-        title: this.newService.title,
-        serviceType: this.newService.serviceType,
-        date: this.newService.date,
-        time: this.newService.time,
-        price: this.newService.price,
-        technician: this.newService.technician,
-        description: this.newService.description,
-        status: 'Scheduled',
-        rating: 0,
-        vehicle: `${this.selectedVehicle.year} ${this.selectedVehicle.name}`,
-        location: 'Main Branch',
-        duration: '60 mins'
-      };
-
-      // Add to service history using the service
-      this.serviceHistoryService.addService(serviceToAdd);
-      
-      // Close modal and reset form
-      this.closeScheduleServiceModal();
-    }
   }
 
   // Add new vehicle
