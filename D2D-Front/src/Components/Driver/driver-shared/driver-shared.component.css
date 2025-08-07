@@ -69,6 +69,14 @@
   white-space: nowrap;
 }
 
+.available {
+  background-color: var(--success-color);
+}
+
+.unavailable {
+  background-color: var(--danger-color); 
+}
+
 @media (max-width: 768px) {
   .profile-bar {
     flex-direction: column;

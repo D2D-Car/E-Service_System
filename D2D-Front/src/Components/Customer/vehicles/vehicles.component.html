@@ -6,12 +6,9 @@
       Add Vehicle
     </button>
   </div>
-
+  
   <div class="vehicle-cards">
-    <div
-      class="vehicle-card"
-      *ngFor="let vehicle of vehicles; trackBy: trackByVehicleId"
-    >
+    <div class="vehicle-card" *ngFor="let vehicle of vehicles; trackBy: trackByVehicleId">
       <img [src]="vehicle.image" [alt]="vehicle.name" class="vehicle-img" />
       <div class="vehicle-details">
         <div class="card-title">
@@ -21,9 +18,7 @@
             <i class="fas fa-trash"></i>
           </div>
         </div>
-        <p class="plate-info">
-          {{ vehicle.color }} • {{ vehicle.plateNumber }}
-        </p>
+        <p class="plate-info">{{ vehicle.color }} • {{ vehicle.plateNumber }}</p>
         <div class="info-row">
           <span>Current Mileage:</span>
           <span class="miles">{{ vehicle.currentMileage }} miles</span>
@@ -32,20 +27,13 @@
           <span>Next Service Due:</span>
           <span class="service-due">{{ vehicle.nextServiceDue }}</span>
         </div>
-        <button class="service-btn" (click)="openScheduleServiceModal(vehicle)">
-          <i class="fas fa-plus"></i>
-          Schedule Service
-        </button>
+        <button class="service-btn">Schedule Service</button>
       </div>
     </div>
   </div>
 
   <!-- Add Vehicle Modal -->
-  <div
-    class="modal-overlay"
-    *ngIf="showAddVehicleModal"
-    (click)="closeAddVehicleModal()"
-  >
+  <div class="modal-overlay" *ngIf="showAddVehicleModal" (click)="closeAddVehicleModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h3>Add New Vehicle</h3>
@@ -53,99 +41,100 @@
           <i class="fas fa-times"></i>
         </button>
       </div>
-
+      
       <form class="modal-form" (ngSubmit)="addVehicle()" #vehicleForm="ngForm">
         <div class="form-row">
           <div class="form-group">
             <label for="vehicleName">Vehicle Name</label>
-            <input
-              type="text"
+            <input 
+              type="text" 
               id="vehicleName"
               name="vehicleName"
               [(ngModel)]="newVehicle.name"
               placeholder="e.g. Toyota Camry"
               required
-            />
+            >
           </div>
           <div class="form-group">
             <label for="vehicleYear">Year</label>
-            <input
-              type="number"
+            <input 
+              type="number" 
               id="vehicleYear"
               name="vehicleYear"
               [(ngModel)]="newVehicle.year"
               placeholder="2024"
               required
-            />
+            >
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label for="vehicleColor">Color</label>
-            <input
-              type="text"
+            <input 
+              type="text" 
               id="vehicleColor"
               name="vehicleColor"
               [(ngModel)]="newVehicle.color"
               placeholder="e.g. Blue"
               required
-            />
+            >
           </div>
           <div class="form-group">
             <label for="plateNumber">Plate Number</label>
-            <input
-              type="text"
+            <input 
+              type="text" 
               id="plateNumber"
               name="plateNumber"
               [(ngModel)]="newVehicle.plateNumber"
               placeholder="e.g. ABC-123"
               required
-            />
+            >
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label for="ownerEmail">Owner Email</label>
-            <input
-              type="email"
+            <input 
+              type="email" 
               id="ownerEmail"
               name="ownerEmail"
               [(ngModel)]="newVehicle.email"
               placeholder="e.g. owner@email.com"
               required
-            />
+            >
           </div>
           <div class="form-group">
             <label for="ownerPassword">Password</label>
-            <input
-              type="password"
+            <input 
+              type="password" 
               id="ownerPassword"
               name="ownerPassword"
               [(ngModel)]="newVehicle.password"
               placeholder="Enter password"
               required
-            />
+            >
           </div>
         </div>
 
+        
         <div class="form-row">
           <div class="form-group">
             <label for="currentMileage">Current Mileage</label>
-
-            <input
-              type="text"
+            
+            <input 
+              type="text" 
               id="currentMileage"
               name="currentMileage"
               [(ngModel)]="newVehicle.currentMileage"
               placeholder="45,000"
               required
-            />
+            >
           </div>
           <div class="form-group">
             <label for="vehicleImage">Vehicle Image</label>
-            <input
+            <input 
               type="file"
               id="vehicleImage"
               name="vehicleImage"
@@ -153,15 +142,10 @@
               accept="image/*"
               class="file-input"
               required
-            />
+            >
             <div class="file-input-wrapper" [class.has-image]="imagePreview">
               <div class="file-input-display" (click)="triggerFileInput()">
-                <img
-                  *ngIf="imagePreview"
-                  [src]="imagePreview"
-                  alt="Preview"
-                  class="image-preview"
-                />
+                <img *ngIf="imagePreview" [src]="imagePreview" alt="Preview" class="image-preview">
                 <div *ngIf="!imagePreview" class="upload-placeholder">
                   <i class="fas fa-cloud-upload-alt"></i>
                   <span>Choose Vehicle Image</span>
@@ -171,19 +155,12 @@
           </div>
         </div>
 
+
         <div class="modal-actions">
-          <button
-            type="button"
-            class="cancel-btn"
-            (click)="closeAddVehicleModal()"
-          >
+          <button type="button" class="cancel-btn" (click)="closeAddVehicleModal()">
             Cancel
           </button>
-          <button
-            type="submit"
-            class="submit-btn"
-            [disabled]="!vehicleForm.valid"
-          >
+          <button type="submit" class="submit-btn" [disabled]="!vehicleForm.valid">
             <i class="fas fa-plus"></i>
             Add Vehicle
           </button>
@@ -193,139 +170,3 @@
   </div>
 </div>
 
-<!-- Schedule Service Modal -->
-<div
-  class="modal-overlay"
-  *ngIf="showScheduleServiceModal"
-  (click)="closeScheduleServiceModal()"
->
-  <div class="modal-content" (click)="$event.stopPropagation()">
-    <div class="modal-header">
-      <h3>
-        Schedule Service for {{ selectedVehicle?.year }}
-        {{ selectedVehicle?.name }}
-      </h3>
-      <button class="close-btn" (click)="closeScheduleServiceModal()">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-
-    <form
-      class="modal-form"
-      (ngSubmit)="scheduleService()"
-      #scheduleServiceForm="ngForm"
-    >
-      <div class="form-row">
-        <div class="form-group">
-          <label for="serviceTitle">Service Title</label>
-          <input
-            type="text"
-            id="serviceTitle"
-            name="serviceTitle"
-            [(ngModel)]="newService.title"
-            placeholder="e.g. Oil Change Service"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="serviceType">Service Type</label>
-          <select
-            id="serviceType"
-            name="serviceType"
-            [(ngModel)]="newService.serviceType"
-            required
-          >
-            <option value="">Select Service Type</option>
-            <option value="oil-change">Oil Change & Filter</option>
-            <option value="brake-service">Brake Service</option>
-            <option value="tire-service">Tire Service</option>
-            <option value="engine-repair">Engine Repair</option>
-            <option value="transmission">Transmission</option>
-            <option value="battery-service">Battery Service</option>
-            <option value="air-filter">Air Filter Change</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label for="serviceDate">Service Date</label>
-          <input
-            type="date"
-            id="serviceDate"
-            name="serviceDate"
-            [(ngModel)]="newService.date"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="serviceTime">Service Time</label>
-          <input
-            type="time"
-            id="serviceTime"
-            name="serviceTime"
-            [(ngModel)]="newService.time"
-            required
-          />
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label for="servicePrice">Estimated Price ($)</label>
-          <input
-            type="number"
-            id="servicePrice"
-            name="servicePrice"
-            [(ngModel)]="newService.price"
-            placeholder="0.00"
-            min="0"
-            step="0.01"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="serviceTechnician">Preferred Technician</label>
-          <input
-            type="text"
-            id="serviceTechnician"
-            name="serviceTechnician"
-            [(ngModel)]="newService.technician"
-            placeholder="e.g. John Smith"
-            required
-          />
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="serviceDescription">Service Description</label>
-        <textarea
-          id="serviceDescription"
-          name="serviceDescription"
-          [(ngModel)]="newService.description"
-          placeholder="Describe the service needed..."
-          rows="3"
-          required
-        ></textarea>
-      </div>
-
-      <div class="modal-actions">
-        <button
-          type="button"
-          class="cancel-btn"
-          (click)="closeScheduleServiceModal()"
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          class="submit-btn"
-          [disabled]="!scheduleServiceForm.valid"
-        >
-          <i class="fas fa-calendar-plus"></i>
-          Schedule Service
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
