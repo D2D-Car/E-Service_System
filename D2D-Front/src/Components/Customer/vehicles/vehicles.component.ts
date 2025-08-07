@@ -22,6 +22,27 @@ interface Vehicle {
   styleUrl: './vehicles.component.css',
 })
 export class VehiclesComponent {
+  // Method to edit a vehicle
+  editVehicle(vehicle: any): void {
+    // TODO: Implement edit functionality
+    console.log('Editing vehicle:', vehicle);
+  }
+
+  // Method to confirm vehicle deletion
+  confirmDelete(vehicleId: number): void {
+    if (confirm('Are you sure you want to delete this vehicle?')) {
+      this.deleteVehicle(vehicleId);
+    }
+  }
+
+  // Private method to handle vehicle deletion
+  private deleteVehicle(vehicleId: number): void {
+    this.vehicles = this.vehicles.filter(v => v.id !== vehicleId);
+    // TODO: Add API call to delete from backend
+    console.log('Vehicle deleted:', vehicleId);
+  }
+
+
   vehicles: Vehicle[] = [
     {
       id: 1,
