@@ -52,6 +52,16 @@
   .section-subtitles {
     font-size: 1rem;
   }
+
+  .orders-table th:not(:first-child, :last-child),
+  .orders-table td:not(:first-child, :last-child) {
+    min-width: 130px;
+  }
+
+  .orders-table th:last-child,
+  .orders-table td:last-child {
+    min-width: 180px;
+  }
 }
 
 /* Header */
