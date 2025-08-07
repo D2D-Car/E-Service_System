@@ -600,6 +600,22 @@ body.light-theme .filter-btn:hover:not(.active) {
   color: var(--text-primary) !important;
 }
 
+.submit-technician-btn{
+  background: var(--primary-color);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.submit-technician-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
 @media (min-width: 1152px) {
   .modal-content {
     padding: 2rem 3rem;
@@ -620,7 +636,34 @@ body.light-theme .filter-btn:hover:not(.active) {
     height: 100px;
   }
 }
+@media (min-width: 993px) and (max-width: 1151px) {
+  .modal-content {
+    padding: 1.8rem 2.5rem;
+    max-width: 650px;
+    max-height: 58vh;
+    margin: auto;
+    overflow-y: auto;
+  }
 
+  .form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .image-preview {
+    width: 95px;
+    height: 95px;
+  }
+
+  .form-actions {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .submit-technician-btn {
+    width: auto;
+  }
+}
 @media (max-width: 992px) {
   .modal-content {
     padding: 1.5rem 2rem;
@@ -653,7 +696,7 @@ body.light-theme .filter-btn:hover:not(.active) {
     align-items: stretch;
   }
 
-  .submit-driver-btn {
+  .submit-technician-btn {
     width: 100%;
   }
 
@@ -685,7 +728,7 @@ body.light-theme .filter-btn:hover:not(.active) {
     padding: 10px;
   }
 
-  .submit-driver-btn {
+  .submit-technician-btn {
     font-size: 0.95rem;
     padding: 10px 16px;
     width: 100%;
@@ -726,7 +769,7 @@ body.light-theme .filter-btn:hover:not(.active) {
     padding: 8px;
   }
 
-  .submit-driver-btn {
+  .submit-technician-btn {
     font-size: 0.9rem;
     padding: 10px 14px;
     width: 100%;
