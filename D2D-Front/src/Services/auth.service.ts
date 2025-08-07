@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, User, sendEmailVerification, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, updateProfile } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, User, sendEmailVerification, GoogleAuthProvider, signInWithPopup, updateProfile } from '@angular/fire/auth';
 import { Firestore, doc, setDoc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, from, of } from 'rxjs';
 import { Router } from '@angular/router';
@@ -98,20 +98,6 @@ export class AuthService {
   async signInWithGoogle(): Promise<void> {
     try {
       const provider = new GoogleAuthProvider();
-      const credential = await signInWithPopup(this.auth, provider);
-      
-      // Check if user exists in Firestore, if not create profile
-      await this.createUserProfileIfNotExists(credential.user);
-      
-    } catch (error: any) {
-      throw this.handleAuthError(error);
-    }
-  }
-
-  // Sign in with Facebook
-  async signInWithFacebook(): Promise<void> {
-    try {
-      const provider = new FacebookAuthProvider();
       const credential = await signInWithPopup(this.auth, provider);
       
       // Check if user exists in Firestore, if not create profile

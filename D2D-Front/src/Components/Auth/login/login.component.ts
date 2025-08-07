@@ -86,32 +86,6 @@ export class LoginComponent {
     }
   }
 
-  async signInWithFacebook() {
-    this.isLoading = true;
-    this.errorMessage = '';
-
-    try {
-      await this.authService.signInWithFacebook();
-      
-      // Get user role and navigate accordingly
-      const userRole = this.authService.getUserRole();
-      
-      if (userRole === 'admin') {
-        this.router.navigate(['/admin']);
-      } else if (userRole === 'technician') {
-        this.router.navigate(['/technician/dashboard']);
-      } else if (userRole === 'driver') {
-        this.router.navigate(['/driver/dashboard']);
-      } else {
-        this.router.navigate(['/customer/dashboard']);
-      }
-    } catch (error: any) {
-      this.errorMessage = error;
-    } finally {
-      this.isLoading = false;
-    }
-  }
-
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
