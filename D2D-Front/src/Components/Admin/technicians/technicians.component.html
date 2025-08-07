@@ -1,9 +1,3 @@
-
-
-
-
-
-
 <section class="technicians-section">
   <h2 class="section-title">OUR EXPERT TECHNICIANS</h2>
   <p class="section-subtitle">Highly skilled professionals dedicated to quality service</p>
@@ -13,6 +7,17 @@
     <button class="add-technician-btn" (click)="openAddTechnicianModal()">
       Add New Technician
     </button>
+  </div>
+
+  <!-- Filter Navigation - المضاف الجديد -->
+  <div class="filters-container">
+    <div class="filters-navbar">
+      <button *ngFor="let filter of filters" class="filter-btn" [class.active]="selectedFilter === filter"
+        (click)="setFilter(filter)">
+        <span class="filter-text">{{filter}}</span>
+        <span class="filter-count">{{getStatusCount(filter)}}</span>
+      </button>
+    </div>
   </div>
 
   <!-- المودال -->
@@ -115,12 +120,10 @@
     </div>
   </div>
 
-  <!-- كروت التقنيين -->
   <div class="container-fluid">
     <div class="row g-4">
-      <div class="col-xl-3 col-lg-4 col-md-6 col-12" *ngFor="let tech of technicians">
+      <div class="col-xl-3 col-lg-4 col-md-6 col-12" *ngFor="let tech of filteredTechnicians">
         <div class="card">
-          <!-- Contact buttons في الأعلى يمين -->
           <div class="contact-buttons">
             <button class="contact-btn phone-btn" (click)="callTechnician(tech)" title="Certification">
               <i class="fas fa-certificate"></i>
@@ -130,12 +133,10 @@
             </button>
           </div>
 
-          <!-- زر الحذف -->
           <button class="remove-btn-icon" (click)="removeTechnician(tech)" title="Remove Technician">
             <i class="fas fa-times"></i>
           </button>
 
-          <!-- مؤشر الحالة -->
           <div class="status-indicator" [ngClass]="{
                  'available': tech.status === 'Available',
                  'busy': tech.status === 'Busy',
@@ -173,12 +174,22 @@
           <!-- تاريخ الانضمام -->
           <div class="join-date">Working Since: {{ tech.joined }}</div>
 
-          <!-- أزرار العمل -->
           <div class="action-footer">
             <button class="profile-btn" (click)="viewTechnicianProfile(tech)">VIEW PROFILE</button>
           </div>
         </div>
       </div>
+    </div>
+
+    <div *ngIf="filteredTechnicians.length === 0" class="empty-state">
+      <div class="empty-icon">👨‍🔧</div>
+      <div class="empty-title">No Technicians Found</div>
+      <div class="empty-description">
+        There are no technicians with "{{selectedFilter}}" status.
+      </div>
+      <button class="empty-action" (click)="setFilter('All')">
+        Show All Technicians
+      </button>
     </div>
   </div>
 </section>

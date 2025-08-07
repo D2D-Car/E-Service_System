@@ -14,9 +14,10 @@ export class TechniciansComponent {
   constructor(private authService: AuthService) {}
 
   showAddTechnicianModal = false;
-  showPassword = false; // متغير للتحكم في إظهار/إخفاء كلمة المرور
+  showPassword = false; 
+  selectedFilter = 'All';
+  filters = ['All', 'Available', 'Busy', 'On Break'];
 
-  // المعاينة قبل الحفظ
   previewImage: string | null = null;
 
   newTechnician = {
@@ -33,7 +34,6 @@ export class TechniciansComponent {
     image: ''
   };
 
-  // خيارات الحالات المتاحة
   statusOptions = [
     { value: 'Available', label: 'Available', class: 'available' },
     { value: 'Busy', label: 'Busy', class: 'busy' },
@@ -155,6 +155,25 @@ export class TechniciansComponent {
     },
   ];
 
+  // Filter functionality methods - المضاف الجديد
+  get filteredTechnicians() {
+    if (this.selectedFilter === 'All') {
+      return this.technicians;
+    }
+    return this.technicians.filter(tech => tech.status === this.selectedFilter);
+  }
+
+  setFilter(filter: string) {
+    this.selectedFilter = filter;
+  }
+
+  getStatusCount(status: string): number {
+    if (status === 'All') {
+      return this.technicians.length;
+    }
+    return this.technicians.filter(tech => tech.status === status).length;
+  }
+
   openAddTechnicianModal() {
     this.showAddTechnicianModal = true;
   }
@@ -165,7 +184,6 @@ export class TechniciansComponent {
     this.showPassword = false; // إعادة تعيين إظهار كلمة المرور
   }
 
-  // اختيار الصورة + معاينة قبل الحفظ
   onImageSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
@@ -177,7 +195,6 @@ export class TechniciansComponent {
     }
   }
 
-  // إضافة التقني
   async addTechnician() {
     if (
       !this.newTechnician.name ||
@@ -204,7 +221,6 @@ export class TechniciansComponent {
         'technician'
       );
 
-      // Add to local technicians array for display
       const newTechnicianData = {
         ...this.newTechnician,
         id: this.technicians.length + 1,
@@ -213,7 +229,6 @@ export class TechniciansComponent {
 
       this.technicians.push(newTechnicianData);
 
-      // تصفير البيانات
       this.newTechnician = {
         name: '',
         specialty: '',
@@ -270,6 +285,7 @@ export class TechniciansComponent {
       notification.remove();
     }, 3000);
   }
+  
   callTechnician(tech: any) {
     alert(`Certification: ${tech.certification} - ${tech.specialty} specialist with ${tech.experience} experience`);
   }
@@ -289,8 +305,7 @@ export class TechniciansComponent {
     }
   }
 
-  // دالة محسّنة لتبديل إظهار كلمة المرور
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
-}
+} 
