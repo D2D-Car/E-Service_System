@@ -56,4 +56,102 @@
       </div>
     </div>
   </div>
+
+  <!-- Profile Modal -->
+  <div class="modal-overlay" [class.active]="showProfileModal" (click)="closeProfileModal()">
+    <div class="profile-modal" (click)="$event.stopPropagation()" *ngIf="selectedCustomer">
+      
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="header-content">
+          <i class="fas fa-user header-icon"></i>
+          <span class="header-title">Driver Profile</span>
+        </div>
+        <button class="close-btn" (click)="closeProfileModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Profile Content -->
+      <div class="profile-content">
+        
+        <!-- Profile Image and Rating -->
+        <div class="profile-header">
+          <div class="profile-image-container">
+            <img [src]="selectedCustomer.image" class="modal-profile-img" [alt]="selectedCustomer.name">
+            <div class="rating-badge">
+              <i class="fas fa-star"></i>
+              <span>4.6</span>
+            </div>
+          </div>
+          
+          <h3 class="profile-name">{{ selectedCustomer.name }}</h3>
+          <p class="profile-subtitle">Professional Driver</p>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+          <div class="stat-item">
+            <div class="stat-number">890</div>
+            <div class="stat-label">TOTAL TRIPS</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">4.6</div>
+            <div class="stat-label">RATING</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">3 Years</div>
+            <div class="stat-label">EXPERIENCE</div>
+          </div>
+        </div>
+
+        <!-- Details Section -->
+        <div class="details-section">
+          
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="fas fa-id-card"></i>
+            </div>
+            <div class="detail-content">
+              <div class="detail-label">LICENSE NUMBER</div>
+              <div class="detail-value">EG-DL-789012</div>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="fas fa-car"></i>
+            </div>
+            <div class="detail-content">
+              <div class="detail-label">VEHICLE TYPE</div>
+              <div class="detail-value">SUV</div>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="fas fa-calendar"></i>
+            </div>
+            <div class="detail-content">
+              <div class="detail-label">DRIVING SINCE</div>
+              <div class="detail-value">{{ selectedCustomer.joined }}</div>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="detail-content">
+              <div class="detail-label">EMAIL ADDRESS</div>
+              <div class="detail-value">{{ selectedCustomer.name.toLowerCase().replace(' ', '.') }}@example.com</div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
 </section>

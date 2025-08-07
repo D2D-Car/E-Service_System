@@ -9,13 +9,16 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./customers.component.css'],
 })
 export class CustomersComponent {
+  showProfileModal = false;
+  selectedCustomer: any = null;
+
   customers = [
     {
       id: 1,
       name: 'Ahmed Hassan',
       membershipType: 'Premium',
       totalOrders: 15,
-      image: '/assets/dashboard-img/team-01.png',
+      image: '/assets/customers-img/cust1.jpg',
       joined: 'Jan 2024',
       totalSpent: '12,500',
       location: 'Cairo, Egypt',
@@ -26,7 +29,7 @@ export class CustomersComponent {
       name: 'Fatima El-Sayed',
       membershipType: 'Gold',
       totalOrders: 8,
-      image: '/assets/dashboard-img/team-02.png',
+      image: '/assets/customers-img/cust2.jpg',
       joined: 'Feb 2024',
       totalSpent: '8,200',
       location: 'Alexandria, Egypt',
@@ -37,7 +40,7 @@ export class CustomersComponent {
       name: 'Mohamed Ali',
       membershipType: 'Premium',
       totalOrders: 22,
-      image: '/assets/dashboard-img/team-03.png',
+      image: '/assets/customers-img/cust3.jpg',
       joined: 'Mar 2024',
       totalSpent: '18,900',
       location: 'Giza, Egypt',
@@ -48,7 +51,7 @@ export class CustomersComponent {
       name: 'Nour Ibrahim',
       membershipType: 'Silver',
       totalOrders: 12,
-      image: '/assets/dashboard-img/team-04.png',
+      image: '/assets/customers-img/cust4.jpg',
       joined: 'Apr 2024',
       totalSpent: '6,800',
       location: 'Mansoura, Egypt',
@@ -59,7 +62,7 @@ export class CustomersComponent {
       name: 'Omar Mahmoud',
       membershipType: 'Gold',
       totalOrders: 18,
-      image: '/assets/dashboard-img/team-05.png',
+      image: '/assets/customers-img/cust5.jpg',
       joined: 'May 2024',
       totalSpent: '14,300',
       location: 'Aswan, Egypt',
@@ -70,7 +73,7 @@ export class CustomersComponent {
       name: 'Yasmin Farouk',
       membershipType: 'Silver',
       totalOrders: 9,
-      image: '/assets/dashboard-img/team-01.png',
+      image: '/assets/customers-img/cust6.jpg',
       joined: 'Jun 2024',
       totalSpent: '5,600',
       location: 'Luxor, Egypt',
@@ -81,7 +84,7 @@ export class CustomersComponent {
       name: 'Karim Adel',
       membershipType: 'Premium',
       totalOrders: 25,
-      image: '/assets/dashboard-img/team-02.png',
+      image: '/assets/customers-img/cust7.jpg',
       joined: 'Jul 2024',
       totalSpent: '22,100',
       location: 'Tanta, Egypt',
@@ -92,7 +95,7 @@ export class CustomersComponent {
       name: 'Mariam Youssef',
       membershipType: 'Gold',
       totalOrders: 14,
-      image: '/assets/dashboard-img/team-03.png',
+      image: '/assets/customers-img/cust8.jpg',
       joined: 'Aug 2024',
       totalSpent: '9,750',
       location: 'Ismailia, Egypt',
@@ -111,8 +114,14 @@ export class CustomersComponent {
   }
 
   viewCustomerProfile(customer: any) {
+    this.selectedCustomer = customer;
+    this.showProfileModal = true;
     console.log('Viewing profile of customer:', customer.name);
-    // Add navigation logic here
+  }
+
+  closeProfileModal() {
+    this.showProfileModal = false;
+    this.selectedCustomer = null;
   }
 
   removeCustomer(customer: any) {
