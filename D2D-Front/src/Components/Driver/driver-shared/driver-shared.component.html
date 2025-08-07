@@ -1,16 +1,16 @@
 <div class="profile-bar">
   <img src="/assets/driver-shared-img/client.jpg" alt="Profile" class="profile-image">
   <div class="profile-info">
-    <p class="header">Mike Johnson</p>
-    <p class="rating">★ 4.9 (127 reviews) · 340 jobs completed</p>
+    <p class="header">{{ driverProfile.name }}</p>
+    <p class="rating">★ {{ driverProfile.rating }} (127 reviews) · {{ driverProfile.totalJobs }} jobs completed</p>
   </div>
   <div class="earnings d-flex justify-content-between">
     <div class="today">
-      <p>$245</p>
+      <p>${{ driverProfile.earningsToday }}</p>
       <h3>Today</h3>
     </div>
     <div class="week">
-      <p>$1680</p>
+      <p>${{ driverProfile.earningsWeek }}</p>
       <h3>This Week</h3>
     </div>
   </div>

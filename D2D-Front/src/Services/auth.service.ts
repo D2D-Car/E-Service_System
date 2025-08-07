@@ -9,7 +9,7 @@ export interface UserData {
   uid: string;
   email: string;
   displayName: string;
-  role: 'user' | 'admin' | 'technician';
+   role: 'user' | 'admin' | 'technician' | 'driver';
   createdAt: Date;
   lastLoginAt: Date;
   emailVerified: boolean;
@@ -42,29 +42,36 @@ export class AuthService {
   }
 
   // Sign up with email and password
-  async signUp(email: string, password: string, displayName: string): Promise<void> {
+  async signUp(email: string, password: string, displayName: string, role: string = 'user'): Promise<void> {
     try {
       const credential = await createUserWithEmailAndPassword(this.auth, email, password);
       
       // Update profile with display name
       await updateProfile(credential.user, { displayName });
       
-      // Send email verification
-      await sendEmailVerification(credential.user);
+      // Send email verification only for regular users (not for admin-created accounts)
+      if (role === 'user') {
+        await sendEmailVerification(credential.user);
+      }
       
       // Create user document in Firestore
       const userData: UserData = {
         uid: credential.user.uid,
         email: credential.user.email!,
         displayName,
-        role: 'user',
+        role: role as 'user' | 'admin' | 'technician' | 'driver',
         createdAt: new Date(),
         lastLoginAt: new Date(),
-        emailVerified: false
+        emailVerified: role !== 'user' // Admin-created accounts (driver, technician) are auto-verified
       };
       
       await setDoc(doc(this.firestore, 'users', credential.user.uid), userData);
       this.userDataSubject.next(userData);
+      
+      // For admin-created accounts, add additional profile data
+      if (role !== 'user') {
+        await this.createExtendedProfile(credential.user.uid, role, displayName);
+      }
       
     } catch (error: any) {
       throw this.handleAuthError(error);
@@ -78,6 +85,9 @@ export class AuthService {
       
       // Update last login time
       await this.updateLastLogin(credential.user.uid);
+      
+      // Load user data but don't navigate here - let the component handle it
+      await this.loadUserData(credential.user.uid);
       
     } catch (error: any) {
       throw this.handleAuthError(error);
@@ -151,7 +161,7 @@ export class AuthService {
   // Sign out
   async signOut(): Promise<void> {
     await signOut(this.auth);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 
   // Get current user
@@ -171,8 +181,50 @@ export class AuthService {
 
   // Check if email is verified
   isEmailVerified(): boolean {
+    const userData = this.userDataSubject.value;
     const user = this.currentUserSubject.value;
+    
+    // For admins, always return true
+    if (userData?.role === 'admin') {
+      return true;
+    }
+    
     return user ? user.emailVerified : false;
+  }
+
+  // Get user role
+  getUserRole(): string | null {
+    const userData = this.userDataSubject.value;
+    return userData ? userData.role : null;
+  }
+
+  // Create extended profile for technicians and drivers
+  private async createExtendedProfile(uid: string, role: string, displayName: string): Promise<void> {
+    try {
+      const extendedData: any = {
+        displayName,
+        joinDate: new Date().toISOString().split('T')[0],
+        profileImage: '/assets/dashboard-img/avatar.png'
+      };
+
+      if (role === 'technician') {
+        extendedData.specialty = 'General Repair';
+        extendedData.certification = 'Certified Tech';
+        extendedData.experience = '1 Year';
+        extendedData.rating = 5.0;
+        extendedData.completedJobs = 0;
+      } else if (role === 'driver') {
+        extendedData.licenseNumber = 'EG-DL-000000';
+        extendedData.experience = '1 Year';
+        extendedData.vehicleType = 'Sedan';
+        extendedData.rating = 5.0;
+        extendedData.totalTrips = 0;
+      }
+
+      await updateDoc(doc(this.firestore, 'users', uid), extendedData);
+    } catch (error) {
+      console.error('Error creating extended profile:', error);
+    }
   }
 
   // Private helper methods
@@ -215,6 +267,9 @@ export class AuthService {
       await setDoc(doc(this.firestore, 'users', user.uid), userData);
       this.userDataSubject.next(userData);
     } else {
+      // Load existing user data
+      const userData = userDoc.data() as UserData;
+      this.userDataSubject.next(userData);
       await this.updateLastLogin(user.uid);
     }
   }

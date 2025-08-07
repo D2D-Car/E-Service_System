@@ -305,8 +305,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     // Simulate logout process
     setTimeout(() => {
-      // Add actual logout logic here (clear tokens, redirect, etc.)
+      // Call the actual logout method from AuthService
+      // You can inject AuthService here if needed
       console.log('User logged out successfully');
+      // For now, redirect to login
+      window.location.href = '/auth/login';
     }, 500);
 
     this.showAdminDropdown = false;

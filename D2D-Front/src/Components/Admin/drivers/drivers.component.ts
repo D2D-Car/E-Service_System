@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../../Services/auth.service';
 
 @Component({
   selector: 'app-drivers',
@@ -12,8 +13,6 @@ import { FormsModule } from '@angular/forms';
 export class DriversComponent {
   showAddDriverForm = false;
   showAddDriverModal = false;
-
-  // المعاينة قبل الحفظ
   previewImage: string | null = null;
 
   newDriver = {
@@ -28,6 +27,8 @@ export class DriversComponent {
     password: '',
     image: ''
   };
+
+  constructor(private authService: AuthService) {}
 
   drivers = [
     {
@@ -162,7 +163,7 @@ export class DriversComponent {
   }
 
   // إضافة السائق
-  addDriver() {
+  async addDriver() {
     if (
       !this.newDriver.name ||
       !this.newDriver.licenseNumber ||
@@ -175,35 +176,88 @@ export class DriversComponent {
       !this.newDriver.password ||
       !this.previewImage
     ) {
+      alert('Please fill in all required fields');
       return;
     }
 
-    const newDriverData = {
-      ...this.newDriver,
-      id: this.drivers.length + 1,
-      image: this.previewImage // استخدام المعاينة كصورة السائق
-    };
+    try {
+      // Create driver account in Firebase
+      await this.authService.signUp(
+        this.newDriver.email,
+        this.newDriver.password,
+        this.newDriver.name,
+        'driver'
+      );
 
-    this.drivers.push(newDriverData);
+      // Add to local drivers array for display
+      const newDriverData = {
+        ...this.newDriver,
+        id: this.drivers.length + 1,
+        image: this.previewImage
+      };
 
-    // تصفير البيانات
-    this.newDriver = {
-      name: '',
-      licenseNumber: '',
-      experience: '',
-      vehicleType: '',
-      joined: '',
-      rating: 0,
-      totalTrips: 0,
-      email: '',
-      password: '',
-      image: ''
-    };
-    this.previewImage = null;
+      this.drivers.push(newDriverData);
 
-    this.closeAddDriverModal();
+      // تصفير البيانات
+      this.newDriver = {
+        name: '',
+        licenseNumber: '',
+        experience: '',
+        vehicleType: '',
+        joined: '',
+        rating: 0,
+        totalTrips: 0,
+        email: '',
+        password: '',
+        image: ''
+      };
+      this.previewImage = null;
+
+      this.closeAddDriverModal();
+      
+      alert('Driver account created successfully!');
+    } catch (error: any) {
+      console.error('Error creating driver account:', error);
+      // Show a clean error message instead of alert
+      this.showErrorMessage('Failed to create driver account. Please try again.');
+    }
   }
 
+  private showErrorMessage(message: string) {
+    // Create a clean notification instead of alert
+    const notification = document.createElement('div');
+    notification.className = 'notification error';
+    notification.innerHTML = `
+      <div class="notification-content">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>${message}</span>
+      </div>
+    `;
+    document.body.appendChild(notification);
+    
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+      notification.remove();
+    }, 3000);
+  }
+
+  private showSuccessMessage(message: string) {
+    // Create a clean success notification
+    const notification = document.createElement('div');
+    notification.className = 'notification success';
+    notification.innerHTML = `
+      <div class="notification-content">
+        <i class="fas fa-check-circle"></i>
+        <span>${message}</span>
+      </div>
+    `;
+    document.body.appendChild(notification);
+    
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+      notification.remove();
+    }, 3000);
+  }
   callDriver(driver: any) {
     alert(`License: ${driver.licenseNumber} - ${driver.experience} experience`);
   }
