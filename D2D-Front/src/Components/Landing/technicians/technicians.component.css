@@ -61,10 +61,10 @@
 .cards-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 40px 48px;
+  gap: 42px 42px;
   margin: 0 auto;
-  margin-top: 48px;
-  max-width: 1290px;
+  margin-top: 0px;
+  max-width: 1330px;
   padding: 0 24px 24px 24px;
   justify-content: center;
 }
@@ -92,11 +92,10 @@
   transform: translateY(-8px) scale(1.04);
   box-shadow: 0 16px 40px rgba(230, 57, 70, 0.28), 0 2px 8px rgba(0, 0, 0, 0.22);
   cursor: pointer;
-  border-color: #fff;
 }
 
 .tech-img {
-  height: 220px;
+  height: 250px;
   width: 100%;
   object-fit: cover;
   border-radius: 12px;
@@ -126,23 +125,4 @@
   margin-bottom: 1.2rem;
   font-weight: 400;
   letter-spacing: 0.2px;
-}
-
-.book-btn {
-  background: linear-gradient(90deg, #e63946 60%, #c92c3b 100%);
-  border: none;
-  color: #fff;
-  padding: 10px 24px;
-  border-radius: 24px;
-  font-weight: 600;
-  font-size: 1rem;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 8px rgba(230, 57, 70, 0.18);
-  transition: background 0.3s cubic-bezier(0.4, 1.4, 0.6, 1),
-    box-shadow 0.3s cubic-bezier(0.4, 1.4, 0.6, 1);
-}
-
-.book-btn:hover {
-  background: linear-gradient(90deg, #c92c3b 60%, #e63946 100%);
-  box-shadow: 0 4px 16px rgba(230, 57, 70, 0.28);
 }
