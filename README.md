@@ -34,11 +34,7 @@ E-Service_System is an ITI Summer Training Project designed to provide a compreh
 
 ### Installation
 
-1. Navigate to the project directory:
-   ```powershell
-   cd f:/ITI/Angular_Project/E-Service_System/D2D-Front
-   ```
-2. Install dependencies:
+1. Install dependencies:
    ```powershell
    npm install
    ```
