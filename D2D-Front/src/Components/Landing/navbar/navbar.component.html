@@ -12,22 +12,23 @@
     <div class="collapse navbar-collapse flex-grow-0" id="navbarNavDropdown">
       <ul class="navbar-nav align-items-center me-3">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
+          <a class="nav-link" aria-current="page" routerLink="/" routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/technicians">Technicians</a>
+          <a class="nav-link" routerLink="/technicians" routerLinkActive="active">Technicians</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/services">Services</a>
+          <a class="nav-link" routerLink="/services" routerLinkActive="active">Services</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/about">About</a>
+          <a class="nav-link" routerLink="/about" routerLinkActive="active">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/contact">Contact</a>
+          <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contact</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/dashboard">Dashboard Demo</a>
+          <a class="nav-link" routerLink="/customer/dashboard" [class.active]="isDashboardActive()">Dashboard Demo</a>
         </li>
       </ul>
 
