@@ -419,22 +419,6 @@
   margin-top: 1rem;
 }
 
-.submit-driver-btn {
-  background: var(--primary-color);
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.3s;
-}
-
-.submit-driver-btn:hover {
-  background: var(--primary-hover);
-  transform: translateY(-2px);
-}
-
 /* Clean notification styles */
 .notification {
   position: fixed;
@@ -480,6 +464,189 @@
   to {
     transform: translateX(0);
     opacity: 1;
+  }
+}
+
+.submit-driver-btn,
+.submit-technician-btn {
+  background: var(--primary-color);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.submit-driver-btn:hover,
+.submit-technician-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+
+@media (min-width: 1152px) {
+  .modal-content {
+    padding: 2rem 3rem;
+    max-width: 700px;
+    max-height: 55vh;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .image-preview {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+/* ---------- Medium Screens (between 993px and 1151px) ---------- */
+@media (min-width: 993px) and (max-width: 1151px) {
+  .modal-content {
+    padding: 1.8rem 2.5rem;
+    max-width: 650px;
+    max-height: 58vh;
+    margin: auto;
+    overflow-y: auto;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .image-preview {
+    width: 95px;
+    height: 95px;
+  }
+
+  .form-actions {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .submit-driver-btn {
+    width: auto;
+  }
+}
+
+/* ---------- Tablets (992px and below) ---------- */
+@media (max-width: 992px) {
+  .modal-content {
+    padding: 1.5rem 2rem;
+    max-width: 80%;
+    max-height: 60vh;
+    margin: auto;
+    overflow-y: auto;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: span 1;
+  }
+
+  .modal-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .close-btn {
+    align-self: flex-end;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .submit-driver-btn {
+    width: 100%;
+  }
+
+  .image-preview {
+    width: 90px;
+    height: 90px;
+  }
+}
+
+/* ---------- Mobile Devices (767px and below) ---------- */
+@media (max-width: 767px) {
+  .modal-content {
+    padding: 1.2rem 1rem;
+    max-width: 90%;
+    max-height: 65vh;
+    margin: auto;
+    overflow-y: auto;
+  }
+
+  .modal-header h3 {
+    font-size: 1.3rem;
+  }
+
+  .form-group {
+    max-width: 85%;
+    margin: 0 auto;
+  }
+
+  .form-group label {
+    font-size: 0.85rem;
+  }
+
+  .form-grid input {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+
+  .submit-driver-btn {
+    font-size: 0.95rem;
+    padding: 10px 16px;
+  }
+
+  .image-preview {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+/* ---------- Smallest Mobile Devices (400px and below) ---------- */
+@media (max-width: 400px) {
+  .modal-content {
+    padding: 1rem;
+    width: 95%;
+    max-height: 80vh;
+    margin: 2rem auto 0;
+    overflow-y: auto;
+  }
+
+  .modal-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .form-group label {
+    font-size: 0.8rem;
+  }
+
+  .form-grid input {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .submit-driver-btn {
+    font-size: 0.9rem;
+    padding: 10px 14px;
+    width: 100%;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 
