@@ -127,6 +127,7 @@
 .card-actions i:hover {
   color: var(--primary-color);
   background-color: rgba(232, 48, 48, 0.1);
+  cursor: pointer;
 }
 
 .plate-info {
