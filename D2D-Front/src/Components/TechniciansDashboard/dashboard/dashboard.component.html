@@ -7,7 +7,7 @@
       <div class="user-info">
         <h2 class="user-name">{{ profile.name }}</h2>
         <p class="user-details">
-          ⭐ {{ profile.rating }} (127 reviews) • {{ profile.totalJobs }} jobs completed
+          ⭐ {{ profile.rating || 0 }} (127 reviews) • {{ profile.totalJobs || 0 }} jobs completed
         </p>
       </div>
     </div>
@@ -15,11 +15,11 @@
     <!-- Right Side: Stats + Availability -->
     <div class="header-stats">
       <div class="stat-item">
-        <span class="stat-number">${{ profile.earningsToday }}</span>
+        <span class="stat-number">${{ profile.earningsToday || 0 }}</span>
         <span class="stat-label">Today</span>
       </div>
       <div class="stat-item">
-        <span class="stat-number">${{ profile.earningsWeek }}</span>
+        <span class="stat-number">${{ profile.earningsWeek || 0 }}</span>
         <span class="stat-label">This Week</span>
       </div>
       <!-- Availability Text in Header -->
