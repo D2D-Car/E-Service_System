@@ -19,30 +19,9 @@ interface Vehicle {
   selector: 'app-vehicles',
   imports: [CommonModule, FormsModule],
   templateUrl: './vehicles.component.html',
-  styleUrl: './vehicles.component.css',
+  styleUrls: ['./vehicles.component.css'], // fix typo here: styleUrl => styleUrls
 })
 export class VehiclesComponent {
-  // Method to edit a vehicle
-  editVehicle(vehicle: any): void {
-    // TODO: Implement edit functionality
-    console.log('Editing vehicle:', vehicle);
-  }
-
-  // Method to confirm vehicle deletion
-  confirmDelete(vehicleId: number): void {
-    if (confirm('Are you sure you want to delete this vehicle?')) {
-      this.deleteVehicle(vehicleId);
-    }
-  }
-
-  // Private method to handle vehicle deletion
-  private deleteVehicle(vehicleId: number): void {
-    this.vehicles = this.vehicles.filter(v => v.id !== vehicleId);
-    // TODO: Add API call to delete from backend
-    console.log('Vehicle deleted:', vehicleId);
-  }
-
-
   vehicles: Vehicle[] = [
     {
       id: 1,
@@ -86,30 +65,23 @@ export class VehiclesComponent {
   showAddVehicleModal = false;
   imagePreview: string | null = null;
   selectedImageFile: File | null = null;
-  
-  // New vehicle form data
-  newVehicle: Omit<Vehicle, 'id'> = {
-    name: '',
-    year: 2024,
-    color: '',
-    plateNumber: '',
-    currentMileage: '',
-    nextServiceDue: 'Oil Change (3,000 miles)',
-    image: '',
-    email: '',
-    password: ''
-  };
 
-  // TrackBy function for performance optimization
+  // Flag for add or edit mode
+  isEditMode = false;
+
+  // The vehicle being edited (null if adding)
+  editingVehicleId: number | null = null;
+
+  // Form model
+  newVehicle: Omit<Vehicle, 'id'> = this.getEmptyVehicle();
+
   trackByVehicleId(index: number, vehicle: Vehicle): number {
     return vehicle.id;
   }
 
-  // Open add vehicle modal
-  openAddVehicleModal(): void {
-    this.showAddVehicleModal = true;
-    // Reset form
-    this.newVehicle = {
+  // Utility to get empty vehicle model
+  getEmptyVehicle(): Omit<Vehicle, 'id'> {
+    return {
       name: '',
       year: 2024,
       color: '',
@@ -118,49 +90,96 @@ export class VehiclesComponent {
       nextServiceDue: 'Oil Change (3,000 miles)',
       image: '',
       email: '',
-      password: ''
+      password: '',
     };
-    // Reset image preview
-    this.imagePreview = null;
-    this.selectedImageFile = null;
   }
 
-  // Close add vehicle modal
+  // Open modal for adding vehicle
+  openAddVehicleModal(): void {
+    this.isEditMode = false;
+    this.editingVehicleId = null;
+    this.newVehicle = this.getEmptyVehicle();
+    this.imagePreview = null;
+    this.selectedImageFile = null;
+    this.showAddVehicleModal = true;
+  }
+
+  // Open modal for editing vehicle
+  editVehicle(vehicle: Vehicle): void {
+    this.isEditMode = true;
+    this.editingVehicleId = vehicle.id;
+
+    // Copy vehicle data to form (except id)
+    this.newVehicle = {
+      name: vehicle.name,
+      year: vehicle.year,
+      color: vehicle.color,
+      plateNumber: vehicle.plateNumber,
+      currentMileage: vehicle.currentMileage,
+      nextServiceDue: vehicle.nextServiceDue,
+      image: vehicle.image,
+      email: vehicle.email,
+      password: vehicle.password,
+    };
+    this.imagePreview = vehicle.image;
+    this.selectedImageFile = null;
+
+    this.showAddVehicleModal = true;
+  }
+
+  // Close modal
   closeAddVehicleModal(): void {
     this.showAddVehicleModal = false;
   }
 
-  // Add new vehicle
-  addVehicle(): void {
-    if (this.isFormValid()) {
-      // Generate new ID
-      const newId = Math.max(...this.vehicles.map(v => v.id), 0) + 1;
-      
-      // Create new vehicle object
-      const vehicle: Vehicle = {
-        ...this.newVehicle,
-        id: newId,
-        image: this.imagePreview || './assets/vehicles-img/default-car.jpg' // Use preview or default
-      };
+  // Add or Update vehicle on form submit
+  submitVehicle(): void {
+    if (!this.isFormValid()) return;
 
-      // Add to vehicles array
+    if (this.isEditMode && this.editingVehicleId !== null) {
+      // Update existing vehicle
+      const index = this.vehicles.findIndex(v => v.id === this.editingVehicleId);
+      if (index !== -1) {
+        this.vehicles[index] = {
+          id: this.editingVehicleId,
+          ...this.newVehicle,
+          image: this.imagePreview || './assets/vehicles-img/default-car.jpg'
+        };
+        console.log('Vehicle updated:', this.vehicles[index]);
+      }
+    } else {
+      // Add new vehicle
+      const newId = Math.max(...this.vehicles.map(v => v.id), 0) + 1;
+      const vehicle: Vehicle = {
+        id: newId,
+        ...this.newVehicle,
+        image: this.imagePreview || './assets/vehicles-img/default-car.jpg'
+      };
       this.vehicles.push(vehicle);
-      
-      // Close modal
-      this.closeAddVehicleModal();
-      
-      // Show success message (optional)
-      console.log('Vehicle added successfully:', vehicle);
+      console.log('Vehicle added:', vehicle);
+    }
+
+    this.closeAddVehicleModal();
+  }
+
+  // Confirm and delete vehicle
+  confirmDelete(vehicleId: number): void {
+    if (confirm('Are you sure you want to delete this vehicle?')) {
+      this.deleteVehicle(vehicleId);
     }
   }
 
-  // Handle image file selection
+  private deleteVehicle(vehicleId: number): void {
+    this.vehicles = this.vehicles.filter(v => v.id !== vehicleId);
+    console.log('Vehicle deleted:', vehicleId);
+  }
+
+  // Image file selection handler
   onImageSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       this.selectedImageFile = input.files[0];
-      
-      // Create image preview
+
       const reader = new FileReader();
       reader.onload = (e) => {
         this.imagePreview = e.target?.result as string;
@@ -184,7 +203,7 @@ export class VehiclesComponent {
       this.newVehicle.color.trim() &&
       this.newVehicle.plateNumber.trim() &&
       this.newVehicle.currentMileage.trim() &&
-      this.imagePreview && // Check for image preview instead of image string
+      this.imagePreview &&
       this.newVehicle.email.trim() &&
       this.newVehicle.password.trim()
     );

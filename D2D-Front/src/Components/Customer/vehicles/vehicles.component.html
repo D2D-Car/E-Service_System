@@ -6,135 +6,151 @@
       Add Vehicle
     </button>
   </div>
-  
+
   <div class="vehicle-cards">
     <div class="vehicle-card" *ngFor="let vehicle of vehicles; trackBy: trackByVehicleId">
-      <img [src]="vehicle.image" [alt]="vehicle.name" class="vehicle-img" />
+      <!-- Vehicle Image -->
+      <img [src]="vehicle.image" [alt]="vehicle.year + ' ' + vehicle.name" class="vehicle-img" />
+
+      <!-- Vehicle Details -->
       <div class="vehicle-details">
+        <!-- Title & Actions -->
         <div class="card-title">
           <h3>{{ vehicle.year }} {{ vehicle.name }}</h3>
           <div class="card-actions">
-            <i class="fas fa-edit" (click)="editVehicle(vehicle)"></i>
-            <i class="fas fa-trash" (click)="confirmDelete(vehicle.id)"></i> 
+            <button type="button" class="btn btn-warning" (click)="editVehicle(vehicle)" title="Edit Vehicle">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-danger" (click)="confirmDelete(vehicle.id)" title="Delete Vehicle">
+              <i class="fas fa-trash"></i>
+            </button>
           </div>
         </div>
+
+        <!-- Plate & Color -->
         <p class="plate-info">{{ vehicle.color }} • {{ vehicle.plateNumber }}</p>
+
+        <!-- Mileage Info -->
         <div class="info-row">
           <span>Current Mileage:</span>
           <span class="miles">{{ vehicle.currentMileage }} miles</span>
         </div>
+
+        <!-- Service Info -->
         <div class="info-row">
           <span>Next Service Due:</span>
           <span class="service-due">{{ vehicle.nextServiceDue }}</span>
         </div>
-        <button class="service-btn">Schedule Service</button>
+
+        <!-- Service Button -->
+        <button type="button" class="service-btn">
+          Schedule Service
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- Add Vehicle Modal -->
+  <!-- Shared Add/Edit Vehicle Modal -->
   <div class="modal-overlay" *ngIf="showAddVehicleModal" (click)="closeAddVehicleModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h3>Add New Vehicle</h3>
+        <h3>{{ isEditMode ? 'Edit Vehicle' : 'Add New Vehicle' }}</h3>
         <button class="close-btn" (click)="closeAddVehicleModal()">
           <i class="fas fa-times"></i>
         </button>
       </div>
-      
-      <form class="modal-form" (ngSubmit)="addVehicle()" #vehicleForm="ngForm">
+
+      <form class="modal-form" (ngSubmit)="submitVehicle()" #vehicleForm="ngForm">
         <div class="form-row">
           <div class="form-group">
             <label for="vehicleName">Vehicle Name</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               id="vehicleName"
               name="vehicleName"
               [(ngModel)]="newVehicle.name"
               placeholder="e.g. Toyota Camry"
               required
-            >
+            />
           </div>
           <div class="form-group">
             <label for="vehicleYear">Year</label>
-            <input 
-              type="number" 
+            <input
+              type="number"
               id="vehicleYear"
               name="vehicleYear"
               [(ngModel)]="newVehicle.year"
               placeholder="2024"
               required
-            >
+            />
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label for="vehicleColor">Color</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               id="vehicleColor"
               name="vehicleColor"
               [(ngModel)]="newVehicle.color"
               placeholder="e.g. Blue"
               required
-            >
+            />
           </div>
           <div class="form-group">
             <label for="plateNumber">Plate Number</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               id="plateNumber"
               name="plateNumber"
               [(ngModel)]="newVehicle.plateNumber"
               placeholder="e.g. ABC-123"
               required
-            >
+            />
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label for="ownerEmail">Owner Email</label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               id="ownerEmail"
               name="ownerEmail"
               [(ngModel)]="newVehicle.email"
               placeholder="e.g. owner@email.com"
               required
-            >
+            />
           </div>
           <div class="form-group">
             <label for="ownerPassword">Password</label>
-            <input 
-              type="password" 
+            <input
+              type="password"
               id="ownerPassword"
               name="ownerPassword"
               [(ngModel)]="newVehicle.password"
               placeholder="Enter password"
               required
-            >
+            />
           </div>
         </div>
 
-        
         <div class="form-row">
           <div class="form-group">
             <label for="currentMileage">Current Mileage</label>
-            
-            <input 
-              type="text" 
+            <input
+              type="text"
               id="currentMileage"
               name="currentMileage"
               [(ngModel)]="newVehicle.currentMileage"
               placeholder="45,000"
               required
-            >
+            />
           </div>
           <div class="form-group">
             <label for="vehicleImage">Vehicle Image</label>
-            <input 
+            <input
               type="file"
               id="vehicleImage"
               name="vehicleImage"
@@ -142,10 +158,10 @@
               accept="image/*"
               class="file-input"
               required
-            >
+            />
             <div class="file-input-wrapper" [class.has-image]="imagePreview">
               <div class="file-input-display" (click)="triggerFileInput()">
-                <img *ngIf="imagePreview" [src]="imagePreview" alt="Preview" class="image-preview">
+                <img *ngIf="imagePreview" [src]="imagePreview" alt="Preview" class="image-preview" />
                 <div *ngIf="!imagePreview" class="upload-placeholder">
                   <i class="fas fa-cloud-upload-alt"></i>
                   <span>Choose Vehicle Image</span>
@@ -155,18 +171,14 @@
           </div>
         </div>
 
-
         <div class="modal-actions">
-          <button type="button" class="cancel-btn" (click)="closeAddVehicleModal()">
-            Cancel
-          </button>
+          <button type="button" class="cancel-btn" (click)="closeAddVehicleModal()">Cancel</button>
           <button type="submit" class="submit-btn" [disabled]="!vehicleForm.valid">
-            <i class="fas fa-plus"></i>
-            Add Vehicle
+            <i [class.fa-plus]="!isEditMode" [class.fa-edit]="isEditMode"></i>
+            {{ isEditMode ? 'Update Vehicle' : 'Add Vehicle' }}
           </button>
         </div>
       </form>
     </div>
   </div>
 </div>
-
