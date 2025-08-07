@@ -179,11 +179,34 @@
   font-size: 1rem;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  background: var(--background-color);
+  background-color: var(--background-color);
+  border: 1px solid var(--primary-color);
   color: var(--light);
   cursor: pointer;
   outline: none;
   transition: all 0.3s ease;
+}
+
+.availability-status {
+  background-color: #28a745;
+  color: white;
+  padding: 0.4rem 1rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.available {
+  background-color: var(--success-color);
+}
+
+.busy {
+  background-color: var(--warning-color); 
+  color: #333;
+}
+
+.offline {
+  background-color: var(--danger-color); 
 }
 
 /* ----------- STATS GRID ----------- */
