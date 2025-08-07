@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-technicians',
@@ -7,7 +7,9 @@ import { CommonModule } from '@angular/common';
   templateUrl: './technicians.component.html',
   styleUrls: ['./technicians.component.css'],
 })
-export class TechniciansComponent {
+export class TechniciansComponent implements OnInit {
+  showAll = false;
+
   technicians = [
     {
       name: 'John Doe',
@@ -74,13 +76,11 @@ export class TechniciansComponent {
     },
   ];
 
-  visibleCount = 3;
+  constructor() {}
 
-  showMore() {
-    this.visibleCount = this.technicians.length;
-  }
+  ngOnInit(): void {}
 
-  showLess() {
-    this.visibleCount = 3;
+  toggleShowAll() {
+    this.showAll = !this.showAll;
   }
 }
