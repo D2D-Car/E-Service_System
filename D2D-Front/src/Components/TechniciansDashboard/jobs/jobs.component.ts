@@ -4,20 +4,21 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-jobs',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './jobs.component.html',
   styleUrls: ['./jobs.component.css'],
 })
 export class JobsComponent implements OnInit {
-  userName: string = 'John Doe';
-  userRate: number = 4.8;
-  reviewCount: number = 1250;
-  jobsCompleted: number = 24;
-  dailyRevenue: number = 150;
-  weeklyRevenue: number = 1250;
-  isAvailable: boolean = true;
+  userName = 'John Doe';
+  userRate = 4.8;
+  reviewCount = 1250;
+  jobsCompleted = 24;
+  dailyRevenue = 150;
+  weeklyRevenue = 1250;
+  isAvailable = true;
 
-  jobs: any[] = [
+  jobs = [
     {
       id: 1,
       title: 'Oil Change & Filter',
@@ -67,56 +68,64 @@ export class JobsComponent implements OnInit {
   ];
 
   specialties: string[] = ['Brake Systems', 'Engine Repair', 'Tire Services'];
-  newSpecialty: string = '';
+  newSpecialty = '';
+
+  // Modal control
+  modalOpen = false;
+  selectedJob: any = null;
+  loadingDetails = false;
 
   constructor() {}
 
   ngOnInit(): void {}
 
+  openModal(job: any) {
+    this.modalOpen = true;
+    this.loadingDetails = true;
+    this.selectedJob = null;
+
+    // Simulate loading delay for 1 second
+    setTimeout(() => {
+      this.selectedJob = job;
+      this.loadingDetails = false;
+    }, 1000);
+  }
+
+  closeModal() {
+    this.modalOpen = false;
+    this.selectedJob = null;
+    this.loadingDetails = false;
+  }
+
   addSpecialty() {
-    if (this.newSpecialty.trim() !== '') {
-      this.specialties.push(this.newSpecialty.trim());
-      this.newSpecialty = '';
+    const trimmed = this.newSpecialty.trim();
+    if (trimmed && !this.specialties.includes(trimmed)) {
+      this.specialties.push(trimmed);
     }
+    this.newSpecialty = '';
   }
 
   removeSpecialty(specialty: string) {
-    this.specialties = this.specialties.filter((s) => s !== specialty);
-  }
-
-  // Job action methods
-  viewJobDetails(job: any) {
-    console.log('Viewing details for job:', job);
-    // Add navigation logic here
+    this.specialties = this.specialties.filter(s => s !== specialty);
   }
 
   callCustomer(job: any) {
-    console.log('Calling customer:', job.customerName);
-    // Add phone call logic here
     if (confirm(`Call ${job.customerName}?`)) {
       window.open(`tel:+1234567890`, '_self');
     }
   }
 
   getDirections(job: any) {
-    console.log('Getting directions for job:', job);
-    // Add maps/directions logic here
-    window.open(
-      `https://maps.google.com/maps?q=${job.customerName}+location`,
-      '_blank'
-    );
+    window.open(`https://maps.google.com/maps?q=${job.customerName}+location`, '_blank');
   }
 
-  // Job status management
   acceptJob(job: any) {
     job.status = 'Accepted';
-    console.log('Job accepted:', job);
   }
 
   rejectJob(job: any) {
     if (confirm('Are you sure you want to reject this job?')) {
       job.status = 'Rejected';
-      console.log('Job rejected:', job);
     }
   }
 
@@ -124,16 +133,14 @@ export class JobsComponent implements OnInit {
     if (confirm('Mark this job as completed?')) {
       job.status = 'Completed';
       this.jobsCompleted++;
-      console.log('Job completed:', job);
     }
   }
 
-  // Filter functionality
-  selectedStatus: string = 'all-status';
-  selectedService: string = 'all-services';
+  selectedStatus = 'all-status';
+  selectedService = 'all-services';
 
   get filteredJobs() {
-    return this.jobs.filter((job) => {
+    return this.jobs.filter(job => {
       const statusMatch =
         this.selectedStatus === 'all-status' ||
         job.status.toLowerCase() === this.selectedStatus.toLowerCase();
@@ -152,12 +159,7 @@ export class JobsComponent implements OnInit {
     this.selectedService = event.target.value;
   }
 
-  // Toggle availability
   toggleAvailability() {
     this.isAvailable = !this.isAvailable;
-    console.log(
-      'Availability toggled:',
-      this.isAvailable ? 'Available' : 'Unavailable'
-    );
   }
 }
