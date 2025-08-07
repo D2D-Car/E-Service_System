@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, User, sendEmailVerification, GoogleAuthProvider, signInWithPopup, updateProfile } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, User, sendEmailVerification, GoogleAuthProvider, signInWithPopup, updateProfile, sendPasswordResetEmail } from '@angular/fire/auth';
 import { Firestore, doc, setDoc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, from, of } from 'rxjs';
 import { Router } from '@angular/router';
@@ -260,6 +260,21 @@ export class AuthService {
     }
   }
 
+  /**
+   * Sends a password reset email to the specified email address
+   * @param email The email address to send the password reset to
+   * @returns Promise that resolves when the email is sent
+   */
+  async forgotPassword(email: string): Promise<void> {
+    try {
+      await sendPasswordResetEmail(this.auth, email);
+      // Success message is handled in the component
+    } catch (error: any) {
+      console.error('Error sending password reset email:', error);
+      throw new Error(this.handleAuthError(error));
+    }
+  }
+
   private handleAuthError(error: any): string {
     switch (error.code) {
       case 'auth/user-not-found':
@@ -274,7 +289,10 @@ export class AuthService {
         return 'Please enter a valid email address.';
       case 'auth/too-many-requests':
         return 'Too many failed attempts. Please try again later.';
+      case 'auth/missing-email':
+        return 'Please enter your email address.';
       default:
+        console.error('Auth error:', error);
         return 'An error occurred. Please try again.';
     }
   }
