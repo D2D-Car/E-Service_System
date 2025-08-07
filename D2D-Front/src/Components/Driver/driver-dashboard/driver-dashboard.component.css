@@ -29,8 +29,8 @@
 }
 
 .availability-select {
-  background-color: var(--primary-color);
-  border: 1px solid var(--light);
+  background-color: var(--background-color);
+  border: 1px solid var(--primary-color);
   color: var(--light);
   padding: 8px 16px;
   border-radius: 4px;

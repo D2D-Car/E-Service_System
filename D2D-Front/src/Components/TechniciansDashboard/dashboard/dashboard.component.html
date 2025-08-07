@@ -23,13 +23,15 @@
         <span class="stat-label">This Week</span>
       </div>
       <!-- Availability Text in Header -->
-      <span class="availability-status" [ngClass]="{
+      <span 
+  class="availability" 
+  [ngClass]="{
     'available': availability === 'Available',
     'busy': availability === 'Busy',
     'offline': availability === 'Offline'
-      }">
-        {{ availability }}
-      </span>
+  }">
+  {{ availability }}
+</span>
 
     </div>
   </div>

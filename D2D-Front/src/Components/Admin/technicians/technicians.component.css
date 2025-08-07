@@ -1,4 +1,4 @@
-/* ---- الألوان للوضعين ---- */
+
 :root {
   --primary-color: #e23636;
   --primary-hover: #c12d2d;
@@ -15,6 +15,8 @@
   --option-bg: #ffffff;
   --option-text: #222222;
   --danger-color: #ff4d4d;
+  --time-transition: 0.3s;
+  --box-shadow-hover: 0 8px 25px rgba(226, 54, 54, 0.2);
 }
 
 .dark-mode {
@@ -35,7 +37,6 @@
   --danger-color: #ff5c5c;
 }
 
-/* ---- القسم الرئيسي للتقنيين ---- */
 .technicians-section {
   background-color: var(--bg-primary);
   padding: 2rem;
@@ -77,13 +78,208 @@
   font-weight: 300;
 }
 
+/* Modern Filter Navigation - المضاف الجديد */
+.filters-container {
+  margin-bottom: 3rem;
+  display: flex;
+  justify-content: center;
+  padding: 0 1rem;
+}
+
+.filters-navbar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 0.5rem;
+  background: var(--bg-secondary);
+  padding: 0.75rem;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  width: 100%;
+  max-width: 530px;
+  position: relative;
+  transition: all var(--time-transition);
+}
+
+.filters-navbar::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all var(--time-transition);
+  position: relative;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  justify-content: center;
+  width: 100%;
+}
+
+.filter-btn:hover:not(.active) {
+  background: var(--hover-bg);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.filter-btn.active {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--primary-hover)
+  );
+  color: white;
+  box-shadow: var(--box-shadow-hover);
+  transform: translateY(-1px);
+  position: relative;
+}
+
+.filter-btn.active::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+  pointer-events: none;
+}
+
+.filter-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.filter-count {
+  background: var(--hover-bg);
+  color: var(--text-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.6rem;
+  border-radius: 10px;
+  min-width: 30px;
+  text-align: center;
+  line-height: 1;
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--border-color);
+  transition: all var(--time-transition);
+}
+
+.filter-btn.active .filter-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filter-btn:not(.active) .filter-count {
+  background: var(--primary-color);
+  color: white;
+  border: 1px solid var(--primary-color);
+}
+
+/* Theme Integration with Global Styles */
+.dark-theme .filters-navbar,
+body.dark-theme .filters-navbar {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
+}
+
+.dark-theme .filter-btn,
+body.dark-theme .filter-btn {
+  color: var(--text-secondary);
+}
+
+.dark-theme .filter-btn:hover:not(.active),
+body.dark-theme .filter-btn:hover:not(.active) {
+  background: var(--hover-bg);
+  color: var(--text-primary);
+}
+
+.light-theme .filters-navbar,
+body.light-theme .filters-navbar {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
+}
+
+.light-theme .filter-btn,
+body.light-theme .filter-btn {
+  color: var(--text-secondary);
+}
+
+.light-theme .filter-btn:hover:not(.active),
+body.light-theme .filter-btn:hover:not(.active) {
+  background: var(--hover-bg);
+  color: var(--text-primary);
+}
+
+/* Empty State - المضاف الجديد */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  width: 100%;
+  min-height: 300px;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.empty-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.empty-description {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  max-width: 400px;
+  line-height: 1.5;
+}
+
+.empty-action {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.empty-action:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
 .container-fluid {
   max-width: 100%;
   margin: 0 auto;
   padding: 0;
 }
 
-/* ---- كروت التقنيين ---- */
 .card {
   background: var(--bg-secondary);
   border-radius: 12px;
@@ -375,7 +571,7 @@
   color: var(--text-primary);
 }
 
-/* === Form Structure === */
+/* نموذج إضافة التقني */
 .technician-form {
   display: flex;
   flex-direction: column;
@@ -400,207 +596,28 @@
   font-weight: 500;
 }
 
-/* === Unified Form Input Styling === */
-input,
-select,
-textarea {
+/* ---- إصلاح بسيط ومباشر لألوان الحقول ---- */
+.form-grid input, 
+.form-grid select,
+.form-grid textarea {
   padding: 12px;
   border: 1px solid var(--border-color);
   border-radius: 6px;
   background: var(--input-bg) !important;
   color: var(--text-primary) !important;
   font-size: 1rem;
-  transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+  transition: 0.3s;
 }
 
-input:focus,
-select:focus,
-textarea:focus {
+.form-grid input:focus, 
+.form-grid select:focus,
+.form-grid textarea:focus {
   border-color: var(--primary-color);
   outline: none;
   box-shadow: 0 0 5px rgba(226, 54, 54, 0.3);
   background: var(--input-bg) !important;
   color: var(--text-primary) !important;
 }
-
-.submit-driver-btn,
-.submit-technician-btn {
-  background: var(--primary-color);
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.3s, transform 0.3s;
-}
-
-.submit-driver-btn:hover,
-.submit-technician-btn:hover {
-  background: var(--primary-hover);
-  transform: translateY(-2px);
-}
-
-@media (min-width: 1152px) {
-  .modal-content {
-    padding: 2rem 3rem;
-    max-width: 700px;
-    max-height: 55vh;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .image-preview {
-    width: 100px;
-    height: 100px;
-  }
-}
-
-@media (min-width: 993px) and (max-width: 1151px) {
-  .modal-content {
-    padding: 1.8rem 2.5rem;
-    max-width: 650px;
-    max-height: 58vh;
-    margin: auto;
-    overflow-y: auto;
-  }
-
-  .image-preview {
-    width: 95px;
-    height: 95px;
-  }
-
-  .form-actions {
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-
-  .submit-technician-btn {
-    width: auto;
-  }
-}
-
-@media (max-width: 992px) {
-  .modal-content {
-    padding: 1.5rem 2rem;
-    max-width: 80%;
-    max-height: 60vh;
-    margin: auto;
-    overflow-y: auto;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .full-width {
-    grid-column: span 1;
-  }
-
-  .modal-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-
-  .close-btn {
-    align-self: flex-end;
-  }
-
-  .form-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .submit-technician-btn {
-    width: 100%;
-  }
-
-  .image-preview {
-    width: 90px;
-    height: 90px;
-  }
-}
-
-@media (max-width: 767px) {
-  .modal-content {
-    padding: 1.2rem 1rem;
-    max-width: 90%;
-    max-height: 65vh;
-    margin: auto;
-    overflow-y: auto;
-  }
-
-  .modal-header h3 {
-    font-size: 1.3rem;
-  }
-
-  .form-group {
-    max-width: 85%;
-    margin: 0 auto;
-  }
-
-  .form-group label {
-    font-size: 0.85rem;
-  }
-
-  input,
-  select,
-  textarea {
-    font-size: 0.95rem;
-    padding: 10px;
-  }
-
-  .submit-technician-btn {
-    font-size: 0.95rem;
-    padding: 10px 16px;
-  }
-
-  .image-preview {
-    width: 80px;
-    height: 80px;
-  }
-}
-
-@media (max-width: 400px) {
-  .modal-content {
-    padding: 1rem;
-    width: 95%;
-    max-height: 80vh;
-    margin: 2rem auto 0;
-    overflow-y: auto;
-  }
-
-  .modal-header h3 {
-    font-size: 1.1rem;
-  }
-
-  .form-group label {
-    font-size: 0.8rem;
-  }
-
-  input,
-  select,
-  textarea {
-    font-size: 0.9rem;
-    padding: 8px;
-  }
-
-  .submit-technician-btn {
-    font-size: 0.9rem;
-    padding: 10px 14px;
-    width: 100%;
-  }
-
-  .form-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-}
-
 
 /* ---- حل مشكلة ألوان Autocomplete - مبسط وفعال ---- */
 input:-webkit-autofill,
@@ -874,7 +891,54 @@ input[autocomplete]:focus {
 }
 
 /* للشاشات الصغيرة */
+@media (max-width: 1024px) {
+  .filters-container {
+    padding: 0 0.75rem;
+  }
+
+  .filters-navbar {
+    max-width: 100%;
+    padding: 0.6rem;
+    gap: 0.4rem;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  }
+
+  .filter-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
 @media (max-width: 768px) {
+  .filters-container {
+    margin-bottom: 2rem;
+    padding: 0 0.5rem;
+  }
+
+  .filters-navbar {
+    max-width: 100%;
+    padding: 0.5rem;
+    gap: 0.25rem;
+    border-radius: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+
+  .filter-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 12px;
+  }
+
+  .filter-text {
+    font-size: 0.8rem;
+  }
+
+  .filter-count {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 8px;
+  }
+
   .form-grid {
     grid-template-columns: 1fr;
   }
@@ -885,48 +949,219 @@ input[autocomplete]:focus {
     width: 95%;
     padding: 1.5rem;
   }
-  .status-preview {
-    font-size: 0.75rem;
-    padding: 4px 8px;
-  }
 }
 
 @media (max-width: 480px) {
   .section-title {
     font-size: 1.8rem;
   }
+
   .section-subtitle {
     font-size: 1rem;
   }
+
+  .filters-container {
+    padding: 0 0.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .filters-navbar {
+    padding: 0.5rem;
+    border-radius: 14px;
+    gap: 0.25rem;
+    max-width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filter-btn {
+    padding: 0.5rem 0.75rem;
+    border-radius: 10px;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .filter-text {
+    font-size: 0.75rem;
+    line-height: 1;
+  }
+
+  .filter-count {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.4rem;
+    margin: 0;
+    border-radius: 6px;
+  }
+
   .card {
     padding: 16px;
   }
+
   .profile-img {
     width: 60px;
     height: 60px;
   }
+
   .action-footer {
     flex-direction: column;
     gap: 8px;
   }
+
   .profile-btn {
     width: 100%;
   }
+
   .status-indicator {
     font-size: 0.6rem;
     padding: 4px 8px;
     min-width: 60px;
   }
+
   .modal-content {
     width: 98%;
     padding: 1rem;
     max-height: 95vh;
   }
+
   .form-actions {
     flex-direction: column;
   }
+
   .submit-technician-btn {
     width: 100%;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 360px) {
+  .section-title {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .filters-container {
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+
+  .filters-navbar {
+    padding: 0.6rem 0.4rem;
+    gap: 0.4rem;
+    border-radius: 12px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filter-btn {
+    padding: 0.4rem 0.6rem;
+    flex-direction: column;
+    gap: 0.2rem;
+    width: 100%;
+    border-radius: 8px;
+  }
+
+  .filter-text {
+    font-size: 0.7rem;
+    line-height: 1;
+  }
+
+  .filter-count {
+    font-size: 0.6rem;
+    padding: 0.15rem 0.3rem;
+    border-radius: 5px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .profile-img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .technician-name {
+    font-size: 1rem;
+  }
+
+  .action-footer {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .profile-btn {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 320px) {
+  .section-title {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .filters-container {
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+
+  .filters-navbar {
+    padding: 0.3rem 0.1rem;
+    gap: 0.15rem;
+    border-radius: 10px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filter-btn {
+    padding: 0.3rem 0.5rem;
+    flex-direction: column;
+    gap: 0.15rem;
+    width: 100%;
+    border-radius: 6px;
+  }
+
+  .filter-text {
+    font-size: 0.65rem;
+    line-height: 1;
+  }
+
+  .filter-count {
+    font-size: 0.55rem;
+    padding: 0.1rem 0.25rem;
+    border-radius: 4px;
+  }
+
+  .card {
+    padding: 10px;
+  }
+
+  .profile-img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .technician-name {
+    font-size: 0.9rem;
+  }
+
+  .action-footer {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .profile-btn {
+    width: 100%;
+    padding: 6px 10px;
+    font-size: 0.8rem;
   }
 }
 
@@ -977,3 +1212,23 @@ input[autocomplete]:focus {
     opacity: 1;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
