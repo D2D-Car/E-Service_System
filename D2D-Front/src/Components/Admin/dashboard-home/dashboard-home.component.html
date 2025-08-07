@@ -61,6 +61,7 @@
             <div class="countries-list">
               <div class="country-item" *ngFor="let area of serviceAreas">
                 <div class="country-info">
+                  <span class="color" [style.background-color]="area.color"></span>
                   <div class="country-dot" [style.background-color]="area.color"></div>
                   <span class="country-name">{{ area.name }}</span>
                 </div>
