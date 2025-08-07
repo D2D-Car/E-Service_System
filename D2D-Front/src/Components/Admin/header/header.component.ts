@@ -23,12 +23,12 @@ interface Admin {
 interface Notification {
   id: number;
   type:
-    | 'service'
-    | 'completion'
-    | 'payment'
-    | 'registration'
-    | 'system'
-    | 'feedback';
+  | 'service'
+  | 'completion'
+  | 'payment'
+  | 'registration'
+  | 'system'
+  | 'feedback';
   message: string;
   time: string;
   priority: 'high' | 'medium' | 'low';
@@ -56,7 +56,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   hasNotifications = true;
   currentAdminIndex = 0;
 
-  constructor(private themeService: ThemeService) {}
+  constructor(private themeService: ThemeService) { }
 
   ngOnInit() {
     // Sync with theme service
@@ -309,7 +309,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       // You can inject AuthService here if needed
       console.log('User logged out successfully');
       // For now, redirect to login
-      window.location.href = '/auth/login';
+      window.location.href = '/';
     }, 500);
 
     this.showAdminDropdown = false;
