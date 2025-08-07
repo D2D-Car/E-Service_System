@@ -278,6 +278,7 @@
   justify-content: center;
   z-index: 1000;
   animation: fadeIn 0.3s ease;
+  overflow: auto;
 }
 
 @keyframes fadeIn {
@@ -291,11 +292,12 @@
   padding: 2rem;
   width: 90%;
   max-width: 600px;
-  max-height: 90vh;
+  max-height: 150vh;
   overflow-y: auto;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   animation: slideIn 0.3s ease;
   color: var(--text-primary);
+   margin: 20px;
 }
 
 @keyframes slideIn {
@@ -315,9 +317,12 @@
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
   animation: slideIn 0.3s ease;
   color: var(--text-primary);
+   z-index: calc(var(--modal-z-index) + 1);
+    overflow-y: auto;
 }
 
 .profile-modal-header {
+  z-index: 10;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -338,6 +343,7 @@
 }
 
 .profile-modal-body {
+   overflow-y: auto;
   padding: 2rem;
   text-align: center;
   background: var(--bg-secondary);
@@ -985,4 +991,4 @@ input[autocomplete]:focus {
     width: 35px;
     height: 35px;
   }
-}
+}  
