@@ -164,6 +164,56 @@ export class DashboardHomeComponent
       status: 'completed',
       technician: 'Youssef Hassan',
     },
+    {
+      id: '#SRV009',
+      date: '08 Aug, 2025',
+      customer: 'Mahmoud El Sayed',
+      vehicle: 'Peugeot 508 2020',
+      serviceType: 'Tire Services',
+      amount: 210.0,
+      status: 'scheduled',
+      technician: 'Ahmed Gamal',
+    },
+    {
+      id: '#SRV016',
+      date: '08 Aug, 2025',
+      customer: 'Company Branch Giza',
+      vehicle: 'Renault Duster 2020',
+      serviceType: 'Fleet Service',
+      amount: 1050.0,
+      status: 'completed',
+      technician: 'Company Team',
+    },
+    {
+      id: '#SRV017',
+      date: '08 Aug, 2025',
+      customer: 'Company Branch Tanta',
+      vehicle: 'Ford Focus 2021',
+      serviceType: 'Fleet Service',
+      amount: 980.0,
+      status: 'completed',
+      technician: 'Company Team',
+    },
+    {
+      id: '#SRV018',
+      date: '08 Aug, 2025',
+      customer: 'Company Branch Ismailia',
+      vehicle: 'Mazda 3 2022',
+      serviceType: 'Fleet Service',
+      amount: 1020.0,
+      status: 'completed',
+      technician: 'Company Team',
+    },
+    {
+      id: '#SRV019',
+      date: '08 Aug, 2025',
+      customer: 'Company Branch Damietta',
+      vehicle: 'Honda Accord 2021',
+      serviceType: 'Fleet Service',
+      amount: 970.0,
+      status: 'completed',
+      technician: 'Company Team',
+    },
   ];
 
   popularServices: CarService[] = [
@@ -437,6 +487,75 @@ export class DashboardHomeComponent
     { month: 'May', value: 25 },
   ];
 
+  carMarkers = [
+    { id: 1, name: 'Car 1', coordinates: [30.0444, 31.2357], city: 'Cairo' },
+    {
+      id: 2,
+      name: 'Car 2',
+      coordinates: [31.2001, 29.9187],
+      city: 'Alexandria',
+    },
+    { id: 3, name: 'Car 3', coordinates: [30.0131, 31.2089], city: 'Giza' },
+    {
+      id: 4,
+      name: 'Car 4',
+      coordinates: [30.1287, 31.2441],
+      city: 'Shubra El Kheima',
+    },
+    {
+      id: 5,
+      name: 'Car 5',
+      coordinates: [29.9668, 30.9441],
+      city: '6th October City',
+    },
+    { id: 6, name: 'Car 6', coordinates: [30.7965, 30.9982], city: 'Tanta' },
+    { id: 7, name: 'Car 7', coordinates: [30.5877, 31.502], city: 'Zagazig' },
+    { id: 8, name: 'Car 8', coordinates: [31.0409, 30.472], city: 'Damanhur' },
+    { id: 9, name: 'Car 9', coordinates: [30.6043, 32.2723], city: 'Ismailia' },
+    { id: 10, name: 'Car 10', coordinates: [30.5566, 31.0082], city: 'Benha' },
+    {
+      id: 11,
+      name: 'Car 11',
+      coordinates: [31.0364, 31.3807],
+      city: 'Mansoura',
+    },
+    {
+      id: 12,
+      name: 'Car 12',
+      coordinates: [30.7865, 31.0004],
+      city: 'Shebin El Kom',
+    },
+    {
+      id: 13,
+      name: 'Car 13',
+      coordinates: [30.8343, 29.5795],
+      city: 'Kafr El Sheikh',
+    },
+    {
+      id: 14,
+      name: 'Car 14',
+      coordinates: [31.1282, 33.8008],
+      city: 'Port Said',
+    },
+    { id: 15, name: 'Car 15', coordinates: [30.123, 31.3757], city: 'Helwan' },
+    { id: 16, name: 'Car 16', coordinates: [27.18, 31.1837], city: 'Asyut' },
+    { id: 17, name: 'Car 17', coordinates: [24.0889, 32.8998], city: 'Luxor' },
+    { id: 18, name: 'Car 18', coordinates: [22.345, 31.6167], city: 'Aswan' },
+    {
+      id: 19,
+      name: 'Car 19',
+      coordinates: [30.9177, 31.475],
+      city: 'Damietta',
+    },
+    // Car Services Company in Mansoura
+    {
+      id: 20,
+      name: 'Car Services Company Mansoura',
+      coordinates: [31.0364, 31.3807],
+      city: 'Mansoura',
+    },
+  ];
+
   constructor(private themeService: ThemeService) {
     // Fix Leaflet icon paths
     fixLeafletIcons();
@@ -530,6 +649,9 @@ export class DashboardHomeComponent
       // Add markers for service areas
       this.addServiceAreaMarkers();
 
+      // Add car markers for cars and company
+      this.addCarMarkers();
+
       // Add custom controls
       this.addCustomControls();
 
@@ -554,7 +676,7 @@ export class DashboardHomeComponent
 
   private addServiceAreaMarkers(): void {
     if (!this.map) return;
-
+    // Add service area markers as before
     this.serviceAreas.forEach((area) => {
       // Calculate marker size based on services volume
       const maxServices = Math.max(...this.serviceAreas.map((a) => a.services));
@@ -579,7 +701,7 @@ export class DashboardHomeComponent
             justify-content: center;
             color: white;
             font-weight: bold;
-            font-size: ${size > 30 ? '12px' : '10px'};
+            font-size: 20px;
           ">
             🚗
           </div>
@@ -596,9 +718,6 @@ export class DashboardHomeComponent
       // Create popup content for service areas
       const popupContent = `
         <div class="map-popup">
-          <h3 style="margin: 0 0 10px 0; color: var(--text-primary);">🚗 ${
-            area.name
-          }</h3>
           <div style="margin: 5px 0;">
             <strong>Region:</strong> ${area.region}
           </div>
@@ -619,6 +738,96 @@ export class DashboardHomeComponent
         maxWidth: 250,
         closeButton: true,
       });
+    });
+    // Add car markers using same function
+    this.carMarkers.forEach((car) => {
+      const customIcon = L.divIcon({
+        className: 'car-marker',
+        html: `
+          <div class="marker-container pulse" style="
+            position: relative;
+            width: 44px;
+            height: 44px;
+            background: #ffe082;
+            border: 6px solid #f5f5f5;
+            border-radius: 50%;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #222;
+            font-size: 20px;
+            font-weight: bold;
+          ">
+            🚗
+            <span class='pulse-effect'></span>
+          </div>
+        `,
+        iconSize: [44, 44],
+        iconAnchor: [22, 22],
+      });
+      const marker = L.marker(car.coordinates as [number, number], {
+        icon: customIcon,
+      }).addTo(this.map!);
+      marker.bindPopup(
+        `
+        <div class='map-popup'>
+          <h3 style='margin:0 0 8px 0;color:var(--text-primary);'>🚗 ${car.name}</h3>
+          <div><strong>Location:</strong> ${car.city}</div>
+        </div>
+      `,
+        {
+          className: 'custom-popup',
+          maxWidth: 220,
+          closeButton: true,
+        }
+      );
+    });
+  }
+  private addCarMarkers(): void {
+    if (!this.map) return;
+    this.carMarkers.forEach((car) => {
+      // All cars use the same yellow style and car emoji icon with pulse effect
+      const customIcon = L.divIcon({
+        className: 'car-marker',
+        html: `
+          <div class="marker-container pulse" style="
+            position: relative;
+            width: 44px;
+            height: 44px;
+            background: #ffe082;
+            border: 6px solid #f5f5f5;
+            border-radius: 50%;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #222;
+            font-size: 20px;
+            font-weight: bold;
+          ">
+            🚗
+            <span class='pulse-effect'></span>
+          </div>
+        `,
+        iconSize: [44, 44],
+        iconAnchor: [22, 22],
+      });
+      const marker = L.marker(car.coordinates as [number, number], {
+        icon: customIcon,
+      }).addTo(this.map!);
+      marker.bindPopup(
+        `
+        <div class='map-popup'>
+          <div><strong>Location:</strong> ${car.city}</div>
+        </div>
+      `,
+        {
+          className: 'custom-popup',
+          maxWidth: 220,
+          closeButton: true,
+        }
+      );
     });
   }
   private addCustomControls(): void {
