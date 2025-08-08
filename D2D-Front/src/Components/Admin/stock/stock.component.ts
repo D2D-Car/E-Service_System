@@ -160,6 +160,13 @@ export class StockComponent implements OnInit {
         location: 'Main Warehouse',
         status: 'available',
       },
+      {
+        name: 'Electric Fuel Pump Assembly',
+        partNumber: 'FP2024-888',
+        quantity: '3',
+        location: 'Main Warehouse',
+        status: 'order',
+      },
     ];
 
     this.filteredPartsList = [...this.originalPartsList];

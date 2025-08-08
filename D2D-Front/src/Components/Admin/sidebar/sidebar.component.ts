@@ -75,21 +75,21 @@ export class SidebarComponent implements OnInit, OnDestroy {
       label: 'Dashboard',
       icon: 'fas fa-tachometer-alt',
       route: '/admin/dashboard',
-      badge: 0,
+      badge: 127,
     },
     {
       id: 'customers',
       label: 'Customers',
       icon: 'fas fa-users',
       route: '/admin/customers',
-      badge: 125,
+      badge: 45,
     },
     {
       id: 'drivers',
       label: 'Drivers',
       icon: 'fas fa-id-card',
       route: '/admin/drivers',
-      badge: 45,
+      badge: 22,
     },
     {
       id: 'technicians',
@@ -117,23 +117,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
       label: 'Financial',
       icon: 'fas fa-chart-line',
       route: '/admin/financial',
-      badge: 0,
+      badge: 4,
     },
   ];
 
   quickActions = [
-    {
-      label: 'New Order',
-      icon: 'fas fa-plus-circle',
-      action: 'newOrder',
-      color: '#10b981',
-    },
-    {
-      label: 'Add Customer',
-      icon: 'fas fa-user-plus',
-      action: 'addCustomer',
-      color: '#3b82f6',
-    },
     {
       label: 'Reports',
       icon: 'fas fa-chart-bar',

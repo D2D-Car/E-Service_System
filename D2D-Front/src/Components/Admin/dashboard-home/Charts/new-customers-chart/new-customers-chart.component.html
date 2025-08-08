@@ -1,0 +1,17 @@
+<div class="card-header">
+  <div class="title-section">
+    <h4 class="card-title">New customers</h4>
+    <p class="card-subtitle">Last 7 days</p>
+  </div>
+  <div class="stats-main">
+    <span class="main-value">{{ customerStats.total }}</span>
+    <span class="change-indicator" [ngClass]="customerStats.changeType">
+      {{ customerStats.change }}
+    </span>
+  </div>
+</div>
+
+<div class="chart-container">
+  <canvas baseChart [data]="lineChartData" [options]="lineChartOptions" [type]="lineChartType">
+  </canvas>
+</div>

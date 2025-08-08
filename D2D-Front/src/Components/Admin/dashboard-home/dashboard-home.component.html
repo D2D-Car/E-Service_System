@@ -7,32 +7,32 @@
     <div class="revenue-section full-width">
       <div class="chart-card revenue-chart">
         <div class="card-header">
-          <h3>D2D Car Services Revenue</h3>
+          <h3>D2D Revenue</h3>
           <div class="chart-tabs">
-            <button class="tab-btn active">ALL</button>
-            <button class="tab-btn">1M</button>
-            <button class="tab-btn">6M</button>
-            <button class="tab-btn">1Y</button>
+            <button class="tab-btn" [class.active]="selectedFilter === '1M' || !selectedFilter"
+              (click)="setFilter('1M')">1M</button>
+            <button class="tab-btn" [class.active]="selectedFilter === '6M'" (click)="setFilter('6M')">6M</button>
+            <button class="tab-btn" [class.active]="selectedFilter === '1Y'" (click)="setFilter('1Y')">1Y</button>
           </div>
         </div>
         <div class="chart-content">
-          <div class="revenue-stats">
-            <div class="budget-info">
-              <span class="budget-label">Monthly Revenue (USD)</span>
+          <div class="revenue-stats row">
+            <div class="budget-info col-6">
+              <span class="budget-label">Monthly Revenue</span>
               <div class="budget-value">$45,780</div>
               <div class="budget-change positive">12.5%</div>
               <div class="budget-note">Revenue increase from last month</div>
             </div>
-            <div class="payouts-info">
+            <div class="payouts-info col-6">
               <span class="payout-label">Services Completed</span>
               <div class="payout-value">1,247</div>
               <div class="payout-change positive">8.3%</div>
-              <div class="payout-note">More services than last month</div>
+              <div class="payout-note">More services than month</div>
             </div>
           </div>
-          <!-- Chart.js Canvas -->
+          <!-- Replace Chart.js Canvas with Angular Chart Component -->
           <div class="chart-area">
-            <canvas #revenueChart id="revenueChart" width="400" height="200"></canvas>
+            <app-total-sells-chart [selectedFilter]="selectedFilter"></app-total-sells-chart>
           </div>
         </div>
       </div>
@@ -45,7 +45,7 @@
     <div class="countries-section">
       <div class="chart-card countries-card">
         <div class="card-header">
-          <h3>Service Areas Coverage</h3>
+          <h3>Areas Coverage</h3>
           <button class="export-btn">Export Report</button>
         </div>
         <div class="countries-content-grid">
@@ -106,11 +106,22 @@
               <div class="source-info">
                 <div class="source-icon search-engine-icon">🔍</div>
                 <div class="source-details">
-                  <span class="source-name">Online Search</span>
+                  <span class="source-name">New Customers</span>
                   <span class="source-percentage">45.2%</span>
                 </div>
               </div>
               <div class="source-value">564 customers</div>
+            </div>
+
+            <div class="source-item">
+              <div class="source-info">
+                <div class="source-icon social-icon">📱</div>
+                <div class="source-details">
+                  <span class="source-name">Running Customers</span>
+                  <span class="source-percentage">22.0%</span>
+                </div>
+              </div>
+              <div class="source-value">274 customers</div>
             </div>
 
             <div class="source-item">
@@ -123,24 +134,31 @@
               </div>
               <div class="source-value">409 customers</div>
             </div>
-
-            <div class="source-item">
-              <div class="source-info">
-                <div class="source-icon social-icon">📱</div>
-                <div class="source-details">
-                  <span class="source-name">Social Media</span>
-                  <span class="source-percentage">22.0%</span>
-                </div>
-              </div>
-              <div class="source-value">274 customers</div>
-            </div>
           </div>
-
-          <!-- Chart.js Customer Acquisition Chart -->
+          <!-- Replace Chart.js Canvas with Angular Chart Component -->
           <div class="traffic-chart-enhanced">
-            <canvas #customerChart id="customerChart" width="300" height="150"></canvas>
+            <app-new-customers-chart></app-new-customers-chart>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row project">
+    <div class="col-md-4">
+      <div class="chart-card orders-card" aria-label="Total Orders">
+        <div class="card-header">
+          <h3 style="color: var(--text-primary);">Total Orders</h3>
+        </div>
+        <app-total-orders-card></app-total-orders-card>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="chart-card roadmap-card" aria-label="Project Roadmap">
+        <div class="card-header">
+          <h3 style="color: var(--text-primary);">Project Roadmap</h3>
+        </div>
+        <app-project-roadmap></app-project-roadmap>
       </div>
     </div>
   </div>
@@ -174,8 +192,10 @@
         <div class="date-range">This Month</div>
       </div>
       <div class="status-list">
-        <!-- Chart.js Service Types Chart -->
-        <canvas #serviceTypesChart id="serviceTypesChart" width="300" height="250"></canvas>
+        <!-- Polar Area Chart for Service Types Performance -->
+        <div class="polar-area-chart-container">
+          <canvas id="serviceTypesPolarChart" width="320" height="320"></canvas>
+        </div>
       </div>
     </div>
 
@@ -205,14 +225,6 @@
     <div class="table-card orders-table">
       <div class="card-header">
         <h3>Latest Service Orders</h3>
-        <div class="sort-options">
-          <span>SORT BY:</span>
-          <select class="sort-select">
-            <option>Service Date</option>
-            <option>Amount</option>
-            <option>Status</option>
-          </select>
-        </div>
       </div>
       <div class="table-container">
         <table class="data-table">
@@ -253,6 +265,5 @@
       </div>
     </div>
   </div>
-
 </div>
 <!-- End Dashboard Container -->

@@ -23,12 +23,12 @@ interface Admin {
 interface Notification {
   id: number;
   type:
-  | 'service'
-  | 'completion'
-  | 'payment'
-  | 'registration'
-  | 'system'
-  | 'feedback';
+    | 'service'
+    | 'completion'
+    | 'payment'
+    | 'registration'
+    | 'system'
+    | 'feedback';
   message: string;
   time: string;
   priority: 'high' | 'medium' | 'low';
@@ -43,7 +43,7 @@ interface Notification {
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   @Input() isDarkMode: boolean = true; // Default to dark theme
-  @Input() sidebarCollapsed: boolean = false;
+  @Input() sidebarCollapsed: boolean = true;
   @Output() sidebarToggle = new EventEmitter<void>();
   @Output() themeToggle = new EventEmitter<void>();
 
@@ -56,7 +56,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   hasNotifications = true;
   currentAdminIndex = 0;
 
-  constructor(private themeService: ThemeService) { }
+  constructor(private themeService: ThemeService) {}
 
   ngOnInit() {
     // Sync with theme service
@@ -197,16 +197,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       case 'dark':
         this.autoTheme = false;
         if (!this.isDarkMode) {
-          this.themeService.toggleTheme();
-        }
-        break;
-      case 'auto':
-        this.autoTheme = true;
-        // Detect system preference
-        const prefersDark = window.matchMedia(
-          '(prefers-color-scheme: dark)'
-        ).matches;
-        if (this.isDarkMode !== prefersDark) {
           this.themeService.toggleTheme();
         }
         break;

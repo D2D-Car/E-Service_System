@@ -1,0 +1,51 @@
+<div class="roadmap-card">
+  <div class="roadmap-header">
+    <div class="controls-section">
+      <div class="toggle-group">
+        <label class="toggle-label" [class.active]="showAll">
+          <input type="radio" name="view" [checked]="showAll" (change)="toggleView(true)">
+          <span class="toggle-text">Show All</span>
+        </label>
+        <label class="toggle-label" [class.active]="!showAll">
+          <input type="radio" name="view" [checked]="!showAll" (change)="toggleView(false)">
+          <span class="toggle-text">Active Only</span>
+        </label>
+      </div>
+
+      <div class="period-buttons">
+        <button *ngFor="let period of periods" class="period-btn" [class.active]="currentPeriod === period"
+          (click)="setPeriod(period)" [attr.aria-pressed]="currentPeriod === period"
+          [style.backgroundColor]="currentPeriod === period ? '#6366f1' : 'transparent'"
+          [style.color]="currentPeriod === period ? '#fff' : 'var(--text-primary)'">
+          {{ period }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="gantt-chart">
+    <div class="phase-labels">
+      <div class="phase-label" *ngFor="let label of getAnalyticsLabels()">
+        {{ label }}
+      </div>
+    </div>
+
+    <div class="chart-area">
+      <div class="chart-grid">
+        <div class="grid-lines">
+          <div class="grid-line" *ngFor="let month of getMonthsInPeriod()"></div>
+        </div>
+
+        <div class="phase-bars">
+          <div class="phase-row" *ngFor="let analytic of getAnalyticsChartData(); let i = index">
+            <div class="phase-bar" [style.left.%]="analytic.start"
+              [style.width.%]="(analytic.value / getMaxAnalyticsValue()) * 100"
+              [style.background-color]="analytic.color"
+              [title]="analytic.label + ': ' + analytic.value + (analytic.label === 'Rev' ? 'k' : analytic.label === 'Growth' ? '%' : '')">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -5,12 +6,17 @@ import {
   AfterViewInit,
   ElementRef,
   ViewChild,
+  inject,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { TotalSellsChartComponent } from './Charts/total-sells-chart/total-sells-chart.component';
+import { ProjectRoadmapComponent } from './Charts/project-roadmap/project-roadmap.component';
+import { TotalOrdersCardComponent } from './Charts/total-orders-card/total-orders-card.component';
+import { NewCustomersChartComponent } from './Charts/new-customers-chart/new-customers-chart.component';
 import { ThemeService } from '../../../Services/theme.service';
 import { Subscription } from 'rxjs';
 import * as L from 'leaflet';
 import { fixLeafletIcons } from '../../../Services/leaflet-icon-fix';
+import Chart from 'chart.js/auto';
 
 interface ServiceOrder {
   id: string;
@@ -68,18 +74,16 @@ interface Activity {
   type: string;
 }
 
-interface Product {
-  name: string;
-  views: number;
-  sales: number;
-  price: number;
-  image: string;
-}
-
 @Component({
   selector: 'app-dashboard-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    NewCustomersChartComponent,
+    TotalSellsChartComponent,
+    ProjectRoadmapComponent,
+    TotalOrdersCardComponent,
+  ],
   templateUrl: './dashboard-home.component.html',
   styleUrls: ['./dashboard-home.component.css'],
 })
@@ -93,6 +97,10 @@ export class DashboardHomeComponent
   serviceTypesChartRef!: ElementRef;
 
   isDarkMode = false;
+  selectedFilter: 'ALL' | '1M' | '6M' | '1Y' = '1M';
+  setFilter(filter: 'ALL' | '1M' | '6M' | '1Y') {
+    this.selectedFilter = filter;
+  }
   private themeSubscription?: Subscription;
   private map?: L.Map;
   private mapInitialized = false;
@@ -318,6 +326,12 @@ export class DashboardHomeComponent
       action: 'diagnosed AC issues for Honda Civic',
       time: '5 hours ago',
       icon: '❄️',
+    },
+    {
+      technician: 'Youssef Mohamed',
+      action: 'performed tire rotation for Audi A4',
+      time: '1 hour ago',
+      icon: '⚙️',
     },
   ];
 
@@ -556,14 +570,15 @@ export class DashboardHomeComponent
     },
   ];
 
-  constructor(private themeService: ThemeService) {
+  themeService = inject(ThemeService);
+  constructor() {
     // Fix Leaflet icon paths
     fixLeafletIcons();
   }
 
   ngOnInit(): void {
     this.themeSubscription = this.themeService.isDarkMode$.subscribe(
-      (isDark) => {
+      (isDark: boolean) => {
         this.isDarkMode = isDark;
         // Update map theme if map is initialized
         if (this.mapInitialized && this.map) {
@@ -596,14 +611,14 @@ export class DashboardHomeComponent
     // Initialize customer acquisition chart
     this.initCustomerChart();
 
-    // Initialize service types chart
-    this.initServiceTypesChart();
+    // Initialize polar area chart for Service Types Performance
+    this.initServiceTypesPolarChart();
   }
 
   private initRevenueChart(): void {
     if (!this.revenueChartRef?.nativeElement) return;
 
-    const ctx = this.revenueChartRef.nativeElement.getContext('2d');
+    // Removed unused ctx variable
 
     // Simulate Chart.js without import (we'll use CSS styling for now)
     // In a real implementation, you would import Chart.js properly
@@ -613,15 +628,75 @@ export class DashboardHomeComponent
   private initCustomerChart(): void {
     if (!this.customerChartRef?.nativeElement) return;
 
-    const ctx = this.customerChartRef.nativeElement.getContext('2d');
+    // Removed unused ctx variable
     console.log('Customer Acquisition Chart initialized');
   }
 
-  private initServiceTypesChart(): void {
-    if (!this.serviceTypesChartRef?.nativeElement) return;
-
-    const ctx = this.serviceTypesChartRef.nativeElement.getContext('2d');
-    console.log('Service Types Chart initialized');
+  private initServiceTypesPolarChart(): void {
+    const canvas = document.getElementById(
+      'serviceTypesPolarChart'
+    ) as HTMLCanvasElement;
+    if (!canvas) return;
+    const labels = [
+      'Oil Change',
+      'Tire Service',
+      'Battery',
+      'Wash',
+      'Repair',
+      'Other',
+    ];
+    const data = {
+      labels,
+      datasets: [
+        {
+          label: labels.join(', '),
+          data: [220, 180, 140, 100, 120, 160],
+          backgroundColor: [
+            'rgba(255, 205, 86, 0.7)',
+            'rgba(54, 162, 235, 0.7)',
+            'rgba(255, 99, 132, 0.7)',
+            'rgba(75, 192, 192, 0.7)',
+            'rgba(153, 102, 255, 0.7)',
+            'rgba(201, 203, 207, 0.7)',
+          ],
+          borderWidth: 1,
+          borderColor: 'transparent',
+        },
+      ],
+    };
+    new Chart(canvas, {
+      type: 'polarArea',
+      data,
+      options: {
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: {
+              color: this.isDarkMode ? '#fff' : '#888',
+              font: { size: 14 },
+            },
+          },
+          title: {
+            display: false,
+          },
+        },
+        scales: {
+          r: {
+            angleLines: { color: this.isDarkMode ? '#fff' : '#888' },
+            grid: { color: this.isDarkMode ? '#fff' : '#888' },
+            pointLabels: {
+              color: this.isDarkMode ? '#fff' : '#888',
+              font: { size: 13 },
+            },
+            ticks: {
+              color: this.isDarkMode ? '#fff' : '#888',
+              font: { size: 12, weight: 'bold' },
+            },
+          },
+        },
+      },
+    });
   }
 
   private initializeMap(): void {
@@ -690,8 +765,8 @@ export class DashboardHomeComponent
         className: 'custom-marker',
         html: `
           <div class="marker-container" style="
-            width: ${size}px; 
-            height: ${size}px; 
+            width: ${size}px;
+            height: ${size}px;
             background: ${area.color};
             border: 3px solid white;
             border-radius: 50%;
@@ -924,11 +999,24 @@ export class DashboardHomeComponent
     }).format(amount);
   }
 
-  getMaxValue(data: any[]): number {
-    return Math.max(...data.map((item) => item.value || item.count));
+  getMaxValue(data: { value?: number; count?: number }[]): number {
+    return Math.max(...data.map((item) => item.value ?? item.count ?? 0));
   }
 
   getBarWidth(value: number, maxValue: number): number {
     return (value / maxValue) * 100;
+  }
+  // --- Added for template bindings ---
+  public roadmapPhases: unknown[] = [];
+  public roadmapPeriods: unknown[] = [];
+
+  public onPeriodChange(event: unknown): void {
+    // TODO: Implement logic for period change
+    console.log('Period changed:', event);
+  }
+
+  public onToggleView(event: unknown): void {
+    // TODO: Implement logic for toggle view
+    console.log('Toggle view:', event);
   }
 }
