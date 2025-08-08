@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-customers',
@@ -26,7 +28,7 @@ export class CustomersComponent {
     },
     {
       id: 2,
-      name: 'Fatima El-Sayed',
+      name: 'Essam El-Sayed',
       membershipType: 'Gold',
       totalOrders: 8,
       image: '/assets/customers-img/cust2.jpg',
@@ -70,7 +72,7 @@ export class CustomersComponent {
     },
     {
       id: 6,
-      name: 'Yasmin Farouk',
+      name: 'Yassin Farouk',
       membershipType: 'Silver',
       totalOrders: 9,
       image: '/assets/customers-img/cust6.jpg',
@@ -92,7 +94,7 @@ export class CustomersComponent {
     },
     {
       id: 8,
-      name: 'Mariam Youssef',
+      name: 'Mohamed Youssef',
       membershipType: 'Gold',
       totalOrders: 14,
       image: '/assets/customers-img/cust8.jpg',
@@ -103,15 +105,25 @@ export class CustomersComponent {
     },
   ];
 
-  callCustomer(customer: any) {
-    console.log('Contacting customer:', customer.name);
-    alert(`Contacting ${customer.name} - ${customer.membershipType} member`);
-  }
+callCustomer(customer: any) {
+  Swal.fire({
+    icon: 'info',
+    title: `Contacting ${customer.name}`,
+    text: `${customer.membershipType} member`,
+    confirmButtonText: 'OK'
+  });
+}
 
-  emailCustomer(customer: any) {
-    console.log('Viewing orders for customer:', customer.name);
-    alert(`Viewing ${customer.totalOrders} orders for ${customer.name}`);
-  }
+emailCustomer(customer: any) {
+  Swal.fire({
+    icon: 'info',
+    title: `Viewing orders for ${customer.name}`,
+    text: `Total orders: ${customer.totalOrders}`,
+    confirmButtonText: 'OK'
+  });
+}
+
+
 
   viewCustomerProfile(customer: any) {
     this.selectedCustomer = customer;
@@ -124,13 +136,22 @@ export class CustomersComponent {
     this.selectedCustomer = null;
   }
 
-  removeCustomer(customer: any) {
-    const confirmRemove = confirm(
-      `Are you sure you want to remove ${customer.name}?`
-    );
-    if (confirmRemove) {
+removeCustomer(customer: any) {
+  Swal.fire({
+    title: `Are you sure you want to remove ${customer.name}?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, remove',
+    cancelButtonText: 'Cancel',
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+  }).then((result) => {
+    if (result.isConfirmed) {
       this.customers = this.customers.filter((c) => c.id !== customer.id);
       console.log('Customer removed:', customer.name);
+      Swal.fire('Removed!', `${customer.name} has been removed.`, 'success');
     }
-  }
+  });
+}
+
 }

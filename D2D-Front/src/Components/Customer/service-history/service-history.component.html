@@ -8,20 +8,24 @@
     </div>
     <div class="filters-section">
       <div class="filter-group">
-        <select class="filter-select" id="serviceFilter">
+        <select class="filter-select" id="serviceFilter" [(ngModel)]="selectedServiceType">
           <option value="all">All Services</option>
-          <option value="oil-change">Oil Change & Filter</option>
-          <option value="brake-service">Brake Service</option>
-          <option value="tire-service">Tire Service</option>
-          <option value="engine-repair">Engine Repair</option>
+          <option value="oil">Oil Change & Filter</option>
+          <option value="brake">Brake Service</option>
+          <option value="tire">Tire Service</option>
+          <option value="engine">Engine Repair</option>
           <option value="transmission">Transmission</option>
+          <option value="battery">Battery Replacement</option>
+          <option value="filter">Air Filter Change</option>
         </select>
-        <select class="filter-select" id="vehicleFilter">
+        <select class="filter-select" id="vehicleFilter" [(ngModel)]="selectedVehicle">
           <option value="all">All Vehicles</option>
-          <option value="toyota-camry">Toyota Camry</option>
-          <option value="honda-crv">Honda CR-V</option>
-          <option value="ford-f150">Ford F-150</option>
-          <option value="bmw-x3">BMW X3</option>
+          <option value="toyota">Toyota</option>
+          <option value="honda">Honda</option>
+          <option value="ford">Ford</option>
+          <option value="bmw">BMW</option>
+          <option value="Hyundai">Hyundai</option>
+          <option value="Nissan">Nissan</option>
         </select>
       </div>
       <button
@@ -34,8 +38,9 @@
       </button>
     </div>
     <div class="service-list">
+      <ng-container *ngIf="filteredServices.length > 0; else noResults">
       <div
-        *ngFor="let service of serviceHistory; trackBy: trackByServiceId"
+        *ngFor="let service of filteredServices; trackBy: trackByServiceId"
         class="service-card"
         [attr.data-type]="service.serviceType"
         [attr.data-vehicle]="service.vehicle"
@@ -76,6 +81,12 @@
           <a href="#" class="btn btn-secondary">Download Invoice</a>
         </div>
       </div>
+      </ng-container>
+      <ng-template #noResults>
+        <div class="no-results">
+          Not found...
+        </div>
+      </ng-template>
     </div>
   </div>
 

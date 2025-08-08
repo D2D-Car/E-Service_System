@@ -2,7 +2,27 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../../Services/theme.service';
 import { Subscription } from 'rxjs';
+<<<<<<< HEAD
 import { AdminOrdersService, AdminOrder } from '../../../Services/admin-orders.service';
+=======
+import { OrderCommunicationService, CustomerOrder } from '../../../Services/order-communication.service';
+import Swal from 'sweetalert2';
+
+
+interface Order {
+  id: string;
+  date: string;
+  customer: string;
+  payment: 'Pending' | 'Success';
+  total: number;
+  delivery: string;
+  items: number;
+  fulfillment: 'Unfulfilled' | 'Fulfilled';
+  serviceType?: string;
+  vehicle?: string;
+  technician?: string;
+}
+>>>>>>> c4062dfe12cb877b113c6906aebdbd59a3af0a02
 
 @Component({
   selector: 'app-orders',
@@ -133,6 +153,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     // Implementation for editing order
   }
 
+<<<<<<< HEAD
   async deleteOrder(orderId: string): Promise<void> {
     if (confirm('Are you sure you want to delete this order?')) {
       try {
@@ -143,6 +164,27 @@ export class OrdersComponent implements OnInit, OnDestroy {
         alert('Failed to delete order. Please try again.');
       }
     }
+=======
+  deleteOrder(orderId: string): void {
+Swal.fire({
+  title: 'Are you sure?',
+  text: 'Do you really want to delete this order?',
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonText: 'Yes, delete it!',
+  cancelButtonText: 'Cancel',
+}).then((result) => {
+  if (result.isConfirmed) {
+    this.orders = this.orders.filter((order) => order.id !== orderId);
+    this.updateFilteredOrders();
+    this.updateStatistics();
+    this.cdr.detectChanges();
+    Swal.fire('Deleted!', 'Order has been deleted.', 'success');
+    console.log('Order deleted:', orderId);
+  }
+});
+
+>>>>>>> c4062dfe12cb877b113c6906aebdbd59a3af0a02
   }
 
   selectMoreAction(action: string): void {
@@ -156,6 +198,37 @@ export class OrdersComponent implements OnInit, OnDestroy {
       case 'Create Order':
         this.createOrder();
         break;
+<<<<<<< HEAD
+=======
+   case 'Clear Modal Orders':
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'This will keep only the initial 12 orders (#001-#012).',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, clear orders',
+    cancelButtonText: 'Cancel',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.clearModalOrders();
+    }
+  });
+  break;
+     case 'Remove Duplicate Orders':
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'This will keep only unique orders based on ID.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, remove duplicates',
+    cancelButtonText: 'Cancel',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.removeDuplicateOrders();
+    }
+  });
+  break;
+>>>>>>> c4062dfe12cb877b113c6906aebdbd59a3af0a02
       default:
         console.log('Selected action:', action);
     }

@@ -1,15 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+<<<<<<< HEAD
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { FirebaseServiceService, ServiceBooking } from '../../../Services/firebase-service.service';
 import { AuthService } from '../../../Services/auth.service';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+=======
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ServiceHistoryService } from '../dashboard/service-history.service';
+import { OrderCommunicationService } from '../../../Services/order-communication.service';
+import { UserDataService } from '../../../Services/user-data.service';
+
+interface ServiceHistory {
+  id: number;
+  title: string;
+  status: string;
+  price: number;
+  rating: number;
+  date: string;
+  technician: string;
+  vehicle: string;
+  location: string;
+  duration: string;
+  serviceType: string;
+}
+>>>>>>> c4062dfe12cb877b113c6906aebdbd59a3af0a02
 
 @Component({
   selector: 'app-service-history',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './service-history.component.html',
   styleUrls: ['./service-history.component.css'],
 })
@@ -21,10 +42,6 @@ export class ServiceHistoryComponent implements OnInit {
   isLoading = false;
   errorMessage = '';
   isGettingLocation = false;
-
-  // Filter options
-  selectedServiceType: string = 'all';
-  selectedVehicle: string = 'all';
 
   constructor(
     private fb: FormBuilder,
@@ -47,6 +64,7 @@ export class ServiceHistoryComponent implements OnInit {
   ngOnInit() {
     this.loadServiceHistory();
   }
+<<<<<<< HEAD
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
@@ -70,6 +88,24 @@ export class ServiceHistoryComponent implements OnInit {
       return matchesServiceType && matchesVehicle;
     });
   }
+=======
+  selectedServiceType: string = 'all';
+  selectedVehicle: string = 'all';
+  get filteredServices(): ServiceHistory[] {
+  return this.serviceHistory.filter(service => {
+    const matchesServiceType =
+      this.selectedServiceType === 'all' ||
+      service.serviceType.toLowerCase().includes(this.selectedServiceType.toLowerCase());
+
+    const matchesVehicle =
+      this.selectedVehicle === 'all' ||
+      service.vehicle.toLowerCase().includes(this.selectedVehicle.toLowerCase());
+
+    return matchesServiceType && matchesVehicle;
+  });
+}
+
+>>>>>>> c4062dfe12cb877b113c6906aebdbd59a3af0a02
 
   openAddServiceModal(): void {
     this.showAddServiceModal = true;
