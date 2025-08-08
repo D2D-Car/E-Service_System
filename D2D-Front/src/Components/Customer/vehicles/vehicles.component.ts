@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ServiceHistoryService } from '../dashboard/service-history.service';
-import { OrderCommunicationService } from '../../../Services/order-communication.service';
+import { FirebaseServiceService } from '../../../Services/firebase-service.service';
+import { AuthService } from '../../../Services/auth.service';
+import Swal from 'sweetalert2';
 
 interface Vehicle {
   id: number;
@@ -84,17 +85,24 @@ export class VehiclesComponent {
   // Service scheduling form
   serviceForm: FormGroup;
 
+  // Loading states
+  isLoading = false;
+  isGettingLocation = false;
+
   constructor(
     private fb: FormBuilder,
-    private serviceHistoryService: ServiceHistoryService,
-    private orderCommunicationService: OrderCommunicationService
+    private firebaseService: FirebaseServiceService,
+    private authService: AuthService
   ) {
     this.serviceForm = this.fb.group({
       title: ['', Validators.required],
+      description: ['', Validators.required],
       price: [0, [Validators.required, Validators.min(0)]],
       technician: ['', Validators.required],
       date: ['', Validators.required],
       rating: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
+      serviceType: ['General Service', Validators.required],
+      location: ['', Validators.required]
     });
   }
 
@@ -233,10 +241,13 @@ export class VehiclesComponent {
     this.showScheduleServiceModal = true;
     this.serviceForm.reset({
       title: '',
+      description: '',
       price: 0,
       technician: '',
       date: '',
       rating: 5,
+      serviceType: 'General Service',
+      location: ''
     });
   }
 
@@ -245,102 +256,164 @@ export class VehiclesComponent {
     this.selectedVehicleForService = null;
     this.serviceForm.reset({
       title: '',
+      description: '',
       price: 0,
       technician: '',
       date: '',
       rating: 5,
+      serviceType: 'General Service',
+      location: ''
     });
   }
 
-  scheduleService(): void {
+  async scheduleService(): Promise<void> {
     if (this.serviceForm.valid && this.selectedVehicleForService) {
       const formValue = this.serviceForm.value;
       console.log('Vehicles Component: Scheduling service with form data:', formValue);
       
-      // Generate a random customer name
-      const randomCustomerNames = [
-        'John Smith', 'Sarah Johnson', 'Michael Brown', 'Emily Davis', 'David Wilson',
-        'Lisa Anderson', 'Robert Taylor', 'Jennifer Martinez', 'William Garcia',
-        'Amanda Rodriguez', 'James Lopez', 'Michelle Gonzalez', 'Christopher Perez',
-        'Jessica Torres', 'Daniel Ramirez', 'Ashley Lewis', 'Matthew Clark',
-        'Nicole Lee', 'Joshua Walker', 'Stephanie Hall', 'Andrew Allen',
-        'Rebecca Young', 'Kevin King', 'Laura Wright', 'Brian Scott',
-        'Melissa Green', 'Steven Baker', 'Heather Adams', 'Timothy Nelson',
-        'Amber Carter', 'Jason Mitchell', 'Rachel Roberts', 'Jeffrey Turner',
-        'Megan Phillips', 'Ryan Campbell', 'Lauren Parker', 'Gary Evans',
-        'Kimberly Edwards', 'Nicholas Collins', 'Christine Stewart', 'Eric Morris',
-        'Angela Rogers', 'Jonathan Reed', 'Tiffany Cook', 'Justin Bailey',
-        'Brittany Cooper', 'Brandon Richardson', 'Samantha Cox', 'Tyler Ward',
-        'Vanessa Torres', 'Sean Peterson', 'Crystal Gray', 'Nathan James',
-        'Monica Butler', 'Adam Simmons', 'Erica Foster', 'Kyle Gonzales',
-        'Tracy Bryant', 'Derek Alexander', 'Stacy Russell', 'Brent Griffin',
-        'Diana Diaz', 'Travis Hayes', 'Natalie Sanders', 'Marcus Price',
-        'Holly Bennett', 'Corey Wood', 'Jacqueline Barnes', 'Dustin Ross',
-        'Catherine Henderson', 'Gregory Coleman', 'Bethany Jenkins', 'Lance Perry',
-        'Misty Powell', 'Derrick Long', 'Kristina Patterson', 'Troy Hughes',
-        'Gina Flores', 'Mario Butler', 'Yolanda Simmons', 'Dwayne Foster',
-        'Latoya Gonzales', 'Malik Bryant', 'Shanice Alexander', 'Terrell Russell',
-        'Keisha Griffin', 'Darnell Diaz', 'Tameka Hayes', 'Lamar Sanders'
-      ];
-      const randomIndex = Math.floor(Math.random() * randomCustomerNames.length);
-      const customerName = randomCustomerNames[randomIndex];
-      
-      // Generate random payment status
-      const randomPaymentStatus = Math.random() > 0.5 ? 'Success' : 'Pending';
-      
-      // Create new service object
-      const newService = {
-        id: Date.now(),
-        title: formValue.title,
-        status: 'Completed',
-        price: formValue.price,
-        rating: formValue.rating,
-        date: this.formatDate(formValue.date),
-        technician: formValue.technician,
-        vehicle: `${this.selectedVehicleForService.year} ${this.selectedVehicleForService.name}`,
-        location: 'Main Branch',
-        duration: '60 mins',
-        serviceType: 'General Service'
-      };
-
-      // Add to service history using the service
-      this.serviceHistoryService.addService(newService);
-      console.log('Vehicles Component: Service added to service history:', newService);
-      
-      // Add to admin orders component
-      const orderData = {
-        title: formValue.title,
-        price: formValue.price,
-        technician: formValue.technician,
-        vehicle: `${this.selectedVehicleForService.year} ${this.selectedVehicleForService.name}`,
-        date: formValue.date,
-        location: 'Main Branch',
-        customerName: customerName,
-        payment: randomPaymentStatus
-      };
-      console.log('Vehicles Component: Adding order data to admin:', orderData);
-      
       try {
-        this.orderCommunicationService.addCustomerOrder(orderData);
-        console.log('Vehicles Component: Order data successfully sent to admin');
+        // Prepare service data for Firebase
+        const serviceData = {
+          title: formValue.title,
+          description: formValue.description || `${formValue.title} for ${this.selectedVehicleForService.year} ${this.selectedVehicleForService.name}`,
+          price: formValue.price,
+          technician: formValue.technician,
+          vehicle: `${this.selectedVehicleForService.year} ${this.selectedVehicleForService.name}`,
+          serviceDate: new Date(formValue.date),
+          rating: formValue.rating,
+          serviceType: formValue.serviceType,
+          location: formValue.location
+        };
+
+        // Add service to Firebase
+        const serviceId = await this.firebaseService.addServiceBooking(serviceData);
+        console.log('Vehicles Component: Service added to Firebase with ID:', serviceId);
+
+        // Close modal and show success message
+        this.closeScheduleServiceModal();
+        
+        // Show SweetAlert success message
+        Swal.fire({
+          icon: 'success',
+          title: 'تم بنجاح!',
+          text: 'تم جدولة الخدمة بنجاح',
+          confirmButtonText: 'موافق',
+          confirmButtonColor: '#ff3b3b'
+        });
+        
       } catch (error) {
-        console.error('Vehicles Component: Error sending order data to admin:', error);
+        console.error('Vehicles Component: Error scheduling service:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'خطأ',
+          text: 'فشل في جدولة الخدمة. يرجى المحاولة مرة أخرى.',
+          confirmButtonText: 'موافق',
+          confirmButtonColor: '#ff3b3b'
+        });
       }
-      
-      // Close modal and reset form
-      this.closeScheduleServiceModal();
     } else {
       console.log('Vehicles Component: Form is invalid:', this.serviceForm.errors);
+      // Mark all fields as touched to show validation errors
+      Object.keys(this.serviceForm.controls).forEach(key => {
+        this.serviceForm.get(key)?.markAsTouched();
+      });
     }
   }
 
-  private formatDate(dateString: string): string {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
+  // Get field error message
+  getFieldError(fieldName: string): string {
+    const field = this.serviceForm.get(fieldName);
+    if (field && field.errors && field.touched) {
+      if (field.errors['required']) return `${fieldName} is required`;
+      if (field.errors['min']) return `${fieldName} must be greater than 0`;
+    }
+    return '';
+  }
+
+  // Get current location
+  getCurrentLocation(): void {
+    if (!navigator.geolocation) {
+      Swal.fire({
+        icon: 'error',
+        title: 'خطأ',
+        text: 'المتصفح لا يدعم خدمة تحديد الموقع',
+        confirmButtonText: 'موافق',
+        confirmButtonColor: '#ff3b3b'
+      });
+      return;
+    }
+
+    this.isGettingLocation = true;
+    
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          
+          // Use a simple format for coordinates
+          const locationString = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+          this.serviceForm.patchValue({ location: locationString });
+          
+          Swal.fire({
+            icon: 'success',
+            title: 'تم تحديد الموقع',
+            text: 'تم الحصول على موقعك الحالي بنجاح',
+            timer: 2000,
+            showConfirmButton: false
+          });
+          
+        } catch (error) {
+          console.error('Error getting location:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'خطأ',
+            text: 'فشل في تحديد الموقع',
+            confirmButtonText: 'موافق',
+            confirmButtonColor: '#ff3b3b'
+          });
+        } finally {
+          this.isGettingLocation = false;
+        }
+      },
+      (error) => {
+        this.isGettingLocation = false;
+        let errorMessage = 'فشل في تحديد الموقع';
+        
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = 'تم رفض الإذن للوصول إلى الموقع';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = 'معلومات الموقع غير متاحة';
+            break;
+          case error.TIMEOUT:
+            errorMessage = 'انتهت مهلة طلب الموقع';
+            break;
+        }
+        
+        Swal.fire({
+          icon: 'error',
+          title: 'خطأ في الموقع',
+          text: errorMessage,
+          confirmButtonText: 'موافق',
+          confirmButtonColor: '#ff3b3b'
+        });
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 60000
+      }
+    );
+  }
+
+  // Get today's date in YYYY-MM-DD format for date input min attribute
+  getTodayDate(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 }
