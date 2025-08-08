@@ -4,20 +4,11 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { VehiclesComponent } from '../vehicles/vehicles.component';
 import { ServiceHistoryComponent } from '../service-history/service-history.component';
 import { CustomerProfileComponent } from '../profile/profile.component';
-import { ServiceHistoryService } from './service-history.service';
-import { OrderCommunicationService } from '../../../Services/order-communication.service';
-import { UserDataService } from '../../../Services/user-data.service';
+import { FirebaseServiceService, ServiceBooking, UpcomingService } from '../../../Services/firebase-service.service';
+import { AuthService } from '../../../Services/auth.service';
+import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
-interface UpcomingService {
-  day: string;
-  month: string;
-  title: string;
-  description: string;
-  vehicle: string;
-  time: string;
-  status: string;
-  statusText: string;
-}
 
 interface RecentActivity {
   icon: string;
@@ -26,19 +17,6 @@ interface RecentActivity {
   time: string;
 }
 
-interface ServiceHistory {
-  id: number;
-  title: string;
-  status: string;
-  price: number;
-  rating: number;
-  date: string;
-  technician: string;
-  vehicle: string;
-  location: string;
-  duration: string;
-  serviceType: string;
-}
 
 @Component({
   selector: 'app-dashboard',
@@ -48,39 +26,12 @@ interface ServiceHistory {
 })
 export class DashboardComponent implements OnInit {
   activeTab: string = 'dashboard';
+  private subscriptions: Subscription[] = [];
+  isLoading = false;
+  errorMessage = '';
 
-  upcomingServices: UpcomingService[] = [
-    {
-      day: '15',
-      month: 'Aug',
-      title: 'Oil Change & Filter',
-      description: 'Regular maintenance service',
-      vehicle: 'Toyota Camry',
-      time: '10:00 AM',
-      status: 'scheduled',
-      statusText: 'Scheduled'
-    },
-    {
-      day: '20',
-      month: 'Aug',
-      title: 'Brake Inspection',
-      description: 'Safety check and maintenance',
-      vehicle: 'Honda Civic',
-      time: '2:00 PM',
-      status: 'pending',
-      statusText: 'Pending'
-    },
-    {
-      day: '25',
-      month: 'Aug',
-      title: 'Tire Rotation',
-      description: 'Tire maintenance service',
-      vehicle: 'Ford Focus',
-      time: '11:30 AM',
-      status: 'completed',
-      statusText: 'Completed'
-    }
-  ];
+  upcomingServices: UpcomingService[] = [];
+  allServices: ServiceBooking[] = [];
 
   recentActivities: RecentActivity[] = [
     {
@@ -111,35 +62,61 @@ export class DashboardComponent implements OnInit {
 
   // Modal state
   showAddServiceModal: boolean = false;
+  isGettingLocation: boolean = false;
+  currentLocation: string = '';
 
   addServiceForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
-    private serviceHistoryService: ServiceHistoryService,
-    private orderCommunicationService: OrderCommunicationService,
-    private userDataService: UserDataService
+    private firebaseService: FirebaseServiceService,
+    private authService: AuthService
   ) {
     this.addServiceForm = this.fb.group({
       title: ['', Validators.required],
+      description: ['', Validators.required],
       price: [0, [Validators.required, Validators.min(0)]],
       technician: ['', Validators.required],
       vehicle: ['', Validators.required],
       date: ['', Validators.required],
       rating: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
+      serviceType: ['General Service', Validators.required],
+      location: ['', Validators.required]
     });
   }
 
   ngOnInit() {
-    // Only need to initialize the form once, so remove this if already in constructor
-    // this.addServiceForm = this.fb.group({
-    //   title: ['', Validators.required],
-    //   price: ['', Validators.required],
-    //   technician: ['', Validators.required],
-    //   vehicle: ['', Validators.required],
-    //   date: ['', Validators.required],
-    //   rating: ['', Validators.required]
-    // });
+    this.loadUserData();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  private loadUserData(): void {
+    // Subscribe to upcoming services
+    const upcomingSub = this.firebaseService.getCurrentUserUpcomingServices().subscribe(
+      (services) => {
+        this.upcomingServices = services;
+        console.log('Upcoming services loaded:', services);
+      },
+      (error) => {
+        console.error('Error loading upcoming services:', error);
+      }
+    );
+
+    // Subscribe to all services for service history
+    const servicesSub = this.firebaseService.getCurrentUserServices().subscribe(
+      (services) => {
+        this.allServices = services;
+        console.log('All services loaded:', services);
+      },
+      (error) => {
+        console.error('Error loading services:', error);
+      }
+    );
+
+    this.subscriptions.push(upcomingSub, servicesSub);
   }
 
   openAddServiceModal(): void {
@@ -149,11 +126,14 @@ export class DashboardComponent implements OnInit {
     console.log('Customer Dashboard: showAddServiceModal set to:', this.showAddServiceModal);
     this.addServiceForm.reset({
       title: '',
+      description: '',
       price: 0,
       technician: '',
       vehicle: '',
       date: '',
       rating: 5,
+      serviceType: 'General Service',
+      location: ''
     });
     console.log('Customer Dashboard: Modal should be visible now');
     
@@ -165,109 +145,198 @@ export class DashboardComponent implements OnInit {
 
   closeAddServiceModal(): void {
     this.showAddServiceModal = false;
+    this.errorMessage = '';
     this.addServiceForm.reset({
       title: '',
+      description: '',
       price: 0,
       technician: '',
       vehicle: '',
       date: '',
       rating: 5,
+      serviceType: 'General Service',
+      location: ''
     });
   }
 
-  addNewService(): void {
+  async addNewService(): Promise<void> {
     if (this.addServiceForm.valid) {
+      this.isLoading = true;
+      this.errorMessage = '';
+      
       const formValue = this.addServiceForm.value;
       console.log('Customer Dashboard: Adding new service with form data:', formValue);
       
-      // Generate a random customer name instead of using actual user data
-      const randomCustomerNames = [
-        'John Smith', 'Sarah Johnson', 'Michael Brown', 'Emily Davis', 'David Wilson',
-        'Lisa Anderson', 'Robert Taylor', 'Jennifer Martinez', 'William Garcia',
-        'Amanda Rodriguez', 'James Lopez', 'Michelle Gonzalez', 'Christopher Perez',
-        'Jessica Torres', 'Daniel Ramirez', 'Ashley Lewis', 'Matthew Clark',
-        'Nicole Lee', 'Joshua Walker', 'Stephanie Hall', 'Andrew Allen',
-        'Rebecca Young', 'Kevin King', 'Laura Wright', 'Brian Scott',
-        'Melissa Green', 'Steven Baker', 'Heather Adams', 'Timothy Nelson',
-        'Amber Carter', 'Jason Mitchell', 'Rachel Roberts', 'Jeffrey Turner',
-        'Megan Phillips', 'Ryan Campbell', 'Lauren Parker', 'Gary Evans',
-        'Kimberly Edwards', 'Nicholas Collins', 'Christine Stewart', 'Eric Morris',
-        'Angela Rogers', 'Jonathan Reed', 'Tiffany Cook', 'Justin Bailey',
-        'Brittany Cooper', 'Brandon Richardson', 'Samantha Cox', 'Tyler Ward',
-        'Vanessa Torres', 'Sean Peterson', 'Crystal Gray', 'Nathan James',
-        'Monica Butler', 'Adam Simmons', 'Erica Foster', 'Kyle Gonzales',
-        'Tracy Bryant', 'Derek Alexander', 'Stacy Russell', 'Brent Griffin',
-        'Diana Diaz', 'Travis Hayes', 'Natalie Sanders', 'Marcus Price',
-        'Holly Bennett', 'Corey Wood', 'Jacqueline Barnes', 'Dustin Ross',
-        'Catherine Henderson', 'Gregory Coleman', 'Bethany Jenkins', 'Lance Perry',
-        'Misty Powell', 'Derrick Long', 'Kristina Patterson', 'Troy Hughes',
-        'Gina Flores', 'Mario Butler', 'Yolanda Simmons', 'Dwayne Foster',
-        'Latoya Gonzales', 'Malik Bryant', 'Shanice Alexander', 'Terrell Russell',
-        'Keisha Griffin', 'Darnell Diaz', 'Tameka Hayes', 'Lamar Sanders'
-      ];
-      const randomIndex = Math.floor(Math.random() * randomCustomerNames.length);
-      const customerName = randomCustomerNames[randomIndex];
-      
-      // Generate random payment status
-      const randomPaymentStatus = Math.random() > 0.5 ? 'Success' : 'Pending';
-      
-      // Create new service object
-      const newService = {
-        id: Date.now(), // Generate unique ID
-        title: formValue.title,
-        status: 'Completed',
-        price: formValue.price,
-        rating: formValue.rating,
-        date: this.formatDate(formValue.date),
-        technician: formValue.technician,
-        vehicle: formValue.vehicle,
-        location: 'Main Branch',
-        duration: '60 mins',
-        serviceType: 'General Service'
-      };
-
-      // Add to service history using the service
-      this.serviceHistoryService.addService(newService);
-      console.log('Customer Dashboard: Service added to service history:', newService);
-      
-      // Add to admin orders component
-      const orderData = {
-        title: formValue.title,
-        price: formValue.price,
-        technician: formValue.technician,
-        vehicle: formValue.vehicle,
-        date: formValue.date,
-        location: 'Main Branch',
-        customerName: customerName,
-        payment: randomPaymentStatus // Add random payment status
-      };
-      console.log('Customer Dashboard: Adding order data to admin:', orderData);
-      
       try {
-        this.orderCommunicationService.addCustomerOrder(orderData);
-        console.log('Customer Dashboard: Order data successfully sent to admin');
-      } catch (error) {
-        console.error('Customer Dashboard: Error sending order data to admin:', error);
+        // Prepare service data for Firebase
+        const serviceData = {
+          title: formValue.title,
+          description: formValue.description,
+          price: formValue.price,
+          technician: formValue.technician,
+          vehicle: formValue.vehicle,
+          serviceDate: new Date(formValue.date),
+          rating: formValue.rating,
+          serviceType: formValue.serviceType,
+          location: formValue.location
+        };
+
+        // Add service to Firebase
+        const serviceId = await this.firebaseService.addServiceBooking(serviceData);
+        console.log('Customer Dashboard: Service added to Firebase with ID:', serviceId);
+
+        // Close modal and show success message
+        this.closeAddServiceModal();
+        
+        // Show SweetAlert success message
+        Swal.fire({
+          icon: 'success',
+          title: 'تم بنجاح!',
+          text: 'تم حجز الخدمة بنجاح',
+          confirmButtonText: 'موافق',
+          confirmButtonColor: '#ff3b3b'
+        });
+        
+      } catch (error: any) {
+        console.error('Customer Dashboard: Error adding service:', error);
+        if (error.message && error.message.includes('Permission denied')) {
+          this.errorMessage = 'Permission denied. Please check your account permissions or contact support.';
+        } else {
+          this.errorMessage = 'Failed to book service. Please try again.';
+        }
+      } finally {
+        this.isLoading = false;
       }
-      
-      // Close modal and reset form
-      this.closeAddServiceModal();
     } else {
       console.log('Customer Dashboard: Form is invalid:', this.addServiceForm.errors);
+      // Mark all fields as touched to show validation errors
+      Object.keys(this.addServiceForm.controls).forEach(key => {
+        this.addServiceForm.get(key)?.markAsTouched();
+      });
     }
   }
 
-  private formatDate(dateString: string): string {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
+  // Get field error message
+  getFieldError(fieldName: string): string {
+    const field = this.addServiceForm.get(fieldName);
+    if (field && field.errors && field.touched) {
+      if (field.errors['required']) return `${fieldName} is required`;
+      if (field.errors['min']) return `${fieldName} must be greater than 0`;
+    }
+    return '';
   }
 
+  // Get current location
+  getCurrentLocation(): void {
+    if (!navigator.geolocation) {
+      Swal.fire({
+        icon: 'error',
+        title: 'خطأ',
+        text: 'المتصفح لا يدعم خدمة تحديد الموقع',
+        confirmButtonText: 'موافق',
+        confirmButtonColor: '#ff3b3b'
+      });
+      return;
+    }
+
+    this.isGettingLocation = true;
+    
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          
+          // Use reverse geocoding to get address
+          const response = await fetch(
+            `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lng}&key=YOUR_API_KEY&language=ar&pretty=1`
+          );
+          
+          if (response.ok) {
+            const data = await response.json();
+            if (data.results && data.results.length > 0) {
+              const address = data.results[0].formatted;
+              this.currentLocation = address;
+              this.addServiceForm.patchValue({ location: address });
+            } else {
+              // Fallback to coordinates if no address found
+              this.currentLocation = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+              this.addServiceForm.patchValue({ location: this.currentLocation });
+            }
+          } else {
+            // Fallback to coordinates if API fails
+            this.currentLocation = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+            this.addServiceForm.patchValue({ location: this.currentLocation });
+          }
+          
+          Swal.fire({
+            icon: 'success',
+            title: 'تم تحديد الموقع',
+            text: 'تم الحصول على موقعك الحالي بنجاح',
+            timer: 2000,
+            showConfirmButton: false
+          });
+          
+        } catch (error) {
+          console.error('Error getting location details:', error);
+          // Use coordinates as fallback
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          this.currentLocation = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+          this.addServiceForm.patchValue({ location: this.currentLocation });
+          
+          Swal.fire({
+            icon: 'info',
+            title: 'تم تحديد الموقع',
+            text: 'تم الحصول على إحداثيات موقعك',
+            timer: 2000,
+            showConfirmButton: false
+          });
+        } finally {
+          this.isGettingLocation = false;
+        }
+      },
+      (error) => {
+        this.isGettingLocation = false;
+        let errorMessage = 'فشل في تحديد الموقع';
+        
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = 'تم رفض الإذن للوصول إلى الموقع';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = 'معلومات الموقع غير متاحة';
+            break;
+          case error.TIMEOUT:
+            errorMessage = 'انتهت مهلة طلب الموقع';
+            break;
+        }
+        
+        Swal.fire({
+          icon: 'error',
+          title: 'خطأ في الموقع',
+          text: errorMessage,
+          confirmButtonText: 'موافق',
+          confirmButtonColor: '#ff3b3b'
+        });
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 60000
+      }
+    );
+  }
   setActiveTab(tab: string): void {
     this.activeTab = tab;
+  }
+
+  // Get today's date in YYYY-MM-DD format for date input min attribute
+  getTodayDate(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 }
