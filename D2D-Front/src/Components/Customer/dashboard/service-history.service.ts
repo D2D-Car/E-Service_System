@@ -38,7 +38,7 @@ export class ServiceHistoryService {
       rating: 5,
       date: '2024-08-05',
       technician: 'Mike Wilson',
-      vehicle: 'Toyota Camry 2020',
+      vehicle: 'Toyota Corolla 2021',
       location: 'Main Branch',
       duration: '30 mins',
       serviceType: 'Tire Service'
@@ -69,6 +69,19 @@ export class ServiceHistoryService {
       location: 'West Branch',
       duration: '20 mins',
       serviceType: 'Filter Service'
+    },
+    {
+      id: 6,
+      title: 'Engine Repair',
+      status: 'Completed',
+      price: 200.00,
+      rating: 3,
+      date: '2025-08-10',
+      technician: 'Michael Johnson',
+      vehicle: 'Ford Focus 2022',
+      location: 'East Branch',
+      duration: '3 hours',
+      serviceType: 'Engine Repair'
     }
   ]);
   history$ = this.history.asObservable();

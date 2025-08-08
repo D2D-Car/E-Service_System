@@ -1,21 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { VehiclesComponent } from '../vehicles/vehicles.component';
-import { ServiceHistoryComponent } from '../service-history/service-history.component';
-import { CustomerProfileComponent } from "../profile/profile.component";
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ServiceHistoryService } from './service-history.service';
+import { VehiclesComponent } from '../vehicles/vehicles.component';
+import { ServiceHistoryComponent } from '../service-history/service-history.component';
+import { CustomerProfileComponent } from '../profile/profile.component';
+import { FirebaseServiceService, ServiceBooking, UpcomingService } from '../../../Services/firebase-service.service';
+import { AuthService } from '../../../Services/auth.service';
+import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
-interface UpcomingService {
-  day: string;
-  month: string;
-  title: string;
-  description: string;
-  vehicle: string;
-  time: string;
-  status: string;
-  statusText: string;
-}
 
 interface RecentActivity {
   icon: string;
@@ -24,19 +17,6 @@ interface RecentActivity {
   time: string;
 }
 
-interface ServiceHistory {
-  id: number;
-  title: string;
-  status: string;
-  price: number;
-  rating: number;
-  date: string;
-  technician: string;
-  vehicle: string;
-  location: string;
-  duration: string;
-  serviceType: string;
-}
 
 @Component({
   selector: 'app-dashboard',
@@ -46,162 +26,317 @@ interface ServiceHistory {
 })
 export class DashboardComponent implements OnInit {
   activeTab: string = 'dashboard';
+  private subscriptions: Subscription[] = [];
+  isLoading = false;
+  errorMessage = '';
 
-  // Sample data for upcoming services
-  upcomingServices: UpcomingService[] = [
-    {
-      day: '15',
-      month: 'Aug',
-      title: 'Oil Change Service',
-      description: 'Regular maintenance oil change',
-      vehicle: 'Toyota Camry 2020',
-      time: '10:00 AM',
-      status: 'confirmed',
-      statusText: 'Confirmed',
-    },
-    {
-      day: '20',
-      month: 'Aug',
-      title: 'Brake Inspection',
-      description: 'Comprehensive brake system check',
-      vehicle: 'Honda Civic 2019',
-      time: '2:00 PM',
-      status: 'pending',
-      statusText: 'Pending',
-    },
-    {
-      day: '25',
-      month: 'Aug',
-      title: 'Tire Replacement',
-      description: 'Replace front tires',
-      vehicle: 'Toyota Camry 2020',
-      time: '11:30 AM',
-      status: 'confirmed',
-      statusText: 'Confirmed',
-    },
-  ];
+  upcomingServices: UpcomingService[] = [];
+  allServices: ServiceBooking[] = [];
 
-  // Sample data for recent activities
   recentActivities: RecentActivity[] = [
     {
-      icon: 'fas fa-check-circle',
-      title: 'Service Completed',
-      description: 'Engine diagnostic completed successfully',
-      time: '2 hours ago',
+      icon: '🔧',
+      title: 'Oil Change Completed',
+      description: 'Service completed for Toyota Camry',
+      time: '2 hours ago'
     },
     {
-      icon: 'fas fa-calendar-plus',
-      title: 'Service Scheduled',
-      description: 'Oil change scheduled for August 15th',
-      time: '1 day ago',
-    },
-    {
-      icon: 'fas fa-car',
+      icon: '🚗',
       title: 'Vehicle Added',
-      description: 'Honda Civic 2019 added to your garage',
-      time: '3 days ago',
+      description: 'New vehicle Honda Civic added to profile',
+      time: '1 day ago'
     },
     {
-      icon: 'fas fa-user-check',
-      title: 'Profile Updated',
-      description: 'Contact information updated',
-      time: '1 week ago',
+      icon: '📅',
+      title: 'Appointment Scheduled',
+      description: 'Brake inspection scheduled for Aug 20',
+      time: '2 days ago'
     },
+    {
+      icon: '💰',
+      title: 'Payment Processed',
+      description: 'Payment of $85.00 processed for oil change',
+      time: '3 days ago'
+    }
   ];
 
   // Modal state
   showAddServiceModal: boolean = false;
+  isGettingLocation: boolean = false;
+  currentLocation: string = '';
 
   addServiceForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
-    private serviceHistoryService: ServiceHistoryService
+    private firebaseService: FirebaseServiceService,
+    private authService: AuthService
   ) {
     this.addServiceForm = this.fb.group({
       title: ['', Validators.required],
+      description: ['', Validators.required],
       price: [0, [Validators.required, Validators.min(0)]],
       technician: ['', Validators.required],
       vehicle: ['', Validators.required],
       date: ['', Validators.required],
       rating: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
+      serviceType: ['General Service', Validators.required],
+      location: ['', Validators.required]
     });
   }
 
   ngOnInit() {
-    // Only need to initialize the form once, so remove this if already in constructor
-    // this.addServiceForm = this.fb.group({
-    //   title: ['', Validators.required],
-    //   price: ['', Validators.required],
-    //   technician: ['', Validators.required],
-    //   vehicle: ['', Validators.required],
-    //   date: ['', Validators.required],
-    //   rating: ['', Validators.required]
-    // });
+    this.loadUserData();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  private loadUserData(): void {
+    // Subscribe to upcoming services
+    const upcomingSub = this.firebaseService.getCurrentUserUpcomingServices().subscribe(
+      (services) => {
+        this.upcomingServices = services;
+        console.log('Upcoming services loaded:', services);
+      },
+      (error) => {
+        console.error('Error loading upcoming services:', error);
+      }
+    );
+
+    // Subscribe to all services for service history
+    const servicesSub = this.firebaseService.getCurrentUserServices().subscribe(
+      (services) => {
+        this.allServices = services;
+        console.log('All services loaded:', services);
+      },
+      (error) => {
+        console.error('Error loading services:', error);
+      }
+    );
+
+    this.subscriptions.push(upcomingSub, servicesSub);
   }
 
   openAddServiceModal(): void {
+    console.log('Customer Dashboard: Opening modal...');
+    console.log('Customer Dashboard: Current showAddServiceModal value:', this.showAddServiceModal);
     this.showAddServiceModal = true;
+    console.log('Customer Dashboard: showAddServiceModal set to:', this.showAddServiceModal);
     this.addServiceForm.reset({
       title: '',
+      description: '',
       price: 0,
       technician: '',
       vehicle: '',
       date: '',
       rating: 5,
+      serviceType: 'General Service',
+      location: ''
     });
+    console.log('Customer Dashboard: Modal should be visible now');
+    
+    // Force change detection
+    setTimeout(() => {
+      console.log('Customer Dashboard: Modal state after timeout:', this.showAddServiceModal);
+    }, 100);
   }
 
   closeAddServiceModal(): void {
     this.showAddServiceModal = false;
+    this.errorMessage = '';
     this.addServiceForm.reset({
       title: '',
+      description: '',
       price: 0,
       technician: '',
       vehicle: '',
       date: '',
       rating: 5,
+      serviceType: 'General Service',
+      location: ''
     });
   }
 
-  addNewService(): void {
+  async addNewService(): Promise<void> {
     if (this.addServiceForm.valid) {
+      this.isLoading = true;
+      this.errorMessage = '';
+      
       const formValue = this.addServiceForm.value;
+      console.log('Customer Dashboard: Adding new service with form data:', formValue);
       
-      // Create new service object
-      const newService = {
-        id: Date.now(), // Generate unique ID
-        title: formValue.title,
-        status: 'Completed',
-        price: formValue.price,
-        rating: formValue.rating,
-        date: this.formatDate(formValue.date),
-        technician: formValue.technician,
-        vehicle: formValue.vehicle,
-        location: 'Main Branch',
-        duration: '60 mins',
-        serviceType: 'General Service'
-      };
+      try {
+        // Prepare service data for Firebase
+        const serviceData = {
+          title: formValue.title,
+          description: formValue.description,
+          price: formValue.price,
+          technician: formValue.technician,
+          vehicle: formValue.vehicle,
+          serviceDate: new Date(formValue.date),
+          rating: formValue.rating,
+          serviceType: formValue.serviceType,
+          location: formValue.location
+        };
 
-      // Add to service history using the service
-      this.serviceHistoryService.addService(newService);
-      
-      // Close modal and reset form
-      this.closeAddServiceModal();
+        // Add service to Firebase
+        const serviceId = await this.firebaseService.addServiceBooking(serviceData);
+        console.log('Customer Dashboard: Service added to Firebase with ID:', serviceId);
+
+        // Close modal and show success message
+        this.closeAddServiceModal();
+        
+        // Show SweetAlert success message
+        Swal.fire({
+          icon: 'success',
+          title: 'تم بنجاح!',
+          text: 'تم حجز الخدمة بنجاح',
+          confirmButtonText: 'موافق',
+          confirmButtonColor: '#ff3b3b'
+        });
+        
+      } catch (error: any) {
+        console.error('Customer Dashboard: Error adding service:', error);
+        if (error.message && error.message.includes('Permission denied')) {
+          this.errorMessage = 'Permission denied. Please check your account permissions or contact support.';
+        } else {
+          this.errorMessage = 'Failed to book service. Please try again.';
+        }
+      } finally {
+        this.isLoading = false;
+      }
+    } else {
+      console.log('Customer Dashboard: Form is invalid:', this.addServiceForm.errors);
+      // Mark all fields as touched to show validation errors
+      Object.keys(this.addServiceForm.controls).forEach(key => {
+        this.addServiceForm.get(key)?.markAsTouched();
+      });
     }
   }
 
-  private formatDate(dateString: string): string {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
+  // Get field error message
+  getFieldError(fieldName: string): string {
+    const field = this.addServiceForm.get(fieldName);
+    if (field && field.errors && field.touched) {
+      if (field.errors['required']) return `${fieldName} is required`;
+      if (field.errors['min']) return `${fieldName} must be greater than 0`;
+    }
+    return '';
   }
 
+  // Get current location
+  getCurrentLocation(): void {
+    if (!navigator.geolocation) {
+      Swal.fire({
+        icon: 'error',
+        title: 'خطأ',
+        text: 'المتصفح لا يدعم خدمة تحديد الموقع',
+        confirmButtonText: 'موافق',
+        confirmButtonColor: '#ff3b3b'
+      });
+      return;
+    }
+
+    this.isGettingLocation = true;
+    
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          
+          // Use reverse geocoding to get address
+          const response = await fetch(
+            `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lng}&key=YOUR_API_KEY&language=ar&pretty=1`
+          );
+          
+          if (response.ok) {
+            const data = await response.json();
+            if (data.results && data.results.length > 0) {
+              const address = data.results[0].formatted;
+              this.currentLocation = address;
+              this.addServiceForm.patchValue({ location: address });
+            } else {
+              // Fallback to coordinates if no address found
+              this.currentLocation = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+              this.addServiceForm.patchValue({ location: this.currentLocation });
+            }
+          } else {
+            // Fallback to coordinates if API fails
+            this.currentLocation = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+            this.addServiceForm.patchValue({ location: this.currentLocation });
+          }
+          
+          Swal.fire({
+            icon: 'success',
+            title: 'تم تحديد الموقع',
+            text: 'تم الحصول على موقعك الحالي بنجاح',
+            timer: 2000,
+            showConfirmButton: false
+          });
+          
+        } catch (error) {
+          console.error('Error getting location details:', error);
+          // Use coordinates as fallback
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          this.currentLocation = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+          this.addServiceForm.patchValue({ location: this.currentLocation });
+          
+          Swal.fire({
+            icon: 'info',
+            title: 'تم تحديد الموقع',
+            text: 'تم الحصول على إحداثيات موقعك',
+            timer: 2000,
+            showConfirmButton: false
+          });
+        } finally {
+          this.isGettingLocation = false;
+        }
+      },
+      (error) => {
+        this.isGettingLocation = false;
+        let errorMessage = 'فشل في تحديد الموقع';
+        
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = 'تم رفض الإذن للوصول إلى الموقع';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = 'معلومات الموقع غير متاحة';
+            break;
+          case error.TIMEOUT:
+            errorMessage = 'انتهت مهلة طلب الموقع';
+            break;
+        }
+        
+        Swal.fire({
+          icon: 'error',
+          title: 'خطأ في الموقع',
+          text: errorMessage,
+          confirmButtonText: 'موافق',
+          confirmButtonColor: '#ff3b3b'
+        });
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 60000
+      }
+    );
+  }
   setActiveTab(tab: string): void {
     this.activeTab = tab;
+  }
+
+  // Get today's date in YYYY-MM-DD format for date input min attribute
+  getTodayDate(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 }

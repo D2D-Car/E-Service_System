@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../Services/auth.service';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-drivers',
@@ -321,11 +323,21 @@ export class DriversComponent {
 
   // ===== NOTIFICATION FUNCTIONS =====
   private showErrorMessage(message: string) {
-    this.createNotification(message, 'error');
+      Swal.fire({
+    icon: 'error',
+    title: 'Error',
+    text: message,
+  });
   }
 
   private showSuccessMessage(message: string) {
-    this.createNotification(message, 'success');
+      Swal.fire({
+    icon: 'success',
+    title: 'Success',
+    text: message,
+    timer: 2000,
+    showConfirmButton: false
+  });
   }
 
   private createNotification(message: string, type: 'success' | 'error') {
@@ -356,21 +368,42 @@ export class DriversComponent {
   }
 
   // ===== EXISTING FUNCTIONS =====
-  callDriver(driver: any) {
-    this.showSuccessMessage(`License: ${driver.licenseNumber} - ${driver.experience} experience`);
-  }
+callDriver(driver: any) {
+  Swal.fire({
+    icon: 'info',
+    title: 'Driver Info',
+    text: `License: ${driver.licenseNumber} - ${driver.experience} experience`,
+    timer: 3000,
+    showConfirmButton: false
+  });
+}
 
-  emailDriver(driver: any) {
-    this.showSuccessMessage(`${driver.name} has completed ${driver.totalTrips} trips with ${driver.rating}⭐ rating`);
-  }
+emailDriver(driver: any) {
+  Swal.fire({
+    icon: 'info',
+    title: 'Driver Stats',
+    text: `${driver.name} has completed ${driver.totalTrips} trips with ${driver.rating}⭐ rating`,
+    timer: 3000,
+    showConfirmButton: false
+  });
+}
 
-  removeDriver(driver: any) {
-    const confirmRemove = confirm(`Are you sure you want to remove ${driver.name}?`);
-    if (confirmRemove) {
+
+ removeDriver(driver: any) {
+  Swal.fire({
+    title: `Are you sure you want to remove ${driver.name}?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, remove it!',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
       this.drivers = this.drivers.filter((d) => d.id !== driver.id);
       this.showSuccessMessage(`${driver.name} has been removed successfully`);
     }
-  }
+  });
+}
+
 
   togglePasswordVisibility() {
     const passwordInput = document.getElementById('passwordField') as HTMLInputElement;
