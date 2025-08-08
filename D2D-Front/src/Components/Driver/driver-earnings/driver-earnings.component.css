@@ -11,13 +11,15 @@
 }
 
 .btn-download button {
-  background-color: var(--primary-color);
+  background-color: var(--icon-border-color);
   color: var(--light-font-color);
   transition: var(--time-transition);
 }
 
 .btn-download button:hover {
   transform: translateY(-5px);
+  background-color: var(--icon-bg-color);
+  
 }
 
 @media (max-width:992px) {

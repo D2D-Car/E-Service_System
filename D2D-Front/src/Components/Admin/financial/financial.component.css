@@ -975,10 +975,10 @@
     color: var(--text-primary);
   }
 
-  .progress-wrapper,
+  /* .progress-wrapper,
   .target-action {
     display: none;
-  }
+  } */
 
   .target-card:hover {
     transform: translateY(-1px);
@@ -1256,7 +1256,7 @@
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden;  */
 }
 
 .stat-item::before {

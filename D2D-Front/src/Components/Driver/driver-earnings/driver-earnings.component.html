@@ -6,11 +6,16 @@
         <a class="navbar-brand">Earnings</a>
       </div>
       <div class="btn-download">
-        <button type="button" class="btn"><i class="fa-solid fa-download"></i> Download Report</button>
+        <a href="./assets/PDF/Earnings Report.pdf" download="Earnings_Report_{{ selectedPeriod }}.pdf" style="text-decoration: none; color: inherit;">
+          <button type="button" class="btn" style="cursor: pointer;">
+            <i class="fa-solid fa-download"></i> Download Report
+          </button>
+        </a>
       </div>
     </div>
   </nav>
   <!-- end header -->
+  
   <!-- start navbar -->
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
@@ -61,43 +66,26 @@
     </div>
   </div>
   <!-- end stats -->
+  
   <!-- start summary -->
   <div class="summary">
     <div class="card">
       <h3>Earnings Breakdown</h3>
-      <div class="item"><span>Trip Fares</span><span>$1,156.30</span></div>
-      <div class="item"><span>Tips</span><span>$91.50</span></div>
-      <div class="item"><span>Bonuses</span><span>$125.00</span></div>
-      <div class="item negative"><span>Service Fees</span><span>-$125.00</span></div>
-      <div class="item total"><span>Net Earnings</span><span>$1,247.80</span></div>
+      <div class="item"><span>Trip Fares</span><span>${{ earningsBreakdown.tripFares }}</span></div>
+      <div class="item"><span>Tips</span><span>${{ earningsBreakdown.tips }}</span></div>
+      <div class="item"><span>Bonuses</span><span>${{ earningsBreakdown.bonuses }}</span></div>
+      <div class="item negative"><span>Service Fees</span><span>${{ earningsBreakdown.serviceFees }}</span></div>
+      <div class="item total"><span>Net Earnings</span><span>${{ earningsBreakdown.netEarnings }}</span></div>
     </div>
     <div class="card payouts">
       <h3>Recent Payouts</h3>
-      <div class="item">
+      <div class="item" *ngFor="let payout of recentPayouts">
         <div class="right-side">
-          <span>$1,247.80</span>
-          <span>2024-01-15 Bank Account</span>
+          <span>${{ payout.amount }}</span>
+          <span>{{ payout.date }} {{ payout.account }}</span>
         </div>
         <div class="left-side">
-          <span>completed</span>
-        </div>
-      </div>
-      <div class="item">
-        <div class="right-side">
-          <span>$1,156.30</span>
-          <span>2024-01-08 Bank Account</span>
-        </div>
-        <div class="left-side">
-          <span>completed</span>
-        </div>
-      </div>
-      <div class="item">
-        <div class="right-side">
-          <span>$1,398.75</span>
-          <span>2024-01-01 Bank Account</span>
-        </div>
-        <div class="left-side">
-          <span>completed</span>
+          <span>{{ payout.status }}</span>
         </div>
       </div>
     </div>
