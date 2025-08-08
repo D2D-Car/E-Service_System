@@ -229,4 +229,216 @@
       </button>
     </div>
   </div>
+
+  <!-- Order Details Modal -->
+  <div class="modal-overlay" [class.active]="showOrderDetailsModal" (click)="closeOrderDetailsModal()">
+    <div class="order-details-modal" (click)="$event.stopPropagation()" *ngIf="selectedOrder">
+      
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="header-content">
+          <i class="fas fa-shopping-cart header-icon"></i>
+          <span class="header-title">Order Details</span>
+        </div>
+        <button class="close-btn" (click)="closeOrderDetailsModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Order Content -->
+      <div class="order-content">
+        
+        <!-- Order ID and Date -->
+        <div class="order-header">
+          <h3 class="order-id">{{ selectedOrder.orderId }}</h3>
+          <p class="order-date">{{ selectedOrder.date }}</p>
+        </div>
+
+        <!-- Order Status -->
+        <div class="order-status-section">
+          <div class="status-item">
+            <div class="status-label">Payment Status</div>
+            <div class="status-badge" [class.pending]="selectedOrder.payment === 'Pending'" [class.success]="selectedOrder.payment === 'Success'">
+              {{ selectedOrder.payment }}
+            </div>
+          </div>
+          <div class="status-item">
+            <div class="status-label">Fulfillment</div>
+            <div class="fulfillment-badge" [class.unfulfilled]="selectedOrder.fulfillment === 'Unfulfilled'" [class.fulfilled]="selectedOrder.fulfillment === 'Fulfilled'">
+              {{ selectedOrder.fulfillment }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Customer and Service Details -->
+        <div class="details-section">
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="detail-content">
+              <div class="detail-label">Customer</div>
+              <div class="detail-value">{{ selectedOrder.customer }}</div>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="fas fa-tools"></i>
+            </div>
+            <div class="detail-content">
+              <div class="detail-label">Service Type</div>
+              <div class="detail-value">{{ selectedOrder.serviceType }}</div>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="fas fa-car"></i>
+            </div>
+            <div class="detail-content">
+              <div class="detail-label">Vehicle</div>
+              <div class="detail-value">{{ selectedOrder.vehicle }}</div>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="fas fa-user-md"></i>
+            </div>
+            <div class="detail-content">
+              <div class="detail-label">Technician</div>
+              <div class="detail-value">{{ selectedOrder.technician }}</div>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="detail-content">
+              <div class="detail-label">Location</div>
+              <div class="detail-value">{{ selectedOrder.location }}</div>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="detail-content">
+              <div class="detail-label">Total Amount</div>
+              <div class="detail-value amount">{{ selectedOrder.amount | currency : "USD" : "symbol" : "1.2-2" }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="modal-actions">
+          <button class="action-btn edit-btn" (click)="editOrder(selectedOrder.id!); closeOrderDetailsModal()">
+            <i class="fas fa-edit"></i> Edit Order
+          </button>
+          <button class="action-btn delete-btn" (click)="deleteOrder(selectedOrder.id!); closeOrderDetailsModal()">
+            <i class="fas fa-trash"></i> Delete Order
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Order Modal -->
+  <div class="modal-overlay" [class.active]="showEditOrderModal" (click)="closeEditOrderModal()">
+    <div class="order-edit-modal" (click)="$event.stopPropagation()" *ngIf="orderToEdit">
+      
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="header-content">
+          <i class="fas fa-edit header-icon"></i>
+          <span class="header-title">Edit Order</span>
+        </div>
+        <button class="close-btn" (click)="closeEditOrderModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Edit Form -->
+      <div class="edit-form-content">
+        <form (ngSubmit)="saveOrderChanges()">
+          <!-- Order ID and Date -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="orderId">Order ID</label>
+              <input type="text" id="orderId" name="orderId" [(ngModel)]="orderToEdit.orderId" readonly class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="date">Date</label>
+              <input type="text" id="date" name="date" [(ngModel)]="orderToEdit.date" class="form-control">
+            </div>
+          </div>
+
+          <!-- Status Fields -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="payment">Payment Status</label>
+              <select id="payment" name="payment" [(ngModel)]="orderToEdit.payment" class="form-control">
+                <option value="Pending">Pending</option>
+                <option value="Success">Success</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="fulfillment">Fulfillment Status</label>
+              <select id="fulfillment" name="fulfillment" [(ngModel)]="orderToEdit.fulfillment" class="form-control">
+                <option value="Unfulfilled">Unfulfilled</option>
+                <option value="Fulfilled">Fulfilled</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Customer and Service Details -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="customer">Customer</label>
+              <input type="text" id="customer" name="customer" [(ngModel)]="orderToEdit.customer" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="serviceType">Service Type</label>
+              <input type="text" id="serviceType" name="serviceType" [(ngModel)]="orderToEdit.serviceType" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="vehicle">Vehicle</label>
+              <input type="text" id="vehicle" name="vehicle" [(ngModel)]="orderToEdit.vehicle" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="technician">Technician</label>
+              <input type="text" id="technician" name="technician" [(ngModel)]="orderToEdit.technician" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="location">Location</label>
+              <input type="text" id="location" name="location" [(ngModel)]="orderToEdit.location" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="amount">Amount</label>
+              <input type="number" id="amount" name="amount" [(ngModel)]="orderToEdit.amount" class="form-control">
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="form-actions">
+            <button type="button" class="cancel-btn" (click)="closeEditOrderModal()">
+              <i class="fas fa-times"></i> Cancel
+            </button>
+            <button type="submit" class="save-btn">
+              <i class="fas fa-save"></i> Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

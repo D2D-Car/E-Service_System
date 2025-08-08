@@ -4,11 +4,12 @@ import { ThemeService } from '../../../Services/theme.service';
 import { Subscription } from 'rxjs';
 import { AdminOrdersService, AdminOrder } from '../../../Services/admin-orders.service';
 import Swal from 'sweetalert2';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,FormsModule],
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.css'],
 })
@@ -33,6 +34,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
   showMoreActions = false;
   showDateDropdown = false;
   selectedDateRange = 'Aug 1 - Aug 6, 2024';
+  
+  // Modal properties
+  showOrderDetailsModal = false;
+  selectedOrder: AdminOrder | null = null;
 
   constructor(
     private themeService: ThemeService,
@@ -126,12 +131,59 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   async viewOrder(orderId: string): Promise<void> {
     console.log('View order:', orderId);
-    // Implementation for viewing order details
+    // Find the order by ID
+    const order = this.orders.find(o => o.id === orderId);
+    if (order) {
+      this.selectedOrder = order;
+      this.showOrderDetailsModal = true;
+    } else {
+      await Swal.fire('Error', 'Order not found', 'error');
+    }
   }
+
+  // Properties for edit modal
+  showEditOrderModal = false;
+  orderToEdit: AdminOrder | null = null;
 
   async editOrder(orderId: string): Promise<void> {
     console.log('Edit order:', orderId);
-    // Implementation for editing order
+    const orderToEdit = this.orders.find(order => order.id === orderId);
+    if (orderToEdit) {
+      this.orderToEdit = { ...orderToEdit }; // Create a copy to avoid direct mutation
+      this.showEditOrderModal = true;
+    }
+  }
+
+  closeEditOrderModal(): void {
+    this.showEditOrderModal = false;
+    this.orderToEdit = null;
+  }
+
+  saveOrderChanges(): void {
+    if (!this.orderToEdit || !this.orderToEdit.id) return;
+    
+    // Update the order in the service
+    this.adminOrdersService.updateOrder(this.orderToEdit.id, this.orderToEdit)
+      .then(() => {
+        // Close the modal after successful update
+        this.closeEditOrderModal();
+        // Show success message
+        Swal.fire({
+          title: 'Success!',
+          text: 'Order updated successfully',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+      })
+      .catch(error => {
+        console.error('Error updating order:', error);
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to update order',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      });
   }
 
   async deleteOrder(orderId: string): Promise<void> {
@@ -206,6 +258,12 @@ export class OrdersComponent implements OnInit, OnDestroy {
   closeDropdowns(): void {
     this.showMoreActions = false;
     this.showDateDropdown = false;
+  }
+  
+  // Close order details modal
+  closeOrderDetailsModal(): void {
+    this.showOrderDetailsModal = false;
+    this.selectedOrder = null;
   }
 
   // Clear only the modal orders (keeps first 12 orders)

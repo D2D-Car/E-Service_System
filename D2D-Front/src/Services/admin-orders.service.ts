@@ -128,6 +128,24 @@ export class AdminOrdersService {
     }
   }
 
+  // Update entire order
+  async updateOrder(orderId: string, orderData: Partial<AdminOrder>): Promise<void> {
+    try {
+      const orderRef = doc(this.firestore, 'adminOrders', orderId);
+      // Remove id from the data to be updated (if present)
+      const { id, ...dataToUpdate } = orderData;
+      
+      // Ensure updatedAt is set to current time
+      await updateDoc(orderRef, {
+        ...dataToUpdate,
+        updatedAt: new Date()
+      });
+    } catch (error) {
+      console.error('Error updating order:', error);
+      throw error;
+    }
+  }
+
   // Delete order
   async deleteOrder(orderId: string): Promise<void> {
     try {
