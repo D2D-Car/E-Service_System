@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-customers',
@@ -26,7 +27,7 @@ export class CustomersComponent {
     },
     {
       id: 2,
-      name: 'Fatima El-Sayed',
+      name: 'Essam El-Sayed',
       membershipType: 'Gold',
       totalOrders: 8,
       image: '/assets/customers-img/cust2.jpg',
@@ -70,7 +71,7 @@ export class CustomersComponent {
     },
     {
       id: 6,
-      name: 'Yasmin Farouk',
+      name: 'Yassin Farouk',
       membershipType: 'Silver',
       totalOrders: 9,
       image: '/assets/customers-img/cust6.jpg',
@@ -92,7 +93,7 @@ export class CustomersComponent {
     },
     {
       id: 8,
-      name: 'Mariam Youssef',
+      name: 'Mohamed Youssef',
       membershipType: 'Gold',
       totalOrders: 14,
       image: '/assets/customers-img/cust8.jpg',
