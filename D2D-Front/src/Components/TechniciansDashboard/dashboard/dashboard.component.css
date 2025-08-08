@@ -1,31 +1,15 @@
-:root {
-  --primary-color: #e53935;
-  --secondary-color: #d32f2f;
-  --background-color: #121212;
-  --card-bg-color: #1e1e1e;
-  --light: #ffffff;
-  --light-font-color: rgba(255, 255, 255, 0.85);
-  --services-gradient: linear-gradient(135deg, #ff8a65 0%, #ff7043 100%);
-  --money-gradient: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
-  --border-radius: 16px;
-  --box-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.3);
-  --time-transition: all 0.3s ease;
-  --icon-border-color: rgba(255, 255, 255, 0.1);
-  /* أضفناها لو ناقصة */
-}
-
 /* ----------- MAIN CONTAINER ----------- */
 .dashboard-container {
   min-height: 100vh;
-  background-color: var(--background-color);
-  color: var(--light);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   padding: 0;
   margin: 0;
 }
 
 /* ----------- HEADER ----------- */
 .header-banner {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
   padding: 2rem;
   display: flex;
   justify-content: space-between;
@@ -43,24 +27,37 @@
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid var(--light);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  border: 3px solid var(--button-text);
+  box-shadow: var(--card-shadow);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .profile-image:hover {
   transform: scale(1.08);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .user-name {
   font-size: 1.5rem;
   font-weight: 700;
+  color: var(--button-text);
 }
 
 .user-details {
   font-size: 0.9rem;
   opacity: 0.85;
+  color: var(--button-text);
+}
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.dashboard-theme-toggle {
+  margin-bottom: 0.5rem;
 }
 
 .header-stats {
@@ -98,14 +95,14 @@
   border-radius: 0;
   padding: 0;
   margin: 0;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 2px solid var(--nav-border-color);
 }
 
 .nav-tab {
   flex: 1;
   background: transparent;
   border: none;
-  color: var(--light-font-color);
+  color: var(--text-secondary);
   padding: 1.2rem 1rem;
   font-size: 0.95rem;
   font-weight: 600;
@@ -131,25 +128,24 @@
 }
 
 .nav-tab:hover {
-  background-color: rgba(255, 255, 255, 0.08);
-  color: var(--light);
+  background-color: var(--hover-bg);
+  color: var(--text-primary);
 }
 
 .nav-tab.active {
-  color: var(--light);
-  background: linear-gradient(135deg, var(--primary-color), #d32f2f);
-  box-shadow: 0 4px 15px rgba(232, 48, 48, 0.3);
+  color: var(--primary-color);
+  background-color: var(--hover-bg);
 }
 
 .nav-tab.active::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.8), #fff);
-  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.4);
+  height: 2px;
+  background: var(--primary-color);
+  border-radius: 1px;
 }
 
 .nav-tab i {
@@ -158,9 +154,9 @@
 
 @media (max-width: 767px) {
   .nav-tabs {
-    overflow-x: auto;          
-    -webkit-overflow-scrolling: touch; 
-    scrollbar-width: thin;      
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
   }
 
   .nav-tabs::-webkit-scrollbar {
@@ -177,8 +173,8 @@
   }
 
   .nav-tab {
-    flex: 0 0 auto;       
-    white-space: nowrap; 
+    flex: 0 0 auto;
+    white-space: nowrap;
   }
 }
 
@@ -266,29 +262,32 @@
 .stat-card {
   background-color: var(--card-bg-color);
   border-radius: var(--border-radius);
-  padding: 1.5rem;
+  padding: 2rem;
   display: flex;
   align-items: center;
-  gap: 1rem;
-  transition: var(--time-transition);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  gap: 1.5rem;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  box-shadow: var(--card-shadow);
 }
 
 .stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--box-shadow-hover);
-  border-color: var(--icon-border-color);
+  transform: translateY(-6px) scale(1.02);
+  background: var(--hover-bg);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .card-icon {
   width: 60px;
   height: 60px;
-  border-radius: 12px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
-  color: var(--light);
+  font-size: 1.8rem;
+  color: var(--button-text);
+  background: var(--money-gradient);
 }
 
 .money-icon {
@@ -301,15 +300,16 @@
 
 .card-content h3 {
   margin: 0 0 0.5rem;
-  font-size: 1rem;
-  color: var(--light-font-color);
-  font-weight: 600;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .stat-value {
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 900;
-  color: var(--light);
+  color: var(--text-primary);
+  line-height: 1;
 }
 
 /* ----------- UPCOMING SERVICES ----------- */
@@ -399,30 +399,31 @@
   align-items: center;
   gap: 1.5rem;
   cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
   transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  box-shadow: var(--card-shadow);
 }
 
 .action-card:hover {
   transform: translateY(-6px) scale(1.02);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  background: var(--hover-bg);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .action-card.add-service {
-  background: linear-gradient(135deg, #ff8a65 0%, #ff7043 100%);
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
 }
 
 .action-card.book-service:hover {
-  background: linear-gradient(135deg, #ff7043 0%, #ff5722 100%);
+  background: linear-gradient(135deg, var(--primary-hover), var(--primary-color));
 }
 
 .action-card.view-reports {
-  background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+  background: linear-gradient(135deg, #42a5f5, #1e88e5);
 }
 
 .action-card.messages {
-  background: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
+  background: linear-gradient(135deg, #66bb6a, #4caf50);
 }
 
 .action-icon {
@@ -434,13 +435,14 @@
   align-items: center;
   justify-content: center;
   font-size: 1.8rem;
-  color: var(--light);
+  color: var(--button-text);
 }
 
 .action-content h3 {
   margin: 0 0 0.5rem;
   font-size: 1.3rem;
   font-weight: 700;
+  color: var(--button-text);
 }
 
 .action-content p {
@@ -462,6 +464,12 @@
   .header-banner {
     flex-direction: column;
     text-align: center;
+    gap: 1rem;
+  }
+
+  .header-right {
+    align-items: center;
+    width: 100%;
   }
 
   .header-stats {

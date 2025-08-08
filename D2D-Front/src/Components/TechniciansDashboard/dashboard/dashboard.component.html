@@ -12,27 +12,29 @@
       </div>
     </div>
 
-    <!-- Right Side: Stats + Availability -->
-    <div class="header-stats">
-      <div class="stat-item">
-        <span class="stat-number">${{ profile.earningsToday || 0 }}</span>
-        <span class="stat-label">Today</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">${{ profile.earningsWeek || 0 }}</span>
-        <span class="stat-label">This Week</span>
-      </div>
-      <!-- Availability Text in Header -->
-      <span 
-  class="availability" 
-  [ngClass]="{
-    'available': availability === 'Available',
-    'busy': availability === 'Busy',
-    'offline': availability === 'Offline'
-  }">
-  {{ availability }}
-</span>
+    <!-- Right Side: Stats + Availability + Theme Toggle -->
+    <div class="header-right">
+      <!-- Theme Toggle -->
+      <app-theme-toggle class="dashboard-theme-toggle"></app-theme-toggle>
 
+      <div class="header-stats">
+        <div class="stat-item">
+          <span class="stat-number">${{ profile.earningsToday || 0 }}</span>
+          <span class="stat-label">Today</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">${{ profile.earningsWeek || 0 }}</span>
+          <span class="stat-label">This Week</span>
+        </div>
+        <!-- Availability Text in Header -->
+        <span class="availability" [ngClass]="{
+      'available': availability === 'Available',
+      'busy': availability === 'Busy',
+      'offline': availability === 'Offline'
+    }">
+          {{ availability }}
+        </span>
+      </div>
     </div>
   </div>
 

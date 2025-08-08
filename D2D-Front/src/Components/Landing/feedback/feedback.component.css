@@ -1,66 +1,85 @@
 .feedback-page {
-  background-color:var(--background-color);
-  color: #fff;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin: 20px 0;
+  padding: 20px;
 }
 
 .highlight-text {
-  color: #E83030;
+  color: var(--primary-color);
 }
 
 .feedback-form {
-  background-color: transparent;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
 }
 
 .feedback-form h2 {
-  color: #E83030;
+  color: var(--primary-color);
 }
 
 .custom-input {
-  background-color: #444;
-  color: white;
-  border: none;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
 }
 
 .custom-input::placeholder {
-  color: #ccc;
+  color: var(--text-muted);
 }
 
 .custom-input:focus {
-  border: 1px solid #E83030;
+  border: 1px solid var(--primary-color);
   box-shadow: none;
-  background-color: #444;
-  color: #fff;
+  background-color: var(--hover-bg);
+  color: var(--text-primary);
 }
 
 .submit-btn {
-  background-color: #E83030;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--text-primary);
   transition: 0.3s ease;
 }
 
 .submit-btn:hover {
-  background-color: #c72b2b;
-  color: white;
+  background-color: var(--primary-hover);
+  color: var(--text-primary);
 }
 
-hr{
-     background: linear-gradient(to left, transparent, #E83030);
-     border: none;
-     height: 4px;
+hr {
+  background: linear-gradient(to left, transparent, var(--primary-color));
+  border: none;
+  height: 4px;
+}
+
+.contact-info-box {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
 }
 
 .contact-info-box h3 {
-  color: #E83030;
+  color: var(--primary-color);
 }
 
 .contact-list a {
-  color: #ddd;
+  color: var(--text-secondary);
   text-decoration: none;
   display: block;
   margin-bottom: 12px;
 }
 
 .contact-list a:hover {
-  color: #E83030;
+  color: #add8e6;
   text-decoration: none;
+}
+
+.contact-list p {
+  color: var(--text-primary);
+  font-weight: bold;
+  margin-bottom: 5px;
 }

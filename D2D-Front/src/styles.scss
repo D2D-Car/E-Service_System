@@ -74,7 +74,7 @@
 // SCSS Variables (Must be defined first)
 // =====================================
 $primary: #ff3b3be8;
-$background-darkgray: #1C1C1E;
+$background-darkgray: #0a0a0a;
 $dark: #0a0a0a;
 $secondary: #5b272a;
 $light: #ffffff;
@@ -82,8 +82,8 @@ $text-color: #333;
 $card-bg-color: #2c2c2c;
 $icon-bg-color: #ff3b3be8;
 $icon-border-color: #ff3b3b96;
-$background-color: #1a1a1a;
-$light-font-color: #c0c0c0;
+$background-color: #1a1a2e; // Updated to dark theme background
+$light-font-color: #ffffff; // Updated to white text
 $hover-primary: #fa33338c;
 
 // Status Colors
@@ -106,26 +106,26 @@ $member-gradient-end: #8e24aa;
 
 // Global Theme Variables
 :root {
-  // Light theme (default) - Enhanced for accessibility
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --text-primary: #111827;
-  --text-secondary: #4b5563;
-  --text-muted: #6b7280;
-  --border-color: #d1d5db;
-  --hover-bg: #f3f4f6;
-  --shadow: rgba(0, 0, 0, 0.1);
-  --header-bg: rgba(255, 255, 255, 0.98);
-  --sidebar-bg: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
-  --sidebar-header-bg: rgba(255, 59, 59, 0.05);
+  // Dark theme (default) - Professional Dark Mode Style
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
+  --text-primary: #ffffff;
+  --text-secondary: #e0e0e0;
+  --text-muted: #b0b0b0;
+  --border-color: #333333;
+  --hover-bg: #2a2a3e;
+  --shadow: rgba(0, 0, 0, 0.5);
+  --header-bg: rgba(26, 26, 46, 0.98);
+  --sidebar-bg: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+  --sidebar-header-bg: rgba(255, 59, 59, 0.1);
   --active-bg: #ff3b3be8;
   --active-text: #ffffff;
   --accent-color: #ff3b3be8;
   --primary-color: #ff3b3be8;
-  --primary-hover: #dc2626;
-  --success-color: #059669;
-  --warning-color: #d97706;
-  --danger-color: #dc2626;
+  --primary-hover: #ff5555;
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --danger-color: #f87171;
 
   // SCSS Variables as CSS Variables
   --secondary-color: #{$secondary};
@@ -158,9 +158,9 @@ $member-gradient-end: #8e24aa;
   --box-shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.3);
 
   // Scrollbar
-  --scrollbar-track: #f1f5f9;
-  --scrollbar-thumb: #cbd5e1;
-  --scrollbar-thumb-hover: #94a3b8;
+  --scrollbar-track: #1a1a2e;
+  --scrollbar-thumb: #333333;
+  --scrollbar-thumb-hover: #555555;
 
   --dark: #{$dark};
   --light: #{$light};
@@ -169,19 +169,19 @@ $member-gradient-end: #8e24aa;
 // =====================================
 // Theme Variants
 // =====================================
-// Dark theme - Professional Dark Mode Style
-body.dark-theme,
+// Dark theme - Professional Dark Mode Style (Default)
+body,
 .dark-theme {
-  --bg-primary: #0f0f0f;
-  --bg-secondary: #181818;
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
   --text-primary: #ffffff;
-  --text-secondary: #aaaaaa;
-  --text-muted: #717171;
-  --border-color: #303030;
-  --hover-bg: #272727;
+  --text-secondary: #e0e0e0;
+  --text-muted: #b0b0b0;
+  --border-color: #333333;
+  --hover-bg: #2a2a3e;
   --shadow: rgba(0, 0, 0, 0.5);
-  --header-bg: rgba(15, 15, 15, 0.98);
-  --sidebar-bg: linear-gradient(180deg, #0f0f0f 0%, #181818 100%);
+  --header-bg: rgba(26, 26, 46, 0.98);
+  --sidebar-bg: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
   --sidebar-header-bg: rgba(255, 59, 59, 0.1);
   --active-bg: #ff3b3be8;
   --active-text: #ffffff;
@@ -194,9 +194,46 @@ body.dark-theme,
   --warning-bg: rgba(245, 158, 11, 0.2);
   --danger-color: #f87171;
   --danger-bg: rgba(248, 113, 113, 0.2);
-  --scrollbar-track: #0f0f0f;
-  --scrollbar-thumb: #717171;
-  --scrollbar-thumb-hover: #aaaaaa;
+  --scrollbar-track: #1a1a2e;
+  --scrollbar-thumb: #333333;
+  --scrollbar-thumb-hover: #555555;
+
+  // Additional dark theme specific colors
+  --card-bg-color: #2c2c2c;
+  --background-color: #1a1a2e;
+  --light-font-color: #ffffff;
+  --light: #ffffff;
+  --secondary-color: #5b272a;
+  --icon-bg-color: #ff3b3be8;
+  --icon-border-color: #ff3b3b96;
+  --background-darkgray: #1C1C1E;
+  --hover-primary: #fa33338c;
+
+  // Status colors for dark theme
+  --success-color: #10b981;
+  --success-bg: rgba(16, 185, 129, 0.2);
+  --warning-color: #f59e0b;
+  --warning-bg: rgba(245, 158, 11, 0.2);
+  --danger-color: #f87171;
+  --danger-bg: rgba(248, 113, 113, 0.2);
+
+  // Icon gradients for dark theme
+  --services-gradient: linear-gradient(135deg, #ffa726, #ff8a65);
+  --money-gradient: linear-gradient(135deg, #66bb6a, #4caf50);
+  --loyalty-gradient: linear-gradient(135deg, #42a5f5, #1e88e5);
+  --member-gradient: linear-gradient(135deg, #ab47bc, #8e24aa);
+
+  // Additional utility colors
+  --nav-border-color: rgba(255, 255, 255, 0.1);
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --card-shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.4);
+  --input-bg: #2a2a3e;
+  --input-border: #333333;
+  --input-focus-border: #ff3b3be8;
+  --modal-overlay: rgba(0, 0, 0, 0.7);
+  --modal-bg: #2c2c2c;
+  --button-text: #ffffff;
+  --button-hover-bg: #ff5555;
 }
 
 // Light theme explicit class
@@ -219,14 +256,51 @@ body.light-theme,
   --primary-color: #ff3b3be8;
   --primary-hover: #dc2626;
   --success-color: #059669;
-  --success-bg: rgba(5, 150, 105, 0.2);
+  --success-bg: rgba(5, 150, 105, 0.1);
   --warning-color: #d97706;
-  --warning-bg: rgba(217, 119, 6, 0.2);
+  --warning-bg: rgba(217, 119, 6, 0.1);
   --danger-color: #dc2626;
-  --danger-bg: rgba(220, 38, 38, 0.2);
+  --danger-bg: rgba(220, 38, 38, 0.1);
   --scrollbar-track: #f1f5f9;
   --scrollbar-thumb: #cbd5e1;
   --scrollbar-thumb-hover: #94a3b8;
+
+  // Additional light theme specific colors
+  --card-bg-color: #ffffff;
+  --background-color: #f8fafc;
+  --light-font-color: #111827;
+  --light: #111827;
+  --secondary-color: #5b272a;
+  --icon-bg-color: #ff3b3be8;
+  --icon-border-color: #ff3b3b96;
+  --background-darkgray: #f8fafc;
+  --hover-primary: #fa33338c;
+
+  // Status colors for light theme
+  --success-color: #059669;
+  --success-bg: rgba(5, 150, 105, 0.1);
+  --warning-color: #d97706;
+  --warning-bg: rgba(217, 119, 6, 0.1);
+  --danger-color: #dc2626;
+  --danger-bg: rgba(220, 38, 38, 0.1);
+
+  // Icon gradients for light theme
+  --services-gradient: linear-gradient(135deg, #ff8a65, #ff7043);
+  --money-gradient: linear-gradient(135deg, #66bb6a, #4caf50);
+  --loyalty-gradient: linear-gradient(135deg, #42a5f5, #1e88e5);
+  --member-gradient: linear-gradient(135deg, #ab47bc, #8e24aa);
+
+  // Additional utility colors
+  --nav-border-color: rgba(0, 0, 0, 0.1);
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --card-shadow-hover: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --input-bg: #ffffff;
+  --input-border: #d1d5db;
+  --input-focus-border: #ff3b3be8;
+  --modal-overlay: rgba(0, 0, 0, 0.5);
+  --modal-bg: #ffffff;
+  --button-text: #ffffff;
+  --button-hover-bg: #dc2626;
 }
 
 // =====================================
@@ -244,25 +318,25 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
   color: var(--text-primary);
   transition: background 0.3s ease, color 0.3s ease;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Custom Light Scrollbar - Theme Adaptive */
+/* Custom Dark Scrollbar - Theme Adaptive */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--text-muted);
+  background: var(--border-color);
   border-radius: 10px;
   transition: background 0.3s ease;
 }
@@ -272,17 +346,17 @@ body {
 }
 
 ::-webkit-scrollbar-corner {
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
 }
 
 /* Firefox scrollbar styling */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--text-muted) var(--bg-secondary);
+  scrollbar-color: var(--border-color) var(--bg-primary);
 }
 
 body {
-  background-color: var(--background-color) !important;
+  background-color: var(--bg-primary) !important;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
@@ -293,6 +367,75 @@ body {
 // Hide body scrollbar when on admin pages
 body.admin-page {
   overflow: hidden;
+}
+
+// =====================================
+// Navigation Styles
+// =====================================
+.navbar {
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 10px 0;
+}
+
+.navbar-nav {
+  padding: 10px;
+}
+
+.nav-link {
+  color: var(--text-primary) !important;
+  font-size: 16px;
+  padding: 10px 15px;
+  margin: 0 5px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  color: #add8e6 !important;
+  background-color: var(--hover-bg);
+  transform: translateY(-2px);
+}
+
+.nav-link.active {
+  color: var(--primary-color) !important;
+  background-color: var(--hover-bg);
+  border-bottom: 2px solid var(--primary-color);
+}
+
+// =====================================
+// Section Styles
+// =====================================
+section,
+.section {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin: 20px 0;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+section:hover,
+.section:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+// =====================================
+// Link Styles
+// =====================================
+a {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  color: #add8e6;
+  text-decoration: none;
 }
 
 // =====================================
@@ -317,14 +460,14 @@ textarea:focus {
 // Ensure proper contrast ratios
 @media (prefers-contrast: high) {
   :root {
-    --text-primary: #000000;
-    --text-secondary: #333333;
+    --text-primary: #ffffff;
+    --text-secondary: #e0e0e0;
     --border-color: #666666;
   }
 
-  body.dark-theme {
-    --text-primary: #ffffff;
-    --text-secondary: #cccccc;
+  body.light-theme {
+    --text-primary: #000000;
+    --text-secondary: #333333;
     --border-color: #999999;
   }
 }
@@ -372,7 +515,7 @@ body.admin-page {
 }
 
 body {
-  background-color: var(--background-color) !important;
+  background-color: var(--bg-primary) !important;
   box-sizing: border-box;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
@@ -380,7 +523,6 @@ body {
 .light-theme body {
   background-color: #f5f5f5 !important;
 }
-
 
 .head-of-section {
   font-weight: 700;

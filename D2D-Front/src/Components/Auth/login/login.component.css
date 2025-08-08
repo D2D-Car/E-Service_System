@@ -1,6 +1,6 @@
 .auth-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+  background: var(--bg-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,9 +22,9 @@
 }
 
 .auth-card {
-  background: rgba(0, 0, 0, 0.9);
+  background: var(--bg-secondary);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 59, 59, 0.2);
+  border: 1px solid var(--border-color);
   border-radius: 20px;
   padding: 40px;
   width: 100%;
@@ -48,7 +48,7 @@
   margin-bottom: 20px;
   font-size: 24px;
   font-weight: bold;
-  color: #ff3b3b;
+  color: var(--primary-color);
 }
 
 .logo i {
@@ -56,14 +56,14 @@
 }
 
 .auth-header h1 {
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 28px;
   font-weight: 700;
   margin: 0 0 10px 0;
 }
 
 .auth-header p {
-  color: #cccccc;
+  color: var(--text-secondary);
   font-size: 16px;
   margin: 0;
 }
@@ -80,7 +80,7 @@
 
 .form-group label {
   display: block;
-  color: #ffffff;
+  color: var(--text-primary);
   font-weight: 600;
   margin-bottom: 8px;
   font-size: 14px;
@@ -95,7 +95,7 @@
 .input-icon {
   position: absolute;
   left: 15px;
-  color: #888888;
+  color: var(--text-muted);
   font-size: 16px;
   z-index: 2;
 }
@@ -103,18 +103,18 @@
 .input-wrapper input {
   width: 100%;
   padding: 15px 15px 15px 45px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
   border-radius: 12px;
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 16px;
   transition: all 0.3s ease;
 }
 
 .input-wrapper input:focus {
   outline: none;
-  border-color: #ff3b3b;
-  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--primary-color);
+  background: var(--hover-bg);
   box-shadow: 0 0 0 4px rgba(255, 59, 59, 0.1);
 }
 
@@ -124,7 +124,7 @@
 }
 
 .input-wrapper input::placeholder {
-  color: #888888;
+  color: var(--text-muted);
 }
 
 .toggle-password {
@@ -132,14 +132,14 @@
   right: 15px;
   background: none;
   border: none;
-  color: #888888;
+  color: var(--text-muted);
   cursor: pointer;
   padding: 5px;
   transition: color 0.3s ease;
 }
 
 .toggle-password:hover {
-  color: #ff3b3b;
+  color: var(--primary-color);
 }
 
 .form-options {
@@ -154,7 +154,7 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  color: #cccccc;
+  color: var(--text-secondary);
   font-size: 14px;
 }
 
@@ -165,15 +165,15 @@
 .checkmark {
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid var(--border-color);
   border-radius: 4px;
   position: relative;
   transition: all 0.3s ease;
 }
 
 .checkbox-label input[type="checkbox"]:checked + .checkmark {
-  background: #ff3b3b;
-  border-color: #ff3b3b;
+  background: var(--primary-color);
+  border-color: var(--primary-color);
 }
 
 .checkbox-label input[type="checkbox"]:checked + .checkmark::after {
@@ -182,7 +182,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: white;
+  color: var(--text-primary);
   font-size: 10px;
   font-weight: bold;
 }
@@ -198,23 +198,23 @@
 
 /* Forgot Password Form */
 .forgot-password-form {
-  background: rgba(30, 30, 30, 0.8);
+  background: var(--bg-primary);
   border-radius: 12px;
   padding: 25px;
   margin: 20px 0;
-  border: 1px solid rgba(255, 59, 59, 0.2);
+  border: 1px solid var(--border-color);
   animation: fadeIn 0.3s ease;
 }
 
 .forgot-password-form h3 {
-  color: #ffffff;
+  color: var(--text-primary);
   margin-top: 0;
   margin-bottom: 10px;
   font-size: 20px;
 }
 
 .forgot-password-form p {
-  color: #cccccc;
+  color: var(--text-secondary);
   font-size: 14px;
   margin-bottom: 20px;
   line-height: 1.5;
@@ -228,14 +228,15 @@
 
 .auth-btn.secondary {
   background: transparent;
-  color: #ff3b3b;
-  border: 2px solid rgba(255, 59, 59, 0.5);
+  color: var(--primary-color);
+  border: 2px solid var(--border-color);
   flex: 1;
 }
 
 .auth-btn.secondary:hover {
-  background: rgba(255, 59, 59, 0.1);
-  border-color: #ff3b3b;
+  background: var(--hover-bg);
+  border-color: var(--primary-color);
+  color: #add8e6;
 }
 
 .auth-btn.primary {
@@ -272,13 +273,13 @@
 }
 
 .auth-btn.primary {
-  background: linear-gradient(135deg, #ff3b3b, #d32f2f);
-  color: white;
+  background: linear-gradient(135deg, var(--primary-color), #d32f2f);
+  color: var(--text-primary);
   box-shadow: 0 4px 15px rgba(255, 59, 59, 0.3);
 }
 
 .auth-btn.primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #d32f2f, #b71c1c);
+  background: linear-gradient(135deg, var(--primary-hover), var(--primary-color));
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(255, 59, 59, 0.4);
 }
@@ -299,7 +300,7 @@
   text-align: center;
   margin: 30px 0;
   position: relative;
-  color: #888888;
+  color: var(--text-muted);
   font-size: 14px;
 }
 
@@ -310,11 +311,11 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--border-color);
 }
 
 .divider span {
-  background: rgba(0, 0, 0, 0.9);
+  background: var(--bg-secondary);
   padding: 0 20px;
   position: relative;
 }
@@ -328,10 +329,10 @@
 
 .social-btn {
   padding: 12px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  border: 2px solid var(--border-color);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #ffffff;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -343,9 +344,10 @@
 }
 
 .social-btn:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: var(--hover-bg);
+  border-color: var(--border-color);
   transform: translateY(-2px);
+  color: #add8e6;
 }
 
 .social-btn.google:hover:not(:disabled) {
@@ -363,19 +365,19 @@
 }
 
 .auth-footer p {
-  color: #cccccc;
+  color: var(--text-secondary);
   margin: 0;
 }
 
 .link {
-  color: #ff3b3b;
+  color: var(--primary-color);
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s ease;
 }
 
 .link:hover {
-  color: #ff5555;
+  color: #add8e6;
   text-decoration: underline;
 }
 

@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AvailabilityStatusService } from '../../../Services/Driver/availability-status.service';
+import { ThemeToggleComponent } from '../../Landing/theme-toggle/theme-toggle.component';
+
 interface IStatistics {
   icon: string;
   title: string;
@@ -11,11 +13,11 @@ interface IStatistics {
 @Component({
   standalone: true,
   selector: 'app-driver-dashboard',
-  imports: [CommonModule],
+  imports: [CommonModule, ThemeToggleComponent],
   templateUrl: './driver-dashboard.component.html',
   styleUrls: ['./driver-dashboard.component.css']
 })
-export class DriverDashboardComponent implements OnInit{
+export class DriverDashboardComponent implements OnInit {
   availablityStatus: string = 'Available';
   statistics: IStatistics[] = [
     {
@@ -43,8 +45,8 @@ export class DriverDashboardComponent implements OnInit{
       color: "member-icon"
     }
   ];
-  
-  constructor(private availabilityService: AvailabilityStatusService) {}
+
+  constructor(private availabilityService: AvailabilityStatusService) { }
 
   ngOnInit(): void {
     this.availabilityService.availabilityStatus$.subscribe(status => {

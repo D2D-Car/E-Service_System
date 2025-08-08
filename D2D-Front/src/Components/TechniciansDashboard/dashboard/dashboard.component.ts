@@ -7,11 +7,12 @@ import { TechnicianProfileComponent } from "../profile/technician-profile.compon
 import { UserDataService, UserProfile } from '../../../Services/user-data.service';
 import { AuthService } from '../../../Services/auth.service';
 import { OnInit } from '@angular/core';
+import { ThemeToggleComponent } from '../../Landing/theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-technicians-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, TechnicianEarningsComponent, JobsComponent, TechnicianProfileComponent],
+  imports: [CommonModule, FormsModule, TechnicianEarningsComponent, JobsComponent, TechnicianProfileComponent, ThemeToggleComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
@@ -38,7 +39,7 @@ export class TechniciansDashboardComponent implements OnInit {
   constructor(
     private userDataService: UserDataService,
     private authService: AuthService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     await this.loadUserProfile();

@@ -14,6 +14,9 @@
   padding: 2rem 2rem 3rem;
   position: relative;
   overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .header-banner::before {
@@ -43,10 +46,22 @@
   z-index: 2;
 }
 
+.header-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.dashboard-theme-toggle {
+  margin-bottom: 0.5rem;
+}
+
 .stats-section {
   display: flex;
   gap: 2rem;
-  margin-top: 1.5rem;
   position: relative;
   z-index: 2;
 }
@@ -74,14 +89,14 @@
   border-radius: 0;
   padding: 0;
   margin: 0;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 2px solid var(--nav-border-color);
 }
 
 .nav-tab {
   flex: 1;
   background: transparent;
   border: none;
-  color: var(--light-font-color);
+  color: var(--text-secondary);
   padding: 1.2rem 1rem;
   font-size: 0.95rem;
   font-weight: 600;
@@ -95,25 +110,24 @@
 }
 
 .nav-tab:hover {
-  background-color: rgba(255, 255, 255, 0.08);
-  color: var(--light);
+  background-color: var(--hover-bg);
+  color: var(--text-primary);
 }
 
 .nav-tab.active {
-  color: var(--light);
-  background: linear-gradient(135deg, var(--primary-color), #d32f2f);
-  box-shadow: 0 4px 15px rgba(232, 48, 48, 0.3);
+  color: var(--primary-color);
+  background-color: var(--hover-bg);
 }
 
 .nav-tab.active::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.8), #fff);
-  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.4);
+  height: 2px;
+  background: var(--primary-color);
+  border-radius: 1px;
 }
 
 .nav-tab i {
@@ -138,43 +152,46 @@
 .stat-card {
   background-color: var(--card-bg-color);
   border-radius: var(--border-radius);
-  padding: 1.5rem;
+  padding: 2rem;
   display: flex;
   align-items: center;
-  gap: 1rem;
-  transition: var(--time-transition);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  gap: 1.5rem;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  box-shadow: var(--card-shadow);
 }
 
 .stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--box-shadow-hover);
-  border-color: var(--icon-border-color);
+  transform: translateY(-6px) scale(1.02);
+  background: var(--hover-bg);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .card-icon {
   width: 60px;
   height: 60px;
-  border-radius: 12px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
-  color: var(--light);
+  font-size: 1.8rem;
+  color: var(--button-text);
+  background: var(--services-gradient);
 }
 
 .card-content h3 {
   margin: 0 0 0.5rem;
-  font-size: 1rem;
-  color: var(--light-font-color);
-  font-weight: 600;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .stat-value {
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 900;
-  color: var(--light);
-  line-height: 1.2;
+  color: var(--text-primary);
+  line-height: 1;
 }
 
 /* Upcoming Services */
@@ -204,13 +221,16 @@
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  transition: var(--time-transition);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  box-shadow: var(--card-shadow);
 }
 
 .service-card:hover {
-  transform: translateX(5px);
-  border-color: var(--icon-border-color);
+  transform: translateY(-4px);
+  background: var(--hover-bg);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .service-date {
@@ -229,9 +249,9 @@
 .service-date .month {
   display: block;
   font-size: 0.8rem;
-  color: var(--light-font-color);
+  color: var(--text-secondary);
   text-transform: uppercase;
-  margin-top: 0.2rem;
+  font-weight: 600;
 }
 
 .service-details {
@@ -241,13 +261,13 @@
 .service-details h4 {
   margin: 0 0 0.5rem;
   font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--light);
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .service-details p {
   margin: 0 0 0.5rem;
-  color: var(--light-font-color);
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
@@ -255,10 +275,11 @@
   display: flex;
   gap: 1rem;
   font-size: 0.8rem;
+  color: var(--text-muted);
 }
 
 .service-meta span {
-  color: var(--light-font-color);
+  color: var(--text-secondary);
 }
 
 .service-status .status {
@@ -309,40 +330,40 @@
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  transition: var(--time-transition);
-  border: 1px solid rgba(255, 255, 255, 0.05);
   cursor: pointer;
-  position: relative;
-  overflow: hidden;
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  box-shadow: var(--card-shadow);
 }
 
 .action-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--box-shadow-hover);
+  transform: translateY(-6px) scale(1.02);
+  background: var(--hover-bg);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .action-card.book-service {
-  background: linear-gradient(135deg, #ff8a65 0%, #ff7043 100%);
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
 }
 
 .action-card.book-service:hover {
-  background: linear-gradient(135deg, #ff7043 0%, #ff5722 100%);
+  background: linear-gradient(135deg, var(--primary-hover), var(--primary-color));
 }
 
 .action-card.contact-support {
-  background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+  background: linear-gradient(135deg, #42a5f5, #1e88e5);
 }
 
 .action-card.contact-support:hover {
-  background: linear-gradient(135deg, #1e88e5 0%, #1976d2 100%);
+  background: linear-gradient(135deg, #1e88e5, #1976d2);
 }
 
 .action-card.download-invoice {
-  background: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
+  background: linear-gradient(135deg, #66bb6a, #4caf50);
 }
 
 .action-card.download-invoice:hover {
-  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+  background: linear-gradient(135deg, #4caf50, #388e3c);
 }
 
 .action-icon {
@@ -354,21 +375,20 @@
   align-items: center;
   justify-content: center;
   font-size: 1.8rem;
-  color: var(--light);
-  flex-shrink: 0;
+  color: var(--button-text);
 }
 
 .action-content h3 {
   margin: 0 0 0.5rem;
   font-size: 1.3rem;
   font-weight: 700;
-  color: var(--light);
+  color: var(--button-text);
 }
 
 .action-content p {
   margin: 0;
-  color: rgba(255, 255, 255, 0.9);
   font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* Empty States */
@@ -424,6 +444,14 @@
 @media (max-width: 768px) {
   .header-banner {
     padding: 1.5rem 1rem 2rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .header-actions {
+    align-items: flex-start;
+    width: 100%;
   }
 
   .welcome-section h1 {
@@ -524,9 +552,9 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
+  right: 0;
+  bottom: 0;
+  background: var(--modal-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -545,27 +573,26 @@
 }
 
 .modal-content {
-  background: var(--card-bg-color);
-  border-radius: 12px;
+  background: var(--modal-bg);
+  border-radius: var(--border-radius);
   padding: 2rem;
-  width: 90%;
   max-width: 600px;
+  width: 90%;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--card-shadow-hover);
   animation: slideIn 0.3s ease;
 }
 
 @keyframes slideIn {
   from {
+    transform: translateY(-50px);
     opacity: 0;
-    transform: translateY(-50px) scale(0.9);
   }
 
   to {
+    transform: translateY(0);
     opacity: 1;
-    transform: translateY(0) scale(1);
   }
 }
 
@@ -573,32 +600,32 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .modal-header h3 {
-  color: var(--light);
-  font-size: 1.5rem;
-  font-weight: 600;
   margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .close-btn {
-  background: transparent;
+  background: none;
   border: none;
-  color: var(--light-font-color);
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   cursor: pointer;
+  color: var(--text-secondary);
   padding: 0.5rem;
   border-radius: 50%;
   transition: all 0.3s ease;
 }
 
 .close-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--light);
+  background: var(--hover-bg);
+  color: var(--text-primary);
 }
 
 /* Form Styles */
@@ -621,18 +648,18 @@
 }
 
 .form-group label {
-  color: var(--light);
   font-weight: 600;
+  color: var(--text-primary);
   font-size: 0.9rem;
 }
 
 .form-group input,
 .form-group select {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.75rem;
+  border: 1px solid var(--input-border);
   border-radius: 8px;
-  padding: 0.75rem 1rem;
-  color: var(--light);
+  background: var(--input-bg);
+  color: var(--text-primary);
   font-size: 1rem;
   transition: all 0.3s ease;
 }
@@ -640,18 +667,17 @@
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(232, 48, 48, 0.1);
-  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--input-focus-border);
+  box-shadow: 0 0 0 3px rgba(255, 59, 59, 0.1);
 }
 
 .form-group input::placeholder {
-  color: var(--light-font-color);
+  color: var(--text-muted);
 }
 
 .form-group select option {
-  background: var(--card-bg-color);
-  color: var(--light);
+  background: var(--input-bg);
+  color: var(--text-primary);
 }
 
 .form-actions {
@@ -660,11 +686,16 @@
   justify-content: flex-end;
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--border-color);
 }
 
 .form-actions .btn {
-  min-width: 120px;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 /* Responsive Modal */

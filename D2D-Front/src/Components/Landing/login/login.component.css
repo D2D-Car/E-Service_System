@@ -6,17 +6,17 @@
 
 body {
     font-family: 'Arial', sans-serif;
-    background: #0a0a0a;
-    color: #ffffff;
+    background: var(--bg-primary);
+    color: var(--text-primary);
     min-height: 100vh;
     overflow-x: hidden;
     padding: 20px;
 }
 
 .login-form {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--bg-secondary);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
     border-radius: 20px;
     padding: 40px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
@@ -29,12 +29,12 @@ body {
     font-weight: bold;
     margin-bottom: 10px;
     text-align: center;
-    color: #ffffff;
+    color: var(--text-primary);
 }
 
 .form-subtitle {
     text-align: center;
-    color: #cccccc;
+    color: var(--text-secondary);
     margin-bottom: 30px;
 }
 
@@ -45,29 +45,30 @@ body {
 .form-group label {
     display: block;
     margin-bottom: 8px;
-    color: #cccccc;
+    color: var(--text-secondary);
     font-weight: 500;
 }
 
 .form-group input {
     width: 100%;
     padding: 15px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
     border-radius: 10px;
-    color: #ffffff;
+    color: var(--text-primary);
     font-size: 16px;
     transition: all 0.3s ease;
 }
 
 .form-group input:focus {
     outline: none;
-    border-color: #ff3333;
+    border-color: var(--primary-color);
     box-shadow: 0 0 10px rgba(255, 51, 51, 0.3);
+    background: var(--hover-bg);
 }
 
 .form-group input::placeholder {
-    color: #888888;
+    color: var(--text-muted);
 }
 
 .form-options {
@@ -80,32 +81,32 @@ body {
 .remember-me {
     display: flex;
     align-items: center;
-    color: #cccccc;
+    color: var(--text-secondary);
 }
 
 .remember-me input[type="checkbox"] {
     width: auto;
     margin-right: 8px;
-    accent-color: #ff3333;
+    accent-color: var(--primary-color);
 }
 
 .forgot-password {
-    color: #ff3333;
+    color: var(--primary-color);
     text-decoration: none;
     font-size: 14px;
     transition: color 0.3s ease;
 }
 
 .forgot-password:hover {
-    color: #ff6666;
+    color: #add8e6;
     text-decoration: underline;
 }
 
 .login-btn {
     width: 100%;
     padding: 15px;
-    background: linear-gradient(135deg, #ff3333 0%, #cc0000 100%);
-    color: #ffffff;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #cc0000 100%);
+    color: var(--text-primary);
     border: none;
     border-radius: 10px;
     font-size: 18px;
@@ -119,13 +120,14 @@ body {
 .login-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 15px 30px rgba(255, 51, 51, 0.4);
+    background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-color) 100%);
 }
 
 .divider {
     text-align: center;
     margin: 20px 0;
     position: relative;
-    color: #888888;
+    color: var(--text-muted);
 }
 
 .divider::before {
@@ -135,12 +137,12 @@ body {
     left: 0;
     right: 0;
     height: 1px;
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--border-color);
     z-index: 1;
 }
 
 .divider span {
-    background: rgba(40, 40, 40, 0.9);
+    background: var(--bg-secondary);
     padding: 0 15px;
     position: relative;
     z-index: 2;
@@ -155,10 +157,10 @@ body {
 
 .social-btn {
     padding: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    color: #ffffff;
+    background: var(--bg-primary);
+    color: var(--text-primary);
     text-decoration: none;
     text-align: center;
     transition: all 0.3s ease;
@@ -166,21 +168,23 @@ body {
 }
 
 .social-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--hover-bg);
     transform: translateY(-1px);
+    color: #add8e6;
 }
 
 .register-link {
     text-align: center;
-    color: #cccccc;
+    color: var(--text-secondary);
 }
 
 .register-link a {
-    color: #ff3333;
+    color: var(--primary-color);
     text-decoration: none;
 }
 
 .register-link a:hover {
+    color: #add8e6;
     text-decoration: underline;
 }
 
@@ -198,7 +202,7 @@ body {
 .wrench-bg::before {
     content: "🔧";
     font-size: 200px;
-    color: #ff3333;
+    color: var(--primary-color);
     animation: float 6s ease-in-out infinite;
 }
 

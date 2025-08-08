@@ -1,12 +1,16 @@
 <div class="container">
   <!-- Abvailability Status -->
   <div class="availability-container">
-    <div class="availability-toggle">
-      <div class="availability-label">Availability Status</div>
-      <select class="availability-select" [value]="availablityStatus" (change)="onStatusChange($event)">
-        <option value="Available">Available</option>
-        <option value="Unavailable">Unavailable</option>
-      </select>
+    <div class="availability-header">
+      <div class="availability-toggle">
+        <div class="availability-label">Availability Status</div>
+        <select class="availability-select" [value]="availablityStatus" (change)="onStatusChange($event)">
+          <option value="Available">Available</option>
+          <option value="Unavailable">Unavailable</option>
+        </select>
+      </div>
+      <!-- Theme Toggle -->
+      <app-theme-toggle class="driver-theme-toggle"></app-theme-toggle>
     </div>
     <div class="toggle-text">Toggle your availability to receive new jobs</div>
   </div>

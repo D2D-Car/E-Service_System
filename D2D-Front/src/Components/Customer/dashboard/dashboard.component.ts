@@ -7,6 +7,7 @@ import { CustomerProfileComponent } from '../profile/profile.component';
 import { ServiceHistoryService } from './service-history.service';
 import { OrderCommunicationService } from '../../../Services/order-communication.service';
 import { UserDataService } from '../../../Services/user-data.service';
+import { ThemeToggleComponent } from '../../Landing/theme-toggle/theme-toggle.component';
 
 interface UpcomingService {
   day: string;
@@ -42,7 +43,7 @@ interface ServiceHistory {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, VehiclesComponent, ServiceHistoryComponent, CustomerProfileComponent, ReactiveFormsModule],
+  imports: [CommonModule, VehiclesComponent, ServiceHistoryComponent, CustomerProfileComponent, ReactiveFormsModule, ThemeToggleComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
@@ -156,7 +157,7 @@ export class DashboardComponent implements OnInit {
       rating: 5,
     });
     console.log('Customer Dashboard: Modal should be visible now');
-    
+
     // Force change detection
     setTimeout(() => {
       console.log('Customer Dashboard: Modal state after timeout:', this.showAddServiceModal);
@@ -179,7 +180,7 @@ export class DashboardComponent implements OnInit {
     if (this.addServiceForm.valid) {
       const formValue = this.addServiceForm.value;
       console.log('Customer Dashboard: Adding new service with form data:', formValue);
-      
+
       // Generate a random customer name instead of using actual user data
       const randomCustomerNames = [
         'John Smith', 'Sarah Johnson', 'Michael Brown', 'Emily Davis', 'David Wilson',
@@ -207,10 +208,10 @@ export class DashboardComponent implements OnInit {
       ];
       const randomIndex = Math.floor(Math.random() * randomCustomerNames.length);
       const customerName = randomCustomerNames[randomIndex];
-      
+
       // Generate random payment status
       const randomPaymentStatus = Math.random() > 0.5 ? 'Success' : 'Pending';
-      
+
       // Create new service object
       const newService = {
         id: Date.now(), // Generate unique ID
@@ -229,7 +230,7 @@ export class DashboardComponent implements OnInit {
       // Add to service history using the service
       this.serviceHistoryService.addService(newService);
       console.log('Customer Dashboard: Service added to service history:', newService);
-      
+
       // Add to admin orders component
       const orderData = {
         title: formValue.title,
@@ -242,14 +243,14 @@ export class DashboardComponent implements OnInit {
         payment: randomPaymentStatus // Add random payment status
       };
       console.log('Customer Dashboard: Adding order data to admin:', orderData);
-      
+
       try {
         this.orderCommunicationService.addCustomerOrder(orderData);
         console.log('Customer Dashboard: Order data successfully sent to admin');
       } catch (error) {
         console.error('Customer Dashboard: Error sending order data to admin:', error);
       }
-      
+
       // Close modal and reset form
       this.closeAddServiceModal();
     } else {

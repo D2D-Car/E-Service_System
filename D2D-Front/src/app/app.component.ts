@@ -10,6 +10,7 @@ import { HomeComponent } from '../Components/Landing/home/home.component';
 import { FeedbackComponent } from '../Components/Landing/feedback/feedback.component';
 import { AboutComponent } from '../Components/Landing/about/about.component';
 import { TestimonialsComponent } from "../Components/Landing/testimonials/testimonials.component";
+import { ThemeService } from '../Services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -34,7 +35,10 @@ export class AppComponent {
   public isDashboardPage = false;
   public isAdminPage = false;
 
-  constructor(public router: Router) {
+  constructor(public router: Router, private themeService: ThemeService) {
+    // Initialize theme service
+    this.themeService.initializeSystemThemeListener();
+    
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
