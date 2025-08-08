@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { VehiclesComponent } from '../vehicles/vehicles.component';
-import { ServiceHistoryComponent } from '../service-history/service-history.component';
-import { CustomerProfileComponent } from "../profile/profile.component";
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { VehiclesComponent } from '../vehicles/vehicles.component';
+import { ServiceHistoryComponent } from '../service-history/service-history.component';
+import { CustomerProfileComponent } from '../profile/profile.component';
 import { ServiceHistoryService } from './service-history.service';
+import { OrderCommunicationService } from '../../../Services/order-communication.service';
+import { UserDataService } from '../../../Services/user-data.service';
 
 interface UpcomingService {
   day: string;
@@ -47,66 +49,64 @@ interface ServiceHistory {
 export class DashboardComponent implements OnInit {
   activeTab: string = 'dashboard';
 
-  // Sample data for upcoming services
   upcomingServices: UpcomingService[] = [
     {
       day: '15',
       month: 'Aug',
-      title: 'Oil Change Service',
-      description: 'Regular maintenance oil change',
-      vehicle: 'Toyota Camry 2020',
+      title: 'Oil Change & Filter',
+      description: 'Regular maintenance service',
+      vehicle: 'Toyota Camry',
       time: '10:00 AM',
-      status: 'confirmed',
-      statusText: 'Confirmed',
+      status: 'scheduled',
+      statusText: 'Scheduled'
     },
     {
       day: '20',
       month: 'Aug',
       title: 'Brake Inspection',
-      description: 'Comprehensive brake system check',
-      vehicle: 'Honda Civic 2019',
+      description: 'Safety check and maintenance',
+      vehicle: 'Honda Civic',
       time: '2:00 PM',
       status: 'pending',
-      statusText: 'Pending',
+      statusText: 'Pending'
     },
     {
       day: '25',
       month: 'Aug',
-      title: 'Tire Replacement',
-      description: 'Replace front tires',
-      vehicle: 'Toyota Camry 2020',
+      title: 'Tire Rotation',
+      description: 'Tire maintenance service',
+      vehicle: 'Ford Focus',
       time: '11:30 AM',
-      status: 'confirmed',
-      statusText: 'Confirmed',
-    },
+      status: 'completed',
+      statusText: 'Completed'
+    }
   ];
 
-  // Sample data for recent activities
   recentActivities: RecentActivity[] = [
     {
-      icon: 'fas fa-check-circle',
-      title: 'Service Completed',
-      description: 'Engine diagnostic completed successfully',
-      time: '2 hours ago',
+      icon: '🔧',
+      title: 'Oil Change Completed',
+      description: 'Service completed for Toyota Camry',
+      time: '2 hours ago'
     },
     {
-      icon: 'fas fa-calendar-plus',
-      title: 'Service Scheduled',
-      description: 'Oil change scheduled for August 15th',
-      time: '1 day ago',
-    },
-    {
-      icon: 'fas fa-car',
+      icon: '🚗',
       title: 'Vehicle Added',
-      description: 'Honda Civic 2019 added to your garage',
-      time: '3 days ago',
+      description: 'New vehicle Honda Civic added to profile',
+      time: '1 day ago'
     },
     {
-      icon: 'fas fa-user-check',
-      title: 'Profile Updated',
-      description: 'Contact information updated',
-      time: '1 week ago',
+      icon: '📅',
+      title: 'Appointment Scheduled',
+      description: 'Brake inspection scheduled for Aug 20',
+      time: '2 days ago'
     },
+    {
+      icon: '💰',
+      title: 'Payment Processed',
+      description: 'Payment of $85.00 processed for oil change',
+      time: '3 days ago'
+    }
   ];
 
   // Modal state
@@ -116,7 +116,9 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private serviceHistoryService: ServiceHistoryService
+    private serviceHistoryService: ServiceHistoryService,
+    private orderCommunicationService: OrderCommunicationService,
+    private userDataService: UserDataService
   ) {
     this.addServiceForm = this.fb.group({
       title: ['', Validators.required],
@@ -141,7 +143,10 @@ export class DashboardComponent implements OnInit {
   }
 
   openAddServiceModal(): void {
+    console.log('Customer Dashboard: Opening modal...');
+    console.log('Customer Dashboard: Current showAddServiceModal value:', this.showAddServiceModal);
     this.showAddServiceModal = true;
+    console.log('Customer Dashboard: showAddServiceModal set to:', this.showAddServiceModal);
     this.addServiceForm.reset({
       title: '',
       price: 0,
@@ -150,6 +155,12 @@ export class DashboardComponent implements OnInit {
       date: '',
       rating: 5,
     });
+    console.log('Customer Dashboard: Modal should be visible now');
+    
+    // Force change detection
+    setTimeout(() => {
+      console.log('Customer Dashboard: Modal state after timeout:', this.showAddServiceModal);
+    }, 100);
   }
 
   closeAddServiceModal(): void {
@@ -167,6 +178,38 @@ export class DashboardComponent implements OnInit {
   addNewService(): void {
     if (this.addServiceForm.valid) {
       const formValue = this.addServiceForm.value;
+      console.log('Customer Dashboard: Adding new service with form data:', formValue);
+      
+      // Generate a random customer name instead of using actual user data
+      const randomCustomerNames = [
+        'John Smith', 'Sarah Johnson', 'Michael Brown', 'Emily Davis', 'David Wilson',
+        'Lisa Anderson', 'Robert Taylor', 'Jennifer Martinez', 'William Garcia',
+        'Amanda Rodriguez', 'James Lopez', 'Michelle Gonzalez', 'Christopher Perez',
+        'Jessica Torres', 'Daniel Ramirez', 'Ashley Lewis', 'Matthew Clark',
+        'Nicole Lee', 'Joshua Walker', 'Stephanie Hall', 'Andrew Allen',
+        'Rebecca Young', 'Kevin King', 'Laura Wright', 'Brian Scott',
+        'Melissa Green', 'Steven Baker', 'Heather Adams', 'Timothy Nelson',
+        'Amber Carter', 'Jason Mitchell', 'Rachel Roberts', 'Jeffrey Turner',
+        'Megan Phillips', 'Ryan Campbell', 'Lauren Parker', 'Gary Evans',
+        'Kimberly Edwards', 'Nicholas Collins', 'Christine Stewart', 'Eric Morris',
+        'Angela Rogers', 'Jonathan Reed', 'Tiffany Cook', 'Justin Bailey',
+        'Brittany Cooper', 'Brandon Richardson', 'Samantha Cox', 'Tyler Ward',
+        'Vanessa Torres', 'Sean Peterson', 'Crystal Gray', 'Nathan James',
+        'Monica Butler', 'Adam Simmons', 'Erica Foster', 'Kyle Gonzales',
+        'Tracy Bryant', 'Derek Alexander', 'Stacy Russell', 'Brent Griffin',
+        'Diana Diaz', 'Travis Hayes', 'Natalie Sanders', 'Marcus Price',
+        'Holly Bennett', 'Corey Wood', 'Jacqueline Barnes', 'Dustin Ross',
+        'Catherine Henderson', 'Gregory Coleman', 'Bethany Jenkins', 'Lance Perry',
+        'Misty Powell', 'Derrick Long', 'Kristina Patterson', 'Troy Hughes',
+        'Gina Flores', 'Mario Butler', 'Yolanda Simmons', 'Dwayne Foster',
+        'Latoya Gonzales', 'Malik Bryant', 'Shanice Alexander', 'Terrell Russell',
+        'Keisha Griffin', 'Darnell Diaz', 'Tameka Hayes', 'Lamar Sanders'
+      ];
+      const randomIndex = Math.floor(Math.random() * randomCustomerNames.length);
+      const customerName = randomCustomerNames[randomIndex];
+      
+      // Generate random payment status
+      const randomPaymentStatus = Math.random() > 0.5 ? 'Success' : 'Pending';
       
       // Create new service object
       const newService = {
@@ -185,9 +228,32 @@ export class DashboardComponent implements OnInit {
 
       // Add to service history using the service
       this.serviceHistoryService.addService(newService);
+      console.log('Customer Dashboard: Service added to service history:', newService);
+      
+      // Add to admin orders component
+      const orderData = {
+        title: formValue.title,
+        price: formValue.price,
+        technician: formValue.technician,
+        vehicle: formValue.vehicle,
+        date: formValue.date,
+        location: 'Main Branch',
+        customerName: customerName,
+        payment: randomPaymentStatus // Add random payment status
+      };
+      console.log('Customer Dashboard: Adding order data to admin:', orderData);
+      
+      try {
+        this.orderCommunicationService.addCustomerOrder(orderData);
+        console.log('Customer Dashboard: Order data successfully sent to admin');
+      } catch (error) {
+        console.error('Customer Dashboard: Error sending order data to admin:', error);
+      }
       
       // Close modal and reset form
       this.closeAddServiceModal();
+    } else {
+      console.log('Customer Dashboard: Form is invalid:', this.addServiceForm.errors);
     }
   }
 

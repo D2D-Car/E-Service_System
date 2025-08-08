@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ServiceHistoryService } from '../dashboard/service-history.service';
+import { OrderCommunicationService } from '../../../Services/order-communication.service';
+import { UserDataService } from '../../../Services/user-data.service';
 
 interface ServiceHistory {
   id: number;
@@ -29,13 +31,15 @@ export class ServiceHistoryComponent implements OnInit {
   showAddServiceModal: boolean = false;
   addServiceForm: FormGroup;
 
-  // فلترة
+  // Filter options
   selectedServiceType: string = 'all';
   selectedVehicle: string = 'all';
 
   constructor(
     public serviceHistoryService: ServiceHistoryService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private orderCommunicationService: OrderCommunicationService,
+    private userDataService: UserDataService
   ) {
     this.addServiceForm = this.fb.group({
       title: ['', Validators.required],
@@ -90,6 +94,38 @@ export class ServiceHistoryComponent implements OnInit {
   addNewService(): void {
     if (this.addServiceForm.valid) {
       const formValue = this.addServiceForm.value;
+      console.log('Service History: Adding new service with form data:', formValue);
+      
+      // Generate a random customer name instead of using actual user data
+      const randomCustomerNames = [
+        'John Smith', 'Sarah Johnson', 'Michael Brown', 'Emily Davis', 'David Wilson',
+        'Lisa Anderson', 'Robert Taylor', 'Jennifer Martinez', 'William Garcia',
+        'Amanda Rodriguez', 'James Lopez', 'Michelle Gonzalez', 'Christopher Perez',
+        'Jessica Torres', 'Daniel Ramirez', 'Ashley Lewis', 'Matthew Clark',
+        'Nicole Lee', 'Joshua Walker', 'Stephanie Hall', 'Andrew Allen',
+        'Rebecca Young', 'Kevin King', 'Laura Wright', 'Brian Scott',
+        'Melissa Green', 'Steven Baker', 'Heather Adams', 'Timothy Nelson',
+        'Amber Carter', 'Jason Mitchell', 'Rachel Roberts', 'Jeffrey Turner',
+        'Megan Phillips', 'Ryan Campbell', 'Lauren Parker', 'Gary Evans',
+        'Kimberly Edwards', 'Nicholas Collins', 'Christine Stewart', 'Eric Morris',
+        'Angela Rogers', 'Jonathan Reed', 'Tiffany Cook', 'Justin Bailey',
+        'Brittany Cooper', 'Brandon Richardson', 'Samantha Cox', 'Tyler Ward',
+        'Vanessa Torres', 'Sean Peterson', 'Crystal Gray', 'Nathan James',
+        'Monica Butler', 'Adam Simmons', 'Erica Foster', 'Kyle Gonzales',
+        'Tracy Bryant', 'Derek Alexander', 'Stacy Russell', 'Brent Griffin',
+        'Diana Diaz', 'Travis Hayes', 'Natalie Sanders', 'Marcus Price',
+        'Holly Bennett', 'Corey Wood', 'Jacqueline Barnes', 'Dustin Ross',
+        'Catherine Henderson', 'Gregory Coleman', 'Bethany Jenkins', 'Lance Perry',
+        'Misty Powell', 'Derrick Long', 'Kristina Patterson', 'Troy Hughes',
+        'Gina Flores', 'Mario Butler', 'Yolanda Simmons', 'Dwayne Foster',
+        'Latoya Gonzales', 'Malik Bryant', 'Shanice Alexander', 'Terrell Russell',
+        'Keisha Griffin', 'Darnell Diaz', 'Tameka Hayes', 'Lamar Sanders'
+      ];
+      const randomIndex = Math.floor(Math.random() * randomCustomerNames.length);
+      const customerName = randomCustomerNames[randomIndex];
+      
+      // Generate random payment status
+      const randomPaymentStatus = Math.random() > 0.5 ? 'Success' : 'Pending';
       
       const newServiceObj = {
         id: Date.now(),
@@ -106,7 +142,31 @@ export class ServiceHistoryComponent implements OnInit {
       };
       
       this.serviceHistoryService.addService(newServiceObj);
+      console.log('Service History: Service added to service history:', newServiceObj);
+      
+      // Add to admin orders component
+      const orderData = {
+        title: formValue.title,
+        price: formValue.price,
+        technician: formValue.technician,
+        vehicle: formValue.vehicle,
+        date: formValue.date,
+        location: 'Main Branch',
+        customerName: customerName,
+        payment: randomPaymentStatus // Add random payment status
+      };
+      console.log('Service History: Adding order data to admin:', orderData);
+      
+      try {
+        this.orderCommunicationService.addCustomerOrder(orderData);
+        console.log('Service History: Order data successfully sent to admin');
+      } catch (error) {
+        console.error('Service History: Error sending order data to admin:', error);
+      }
+      
       this.closeAddServiceModal();
+    } else {
+      console.log('Service History: Form is invalid:', this.addServiceForm.errors);
     }
   }
 
