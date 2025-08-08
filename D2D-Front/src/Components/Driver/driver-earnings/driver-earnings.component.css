@@ -268,7 +268,7 @@
 }
 
 .item.negative span:last-child {
-  color: var(--secondary-color);
+  color: var(--primary-color);
 }
 
 .item.total {
