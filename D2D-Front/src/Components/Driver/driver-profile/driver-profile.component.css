@@ -64,28 +64,15 @@
 }
 
 .profile-body .image img {
-  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   display: block;
   position: relative;
   z-index: 1;
-  border-radius: 50%;
+  border-radius: inherit;
 }
 
-.profile-body .image::after {
-  content: '\f030';
-  font-family: 'Font Awesome 6 Free';
-  font-weight: 900;
-  position: absolute;
-  right: -0.5rem;
-  padding: 0 0.5rem;
-  top: 5.5rem;
-  font-size: 1.5rem;
-  color: rgb(48, 113, 216);
-  background-color: var(--dark);
-  border-radius: 50%;
-  z-index: 5;
-  pointer-events: none;
-}
 
 .profile-body form {
   display: flex;
