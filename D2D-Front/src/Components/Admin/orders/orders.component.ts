@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../../Services/theme.service';
 import { Subscription } from 'rxjs';
 import { OrderCommunicationService, CustomerOrder } from '../../../Services/order-communication.service';
+import Swal from 'sweetalert2';
+
 
 interface Order {
   id: string;
@@ -569,13 +571,24 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
 
   deleteOrder(orderId: string): void {
-    if (confirm('Are you sure you want to delete this order?')) {
-      this.orders = this.orders.filter((order) => order.id !== orderId);
-      this.updateFilteredOrders();
-      this.updateStatistics();
-      this.cdr.detectChanges();
-      console.log('Order deleted:', orderId);
-    }
+Swal.fire({
+  title: 'Are you sure?',
+  text: 'Do you really want to delete this order?',
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonText: 'Yes, delete it!',
+  cancelButtonText: 'Cancel',
+}).then((result) => {
+  if (result.isConfirmed) {
+    this.orders = this.orders.filter((order) => order.id !== orderId);
+    this.updateFilteredOrders();
+    this.updateStatistics();
+    this.cdr.detectChanges();
+    Swal.fire('Deleted!', 'Order has been deleted.', 'success');
+    console.log('Order deleted:', orderId);
+  }
+});
+
   }
 
   selectMoreAction(action: string): void {
@@ -589,16 +602,34 @@ export class OrdersComponent implements OnInit, OnDestroy {
       case 'Create Order':
         this.createOrder();
         break;
-      case 'Clear Modal Orders':
-        if (confirm('Are you sure you want to clear all modal-inserted orders? This will keep only the initial 12 orders (#001-#012).')) {
-          this.clearModalOrders();
-        }
-        break;
-      case 'Remove Duplicate Orders':
-        if (confirm('Are you sure you want to remove all duplicate orders? This will keep only unique orders based on ID.')) {
-          this.removeDuplicateOrders();
-        }
-        break;
+   case 'Clear Modal Orders':
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'This will keep only the initial 12 orders (#001-#012).',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, clear orders',
+    cancelButtonText: 'Cancel',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.clearModalOrders();
+    }
+  });
+  break;
+     case 'Remove Duplicate Orders':
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'This will keep only unique orders based on ID.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, remove duplicates',
+    cancelButtonText: 'Cancel',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.removeDuplicateOrders();
+    }
+  });
+  break;
       default:
         console.log('Selected action:', action);
     }
