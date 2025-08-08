@@ -494,11 +494,19 @@
   }
 
   .nav-tabs {
-    flex-wrap: wrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .nav-tabs::-webkit-scrollbar {
+    display: none;
   }
 
   .nav-tab {
-    flex: 1 0 50%;
+    flex: 0 0 auto;
+    min-width: max-content;
+    white-space: nowrap;
   }
 
   .action-cards {
@@ -510,6 +518,7 @@
     gap: 1rem;
   }
 }
+
 /* Modal Styles */
 .modal-overlay {
   position: fixed;
