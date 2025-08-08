@@ -2,27 +2,8 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../../Services/theme.service';
 import { Subscription } from 'rxjs';
-<<<<<<< HEAD
 import { AdminOrdersService, AdminOrder } from '../../../Services/admin-orders.service';
-=======
-import { OrderCommunicationService, CustomerOrder } from '../../../Services/order-communication.service';
 import Swal from 'sweetalert2';
-
-
-interface Order {
-  id: string;
-  date: string;
-  customer: string;
-  payment: 'Pending' | 'Success';
-  total: number;
-  delivery: string;
-  items: number;
-  fulfillment: 'Unfulfilled' | 'Fulfilled';
-  serviceType?: string;
-  vehicle?: string;
-  technician?: string;
-}
->>>>>>> c4062dfe12cb877b113c6906aebdbd59a3af0a02
 
 @Component({
   selector: 'app-orders',
@@ -153,41 +134,33 @@ export class OrdersComponent implements OnInit, OnDestroy {
     // Implementation for editing order
   }
 
-<<<<<<< HEAD
   async deleteOrder(orderId: string): Promise<void> {
-    if (confirm('Are you sure you want to delete this order?')) {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you really want to delete this order?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+    });
+
+    if (result.isConfirmed) {
       try {
         await this.adminOrdersService.deleteOrder(orderId);
+        this.orders = this.orders.filter(order => order.id !== orderId);
+        this.updateFilteredOrders();
+        this.updateStatistics();
+        this.cdr.detectChanges();
+        await Swal.fire('Deleted!', 'Order has been deleted.', 'success');
         console.log('Order deleted:', orderId);
       } catch (error) {
         console.error('Error deleting order:', error);
-        alert('Failed to delete order. Please try again.');
+        await Swal.fire('Error', 'Failed to delete order. Please try again.', 'error');
       }
     }
-=======
-  deleteOrder(orderId: string): void {
-Swal.fire({
-  title: 'Are you sure?',
-  text: 'Do you really want to delete this order?',
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonText: 'Yes, delete it!',
-  cancelButtonText: 'Cancel',
-}).then((result) => {
-  if (result.isConfirmed) {
-    this.orders = this.orders.filter((order) => order.id !== orderId);
-    this.updateFilteredOrders();
-    this.updateStatistics();
-    this.cdr.detectChanges();
-    Swal.fire('Deleted!', 'Order has been deleted.', 'success');
-    console.log('Order deleted:', orderId);
-  }
-});
-
->>>>>>> c4062dfe12cb877b113c6906aebdbd59a3af0a02
   }
 
-  selectMoreAction(action: string): void {
+  async selectMoreAction(action: string): Promise<void> {
     this.selectedAction = action;
     this.showMoreActions = false;
 
@@ -198,37 +171,32 @@ Swal.fire({
       case 'Create Order':
         this.createOrder();
         break;
-<<<<<<< HEAD
-=======
-   case 'Clear Modal Orders':
-  Swal.fire({
-    title: 'Are you sure?',
-    text: 'This will keep only the initial 12 orders (#001-#012).',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, clear orders',
-    cancelButtonText: 'Cancel',
-  }).then((result) => {
-    if (result.isConfirmed) {
-      this.clearModalOrders();
-    }
-  });
-  break;
-     case 'Remove Duplicate Orders':
-  Swal.fire({
-    title: 'Are you sure?',
-    text: 'This will keep only unique orders based on ID.',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, remove duplicates',
-    cancelButtonText: 'Cancel',
-  }).then((result) => {
-    if (result.isConfirmed) {
-      this.removeDuplicateOrders();
-    }
-  });
-  break;
->>>>>>> c4062dfe12cb877b113c6906aebdbd59a3af0a02
+      case 'Clear Modal Orders':
+        const clearResult = await Swal.fire({
+          title: 'Are you sure?',
+          text: 'This will keep only the initial 12 orders (#001-#012).',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, clear orders',
+          cancelButtonText: 'Cancel',
+        });
+        if (clearResult.isConfirmed) {
+          await this.clearModalOrders();
+        }
+        break;
+      case 'Remove Duplicate Orders':
+        const duplicateResult = await Swal.fire({
+          title: 'Are you sure?',
+          text: 'This will keep only unique orders based on ID.',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, remove duplicates',
+          cancelButtonText: 'Cancel',
+        });
+        if (duplicateResult.isConfirmed) {
+          await this.removeDuplicateOrders();
+        }
+        break;
       default:
         console.log('Selected action:', action);
     }
@@ -238,6 +206,47 @@ Swal.fire({
   closeDropdowns(): void {
     this.showMoreActions = false;
     this.showDateDropdown = false;
+  }
+
+  // Clear only the modal orders (keeps first 12 orders)
+  private async clearModalOrders(): Promise<void> {
+    try {
+      // Keep only the first 12 orders (assuming they have IDs #001-#012)
+      this.orders = this.orders.slice(0, 12);
+      this.updateFilteredOrders();
+      this.updateStatistics();
+      this.cdr.detectChanges();
+      await Swal.fire('Success', 'Modal orders have been cleared.', 'success');
+    } catch (error) {
+      console.error('Error clearing modal orders:', error);
+      await Swal.fire('Error', 'Failed to clear modal orders.', 'error');
+    }
+  }
+
+  // Remove duplicate orders based on order ID
+  private async removeDuplicateOrders(): Promise<void> {
+    try {
+      const uniqueOrders = Array.from(new Map(this.orders.map(order => [order.id, order])).values());
+      if (uniqueOrders.length === this.orders.length) {
+        await Swal.fire('Info', 'No duplicate orders found.', 'info');
+        return;
+      }
+      
+      this.orders = uniqueOrders;
+      this.updateFilteredOrders();
+      this.updateStatistics();
+      this.cdr.detectChanges();
+      
+      const removedCount = this.orders.length - uniqueOrders.length;
+      await Swal.fire(
+        'Success', 
+        `Removed ${removedCount} duplicate order${removedCount === 1 ? '' : 's'}.`, 
+        'success'
+      );
+    } catch (error) {
+      console.error('Error removing duplicate orders:', error);
+      await Swal.fire('Error', 'Failed to remove duplicate orders.', 'error');
+    }
   }
 
   // Track by function for better performance

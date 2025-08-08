@@ -1,31 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-<<<<<<< HEAD
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { FirebaseServiceService, ServiceBooking } from '../../../Services/firebase-service.service';
 import { AuthService } from '../../../Services/auth.service';
-import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-=======
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { ServiceHistoryService } from '../dashboard/service-history.service';
-import { OrderCommunicationService } from '../../../Services/order-communication.service';
-import { UserDataService } from '../../../Services/user-data.service';
 
-interface ServiceHistory {
-  id: number;
-  title: string;
-  status: string;
-  price: number;
-  rating: number;
-  date: string;
-  technician: string;
-  vehicle: string;
-  location: string;
-  duration: string;
-  serviceType: string;
-}
->>>>>>> c4062dfe12cb877b113c6906aebdbd59a3af0a02
+// Using ServiceBooking from firebase-service instead of separate interface
+// This ensures type consistency with the data from Firebase
 
 @Component({
   selector: 'app-service-history',
@@ -34,7 +16,7 @@ interface ServiceHistory {
   templateUrl: './service-history.component.html',
   styleUrls: ['./service-history.component.css'],
 })
-export class ServiceHistoryComponent implements OnInit {
+export class ServiceHistoryComponent implements OnInit, OnDestroy {
   serviceHistory: ServiceBooking[] = [];
   showAddServiceModal: boolean = false;
   addServiceForm: FormGroup;
@@ -64,48 +46,30 @@ export class ServiceHistoryComponent implements OnInit {
   ngOnInit() {
     this.loadServiceHistory();
   }
-<<<<<<< HEAD
 
   ngOnDestroy() {
+    // Clean up subscriptions
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  private loadServiceHistory(): void {
-    const servicesSub = this.firebaseService.getCurrentUserServices().subscribe((history: ServiceBooking[]) => {
-      this.serviceHistory = history;
-      console.log('Service history loaded:', history);
-    });
-    
-    this.subscriptions.push(servicesSub);
-  }
-
+  selectedServiceType: string = 'all';
+  selectedVehicle: string = 'all';
   get filteredServices(): ServiceBooking[] {
     return this.serviceHistory.filter(service => {
+      const serviceType = service.serviceType || '';
+      const vehicle = service.vehicle || '';
+      
       const matchesServiceType =
-        this.selectedServiceType === 'all' || service.serviceType === this.selectedServiceType;
+        this.selectedServiceType === 'all' ||
+        serviceType.toLowerCase().includes(this.selectedServiceType.toLowerCase());
+
       const matchesVehicle =
-        this.selectedVehicle === 'all' || service.vehicle.includes(this.selectedVehicle);
+        this.selectedVehicle === 'all' ||
+        vehicle.toLowerCase().includes(this.selectedVehicle.toLowerCase());
+
       return matchesServiceType && matchesVehicle;
     });
   }
-=======
-  selectedServiceType: string = 'all';
-  selectedVehicle: string = 'all';
-  get filteredServices(): ServiceHistory[] {
-  return this.serviceHistory.filter(service => {
-    const matchesServiceType =
-      this.selectedServiceType === 'all' ||
-      service.serviceType.toLowerCase().includes(this.selectedServiceType.toLowerCase());
-
-    const matchesVehicle =
-      this.selectedVehicle === 'all' ||
-      service.vehicle.toLowerCase().includes(this.selectedVehicle.toLowerCase());
-
-    return matchesServiceType && matchesVehicle;
-  });
-}
-
->>>>>>> c4062dfe12cb877b113c6906aebdbd59a3af0a02
 
   openAddServiceModal(): void {
     this.showAddServiceModal = true;
@@ -292,7 +256,34 @@ export class ServiceHistoryComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  trackByServiceId(index: number, service: ServiceBooking): number {
-    return service.id ? parseInt(service.id) : index;
+  trackByServiceId(index: number, service: ServiceBooking): string {
+    return service.id || `service-${index}`;
+  }
+
+  // Format date for display
+  formatDate(date: Date | any): string {
+    if (!date) return 'N/A';
+    const d = date instanceof Date ? date : date.toDate();
+    return d.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  }
+
+  loadServiceHistory() {
+    this.isLoading = true;
+    const sub = this.firebaseService.services$.subscribe({
+      next: (bookings: ServiceBooking[]) => {
+        this.serviceHistory = bookings;
+        this.isLoading = false;
+      },
+      error: (error: any) => {
+        console.error('Error loading service history:', error);
+        this.errorMessage = 'Failed to load service history. Please try again later.';
+        this.isLoading = false;
+      }
+    });
+    this.subscriptions.push(sub);
   }
 }
