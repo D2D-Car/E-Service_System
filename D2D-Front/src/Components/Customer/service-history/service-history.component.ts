@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ServiceHistoryService } from '../dashboard/service-history.service';
 import { OrderCommunicationService } from '../../../Services/order-communication.service';
 import { UserDataService } from '../../../Services/user-data.service';
@@ -22,7 +22,7 @@ interface ServiceHistory {
 @Component({
   selector: 'app-service-history',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './service-history.component.html',
   styleUrls: ['./service-history.component.css'],
 })
@@ -30,10 +30,6 @@ export class ServiceHistoryComponent implements OnInit {
   serviceHistory: ServiceHistory[] = [];
   showAddServiceModal: boolean = false;
   addServiceForm: FormGroup;
-
-  // Filter options
-  selectedServiceType: string = 'all';
-  selectedVehicle: string = 'all';
 
   constructor(
     public serviceHistoryService: ServiceHistoryService,
@@ -56,16 +52,22 @@ export class ServiceHistoryComponent implements OnInit {
       this.serviceHistory = history;
     });
   }
-
+  selectedServiceType: string = 'all';
+  selectedVehicle: string = 'all';
   get filteredServices(): ServiceHistory[] {
-    return this.serviceHistory.filter(service => {
-      const matchesServiceType =
-        this.selectedServiceType === 'all' || service.serviceType === this.selectedServiceType;
-      const matchesVehicle =
-        this.selectedVehicle === 'all' || service.vehicle.includes(this.selectedVehicle);
-      return matchesServiceType && matchesVehicle;
-    });
-  }
+  return this.serviceHistory.filter(service => {
+    const matchesServiceType =
+      this.selectedServiceType === 'all' ||
+      service.serviceType.toLowerCase().includes(this.selectedServiceType.toLowerCase());
+
+    const matchesVehicle =
+      this.selectedVehicle === 'all' ||
+      service.vehicle.toLowerCase().includes(this.selectedVehicle.toLowerCase());
+
+    return matchesServiceType && matchesVehicle;
+  });
+}
+
 
   openAddServiceModal(): void {
     this.showAddServiceModal = true;
