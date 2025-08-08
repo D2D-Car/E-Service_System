@@ -410,11 +410,11 @@ body {
 
 /* Parts Table Styling */
 .parts-table {
+  padding: 1rem !important;
   width: 100%;
-  padding: 1rem;
   border-collapse: collapse;
-  font-size: 0.9rem; /* Reduced back to normal dashboard size */
-  table-layout: fixed; /* Fixed layout for better column control on large screens */
+  font-size: 0.9rem;
+  table-layout: fixed;
 }
 
 .parts-table thead {
@@ -425,14 +425,17 @@ body {
   z-index: 10;
 }
 
-.parts-table tbody tr {
-  transition: all 0.3s ease;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.parts-table tbody tr:hover {
-  background: var(--hover-bg);
-  transform: scale(1.01);
+.parts-table th {
+  padding: 1rem 0.75rem; /* Compact dashboard padding */
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.85rem; /* Compact dashboard font size */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--border-color);
+  background: var(--bg-primary);
+  white-space: nowrap;
 }
 
 /* Fixed column widths for large screens */
@@ -462,24 +465,12 @@ body {
   width: 15%;
 }
 
-.parts-table th {
-  padding: 1rem;
-  margin: 1rem;
-  text-align: left;
-  font-weight: 600;
-  color: var(--text-secondary);
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-bottom: 2px solid var(--border-color);
-}
-
 .parts-table td {
-  margin: 1rem;
-  padding: 1rem;
+  padding: 1rem 0.75rem; /* Compact dashboard padding */
   color: var(--text-primary);
   vertical-align: middle;
   border-bottom: 1px solid var(--border-color);
+  font-size: 0.9rem; /* Compact dashboard font size */
 }
 
 .parts-table td:nth-child(1) {
@@ -533,12 +524,18 @@ body {
 
 /* Enhanced Status Badges */
 .status-badge {
-  padding: 0.4rem 0.8rem;
+  padding: 0.4rem 0.8rem; /* Compact dashboard badge padding */
   border-radius: 20px;
-  font-size: 0.8rem;
+  font-size: 0.75rem; /* Compact dashboard badge font */
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+  min-width: 70px; /* Compact minimum width */
+  justify-content: center; /* Center text */
 }
 
 .status-available {
@@ -854,6 +851,11 @@ body {
   .parts-table td {
     padding: 0.75rem 0.5rem;
   }
+
+  .status-badge {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.6rem;
+  }
 }
 
 /* Mobile Devices */
@@ -924,6 +926,11 @@ body {
     padding: 1rem 0.75rem;
     white-space: nowrap;
   }
+
+  .status-badge {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.5rem;
+  }
 }
 
 /* Small Mobile Devices */
@@ -992,61 +999,73 @@ body {
     font-size: 0.8rem;
   }
 
+  .status-badge {
+    font-size: 0.6rem;
+    padding: 0.2rem 0.4rem;
+  }
+
   .search-input {
     width: 100%;
     font-size: 0.9rem;
   }
 }
 
-
-/* Extra Small Devices - Match .orders-table responsive style */
-
+/* Extra Small Devices */
 @media (max-width: 400px) {
   .stock-container {
     padding: 0.5rem;
   }
+
+  /* Maintain horizontal scroll on extra small devices */
   .table-container {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    white-space: nowrap;
   }
+
   .parts-table {
-    min-width: 600px; /* Increased for better readability */
-    font-size: 1rem;   /* Increased font size */
+    min-width: 450px; /* Force horizontal scroll */
+    font-size: 0.7rem;
   }
+
   .parts-table th,
   .parts-table td {
-    padding: 1rem 0.75rem; /* More padding for touch */
-    white-space: nowrap;
+    padding: 1rem 0.7rem;
   }
-  .parts-table th {
-    font-size: 1rem;
-  }
+
   .parts-table th:nth-child(1),
   .parts-table td:nth-child(1) {
-    min-width: 150px;
-  }
-  .parts-table th:nth-child(2),
-  .parts-table td:nth-child(2) {
-    min-width: 120px;
-    font-size: 0.95rem;
-  }
-  .parts-table th:nth-child(3),
-  .parts-table td:nth-child(3) {
-    min-width: 80px;
-  }
-  .parts-table th:nth-child(4),
-  .parts-table td:nth-child(4) {
-    min-width: 110px;
-  }
-  .parts-table th:nth-child(5),
-  .parts-table td:nth-child(5) {
     min-width: 100px;
   }
-}
 
-.notification-badge {
-  width: 16px;
-  height: 16px;
-  font-size: 10px;
+  .parts-table th:nth-child(2),
+  .parts-table td:nth-child(2) {
+    min-width: 90px;
+    font-size: 0.6rem;
+  }
+
+  .parts-table th:nth-child(3),
+  .parts-table td:nth-child(3) {
+    min-width: 60px;
+  }
+
+  .parts-table th:nth-child(4),
+  .parts-table td:nth-child(4) {
+    min-width: 90px;
+  }
+
+  .parts-table th:nth-child(5),
+  .parts-table td:nth-child(5) {
+    min-width: 80px;
+  }
+
+  .status-badge {
+    font-size: 0.55rem;
+    padding: 0.15rem 0.3rem;
+  }
+
+  .notification-badge {
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+  }
 }
