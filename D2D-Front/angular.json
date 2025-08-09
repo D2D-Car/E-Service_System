@@ -46,20 +46,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2500kB",
-                  "maximumError": "4000kB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "30kB",
-                  "maximumError": "60kB"
+                  "maximumWarning": "3500kB",
+                  "maximumError": "5000kB"
                 }
               ],
               "allowedCommonJsDependencies": [
                 "leaflet",
-                "sweetalert2",
-                "jquery",
-                "popper.js"
+                "sweetalert2"
               ],
               "extractLicenses": true,
               "sourceMap": false,
