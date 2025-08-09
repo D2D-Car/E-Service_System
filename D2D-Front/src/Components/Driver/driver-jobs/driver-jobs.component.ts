@@ -14,6 +14,7 @@ interface DriverTrip {
   amount?: number;
   status?: string; // derived from fulfillment/payment
   createdAt?: any;
+  customerLocation?: { lat: number; lng: number }; // added
 }
 
 @Component({
@@ -52,7 +53,8 @@ export class DriverJobsComponent implements OnInit, OnDestroy {
             to: data.serviceType,
             amount: data.amount,
             status: data.fulfillment === 'Fulfilled' ? 'Completed' : 'Active',
-            createdAt: data.createdAt
+            createdAt: data.createdAt,
+            customerLocation: data.customerLocation
         });
       });
       this.trips = list;

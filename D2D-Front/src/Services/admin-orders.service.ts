@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, addDoc, getDocs, query, orderBy, onSnapshot, updateDoc, doc, deleteDoc } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { OrderIdService } from './order-id.service';
 
 export interface AdminOrder {
   id?: string;
@@ -33,7 +34,7 @@ export class AdminOrdersService {
   private ordersSubject = new BehaviorSubject<AdminOrder[]>([]);
   public orders$ = this.ordersSubject.asObservable();
 
-  constructor(private firestore: Firestore) {
+  constructor(private firestore: Firestore, private orderIdService: OrderIdService) {
     this.initializeRealtimeListener();
   }
 
@@ -71,8 +72,9 @@ export class AdminOrdersService {
   // Add new order from customer service booking
   async addOrderFromService(serviceData: any, customerName: string): Promise<string> {
     try {
+      const sequentialId = await this.orderIdService.getNextOrderId();
       const newOrder: Omit<AdminOrder, 'id'> = {
-        orderId: `#SRV${Date.now()}`,
+        orderId: sequentialId,
         serviceId: serviceData.id,
         date: this.formatDate(serviceData.serviceDate || new Date()),
         customer: customerName,

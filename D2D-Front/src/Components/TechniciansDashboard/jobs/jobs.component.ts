@@ -127,11 +127,7 @@ export class JobsComponent implements OnInit {
 }
 
 
-  getDirections(job: any) {
-    window.open(`https://maps.google.com/maps?q=${job.customerName}+location`, '_blank');
-  }
-
- acceptJob(job: any) {
+  acceptJob(job: any) {
   Swal.fire({
     title: 'Accept this job?',
     icon: 'question',
