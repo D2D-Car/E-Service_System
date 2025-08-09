@@ -76,10 +76,8 @@ export class DashboardComponent implements OnInit {
       title: ['', Validators.required],
       description: ['', Validators.required],
       price: [0, [Validators.required, Validators.min(0)]],
-      technician: ['', Validators.required],
       vehicle: ['', Validators.required],
       date: ['', Validators.required],
-      rating: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
       serviceType: ['General Service', Validators.required],
       location: ['', Validators.required]
     });
@@ -128,10 +126,8 @@ export class DashboardComponent implements OnInit {
       title: '',
       description: '',
       price: 0,
-      technician: '',
       vehicle: '',
       date: '',
-      rating: 5,
       serviceType: 'General Service',
       location: ''
     });
@@ -150,10 +146,8 @@ export class DashboardComponent implements OnInit {
       title: '',
       description: '',
       price: 0,
-      technician: '',
       vehicle: '',
       date: '',
-      rating: 5,
       serviceType: 'General Service',
       location: ''
     });
@@ -173,10 +167,8 @@ export class DashboardComponent implements OnInit {
           title: formValue.title,
           description: formValue.description,
           price: formValue.price,
-          technician: formValue.technician,
           vehicle: formValue.vehicle,
           serviceDate: new Date(formValue.date),
-          rating: formValue.rating,
           serviceType: formValue.serviceType,
           location: formValue.location
         };

@@ -10,10 +10,10 @@ export interface ServiceBooking {
   title: string;
   description: string;
   price: number;
-  technician: string;
+  technician?: string; // made optional
   vehicle: string;
   serviceDate: Date;
-  rating: number;
+  rating?: number; // made optional
   status: 'scheduled' | 'pending' | 'completed' | 'cancelled';
   createdAt: Date;
   updatedAt: Date;
@@ -35,7 +35,7 @@ export interface UpcomingService {
   statusText: string;
   serviceDate: Date;
   price: number;
-  technician: string;
+  technician?: string; // optional
 }
 
 @Injectable({
@@ -109,7 +109,9 @@ export class FirebaseServiceService {
 
             if (service.status === 'scheduled' || service.status === 'pending') {
               const upcoming = this.convertToUpcomingService(service);
-              upcomingServices.push(upcoming);
+              if (upcoming) {
+                upcomingServices.push(upcoming);
+              }
             }
           });
 
@@ -155,10 +157,10 @@ export class FirebaseServiceService {
         title: serviceData.title || '',
         description: serviceData.description || '',
         price: serviceData.price || 0,
-        technician: serviceData.technician || '',
+  technician: serviceData.technician, // optional
         vehicle: serviceData.vehicle || '',
         serviceDate: serviceData.serviceDate || new Date(),
-        rating: serviceData.rating || 5,
+  rating: serviceData.rating, // optional
         status: 'scheduled',
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -254,7 +256,7 @@ export class FirebaseServiceService {
       snapshot.forEach((doc) => {
         const data = doc.data() as ServiceBooking;
         const upcoming = this.convertToUpcomingService({ ...data, id: doc.id });
-        upcomingServices.push(upcoming);
+        if (upcoming) upcomingServices.push(upcoming);
       });
 
       return upcomingServices;
@@ -289,9 +291,25 @@ export class FirebaseServiceService {
   }
 
   // Convert service booking to upcoming service format
-  private convertToUpcomingService(service: ServiceBooking): UpcomingService {
-    const serviceDate = service.serviceDate instanceof Date ? service.serviceDate : new Date(service.serviceDate);
-    
+  private convertToUpcomingService(service: ServiceBooking): UpcomingService | null {
+    let rawDate: any = service.serviceDate;
+    let serviceDate: Date | null = null;
+    try {
+      if (rawDate instanceof Date) {
+        serviceDate = rawDate;
+      } else if (rawDate && typeof rawDate === 'object' && typeof rawDate.toDate === 'function') {
+        // Firestore Timestamp
+        serviceDate = rawDate.toDate();
+      } else if (rawDate) {
+        serviceDate = new Date(rawDate);
+      }
+    } catch {
+      serviceDate = null;
+    }
+    if (!serviceDate || isNaN(serviceDate.getTime())) {
+      console.warn('Skipping service with invalid date', service);
+      return null;
+    }
     return {
       id: service.id,
       day: serviceDate.getDate().toString(),
@@ -304,7 +322,7 @@ export class FirebaseServiceService {
       statusText: this.getStatusText(service.status),
       serviceDate: serviceDate,
       price: service.price,
-      technician: service.technician
+      technician: service.technician || undefined
     };
   }
 
