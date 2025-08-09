@@ -1,16 +1,32 @@
 <app-navbar></app-navbar>
 
-
-
-<router-outlet></router-outlet>
-
 <!-- Show landing page sections only when on home page -->
 <ng-container *ngIf="isHomePage">
-  <app-technicians></app-technicians>
-  <app-services></app-services>
-  <app-about></app-about>
-  <app-testimonials></app-testimonials>
-  <app-feedback></app-feedback>
+  <div class="landing-scroll-container">
+    <section class="landing-section" id="home">
+      <router-outlet></router-outlet>
+    </section>
+    <section class="landing-section" id="technicians">
+      <app-technicians></app-technicians>
+    </section>
+    <section class="landing-section" id="services">
+      <app-services></app-services>
+    </section>
+    <section class="landing-section" id="about">
+      <app-about></app-about>
+    </section>
+    <section class="landing-section" id="testimonials">
+      <app-testimonials></app-testimonials>
+    </section>
+    <section class="landing-section" id="feedback">
+      <app-feedback></app-feedback>
+    </section>
+  </div>
+</ng-container>
+
+<!-- Show other pages when not on home page -->
+<ng-container *ngIf="!isHomePage">
+  <router-outlet></router-outlet>
 </ng-container>
 
 <!-- Show footer only when NOT on dashboard pages -->

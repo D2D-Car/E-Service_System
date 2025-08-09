@@ -15,7 +15,7 @@ import { OnInit } from '@angular/core';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class TechniciansDashboardComponent implements OnInit {
+export class TechniciansComponent implements OnInit {
   profile: any = {
     name: 'Loading...',
     rating: 0,
