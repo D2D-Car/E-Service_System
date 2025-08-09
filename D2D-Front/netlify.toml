@@ -1,0 +1,42 @@
+[build]
+  base = "."
+  publish = "dist/d2-d-front"
+  command = "npm run build --prod"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NPM_FLAGS = "--force"
+  SECRETS_SCAN_ENABLED = "false"
+
+# Redirect rules for Angular SPA
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+
+# Configure secrets scanning to ignore the environment files
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+# Environment-specific settings
+[context.production.environment]
+  SECRETS_SCAN_OMIT_PATHS = "src/environments/*"
