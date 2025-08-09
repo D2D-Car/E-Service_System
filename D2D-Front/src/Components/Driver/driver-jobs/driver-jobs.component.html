@@ -34,7 +34,7 @@
       </div>
       <div class="trip-footer">
         <span class="time"><i class="fa-solid fa-alarm-clock"></i> {{ trip.orderId }}</span>
-        <span class="ago"><i class="fa-solid fa-bell"></i></span>
+        <button class="loc-btn" (click)="openLocation(trip)">📍 Get Location</button>
         <span class="rating">{{ trip.status==='Completed' ? '✅' : '🕒' }}</span>
       </div>
     </div>

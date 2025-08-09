@@ -22,6 +22,8 @@ export interface AdminOrder {
   // New assignment fields
   assignedDriverIds?: string[];
   assignedTechnicianIds?: string[];
+  // Geo location shared by customer (optional)
+  customerLocation?: { lat: number; lng: number };
 }
 
 @Injectable({

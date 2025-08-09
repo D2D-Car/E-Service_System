@@ -223,4 +223,16 @@ completeJob(job: any) {
   toggleAvailability() {
     this.isAvailable = !this.isAvailable;
   }
+
+  openLocation(job: any) {
+    if (job.customerLocation && job.customerLocation.lat && job.customerLocation.lng) {
+      const { lat, lng } = job.customerLocation;
+      window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank');
+    } else if (job.customerName) {
+      const q = encodeURIComponent(job.customerName + ' location');
+      window.open(`https://www.google.com/maps/search/?api=1&query=${q}`,'_blank');
+    } else {
+      alert('Location not available');
+    }
+  }
 }

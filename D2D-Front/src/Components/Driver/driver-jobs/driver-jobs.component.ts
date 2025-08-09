@@ -67,5 +67,20 @@ export class DriverJobsComponent implements OnInit, OnDestroy {
     if (status === 'All') this.filteredTrips = this.trips;
     else this.filteredTrips = this.trips.filter(t => t.status?.toLowerCase() === status.toLowerCase());
   }
+
+  openLocation(trip: DriverTrip) {
+    // Expect customerLocation attached later when mapping
+    const anyTrip:any = trip as any;
+    if (anyTrip.customerLocation && anyTrip.customerLocation.lat && anyTrip.customerLocation.lng) {
+      const { lat, lng } = anyTrip.customerLocation;
+      window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank');
+    } else if (trip.from) {
+      // fallback to encoded address string
+      const q = encodeURIComponent(trip.from);
+      window.open(`https://www.google.com/maps/search/?api=1&query=${q}`,'_blank');
+    } else {
+      alert('Location not available');
+    }
+  }
 }
 

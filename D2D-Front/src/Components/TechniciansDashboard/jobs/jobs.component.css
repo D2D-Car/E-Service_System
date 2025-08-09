@@ -215,6 +215,9 @@
 .job-actions .view { background-color: #ffc107; color: #000; }
 .job-actions .call { background-color: #d11e38; color: #fff; }
 .job-actions .directions { background-color: #28a745; color: #fff; }
+.btn.directions { position:relative; }
+.btn.location { background:#1e3a8a; color:#fff; }
+.btn.location:hover { background:#2563eb; }
 
 .price {
   font-size: 1.4em;
