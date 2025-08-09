@@ -99,19 +99,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   showSearchResults: boolean = false;
   isSearching: boolean = false;
   searchTimeout: any;
-
   mockSearchData: SearchResult[] = [
-    { id: '1', type: 'customer', title: 'Ahmed Ali', description: 'Customer - BMW X5 - Last service: Oil change', icon: 'fa-user', url: '/admin/customers/1' },
-    { id: '2', type: 'service', title: 'Brake Service', description: 'Service - $150 - High priority', icon: 'fa-wrench', url: '/admin/services/brake-service' },
-    { id: '3', type: 'driver', title: 'Mohamed Hassan', description: 'Driver - Available - 5 years experience', icon: 'fa-car', url: '/admin/drivers/3' },
-    { id: '4', type: 'order', title: 'Order #2024-001', description: 'Order - In progress - Mercedes C200', icon: 'fa-file-invoice', url: '/admin/orders/2024-001' },
-    { id: '5', type: 'vehicle', title: 'Toyota Camry 2022', description: 'Vehicle - License: ABC123 - Owner: Sarah Johnson', icon: 'fa-car-side', url: '/admin/vehicles/5' }
-  ];
+    { id: '1', type: 'customer', title: 'Ahmed Ali', description: 'Customer - BMW X5 - Last service: Oil change', icon: 'fa-user', url: '/admin/customers' },
+    { id: '3', type: 'driver', title: 'Mohamed Hassan', description: 'Driver - Available - 5 years experience', icon: 'fa-car', url: '/admin/drivers' },
+    { id: '4', type: 'order', title: 'Order #2024-001', description: 'Order - In progress - Mercedes C200', icon: 'fa-file-invoice', url: '/admin/orders' }
+  ]
 
   /* =========================
     Constructor & Lifecycle
   ========================= */
-  constructor(private themeService: ThemeService,private router:Router) { }
+  constructor(private themeService: ThemeService, private router: Router) { }
 
 
   ngOnInit() {
