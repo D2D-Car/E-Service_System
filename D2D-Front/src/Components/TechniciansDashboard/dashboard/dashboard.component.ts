@@ -9,6 +9,7 @@ import { UserDataService, UserProfile } from '../../../Services/user-data.servic
 import { AuthService } from '../../../Services/auth.service';
 import { OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
+import { Firestore, collection, query, where, onSnapshot, orderBy, limit } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-technicians-dashboard',
@@ -37,12 +38,8 @@ export class TechniciansDashboardComponent implements OnInit {
   // Unread messages count
   unreadMessages = 3;
 
-  jobsToday = [
-    { title: 'Oil Change & Filter', status: 'Accepted', time: '10:00 AM', customer: 'Sarah Wilson', distance: '2.3 km', price: 65 },
-    { title: 'Brake Inspection', status: 'Pending', time: '2:00 PM', customer: 'John Davis', distance: '4.1 km', price: 85 },
-    { title: 'Tire Replacement', status: 'Accepted', time: '4:00 PM', customer: 'Emma Brown', distance: '3.2 km', price: 120 },
-    { title: 'Engine Diagnostic', status: 'Pending', time: '6:30 PM', customer: 'Michael Lee', distance: '5.0 km', price: 150 }
-  ];
+  jobsToday: any[] = []; // now dynamic
+  private jobsUnsub?: () => void;
 
   // Static messages data
   messages = [
@@ -116,11 +113,36 @@ export class TechniciansDashboardComponent implements OnInit {
 
   constructor(
     private userDataService: UserDataService,
-    private authService: AuthService
+    private authService: AuthService,
+    private firestore: Firestore
   ) {}
 
   async ngOnInit() {
     await this.loadUserProfile();
+    this.subscribeJobs();
+  }
+
+  private subscribeJobs() {
+    const user = this.authService.getCurrentUser();
+    if (!user) return;
+    const ref = collection(this.firestore, 'adminOrders');
+    const q = query(ref, where('assignedTechnicianIds', 'array-contains', user.uid), orderBy('createdAt', 'desc'), limit(20));
+    this.jobsUnsub = onSnapshot(q, snap => {
+      const list: any[] = [];
+      snap.forEach(d => {
+        const data: any = d.data();
+        list.push({
+          id: d.id,
+          title: data.serviceType,
+          status: data.fulfillment === 'Fulfilled' ? 'Completed' : (data.status || 'Pending'),
+            time: data.date || '',
+            customer: data.customer,
+            distance: data.distance || '-',
+            price: data.amount
+        });
+      });
+      this.jobsToday = list;
+    });
   }
 
   private async loadUserProfile() {

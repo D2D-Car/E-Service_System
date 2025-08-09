@@ -19,6 +19,9 @@ export interface AdminOrder {
   payment: 'Pending' | 'Success';
   createdAt: Date;
   updatedAt: Date;
+  // New assignment fields
+  assignedDriverIds?: string[];
+  assignedTechnicianIds?: string[];
 }
 
 @Injectable({
@@ -142,6 +145,21 @@ export class AdminOrdersService {
       });
     } catch (error) {
       console.error('Error updating order:', error);
+      throw error;
+    }
+  }
+
+  // New: assign drivers & technicians to order
+  async assignOrder(orderId: string, driverIds: string[], technicianIds: string[]): Promise<void> {
+    try {
+      const orderRef = doc(this.firestore, 'adminOrders', orderId);
+      await updateDoc(orderRef, {
+        assignedDriverIds: driverIds,
+        assignedTechnicianIds: technicianIds,
+        updatedAt: new Date()
+      });
+    } catch (error) {
+      console.error('Error assigning order:', error);
       throw error;
     }
   }

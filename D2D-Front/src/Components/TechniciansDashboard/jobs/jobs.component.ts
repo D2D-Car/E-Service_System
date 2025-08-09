@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { Firestore, collection, query, where, onSnapshot, orderBy } from '@angular/fire/firestore';
+import { AuthService } from '../../../Services/auth.service';
 
 @Component({
   selector: 'app-jobs',
@@ -19,41 +21,8 @@ export class JobsComponent implements OnInit {
   weeklyRevenue = 1250;
   isAvailable = true;
 
-  jobs = [
-    {
-      id: 1,
-      title: 'Oil Change & Filter',
-      status: 'Accepted',
-      customerName: 'Emma Johnson',
-      carModel: '2021 Honda Civic',
-      time: '09:30 AM',
-      distance: '1.8 km',
-      price: 60,
-      date: '2024-01-15',
-    },
-    {
-      id: 2,
-      title: 'Brake Inspection',
-      status: 'Pending',
-      customerName: 'Michael Smith',
-      carModel: '2020 Ford Explorer',
-      time: '01:00 PM',
-      distance: '3.5 km',
-      price: 85,
-      date: '2024-01-16',
-    },
-    {
-      id: 3,
-      title: 'Tire Replacement',
-      status: 'Accepted',
-      customerName: 'Sophia Williams',
-      carModel: '2019 BMW X5',
-      time: '11:15 AM',
-      distance: '5.2 km',
-      price: 120,
-      date: '2024-01-17',
-    },
-  ];
+  jobs: any[] = []; // dynamic now
+  private jobsUnsub?: () => void;
 
   performanceData = {
     jobsCompleted: 50,
@@ -76,9 +45,34 @@ export class JobsComponent implements OnInit {
   selectedJob: any = null;
   loadingDetails = false;
 
-  constructor() {}
+  constructor(private firestore: Firestore, private auth: AuthService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void { this.subscribeJobs(); }
+
+  private subscribeJobs() {
+    const user = this.auth.getCurrentUser();
+    if (!user) return;
+    const ref = collection(this.firestore, 'adminOrders');
+    const q = query(ref, where('assignedTechnicianIds', 'array-contains', user.uid), orderBy('createdAt','desc'));
+    this.jobsUnsub = onSnapshot(q, snap => {
+      const list: any[] = [];
+      snap.forEach(d => {
+        const data:any = d.data();
+        list.push({
+          id: d.id,
+          title: data.serviceType,
+          status: data.fulfillment === 'Fulfilled' ? 'Completed' : (data.status || 'Pending'),
+          customerName: data.customer,
+          carModel: data.vehicle,
+          time: data.date,
+          distance: data.distance || '-',
+          price: data.amount,
+          date: data.createdAt
+        });
+      });
+      this.jobs = list;
+    });
+  }
 
   openModal(job: any) {
     this.modalOpen = true;

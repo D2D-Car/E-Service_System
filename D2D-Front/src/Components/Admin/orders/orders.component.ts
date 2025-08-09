@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 import { AdminOrdersService, AdminOrder } from '../../../Services/admin-orders.service';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
+import { UserDataService, UserProfile } from '../../../Services/user-data.service';
+import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-orders',
@@ -39,10 +41,21 @@ export class OrdersComponent implements OnInit, OnDestroy {
   showOrderDetailsModal = false;
   selectedOrder: AdminOrder | null = null;
 
+  // Assignment modal state
+  showAssignModal = false;
+  drivers: UserProfile[] = [];
+  technicians: UserProfile[] = [];
+  selectedDriverIds = new Set<string>();
+  selectedTechnicianIds = new Set<string>();
+  loadingAssignments = false;
+  assignmentError: string | null = null;
+
   constructor(
     private themeService: ThemeService,
     private adminOrdersService: AdminOrdersService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private userDataService: UserDataService,
+    private firestore: Firestore
   ) {}
 
   ngOnInit(): void {
@@ -151,6 +164,51 @@ export class OrdersComponent implements OnInit, OnDestroy {
     if (orderToEdit) {
       this.orderToEdit = { ...orderToEdit }; // Create a copy to avoid direct mutation
       this.showEditOrderModal = true;
+    }
+  }
+
+  // Open assignment modal
+  async openAssignModal(order: AdminOrder): Promise<void> {
+    this.selectedOrder = order;
+    this.showAssignModal = true;
+    this.assignmentError = null;
+    this.loadingAssignments = true;
+    this.selectedDriverIds = new Set(order.assignedDriverIds || []);
+    this.selectedTechnicianIds = new Set(order.assignedTechnicianIds || []);
+    try {
+      const [drivers, technicians] = await Promise.all([
+        this.userDataService.getUsersByRole('driver'),
+        this.userDataService.getUsersByRole('technician')
+      ]);
+      this.drivers = drivers;
+      this.technicians = technicians;
+    } catch (e:any) {
+      this.assignmentError = 'Failed to load users';
+    } finally {
+      this.loadingAssignments = false;
+      this.cdr.detectChanges();
+    }
+  }
+
+  closeAssignModal(): void {
+    this.showAssignModal = false;
+  }
+
+  toggleDriver(uid: string): void { this.selectedDriverIds.has(uid) ? this.selectedDriverIds.delete(uid) : this.selectedDriverIds.add(uid); }
+  toggleTechnician(uid: string): void { this.selectedTechnicianIds.has(uid) ? this.selectedTechnicianIds.delete(uid) : this.selectedTechnicianIds.add(uid); }
+
+  async saveAssignment(): Promise<void> {
+    if (!this.selectedOrder?.id) return;
+    try {
+      await this.adminOrdersService.assignOrder(
+        this.selectedOrder.id,
+        Array.from(this.selectedDriverIds),
+        Array.from(this.selectedTechnicianIds)
+      );
+      Swal.fire('Success','Assignment saved','success');
+      this.closeAssignModal();
+    } catch (e:any) {
+      Swal.fire('Error','Failed to save assignment','error');
     }
   }
 

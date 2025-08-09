@@ -53,19 +53,18 @@ service cloud.firestore {
     // ADMIN ORDERS COLLECTION
     // =====================================
     match /adminOrders/{orderId} {
-      // Only admins can read, write, and delete admin orders
-      allow read, write, delete: if request.auth != null && 
-        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
-      
-      // Allow system to create orders (for service bookings)
+      // Anyone authenticated can create (system / app logic)
       allow create: if request.auth != null;
-      
-      // Allow technicians to read orders assigned to them
-      allow read: if request.auth != null && 
-        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'technician' &&
-        resource.data.technician == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.displayName;
+
+      // Read: admin OR assigned technician OR assigned driver
+      allow read: if (
+        isAdmin() ||
+        (isTechnician() && resource.data.assignedTechnicianIds != null && request.auth.uid in resource.data.assignedTechnicianIds) ||
+        (isDriver() && resource.data.assignedDriverIds != null && request.auth.uid in resource.data.assignedDriverIds)
+      );
+
+      // Update / delete restricted to admin
+      allow update, delete: if isAdmin();
     }
     
     // =====================================

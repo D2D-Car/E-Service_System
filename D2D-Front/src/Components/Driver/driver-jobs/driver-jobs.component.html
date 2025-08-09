@@ -9,16 +9,9 @@
       </button>
       <div class="collapse navbar-collapse" [class.show]="!isNavbarCollapsed" id="navbarNav">
         <ul class="navbar-nav" id="navTabs">
-          <li class="nav-item">
-            <a class="nav-link" [class.active]="selectedStatus === 'All'" (click)="filterTrips('All')">All trips</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" [class.active]="selectedStatus === 'Active'" (click)="filterTrips('Active')">Active</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" [class.active]="selectedStatus === 'Completed'"
-              (click)="filterTrips('Completed')">Complete</a>
-          </li>
+          <li class="nav-item"><a class="nav-link" [class.active]="selectedStatus === 'All'" (click)="filterTrips('All')">All trips</a></li>
+          <li class="nav-item"><a class="nav-link" [class.active]="selectedStatus === 'Active'" (click)="filterTrips('Active')">Active</a></li>
+          <li class="nav-item"><a class="nav-link" [class.active]="selectedStatus === 'Completed'" (click)="filterTrips('Completed')">Complete</a></li>
         </ul>
       </div>
     </div>
@@ -30,29 +23,21 @@
       <div class="trip-header">
         <div class="driver-info">
           <span class="driver-avatar"><i class="fa-solid fa-user"></i></span>
-          <span class="driver-name">{{ trip.driverName }}</span>
-          <span class="status" [ngClass]="{
-              'completed': trip.status.toLowerCase() === 'completed',
-              'active': trip.status.toLowerCase() === 'active'
-            }">{{ trip.status }}</span>
+          <span class="driver-name">{{ trip.customer }}</span>
+          <span class="status" [ngClass]="{ 'completed': trip.status==='Completed', 'active': trip.status==='Active' }">{{ trip.status }}</span>
         </div>
-        <div class="trip-cost">${{ trip.salary }}</div>
+        <div class="trip-cost">{{ trip.amount | currency:'USD':'symbol':'1.2-2' }}</div>
       </div>
       <div class="trip-details">
-        <div class="location from">
-          <span class="location-dot green"></span>
-          {{ trip.from }}
-        </div>
-        <div class="location to">
-          <span class="location-dot red"></span>
-          {{ trip.to }} <span class="distance">{{ trip.destination }}</span>
-        </div>
+        <div class="location from"><span class="location-dot green"></span>{{ trip.from }}</div>
+        <div class="location to"><span class="location-dot red"></span>{{ trip.to }} <span class="distance">{{ trip.distance }}</span></div>
       </div>
       <div class="trip-footer">
-        <span class="time"><i class="fa-solid fa-alarm-clock"></i> {{ trip.requestTime }}</span>
-        <span class="ago"><i class="fa-solid fa-bell"></i> {{ trip.ago }}</span>
-        <span class="rating">⭐ {{ trip.rating }}</span>
+        <span class="time"><i class="fa-solid fa-alarm-clock"></i> {{ trip.orderId }}</span>
+        <span class="ago"><i class="fa-solid fa-bell"></i></span>
+        <span class="rating">{{ trip.status==='Completed' ? '✅' : '🕒' }}</span>
       </div>
     </div>
+    <div *ngIf="filteredTrips.length===0" class="empty-state">No trips</div>
   </div>
 </div>

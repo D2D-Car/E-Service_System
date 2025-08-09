@@ -67,30 +67,15 @@
   <div class="trip-container">
     <div class="recent-trip">
       <div class="section-title">Recent Trips</div>
-      <div class="trip-item">
+      <div class="trip-item" *ngFor="let t of recentTrips">
         <div class="trip-icon"><i class="fa-solid fa-user"></i></div>
         <div class="trip-details">
-          <p>Trip to Downtown</p>
-          <p>2.5km · 15 min ago</p>
+          <p>{{ t.to || 'Trip' }}</p>
+          <p>{{ t.distance || '—' }} · {{ t.timeAgo || '' }}</p>
         </div>
-        <div class="trip-earnings">$18.50 <span>Completed</span></div>
+        <div class="trip-earnings">{{ t.amount | currency:'USD':'symbol':'1.0-0' }} <span>{{ t.status }}</span></div>
       </div>
-      <div class="trip-item">
-        <div class="trip-icon"><i class="fa-solid fa-user"></i></div>
-        <div class="trip-details">
-          <p>Trip to Downtown</p>
-          <p>2.5km · 15 min ago</p>
-        </div>
-        <div class="trip-earnings">$18.50 <span>Completed</span></div>
-      </div>
-      <div class="trip-item">
-        <div class="trip-icon"><i class="fa-solid fa-user"></i></div>
-        <div class="trip-details">
-          <p>Trip to Downtown</p>
-          <p>2.5km · 15 min ago</p>
-        </div>
-        <div class="trip-earnings">$18.50 <span>Completed</span></div>
-      </div>
+      <div *ngIf="recentTrips.length===0" class="empty-mini">No recent trips</div>
     </div>
     <div class="weekly-summary">
       <div class="section-title">Weekly Summary</div>

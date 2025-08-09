@@ -153,6 +153,9 @@
             <button class="action-btn delete" (click)="deleteOrder(order.id!)" title="Delete Order">
               🗑️
             </button>
+            <button class="action-btn assign" (click)="openAssignModal(order)" title="Assign">
+              👤
+            </button>
           </td>
         </tr>
       </tbody>
@@ -385,6 +388,45 @@
           </div>
         </form>
       </div>
+    </div>
+  </div>
+
+  <!-- Assignment Modal -->
+  <div class="modal-overlay" [class.active]="showAssignModal" (click)="closeAssignModal()">
+    <div class="order-edit-modal" (click)="$event.stopPropagation()" *ngIf="showAssignModal">
+      <div class="modal-header">
+        <div class="header-content">
+          <i class="fas fa-user-plus header-icon"></i>
+          <span class="header-title">Assign Order</span>
+        </div>
+        <button class="close-btn" (click)="closeAssignModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="edit-form-content" *ngIf="!loadingAssignments; else loadTpl">
+        <div *ngIf="assignmentError" class="error">{{assignmentError}}</div>
+        <h4>Drivers</h4>
+        <div class="user-list">
+          <label *ngFor="let d of drivers" class="user-row">
+            <input type="checkbox" [checked]="selectedDriverIds.has(d.uid)" (change)="toggleDriver(d.uid)" />
+            <span class="name">{{ d.displayName || d.email }}</span>
+            <span class="availability-tag" [class.available]="d['availability']==='Available'" [class.unavailable]="d['availability']!=='Available'">{{ d['availability'] || 'Unknown' }}</span>
+          </label>
+        </div>
+        <h4>Technicians</h4>
+        <div class="user-list">
+          <label *ngFor="let t of technicians" class="user-row">
+            <input type="checkbox" [checked]="selectedTechnicianIds.has(t.uid)" (change)="toggleTechnician(t.uid)" />
+            <span class="name">{{ t.displayName || t.email }}</span>
+            <span class="availability-tag" [class.available]="t['availability']==='Available'" [class.unavailable]="t['availability']!=='Available'">{{ t['availability'] || 'Unknown' }}</span>
+          </label>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="cancel-btn" (click)="closeAssignModal()"><i class="fas fa-times"></i> Cancel</button>
+          <button type="button" class="save-btn" (click)="saveAssignment()"><i class="fas fa-save"></i> Save</button>
+        </div>
+      </div>
+      <ng-template #loadTpl>
+        <div class="loading">Loading users...</div>
+      </ng-template>
     </div>
   </div>
 </div>
