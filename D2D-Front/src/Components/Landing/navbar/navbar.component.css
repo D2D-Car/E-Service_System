@@ -179,6 +179,24 @@
   text-align: center;
 }
 
+.auth-signout {
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  margin-left: 1.5rem;
+}
+
+.auth-signout:hover {
+  background-color: var(--primary-color); 
+  color: var(--light);
+  border-color: var(--light);
+}
+
+.auth-signout i {
+  font-size: 1rem;
+}
+
+
 @media (max-width: 1118px) {
   .brand-logo {
     transform: translateX(-40%);

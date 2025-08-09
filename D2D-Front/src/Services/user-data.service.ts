@@ -22,6 +22,8 @@ export interface UserProfile {
   profileImage?: string;
   phone?: string;
   address?: string;
+  // Realtime status field (added)
+  availability?: string; // e.g. 'Available' | 'Unavailable' | 'Busy'
 }
 
 @Injectable({

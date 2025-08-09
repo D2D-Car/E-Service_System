@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FirebaseServiceService } from '../../../Services/firebase-service.service';
+import { AuthService } from '../../../Services/auth.service';
+import Swal from 'sweetalert2';
 
 interface Vehicle {
   id: number;
@@ -17,9 +20,9 @@ interface Vehicle {
 
 @Component({
   selector: 'app-vehicles',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './vehicles.component.html',
-  styleUrl: './vehicles.component.css',
+  styleUrls: ['./vehicles.component.css'],
 })
 export class VehiclesComponent {
   vehicles: Vehicle[] = [
@@ -63,32 +66,53 @@ export class VehiclesComponent {
 
   // Modal state
   showAddVehicleModal = false;
+  showScheduleServiceModal = false;
   imagePreview: string | null = null;
   selectedImageFile: File | null = null;
-  
-  // New vehicle form data
-  newVehicle: Omit<Vehicle, 'id'> = {
-    name: '',
-    year: 2024,
-    color: '',
-    plateNumber: '',
-    currentMileage: '',
-    nextServiceDue: 'Oil Change (3,000 miles)',
-    image: '',
-    email: '',
-    password: ''
-  };
 
-  // TrackBy function for performance optimization
+  // Flag for add or edit mode
+  isEditMode = false;
+
+  // The vehicle being edited (null if adding)
+  editingVehicleId: number | null = null;
+
+  // The vehicle being scheduled for service
+  selectedVehicleForService: Vehicle | null = null;
+
+  // Form model
+  newVehicle: Omit<Vehicle, 'id'> = this.getEmptyVehicle();
+
+  // Service scheduling form
+  serviceForm: FormGroup;
+
+  // Loading states
+  isLoading = false;
+  isGettingLocation = false;
+
+  constructor(
+    private fb: FormBuilder,
+    private firebaseService: FirebaseServiceService,
+    private authService: AuthService
+  ) {
+    this.serviceForm = this.fb.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      price: [0, [Validators.required, Validators.min(0)]],
+      technician: ['', Validators.required],
+      date: ['', Validators.required],
+      rating: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
+      serviceType: ['General Service', Validators.required],
+      location: ['', Validators.required]
+    });
+  }
+
   trackByVehicleId(index: number, vehicle: Vehicle): number {
     return vehicle.id;
   }
 
-  // Open add vehicle modal
-  openAddVehicleModal(): void {
-    this.showAddVehicleModal = true;
-    // Reset form
-    this.newVehicle = {
+  // Utility to get empty vehicle model
+  getEmptyVehicle(): Omit<Vehicle, 'id'> {
+    return {
       name: '',
       year: 2024,
       color: '',
@@ -97,49 +121,141 @@ export class VehiclesComponent {
       nextServiceDue: 'Oil Change (3,000 miles)',
       image: '',
       email: '',
-      password: ''
+      password: '',
     };
-    // Reset image preview
-    this.imagePreview = null;
-    this.selectedImageFile = null;
   }
 
-  // Close add vehicle modal
+  // Open modal for adding vehicle
+  openAddVehicleModal(): void {
+    this.isEditMode = false;
+    this.editingVehicleId = null;
+    this.newVehicle = this.getEmptyVehicle();
+    this.imagePreview = null;
+    this.selectedImageFile = null;
+    this.showAddVehicleModal = true;
+  }
+
+  // Open modal for editing vehicle
+  editVehicle(vehicle: Vehicle): void {
+    this.isEditMode = true;
+    this.editingVehicleId = vehicle.id;
+
+    // Copy vehicle data to form (except id)
+    this.newVehicle = {
+      name: vehicle.name,
+      year: vehicle.year,
+      color: vehicle.color,
+      plateNumber: vehicle.plateNumber,
+      currentMileage: vehicle.currentMileage,
+      nextServiceDue: vehicle.nextServiceDue,
+      image: vehicle.image,
+      email: vehicle.email,
+      password: vehicle.password,
+    };
+    this.imagePreview = vehicle.image;
+    this.selectedImageFile = null;
+
+    this.showAddVehicleModal = true;
+  }
+
+  // Close modal
   closeAddVehicleModal(): void {
     this.showAddVehicleModal = false;
   }
 
-  // Add new vehicle
-  addVehicle(): void {
-    if (this.isFormValid()) {
-      // Generate new ID
-      const newId = Math.max(...this.vehicles.map(v => v.id), 0) + 1;
-      
-      // Create new vehicle object
-      const vehicle: Vehicle = {
-        ...this.newVehicle,
-        id: newId,
-        image: this.imagePreview || './assets/vehicles-img/default-car.jpg' // Use preview or default
-      };
-
-      // Add to vehicles array
-      this.vehicles.push(vehicle);
-      
-      // Close modal
-      this.closeAddVehicleModal();
-      
-      // Show success message (optional)
-      console.log('Vehicle added successfully:', vehicle);
-    }
+  // Add or Update vehicle on form submit
+  submitVehicle(): void {
+  if (!this.isFormValid()) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Invalid Form',
+      text: 'Please fill in all required fields before submitting.',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#ff3b3b'
+    });
+    return;
   }
 
-  // Handle image file selection
+  if (this.isEditMode && this.editingVehicleId !== null) {
+    // Update existing vehicle
+    const index = this.vehicles.findIndex(v => v.id === this.editingVehicleId);
+    if (index !== -1) {
+      this.vehicles[index] = {
+        id: this.editingVehicleId,
+        ...this.newVehicle,
+        image: this.imagePreview || './assets/vehicles-img/default-car.jpg'
+      };
+      console.log('Vehicle updated:', this.vehicles[index]);
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Vehicle Updated',
+        text: 'The vehicle has been updated successfully.',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#ff3b3b'
+      });
+    }
+  } else {
+    // Add new vehicle
+    const newId = Math.max(...this.vehicles.map(v => v.id), 0) + 1;
+    const vehicle: Vehicle = {
+      id: newId,
+      ...this.newVehicle,
+      image: this.imagePreview || './assets/vehicles-img/default-car.jpg'
+    };
+    this.vehicles.push(vehicle);
+    console.log('Vehicle added:', vehicle);
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Vehicle Added',
+      text: 'The vehicle has been added successfully.',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#ff3b3b'
+    });
+  }
+
+  this.closeAddVehicleModal();
+}
+
+
+  // Confirm and delete vehicle
+ confirmDelete(vehicleId: number): void {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'This action cannot be undone!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#ff3b3b',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Yes, delete it',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.deleteVehicle(vehicleId);
+      Swal.fire({
+        icon: 'success',
+        title: 'Deleted!',
+        text: 'The vehicle has been deleted successfully.',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#ff3b3b'
+      });
+    }
+  });
+}
+
+
+  private deleteVehicle(vehicleId: number): void {
+    this.vehicles = this.vehicles.filter(v => v.id !== vehicleId);
+    console.log('Vehicle deleted:', vehicleId);
+  }
+
+  // Image file selection handler
   onImageSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       this.selectedImageFile = input.files[0];
-      
-      // Create image preview
+
       const reader = new FileReader();
       reader.onload = (e) => {
         this.imagePreview = e.target?.result as string;
@@ -157,15 +273,197 @@ export class VehiclesComponent {
 
   // Form validation
   private isFormValid(): boolean {
-    return !!(
-      this.newVehicle.name.trim() &&
-      this.newVehicle.year &&
-      this.newVehicle.color.trim() &&
-      this.newVehicle.plateNumber.trim() &&
-      this.newVehicle.currentMileage.trim() &&
-      this.imagePreview && // Check for image preview instead of image string
-      this.newVehicle.email.trim() &&
-      this.newVehicle.password.trim()
+    return this.newVehicle.name.trim() !== '' &&
+           this.newVehicle.color.trim() !== '' &&
+           this.newVehicle.plateNumber.trim() !== '' &&
+           this.newVehicle.currentMileage.trim() !== '';
+  }
+
+  // Service scheduling methods
+  openScheduleServiceModal(vehicle: Vehicle): void {
+    console.log('Vehicles Component: Opening service modal for vehicle:', vehicle);
+    this.selectedVehicleForService = vehicle;
+    this.showScheduleServiceModal = true;
+    this.serviceForm.reset({
+      title: '',
+      description: '',
+      price: 0,
+      technician: '',
+      date: '',
+      rating: 5,
+      serviceType: 'General Service',
+      location: ''
+    });
+  }
+
+  closeScheduleServiceModal(): void {
+    this.showScheduleServiceModal = false;
+    this.selectedVehicleForService = null;
+    this.serviceForm.reset({
+      title: '',
+      description: '',
+      price: 0,
+      technician: '',
+      date: '',
+      rating: 5,
+      serviceType: 'General Service',
+      location: ''
+    });
+  }
+
+  async scheduleService(): Promise<void> {
+    if (this.serviceForm.valid && this.selectedVehicleForService) {
+      const formValue = this.serviceForm.value;
+      console.log('Vehicles Component: Scheduling service with form data:', formValue);
+      
+      try {
+        // Prepare service data for Firebase
+        const serviceData = {
+          title: formValue.title,
+          description: formValue.description || `${formValue.title} for ${this.selectedVehicleForService.year} ${this.selectedVehicleForService.name}`,
+          price: formValue.price,
+          technician: formValue.technician,
+          vehicle: `${this.selectedVehicleForService.year} ${this.selectedVehicleForService.name}`,
+          serviceDate: new Date(formValue.date),
+          rating: formValue.rating,
+          serviceType: formValue.serviceType,
+          location: formValue.location
+        };
+
+        // Add service to Firebase
+        const serviceId = await this.firebaseService.addServiceBooking(serviceData);
+        console.log('Vehicles Component: Service added to Firebase with ID:', serviceId);
+
+        // Close modal and show success message
+        this.closeScheduleServiceModal();
+        
+        // Show SweetAlert success message
+    Swal.fire({
+  icon: 'success',
+  title: 'Success!',
+  text: 'Service has been scheduled successfully.',
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#ff3b3b'
+});
+
+      } catch (error) {
+        console.error('Vehicles Component: Error scheduling service:', error);
+   Swal.fire({
+  icon: 'error',
+  title: 'Error',
+  text: 'Failed to schedule the service. Please try again.',
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#ff3b3b'
+});
+
+      }
+    } else {
+      console.log('Vehicles Component: Form is invalid:', this.serviceForm.errors);
+      // Mark all fields as touched to show validation errors
+      Object.keys(this.serviceForm.controls).forEach(key => {
+        this.serviceForm.get(key)?.markAsTouched();
+      });
+    }
+  }
+
+  // Get field error message
+  getFieldError(fieldName: string): string {
+    const field = this.serviceForm.get(fieldName);
+    if (field && field.errors && field.touched) {
+      if (field.errors['required']) return `${fieldName} is required`;
+      if (field.errors['min']) return `${fieldName} must be greater than 0`;
+    }
+    return '';
+  }
+
+  // Get current location
+  getCurrentLocation(): void {
+    if (!navigator.geolocation) {
+  Swal.fire({
+  icon: 'error',
+  title: 'Error',
+  text: 'Your browser does not support geolocation.',
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#ff3b3b'
+});
+
+      return;
+    }
+
+    this.isGettingLocation = true;
+    
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          
+          // Use a simple format for coordinates
+          const locationString = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+          this.serviceForm.patchValue({ location: locationString });
+          
+     Swal.fire({
+  icon: 'success',
+  title: 'Location Detected',
+  text: 'Your current location has been retrieved successfully.',
+  timer: 2000,
+  showConfirmButton: false
+});
+
+          
+        } catch (error) {
+          console.error('Error getting location:', error);
+       Swal.fire({
+  icon: 'error',
+  title: 'Error',
+  text: 'Failed to detect your location.',
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#ff3b3b'
+});
+
+        } finally {
+          this.isGettingLocation = false;
+        }
+      },
+      (error) => {
+        this.isGettingLocation = false;
+        let errorMessage = 'Failed to detect location';
+        
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+         errorMessage = 'Permission to access location was denied.'; 
+            break;
+          case error.POSITION_UNAVAILABLE:
+         errorMessage = 'Location information is unavailable.';
+            break;
+          case error.TIMEOUT:
+        errorMessage = 'Location request timed out.';      
+            break;
+        }
+        
+      Swal.fire({
+  icon: 'error',
+  title: 'Location Error',
+  text: errorMessage,
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#ff3b3b'
+});
+
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 60000
+      }
     );
+  }
+
+  // Get today's date in YYYY-MM-DD format for date input min attribute
+  getTodayDate(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 }

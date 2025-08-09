@@ -8,20 +8,24 @@
     </div>
     <div class="filters-section">
       <div class="filter-group">
-        <select class="filter-select" id="serviceFilter">
+        <select class="filter-select" id="serviceFilter" [(ngModel)]="selectedServiceType">
           <option value="all">All Services</option>
-          <option value="oil-change">Oil Change & Filter</option>
-          <option value="brake-service">Brake Service</option>
-          <option value="tire-service">Tire Service</option>
-          <option value="engine-repair">Engine Repair</option>
+          <option value="oil">Oil Change & Filter</option>
+          <option value="brake">Brake Service</option>
+          <option value="tire">Tire Service</option>
+          <option value="engine">Engine Repair</option>
           <option value="transmission">Transmission</option>
+          <option value="battery">Battery Replacement</option>
+          <option value="filter">Air Filter Change</option>
         </select>
-        <select class="filter-select" id="vehicleFilter">
+        <select class="filter-select" id="vehicleFilter" [(ngModel)]="selectedVehicle">
           <option value="all">All Vehicles</option>
-          <option value="toyota-camry">Toyota Camry</option>
-          <option value="honda-crv">Honda CR-V</option>
-          <option value="ford-f150">Ford F-150</option>
-          <option value="bmw-x3">BMW X3</option>
+          <option value="toyota">Toyota</option>
+          <option value="honda">Honda</option>
+          <option value="ford">Ford</option>
+          <option value="bmw">BMW</option>
+          <option value="Hyundai">Hyundai</option>
+          <option value="Nissan">Nissan</option>
         </select>
       </div>
       <button
@@ -34,8 +38,9 @@
       </button>
     </div>
     <div class="service-list">
+      <ng-container *ngIf="filteredServices.length > 0; else noResults">
       <div
-        *ngFor="let service of serviceHistory; trackBy: trackByServiceId"
+        *ngFor="let service of filteredServices; trackBy: trackByServiceId"
         class="service-card"
         [attr.data-type]="service.serviceType"
         [attr.data-vehicle]="service.vehicle"
@@ -43,10 +48,16 @@
         <div class="service-header">
           <div class="service-title-group">
             <h3 class="service-title">{{ service.title }}</h3>
-            <span class="status-badge">{{ service.status }}</span>
+            <span class="status-badge" [ngClass]="{
+              'status-pending': service.status === 'pending',
+              'status-completed': service.status === 'completed',
+              'status-cancelled': service.status === 'cancelled'
+            }">
+              {{ service.status | titlecase }}
+            </span>
           </div>
           <div class="price-rating-group">
-            <span class="service-price">${{ service.price }}</span>
+            <span class="service-price">${{ service.price | number:'1.2-2' }}</span>
             <div class="rating">
               <span
                 class="star"
@@ -60,7 +71,7 @@
         <div class="service-details">
           <div class="detail-item">
             <i class="fas fa-calendar-alt detail-icon"></i>
-            <span>{{ service.date }}</span>
+            <span>{{ formatDate(service.serviceDate) }}</span>
           </div>
           <div class="detail-item">
             <i class="fas fa-user-cog detail-icon"></i>
@@ -76,6 +87,12 @@
           <a href="#" class="btn btn-secondary">Download Invoice</a>
         </div>
       </div>
+      </ng-container>
+      <ng-template #noResults>
+        <div class="no-results">
+          Not found...
+        </div>
+      </ng-template>
     </div>
   </div>
 
@@ -113,6 +130,9 @@
               required
               placeholder="e.g., Oil Change & Filter"
             />
+            <div class="error-message" *ngIf="getFieldError('title')">
+              {{ getFieldError('title') }}
+            </div>
           </div>
           <div class="form-group">
             <label for="servicePrice">Price ($)</label>
@@ -124,6 +144,38 @@
               required
               placeholder="0.00"
             />
+            <div class="error-message" *ngIf="getFieldError('price')">
+              {{ getFieldError('price') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="serviceDescription">Description</label>
+            <input
+              type="text"
+              id="serviceDescription"
+              name="serviceDescription"
+              formControlName="description"
+              required
+              placeholder="e.g., Regular maintenance service"
+            />
+            <div class="error-message" *ngIf="getFieldError('description')">
+              {{ getFieldError('description') }}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="serviceType">Service Type</label>
+            <select id="serviceType" name="serviceType" formControlName="serviceType" required>
+              <option value="General Service">General Service</option>
+              <option value="Oil Change">Oil Change</option>
+              <option value="Brake Service">Brake Service</option>
+              <option value="Tire Service">Tire Service</option>
+              <option value="Engine Repair">Engine Repair</option>
+              <option value="AC Repair">AC Repair</option>
+              <option value="Electrical">Electrical</option>
+            </select>
           </div>
         </div>
 
@@ -138,6 +190,9 @@
               required
               placeholder="e.g., John Smith"
             />
+            <div class="error-message" *ngIf="getFieldError('technician')">
+              {{ getFieldError('technician') }}
+            </div>
           </div>
           <div class="form-group">
             <label for="vehicle">Vehicle</label>
@@ -149,6 +204,28 @@
               required
               placeholder="e.g., Toyota Camry"
             />
+           <div style="display: flex; gap: 0.5rem; align-items: center;">
+             <input 
+               type="text" 
+               id="location" 
+               name="location" 
+               formControlName="location" 
+               required 
+               placeholder="Enter the location or click to get your current location"
+               style="flex: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; padding: 0.75rem 1rem; color: var(--light); font-size: 1rem;"
+             />
+             <button 
+               type="button" 
+               (click)="getCurrentLocation()" 
+               [disabled]="isGettingLocation"
+               style="background: var(--primary-color); color: white; border: none; border-radius: 8px; padding: 0.75rem; cursor: pointer; transition: all 0.3s ease; min-width: 100px;"
+               title="Get current location"
+             >
+               <i class="fas fa-location-arrow" *ngIf="!isGettingLocation"></i>
+               <i class="fas fa-spinner fa-spin" *ngIf="isGettingLocation"></i>
+              {{ isGettingLocation ? 'Loading...' : 'My Location' }}
+             </button>
+           </div>
           </div>
         </div>
 
@@ -161,12 +238,25 @@
               name="serviceDate"
               formControlName="date"
               required
+              [min]="getTodayDate()"
+              style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; padding: 0.75rem 1rem; color: var(--light); font-size: 1rem;"
             />
+            <div class="error-message" *ngIf="getFieldError('date')">
+              {{ getFieldError('date') }}
+            </div>
           </div>
           <div class="form-group">
-            <label for="rating">Rating</label>
+            <label for="location">Location</label>
+            <div class="error-message" *ngIf="getFieldError('location')">
+              {{ getFieldError('location') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="rating">Expected Rating</label>
             <select id="rating" name="rating" formControlName="rating" required>
-              <option value="">Select Rating</option>
               <option value="5">5 Stars - Excellent</option>
               <option value="4">4 Stars - Very Good</option>
               <option value="3">3 Stars - Good</option>
@@ -174,6 +264,12 @@
               <option value="1">1 Star - Poor</option>
             </select>
           </div>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-message global-error" *ngIf="errorMessage">
+          <i class="fas fa-exclamation-triangle"></i>
+          {{ errorMessage }}
         </div>
 
         <div class="form-actions">
@@ -187,10 +283,16 @@
           <button
             type="submit"
             class="btn btn-primary"
-            [disabled]="addServiceForm.invalid"
+            [disabled]="addServiceForm.invalid || isLoading"
           >
-            <i class="fas fa-plus"></i>
-            Add Service
+            <span *ngIf="!isLoading">
+              <i class="fas fa-plus"></i>
+              Add Service
+            </span>
+            <span *ngIf="isLoading" class="loading">
+              <i class="fas fa-spinner fa-spin"></i>
+              Adding Service...
+            </span>
           </button>
         </div>
       </form>

@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, User, sendEmailVerification, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, updateProfile } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, User, sendEmailVerification, GoogleAuthProvider, signInWithPopup, updateProfile, sendPasswordResetEmail } from '@angular/fire/auth';
 import { Firestore, doc, setDoc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, from, of } from 'rxjs';
 import { Router } from '@angular/router';
@@ -98,20 +98,6 @@ export class AuthService {
   async signInWithGoogle(): Promise<void> {
     try {
       const provider = new GoogleAuthProvider();
-      const credential = await signInWithPopup(this.auth, provider);
-      
-      // Check if user exists in Firestore, if not create profile
-      await this.createUserProfileIfNotExists(credential.user);
-      
-    } catch (error: any) {
-      throw this.handleAuthError(error);
-    }
-  }
-
-  // Sign in with Facebook
-  async signInWithFacebook(): Promise<void> {
-    try {
-      const provider = new FacebookAuthProvider();
       const credential = await signInWithPopup(this.auth, provider);
       
       // Check if user exists in Firestore, if not create profile
@@ -274,12 +260,29 @@ export class AuthService {
     }
   }
 
+  /**
+   * Sends a password reset email to the specified email address
+   * @param email The email address to send the password reset to
+   * @returns Promise that resolves when the email is sent
+   */
+  async forgotPassword(email: string): Promise<void> {
+    try {
+      await sendPasswordResetEmail(this.auth, email);
+      // Success message is handled in the component
+    } catch (error: any) {
+      console.error('Error sending password reset email:', error);
+      throw new Error(this.handleAuthError(error));
+    }
+  }
+
   private handleAuthError(error: any): string {
     switch (error.code) {
       case 'auth/user-not-found':
         return 'No account found with this email address.';
       case 'auth/wrong-password':
         return 'Incorrect password. Please try again.';
+      case 'auth/invalid-credential':
+        return 'Incorrect email or password. Please try again.';
       case 'auth/email-already-in-use':
         return 'An account with this email already exists.';
       case 'auth/weak-password':
@@ -288,7 +291,12 @@ export class AuthService {
         return 'Please enter a valid email address.';
       case 'auth/too-many-requests':
         return 'Too many failed attempts. Please try again later.';
+      case 'auth/missing-email':
+        return 'Please enter your email address.';
+      case 'auth/popup-blocked':
+        return 'Pop-up was blocked by your browser. Please allow pop-ups for this site and try again. Look for a pop-up blocker icon in your address bar.';
       default:
+        console.error('Auth error:', error);
         return 'An error occurred. Please try again.';
     }
   }

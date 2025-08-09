@@ -9,7 +9,7 @@
     </button>
   </div>
 
-  <!-- Filter Navigation - المضاف الجديد -->
+  <!-- Filter Navigation -->
   <div class="filters-container">
     <div class="filters-navbar">
       <button *ngFor="let filter of filters" class="filter-btn" [class.active]="selectedFilter === filter"
@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <!-- المودال -->
+  <!-- Add Technician Modal -->
   <div class="modal-overlay" *ngIf="showAddTechnicianModal" (click)="closeAddTechnicianModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
@@ -31,7 +31,6 @@
       </div>
 
       <form class="technician-form" (ngSubmit)="addTechnician()" #technicianForm="ngForm">
-        <!-- شبكة الحقول -->
         <div class="form-grid">
           <div class="form-group">
             <label>Full Name</label>
@@ -104,7 +103,6 @@
             </div>
           </div>
 
-          <!-- زرار اختيار الصورة + معاينة -->
           <div class="form-group full-width">
             <label>Technician Image</label>
             <input type="file" class="file-input" (change)="onImageSelected($event)" accept="image/*" required />
@@ -112,11 +110,66 @@
           </div>
         </div>
 
-        <!-- زر Submit فقط -->
         <div class="form-actions">
           <button type="submit" class="submit-technician-btn" [disabled]="!technicianForm.valid">Submit</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Profile View Modal -->
+  <div class="modal-overlay" *ngIf="showProfileModal" (click)="closeProfileModal()">
+    <div class="modal-content profile-modal" (click)="$event.stopPropagation()" [class.dark-mode]="isDarkMode">
+      <div class="modal-header">
+        <h3><i class="fas fa-user-circle"></i> Technician Profile</h3>
+        <button class="close-btn" (click)="closeProfileModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="profile-content">
+        <div class="profile-header">
+          <img [src]="selectedTechnician?.image" class="profile-img-large" [alt]="selectedTechnician?.name">
+          <h3 class="profile-name">{{selectedTechnician?.name}}</h3>
+          <p class="profile-title">{{selectedTechnician?.specialty}}</p>
+        </div>
+
+        <div class="profile-stats">
+          <div class="stat-item">
+            <div class="stat-value">{{selectedTechnician?.completedJobs}}</div>
+            <div class="stat-label">TOTAL JOBS</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">{{selectedTechnician?.rating}}</div>
+            <div class="stat-label">RATING</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">{{selectedTechnician?.experience}}</div>
+            <div class="stat-label">EXPERIENCE</div>
+          </div>
+        </div>
+
+        <div class="profile-details">
+          <div class="detail-item">
+            <span class="detail-label">CERTIFICATION</span>
+            <span class="detail-value">{{selectedTechnician?.certification}}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">JOINED</span>
+            <span class="detail-value">{{selectedTechnician?.joined}}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">STATUS</span>
+            <span class="detail-value status-badge" [ngClass]="selectedTechnician?.status.toLowerCase().replace(' ', '-')">
+              {{selectedTechnician?.status}}
+            </span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">EMAIL</span>
+            <span class="detail-value">{{selectedTechnician?.email}}</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -145,13 +198,10 @@
             {{ tech.status }}
           </div>
 
-          <!-- صورة التقني -->
           <img [src]="tech.image" class="profile-img" [alt]="tech.name">
 
-          <!-- اسم التقني -->
           <h5 class="technician-name">{{ tech.name }}</h5>
 
-          <!-- معلومات التقني مع الأيقونات -->
           <div class="contact-info">
             <div class="contact-item">
               <i class="fas fa-tools contact-icon"></i>
@@ -171,7 +221,6 @@
             </div>
           </div>
 
-          <!-- تاريخ الانضمام -->
           <div class="join-date">Working Since: {{ tech.joined }}</div>
 
           <div class="action-footer">

@@ -29,7 +29,7 @@ interface ServiceCost {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './stock.component.html',
-  styleUrls: ['./stock.component.css']
+  styleUrls: ['./stock.component.css'],
 })
 export class StockComponent implements OnInit {
   searchText: string = '';
@@ -37,166 +37,138 @@ export class StockComponent implements OnInit {
   filteredPartsList: Part[] = [];
 
   // Statistics
-  availableParts: number = 156;
-  partsOnOrder: number = 23;
-  servicesToday: number = 8;
-  emergencyCalls: number = 2;
+  availableParts: number = 285;
+  partsOnOrder: number = 18;
+  servicesToday: number = 12;
+  emergencyCalls: number = 3;
 
   // Service frequency chart data
   serviceData: ServiceData[] = [
-    { name: 'Air Filter', percentage: 85 },
-    { name: 'Timing Belt', percentage: 72 },
+    { name: 'Brake Pads', percentage: 92 },
+    { name: 'Oil Filter', percentage: 85 },
+    { name: 'Spark Plugs', percentage: 78 },
+    { name: 'Air Filter', percentage: 71 },
     { name: 'Battery', percentage: 65 },
-    { name: 'Spark Plug', percentage: 58 },
-    { name: 'Engine', percentage: 45 },
-    { name: 'Fuel Pump', percentage: 38 },
-    { name: 'Alternator Belt', percentage: 30 },
-    { name: 'Coolant Hose', percentage: 25 }
+    { name: 'Wiper Blades', percentage: 58 },
+    { name: 'Timing Belt', percentage: 45 },
+    { name: 'Fuel Pump', percentage: 32 },
   ];
 
   // Service costs breakdown
   serviceCosts: ServiceCost[] = [
     {
-      service: 'Coolant Hose',
-      count: 12,
-      amount: '1,250 EGP',
-      average: '104 EGP',
-      color: '#3b82f6'
+      service: 'Premium Brake Pads',
+      count: 24,
+      amount: '3,600 EGP',
+      average: '150 EGP',
+      color: '#3b82f6',
     },
     {
-      service: 'Timing Belt',
+      service: 'Oil Filter & Change',
       count: 18,
-      amount: '900 EGP',
-      average: '50 EGP',
-      color: '#10b981'
+      amount: '1,800 EGP',
+      average: '100 EGP',
+      color: '#10b981',
     },
     {
-      service: 'Fuel Pump',
+      service: 'Spark Plugs Set',
+      count: 15,
+      amount: '2,250 EGP',
+      average: '150 EGP',
+      color: '#f59e0b',
+    },
+    {
+      service: 'Car Battery 12V',
+      count: 12,
+      amount: '4,800 EGP',
+      average: '400 EGP',
+      color: '#ef4444',
+    },
+    {
+      service: 'Timing Belt Kit',
       count: 8,
-      amount: '640 EGP',
-      average: '80 EGP',
-      color: '#f59e0b'
+      amount: '2,400 EGP',
+      average: '300 EGP',
+      color: '#8b5cf6',
     },
-    {
-      service: 'Battery ',
-      count: 5,
-      amount: '750 EGP',
-      average: '150 EGP',
-      color: '#ef4444'
-    },
-    {
-      service: 'Windshield Wipers',
-      count: 6,
-      amount: '900 EGP',
-      average: '150 EGP',
-      color: '#8b5cf6'
-    }
   ];
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
     this.originalPartsList = [
       {
-        name: 'Brake Pads',
-        partNumber: 'BP001',
-        quantity: '25',
-        location: 'Van A',
-        status: 'available'
+        name: 'Premium Brake Pads Set',
+        partNumber: 'BP2024-001',
+        quantity: '32',
+        location: 'Service Van A',
+        status: 'available',
       },
       {
-        name: 'Oil Filter',
-        partNumber: 'OF105',
-        quantity: '18',
-        location: 'Van B',
-        status: 'available'
+        name: 'Professional Tire Repair Kit',
+        partNumber: 'TRK2024-01',
+        quantity: '22',
+        location: 'Service Van C',
+        status: 'available',
       },
       {
-        name: 'Spark Plugs',
-        partNumber: 'SP220',
-        quantity: '40',
-        location: 'Warehouse',
-        status: 'available'
-      },
-      {
-        name: 'Battery 12V',
-        partNumber: 'BT12V',
-        quantity: '8',
-        location: 'Van A',
-        status: 'available'
-      },
-      {
-        name: 'Tire Repair Kit',
-        partNumber: 'TRK01',
-        quantity: '15',
-        location: 'Van C',
-        status: 'available'
-      },
-      {
-        name: 'Alternator Belt',
-        partNumber: 'AB450',
-        quantity: '3',
-        location: 'Van B',
-        status: 'low'
-      },
-      {
-        name: 'Coolant Hose',
-        partNumber: 'CH350',
-        quantity: '0',
-        location: 'Warehouse',
-        status: 'order'
-      },
-      {
-        name: 'Headlight Bulb',
-        partNumber: 'HB55W',
-        quantity: '12',
-        location: 'Van A',
-        status: 'available'
-      },
-      {
-        name: 'Fuel Pump',
-        partNumber: 'FP888',
-        quantity: '2',
-        location: 'Warehouse',
-        status: 'low'
-      },
-      {
-        name: 'Windshield Wipers',
-        partNumber: 'WW24',
-        quantity: '20',
-        location: 'Van B',
-        status: 'available'
-      },
-      {
-        name: 'Oil Filter',
-        partNumber: 'OF002',
-        quantity: '15',
-        location: 'Van B',
-        status: 'order'
-      },
-      {
-        name: 'Spark Plug',
-        partNumber: 'SP003',
-        quantity: '8',
-        location: 'Van C',
-        status: 'low'
-      },
-      {
-        name: 'Air Filter',
-        partNumber: 'AF004',
-        quantity: '30',
-        location: 'Van A',
-        status: 'available'
-      },
-      {
-        name: 'Timing Belt',
-        partNumber: 'TB005',
+        name: 'Radiator Coolant Hose',
+        partNumber: 'RCH2024-350',
         quantity: '5',
-        location: 'Van D',
-        status: 'low'
-      }  
+        location: 'Main Warehouse',
+        status: 'low',
+      },
+      {
+        name: 'LED Headlight Bulb H7',
+        partNumber: 'LED2024-H7',
+        quantity: '18',
+        location: 'Service Van A',
+        status: 'available',
+      },
+      {
+        name: 'Electric Fuel Pump Assembly',
+        partNumber: 'FP2024-888',
+        quantity: '3',
+        location: 'Main Warehouse',
+        status: 'order',
+      },
+      {
+        name: 'All-Weather Wiper Blades',
+        partNumber: 'WB2024-24',
+        quantity: '35',
+        location: 'Service Van B',
+        status: 'available',
+      },
+      {
+        name: 'HEPA Cabin Air Filter',
+        partNumber: 'CAF2024-002',
+        quantity: '4',
+        location: 'Service Van C',
+        status: 'order',
+      },
+      {
+        name: 'Iridium Spark Plugs (Premium)',
+        partNumber: 'ISP2024-003',
+        quantity: '12',
+        location: 'Service Van A',
+        status: 'low',
+      },
+      {
+        name: 'High-Flow Air Filter',
+        partNumber: 'AF2024-004',
+        quantity: '38',
+        location: 'Main Warehouse',
+        status: 'available',
+      },
+      {
+        name: 'Electric Fuel Pump Assembly',
+        partNumber: 'FP2024-888',
+        quantity: '3',
+        location: 'Main Warehouse',
+        status: 'order',
+      },
     ];
-    
+
     this.filteredPartsList = [...this.originalPartsList];
     this.updateStatistics();
   }
@@ -208,17 +180,22 @@ export class StockComponent implements OnInit {
     }
 
     const searchTerm = this.searchText.toLowerCase();
-    this.filteredPartsList = this.originalPartsList.filter(part =>
-      part.name.toLowerCase().includes(searchTerm) ||
-      part.partNumber.toLowerCase().includes(searchTerm) ||
-      part.location.toLowerCase().includes(searchTerm) ||
-      part.status.toLowerCase().includes(searchTerm)
+    this.filteredPartsList = this.originalPartsList.filter(
+      (part) =>
+        part.name.toLowerCase().includes(searchTerm) ||
+        part.partNumber.toLowerCase().includes(searchTerm) ||
+        part.location.toLowerCase().includes(searchTerm) ||
+        part.status.toLowerCase().includes(searchTerm)
     );
   }
 
   updateStatistics(): void {
-    this.availableParts = this.originalPartsList.filter(part => part.status === 'available').length * 8;
-    this.partsOnOrder = this.originalPartsList.filter(part => part.status === 'order').length * 12;
+    this.availableParts =
+      this.originalPartsList.filter((part) => part.status === 'available')
+        .length * 8;
+    this.partsOnOrder =
+      this.originalPartsList.filter((part) => part.status === 'order').length *
+      12;
   }
 
   getRowClass(status: string): string {

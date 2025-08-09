@@ -12,8 +12,9 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  align-items: center;
-  gap: 30px;
+  align-items: flex-start;
+  padding: 50px;
+  gap: 10px;
   justify-content: space-between;
   width: 100%;
   max-width: 1200px;
@@ -22,9 +23,7 @@
 }
 
 .about-content {
-  min-width: 300px;
-  max-width: 500px;
-  font-size: 3rem;
+  font-size: .1rem;
   transition: var(--time-transition);
 }
 
@@ -40,35 +39,27 @@
 
 .about-content h2 {
   font-size: 3rem;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .about-content p {
-  font-size: 1.3rem;
+  font-size: 1rem;
   line-height: 1.6;
   color: var(--light-font-color);
+  margin: 0px;
+  padding: 0px;
+}
+
+.about-image {
+  margin-top: -170px;
+  margin-left:0px;
+  text-align: right;
 }
 
 .about-image img {
   width: 500px;
   max-width: 100%;
   filter: drop-shadow(3px 3px 5px var(--primary-color));
-}
-
-.btn {
-  background-color: var(--primary-color);
-  color: white;
-  font-size: 1.5rem;
-  margin-top: 2rem;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.btn:hover {
-  background-color: rgb(244, 64, 67);
 }
 
 @media (max-width: 992px) {
@@ -91,6 +82,7 @@
 
   .about-image {
     width: 100%;
+    margin-top: 2rem;
   }
 
   .head-of-section {

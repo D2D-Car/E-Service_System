@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AvailabilityStatusService } from '../../../Services/Driver/availability-status.service';
+import { Firestore, collection, query, where, orderBy, limit, onSnapshot } from '@angular/fire/firestore';
+import { AuthService } from '../../../Services/auth.service';
+
 interface IStatistics {
   icon: string;
   title: string;
@@ -43,12 +46,40 @@ export class DriverDashboardComponent implements OnInit{
       color: "member-icon"
     }
   ];
+  recentTrips: any[] = [];
+  private tripsUnsub?: () => void;
   
-  constructor(private availabilityService: AvailabilityStatusService) {}
+  constructor(private availabilityService: AvailabilityStatusService, private firestore: Firestore, private auth: AuthService) {}
 
   ngOnInit(): void {
     this.availabilityService.availabilityStatus$.subscribe(status => {
       this.availablityStatus = status;
+    });
+    this.subscribeRecentTrips();
+  }
+
+  private subscribeRecentTrips() {
+    const user = this.auth.getCurrentUser();
+    if (!user) return;
+    const ref = collection(this.firestore, 'adminOrders');
+    const q = query(ref, where('assignedDriverIds', 'array-contains', user.uid), orderBy('createdAt','desc'), limit(3));
+    this.tripsUnsub = onSnapshot(q, snap => {
+      const list:any[] = [];
+      const now = Date.now();
+      snap.forEach(d => {
+        const data:any = d.data();
+        const created = data.createdAt?.toMillis ? data.createdAt.toMillis() : (data.createdAt?._seconds? data.createdAt._seconds * 1000 : now);
+        const diffMin = Math.max(0, Math.round((now - created)/60000));
+        list.push({
+          id: d.id,
+          to: data.serviceType,
+          distance: data.distance || '-',
+          amount: data.amount,
+          status: data.fulfillment === 'Fulfilled' ? 'Completed' : 'Active',
+          timeAgo: diffMin < 60 ? diffMin + ' min ago' : Math.round(diffMin/60) + 'h ago'
+        });
+      });
+      this.recentTrips = list;
     });
   }
 

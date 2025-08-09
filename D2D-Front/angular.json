@@ -24,7 +24,9 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/assets",
+              "src/favicon.ico"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -32,9 +34,7 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/popper.js/dist/umd/popper.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
               "node_modules/@fortawesome/fontawesome-free/js/all.min.js"
             ],
             "stylePreprocessorOptions": {
@@ -46,21 +46,22 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "3500kB",
+                  "maximumError": "5000kB"
                 }
               ],
+              "allowedCommonJsDependencies": [
+                "leaflet",
+                "sweetalert2"
+              ],
+              "extractLicenses": true,
+              "sourceMap": false,
               "outputHashing": "all"
             },
             "development": {
               "optimization": true,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": false
             }
           },
           "defaultConfiguration": "production"
@@ -99,11 +100,23 @@
             ],
             "scripts": []
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
   "cli": {
-    "analytics": "ce19f8ba-c080-4a0b-a52e-abe86b87bc08"
+    "analytics": "ce19f8ba-c080-4a0b-a52e-abe86b87bc08",
+    "schematicCollections": [
+      "angular-eslint"
+    ]
   }
 }

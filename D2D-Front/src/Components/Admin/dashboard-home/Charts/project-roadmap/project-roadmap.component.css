@@ -1,0 +1,133 @@
+.tab-btn,
+.btn-sm {
+  padding: 0.5rem 1rem;
+  margin: 0.25rem 0.3rem;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.tab-btn.active,
+.tab-btn:hover {
+  background: var(--primary-color);
+  color: white !important;
+  border-color: var(--primary-color);
+}
+
+body.dark-theme .roadmap-card,
+.dark-theme .roadmap-card {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+body.dark-theme .roadmap-header,
+.dark-theme .roadmap-header {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.roadmap-card {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  padding: 1.5rem 2rem 1.5rem 3rem !important;
+}
+
+.chart-container {
+  height: 480px;
+  position: relative;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  padding-bottom: 1rem;
+  border-radius: 16px;
+}
+
+.canvas-wrap {
+  height: 100%;
+  width: 100%;
+}
+
+.toggle-group .btn.active {
+  background: var(--primary-color);
+  color: #fff;
+  border-color: var(--primary-color);
+}
+
+.period-buttons .btn {
+  min-width: 56px;
+  background: var(--bg-secondary);
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.period-buttons .btn.active,
+.period-buttons .btn:hover {
+  background: var(--primary-color);
+  color: #fff;
+  border-color: var(--primary-color);
+}
+
+.refresh-btn {
+  background-color: var(--success-color) !important;
+  color: white !important;
+  border-color: var(--success-color) !important;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+  background: var(--primary-color);
+}
+
+.list-unstyled li .badge {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  background: var(--primary-color);
+}
+
+.card {
+  border: 0;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.small.text-muted {
+  font-size: 0.65rem;
+  color: var(--text-secondary) !important;
+}
+
+strong {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.mt-1 {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 480px) {
+  .tech-controls {
+    display: none !important;
+  }
+
+  .roadmap-card {
+    padding: 1.5rem !important;
+    padding-bottom: 0 !important;
+  }
+
+  .card-body {
+    padding: var(--bs-card-spacer-y) 0;
+  }
+}

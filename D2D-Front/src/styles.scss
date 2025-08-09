@@ -1,8 +1,54 @@
+// Mobile stacking for dashboard sections
+@media (max-width: 480px) {
+  .countries-traffic-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+
+  .countries-section,
+  .traffic-section {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .countries-section {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .countries-content-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+
+  .sales-summary {
+    order: 1;
+  }
+
+  .map-section {
+    order: 2;
+    margin-top: 1rem !important;
+  }
+
+  .countries-list-section {
+    display: flex !important;
+    flex-direction: column-reverse !important;
+  }
+}
+
 // Modern SCSS with no deprecation warnings
 // Using CSS imports instead of SCSS @import for external resources
 
 // Leaflet CSS import
-@import "leaflet/dist/leaflet.css";
+@import 'leaflet/dist/leaflet.css';
+
+.technicians-section,
+.drivers-section,
+.customers-section {
+  padding: 1.5rem !important;
+}
 
 // Global smooth scrolling
 html {
@@ -18,15 +64,20 @@ body {
   .row > * {
     padding: {
       right: 0 !important;
-      left: 0 important;
+      left: 0 !important;
     }
   }
-}
 
-.technicians-section,
-.drivers-section,
-.customers-section {
-  padding: 1.5rem !important;
+  .g-4,
+  .gy-4 {
+    --bs-gutter-y: 1rem !important;
+  }
+
+  .technicians-section,
+  .drivers-section,
+  .customers-section {
+    padding: 1rem !important;
+  }
 }
 
 // =====================================
@@ -375,26 +426,30 @@ body {
   background-color: #f5f5f5 !important;
 }
 
+
 .head-of-section {
-  font-weight: 600;
+  font-weight: 700;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+  text-align: left;
+}
 
-  padding: {
-    top: 40px;
-    bottom: 10px;
-  }
+.head-of-section h2 {
+  color: var(--primary-color);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
-  h2 {
-    color: var(--icon-bg-color);
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    font-size: 16px;
-    margin-bottom: 0px;
-  }
-
-  p {
-    font-size: 40px;
-    color: var(--light);
-  }
+.head-of-section p {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  margin-bottom: 0;
 }
 
 .services-icon {

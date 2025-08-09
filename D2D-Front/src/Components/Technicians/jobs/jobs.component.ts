@@ -1,57 +1,28 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
+import { Firestore, collection, query, where, onSnapshot, orderBy } from '@angular/fire/firestore';
+import { AuthService } from '../../../Services/auth.service';
 
 @Component({
   selector: 'app-jobs',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './jobs.component.html',
   styleUrls: ['./jobs.component.css'],
 })
 export class JobsComponent implements OnInit {
-  userName: string = 'John Doe';
-  userRate: number = 4.8;
-  reviewCount: number = 1250;
-  jobsCompleted: number = 24;
-  dailyRevenue: number = 150;
-  weeklyRevenue: number = 1250;
-  isAvailable: boolean = true;
+  userName = 'John Doe';
+  userRate = 4.8;
+  reviewCount = 1250;
+  jobsCompleted = 24;
+  dailyRevenue = 150;
+  weeklyRevenue = 1250;
+  isAvailable = true;
 
-  jobs: any[] = [
-    {
-      id: 1,
-      title: 'Oil Change & Filter',
-      status: 'Accepted',
-      customerName: 'Emma Johnson',
-      carModel: '2021 Honda Civic',
-      time: '09:30 AM',
-      distance: '1.8 km',
-      price: 60,
-      date: '2024-01-15',
-    },
-    {
-      id: 2,
-      title: 'Brake Inspection',
-      status: 'Pending',
-      customerName: 'Michael Smith',
-      carModel: '2020 Ford Explorer',
-      time: '01:00 PM',
-      distance: '3.5 km',
-      price: 85,
-      date: '2024-01-16',
-    },
-    {
-      id: 3,
-      title: 'Tire Replacement',
-      status: 'Accepted',
-      customerName: 'Sophia Williams',
-      carModel: '2019 BMW X5',
-      time: '11:15 AM',
-      distance: '5.2 km',
-      price: 120,
-      date: '2024-01-17',
-    },
-  ];
+  jobs: any[] = []; // dynamic now
+  private jobsUnsub?: () => void;
 
   performanceData = {
     jobsCompleted: 50,
@@ -67,73 +38,166 @@ export class JobsComponent implements OnInit {
   ];
 
   specialties: string[] = ['Brake Systems', 'Engine Repair', 'Tire Services'];
-  newSpecialty: string = '';
+  newSpecialty = '';
 
-  constructor() {}
+  // Modal control
+  modalOpen = false;
+  selectedJob: any = null;
+  loadingDetails = false;
 
-  ngOnInit(): void {}
+  constructor(private firestore: Firestore, private auth: AuthService) {}
 
-  addSpecialty() {
-    if (this.newSpecialty.trim() !== '') {
-      this.specialties.push(this.newSpecialty.trim());
-      this.newSpecialty = '';
-    }
+  ngOnInit(): void { this.subscribeJobs(); }
+
+  private subscribeJobs() {
+    const user = this.auth.getCurrentUser();
+    if (!user) return;
+    const ref = collection(this.firestore, 'adminOrders');
+    const q = query(ref, where('assignedTechnicianIds', 'array-contains', user.uid), orderBy('createdAt','desc'));
+    this.jobsUnsub = onSnapshot(q, snap => {
+      const list: any[] = [];
+      snap.forEach(d => {
+        const data:any = d.data();
+        list.push({
+          id: d.id,
+          title: data.serviceType,
+          status: data.fulfillment === 'Fulfilled' ? 'Completed' : (data.status || 'Pending'),
+          customerName: data.customer,
+          carModel: data.vehicle,
+          time: data.date,
+          distance: data.distance || '-',
+          price: data.amount,
+          date: data.createdAt
+        });
+      });
+      this.jobs = list;
+    });
   }
+
+  openModal(job: any) {
+    this.modalOpen = true;
+    this.loadingDetails = true;
+    this.selectedJob = null;
+
+    // Simulate loading delay for 1 second
+    setTimeout(() => {
+      this.selectedJob = job;
+      this.loadingDetails = false;
+    }, 1000);
+  }
+
+  closeModal() {
+    this.modalOpen = false;
+    this.selectedJob = null;
+    this.loadingDetails = false;
+  }
+
+ addSpecialty() {
+  const trimmed = this.newSpecialty.trim();
+  if (trimmed && !this.specialties.includes(trimmed)) {
+    this.specialties.push(trimmed);
+    Swal.fire({
+      title: 'Added!',
+      text: `${trimmed} has been added to your specialties.`,
+      icon: 'success',
+      timer: 1500,
+      showConfirmButton: false
+    });
+  }
+  this.newSpecialty = '';
+}
+
 
   removeSpecialty(specialty: string) {
-    this.specialties = this.specialties.filter((s) => s !== specialty);
+    this.specialties = this.specialties.filter(s => s !== specialty);
   }
 
-  // Job action methods
-  viewJobDetails(job: any) {
-    console.log('Viewing details for job:', job);
-    // Add navigation logic here
-  }
-
-  callCustomer(job: any) {
-    console.log('Calling customer:', job.customerName);
-    // Add phone call logic here
-    if (confirm(`Call ${job.customerName}?`)) {
+ callCustomer(job: any) {
+  Swal.fire({
+    title: `Call ${job.customerName}?`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, Call',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
       window.open(`tel:+1234567890`, '_self');
     }
-  }
+  });
+}
 
-  getDirections(job: any) {
-    console.log('Getting directions for job:', job);
-    // Add maps/directions logic here
-    window.open(
-      `https://maps.google.com/maps?q=${job.customerName}+location`,
-      '_blank'
-    );
-  }
 
-  // Job status management
   acceptJob(job: any) {
-    job.status = 'Accepted';
-    console.log('Job accepted:', job);
-  }
-
-  rejectJob(job: any) {
-    if (confirm('Are you sure you want to reject this job?')) {
-      job.status = 'Rejected';
-      console.log('Job rejected:', job);
+  Swal.fire({
+    title: 'Accept this job?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, Accept',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      job.status = 'Accepted';
+      Swal.fire({
+        title: 'Accepted!',
+        text: 'The job has been accepted.',
+        icon: 'success',
+        timer: 1500,
+        showConfirmButton: false
+      });
     }
-  }
+  });
+}
 
-  completeJob(job: any) {
-    if (confirm('Mark this job as completed?')) {
+ rejectJob(job: any) {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'Do you really want to reject this job?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, reject it',
+    cancelButtonText: 'Cancel',
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      job.status = 'Rejected';
+      Swal.fire(
+        'Rejected!',
+        'The job has been rejected.',
+        'success'
+      );
+    }
+  });
+}
+
+completeJob(job: any) {
+  Swal.fire({
+    title: 'Mark this job as completed?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, Complete',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
       job.status = 'Completed';
       this.jobsCompleted++;
-      console.log('Job completed:', job);
-    }
-  }
 
-  // Filter functionality
-  selectedStatus: string = 'all-status';
-  selectedService: string = 'all-services';
+      Swal.fire({
+        title: 'Completed!',
+        text: 'The job has been marked as completed.',
+        icon: 'success',
+        timer: 1500,
+        showConfirmButton: false
+      });
+    }
+  });
+}
+
+  selectedStatus = 'all-status';
+  selectedService = 'all-services';
 
   get filteredJobs() {
-    return this.jobs.filter((job) => {
+    return this.jobs.filter(job => {
       const statusMatch =
         this.selectedStatus === 'all-status' ||
         job.status.toLowerCase() === this.selectedStatus.toLowerCase();
@@ -152,12 +216,19 @@ export class JobsComponent implements OnInit {
     this.selectedService = event.target.value;
   }
 
-  // Toggle availability
   toggleAvailability() {
     this.isAvailable = !this.isAvailable;
-    console.log(
-      'Availability toggled:',
-      this.isAvailable ? 'Available' : 'Unavailable'
-    );
+  }
+
+  openLocation(job: any) {
+    if (job.customerLocation && job.customerLocation.lat && job.customerLocation.lng) {
+      const { lat, lng } = job.customerLocation;
+      window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank');
+    } else if (job.customerName) {
+      const q = encodeURIComponent(job.customerName + ' location');
+      window.open(`https://www.google.com/maps/search/?api=1&query=${q}`,'_blank');
+    } else {
+      alert('Location not available');
+    }
   }
 }

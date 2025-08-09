@@ -1,0 +1,56 @@
+<div class="container roadmap-card">
+  <div class="roadmap-header d-flex justify-content-between align-items-center mb-2">
+    <div class="controls-section d-flex gap-3 align-items-center">
+      <!-- Show All / Active Only -->
+      <div class="toggle-group btn-group" role="group">
+        <button class="roadmap-btn tab-btn" [class.active]="showAll" (click)="toggleView(true)">Show All</button>
+        <button class="roadmap-btn tab-btn" [class.active]="!showAll" (click)="toggleView(false)">Active Only</button>
+      </div>
+    </div>
+
+    <!-- Periods -->
+    <div class="flex-grow-1"></div>
+    <button class="roadmap-btn refresh-btn tab-btn" style="margin-left: auto;"
+      (click)="refreshRoadmap()">Refresh</button>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8 chart-container">
+      <canvas #roadmapCanvas></canvas>
+
+      <div class="ms-lg-5 tech-controls d-flex align-items-center gap-3 mt-1">
+        <ng-container *ngFor="let tech of technicians">
+          <button class="btn btn-sm" [style.borderColor]="tech.color" (click)="toggleTechnicianVisibility(tech)"
+            title="{{tech.name}}">
+            <span class="dot" [style.backgroundColor]="tech.color"></span>
+            {{ tech.name.split(' ')[0] }}
+          </button>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h6 class="card-title">Roadmap Steps</h6>
+          <ul class="list-unstyled">
+            <li *ngFor="let r of roadmap" class="mb-2">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>{{ r.label }}</strong>
+                  <div class="small text-muted">
+                    W{{ r.startWeek }} → W{{ r.endWeek }} • {{ r.status }} • {{ r.progress }}%
+                  </div>
+                </div>
+                <div class="text-end">
+                  <div class="badge rounded-pill" [style.backgroundColor]="r.color">&nbsp;</div>
+                  <div class="small mt-1">{{ r.assignedTo || '—' }}</div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

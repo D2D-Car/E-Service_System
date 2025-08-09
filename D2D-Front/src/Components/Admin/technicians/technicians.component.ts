@@ -2,23 +2,27 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../Services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-technicians',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './technicians.component.html',
-  styleUrl: './technicians.component.css',
+  styleUrls: ['./technicians.component.css']
 })
 export class TechniciansComponent {
   constructor(private authService: AuthService) {}
 
   showAddTechnicianModal = false;
-  showPassword = false; 
+  showProfileModal = false;
+  showPassword = false;
   selectedFilter = 'All';
   filters = ['All', 'Available', 'Busy', 'On Break'];
+  isDarkMode = false;
 
   previewImage: string | null = null;
+  selectedTechnician: any = null;
 
   newTechnician = {
     name: '',
@@ -181,7 +185,22 @@ export class TechniciansComponent {
   closeAddTechnicianModal() {
     this.showAddTechnicianModal = false;
     this.previewImage = null;
-    this.showPassword = false; // إعادة تعيين إظهار كلمة المرور
+    this.showPassword = false;
+  }
+
+  viewTechnicianProfile(tech: any) {
+    this.selectedTechnician = tech;
+    this.showProfileModal = true;
+    this.isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  closeProfileModal() {
+    this.showProfileModal = false;
+    this.selectedTechnician = null;
+  }
+
+  toggleDarkMode() {
+    this.isDarkMode = !this.isDarkMode;
   }
 
   onImageSelected(event: any) {
@@ -208,12 +227,11 @@ export class TechniciansComponent {
       !this.newTechnician.password ||
       !this.previewImage
     ) {
-      alert('Please fill in all required fields');
+     this.showErrorMessage('Please fill in all required fields');
       return;
     }
 
     try {
-      // Create technician account in Firebase
       await this.authService.signUp(
         this.newTechnician.email,
         this.newTechnician.password,
@@ -255,54 +273,52 @@ export class TechniciansComponent {
   }
 
   private showErrorMessage(message: string) {
-    const notification = document.createElement('div');
-    notification.className = 'notification error';
-    notification.innerHTML = `
-      <div class="notification-content">
-        <i class="fas fa-exclamation-circle"></i>
-        <span>${message}</span>
-      </div>
-    `;
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-      notification.remove();
-    }, 3000);
+      Swal.fire({
+    icon: 'error',
+    title: 'Error',
+    text: message,
+  });
   }
 
   private showSuccessMessage(message: string) {
-    const notification = document.createElement('div');
-    notification.className = 'notification success';
-    notification.innerHTML = `
-      <div class="notification-content">
-        <i class="fas fa-check-circle"></i>
-        <span>${message}</span>
-      </div>
-    `;
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-      notification.remove();
-    }, 3000);
+    Swal.fire({
+    icon: 'success',
+    title: 'Success',
+    text: message,
+    timer: 2000,
+    showConfirmButton: false,
+  });
   }
   
   callTechnician(tech: any) {
-    alert(`Certification: ${tech.certification} - ${tech.specialty} specialist with ${tech.experience} experience`);
+Swal.fire({
+  icon: 'info',
+  title: 'Technician Info',
+  html: `Certification: <b>${tech.certification}</b><br>Specialty: <b>${tech.specialty}</b><br>Experience: <b>${tech.experience}</b>`
+});
   }
 
   emailTechnician(tech: any) {
-    alert(`${tech.name} has completed ${tech.completedJobs} jobs with ${tech.rating}⭐ rating`);
-  }
-
-  viewTechnicianProfile(tech: any) {
-    console.log('Viewing profile of technician:', tech.name);
+Swal.fire({
+  icon: 'info',
+  title: 'Technician Stats',
+  html: `<b>${tech.name}</b> has completed <b>${tech.completedJobs}</b> jobs with a rating of <b>${tech.rating}⭐</b>`
+});
   }
 
   removeTechnician(tech: any) {
-    const confirmRemove = confirm(`Are you sure you want to remove ${tech.name}?`);
-    if (confirmRemove) {
-      this.technicians = this.technicians.filter((t) => t.id !== tech.id);
-    }
+   Swal.fire({
+  title: `Are you sure you want to remove ${tech.name}?`,
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonText: 'Yes, remove it!',
+  cancelButtonText: 'Cancel'
+}).then((result) => {
+  if (result.isConfirmed) {
+    this.technicians = this.technicians.filter((t) => t.id !== tech.id);
+    this.showSuccessMessage(`${tech.name} has been removed successfully`);
+  }
+});
   }
 
   togglePasswordVisibility() {

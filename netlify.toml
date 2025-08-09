@@ -1,0 +1,26 @@
+# Netlify build & redirects for Angular SPA
+[build]
+  base = "D2D-Front"
+  command = "npm ci && npm run build"
+  publish = "dist/d2-d-front"
+
+[build.environment]
+  SECRETS_SCAN_ENABLED = "true"
+
+# Redirect all routes to index.html (SPA)
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Exclude example env file from secret scan (optional)
+# No framework-specific plugins needed for pure Angular
+
+# Secrets scan omit (if needed)
+#[[secrets_scan.omit_paths]]
+#  path = "D2D-Front/.env.example"

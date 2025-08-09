@@ -12,12 +12,61 @@
     <!-- Center Section -->
     <div class="header-center">
       <div class="search-container">
-        <div class="search-wrapper">
+        <div class="search-wrapper" [class.searching]="isSearching">
           <i class="fas fa-search search-icon"></i>
-          <input type="text" placeholder="Search anything..." class="search-input">
-          <button class="search-filter-btn" title="Advanced Search">
-            <i class="fas fa-sliders-h"></i>
+          <input type="text" placeholder="Search customers, services, drivers..." class="search-input"
+            [(ngModel)]="searchQuery" (input)="onSearchInput($event)"
+            (focus)="searchQuery && performSearch(searchQuery)" [attr.aria-expanded]="showSearchResults">
+
+          <button class="search-clear-btn" *ngIf="searchQuery" (click)="clearSearch()" title="Clear search">
+            <i class="fas fa-times"></i>
           </button>
+
+          <div class="search-loading" *ngIf="isSearching">
+            <i class="fas fa-spinner fa-spin"></i>
+          </div>
+        </div>
+
+        <!-- Search Results Dropdown -->
+        <div class="search-results-dropdown" *ngIf="showSearchResults && searchResults.length > 0">
+          <div class="search-results-header">
+            <span>Search Results ({{searchResults.length}})</span>
+            <button class="clear-results-btn" (click)="clearSearch()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+          <div class="search-results-list">
+            <div class="search-result-item" *ngFor="let result of searchResults" (click)="selectSearchResult(result)"
+              [attr.data-type]="result.type">
+
+              <div class="result-icon">
+                <i class="fas" [ngClass]="result.icon"></i>
+              </div>
+
+              <div class="result-content">
+                <div class="result-title">{{result.title}}</div>
+                <div class="result-description">{{result.description}}</div>
+                <div class="result-type">{{result.type}}</div>
+              </div>
+
+              <div class="result-arrow">
+                <i class="fas fa-chevron-right"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="search-results-footer" *ngIf="searchResults.length >= 5">
+            <button class="view-all-btn" (click)="clearSearch()">
+              View all results
+            </button>
+          </div>
+        </div>
+
+        <!-- No Results -->
+        <div class="search-no-results" *ngIf="showSearchResults && searchResults.length === 0 && !isSearching">
+          <i class="fas fa-search"></i>
+          <p>No results found for "{{searchQuery}}"</p>
         </div>
       </div>
     </div>

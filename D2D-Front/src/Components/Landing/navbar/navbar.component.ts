@@ -6,12 +6,11 @@ import {
 } from '@angular/core';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { filter } from 'rxjs/operators';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
-  standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, CommonModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
 })

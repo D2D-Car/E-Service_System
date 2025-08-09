@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -5,12 +6,17 @@ import {
   AfterViewInit,
   ElementRef,
   ViewChild,
+  inject,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { TotalSellsChartComponent } from './Charts/total-sells-chart/total-sells-chart.component';
+import { ProjectRoadmapComponent } from './Charts/project-roadmap/project-roadmap.component';
+import { TotalOrdersCardComponent } from './Charts/total-orders-card/total-orders-card.component';
+import { NewCustomersChartComponent } from './Charts/new-customers-chart/new-customers-chart.component';
 import { ThemeService } from '../../../Services/theme.service';
 import { Subscription } from 'rxjs';
 import * as L from 'leaflet';
 import { fixLeafletIcons } from '../../../Services/leaflet-icon-fix';
+import Chart from 'chart.js/auto';
 
 interface ServiceOrder {
   id: string;
@@ -68,24 +74,28 @@ interface Activity {
   type: string;
 }
 
-interface Product {
-  name: string;
-  views: number;
-  sales: number;
-  price: number;
-  image: string;
-}
-
 @Component({
   selector: 'app-dashboard-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    NewCustomersChartComponent,
+    TotalSellsChartComponent,
+    ProjectRoadmapComponent,
+    TotalOrdersCardComponent,
+  ],
   templateUrl: './dashboard-home.component.html',
   styleUrls: ['./dashboard-home.component.css'],
 })
-export class DashboardHomeComponent
-  implements OnInit, OnDestroy, AfterViewInit
-{
+export class DashboardHomeComponent implements OnInit, OnDestroy, AfterViewInit {
+  // Add missing properties for roadmap period buttons
+  periods: ('1M' | '6M' | '1Y')[] = ['1M', '6M', '1Y'];
+  currentPeriod: '1M' | '6M' | '1Y' = '1M';
+
+  setPeriod(period: '1M' | '6M' | '1Y') {
+    this.currentPeriod = period;
+    // Add any additional logic needed for period change
+  }
   @ViewChild('worldMap', { static: false }) mapElement!: ElementRef;
   @ViewChild('revenueChart', { static: false }) revenueChartRef!: ElementRef;
   @ViewChild('customerChart', { static: false }) customerChartRef!: ElementRef;
@@ -93,6 +103,10 @@ export class DashboardHomeComponent
   serviceTypesChartRef!: ElementRef;
 
   isDarkMode = false;
+  selectedFilter: 'ALL' | '1M' | '6M' | '1Y' = '1M';
+  setFilter(filter: 'ALL' | '1M' | '6M' | '1Y') {
+    this.selectedFilter = filter;
+  }
   private themeSubscription?: Subscription;
   private map?: L.Map;
   private mapInitialized = false;
@@ -163,6 +177,56 @@ export class DashboardHomeComponent
       amount: 350.0,
       status: 'completed',
       technician: 'Youssef Hassan',
+    },
+    {
+      id: '#SRV009',
+      date: '08 Aug, 2025',
+      customer: 'Mahmoud El Sayed',
+      vehicle: 'Peugeot 508 2020',
+      serviceType: 'Tire Services',
+      amount: 210.0,
+      status: 'scheduled',
+      technician: 'Ahmed Gamal',
+    },
+    {
+      id: '#SRV016',
+      date: '08 Aug, 2025',
+      customer: 'Company Branch Giza',
+      vehicle: 'Renault Duster 2020',
+      serviceType: 'Fleet Service',
+      amount: 1050.0,
+      status: 'completed',
+      technician: 'Company Team',
+    },
+    {
+      id: '#SRV017',
+      date: '08 Aug, 2025',
+      customer: 'Company Branch Tanta',
+      vehicle: 'Ford Focus 2021',
+      serviceType: 'Fleet Service',
+      amount: 980.0,
+      status: 'completed',
+      technician: 'Company Team',
+    },
+    {
+      id: '#SRV018',
+      date: '08 Aug, 2025',
+      customer: 'Company Branch Ismailia',
+      vehicle: 'Mazda 3 2022',
+      serviceType: 'Fleet Service',
+      amount: 1020.0,
+      status: 'completed',
+      technician: 'Company Team',
+    },
+    {
+      id: '#SRV019',
+      date: '08 Aug, 2025',
+      customer: 'Company Branch Damietta',
+      vehicle: 'Honda Accord 2021',
+      serviceType: 'Fleet Service',
+      amount: 970.0,
+      status: 'completed',
+      technician: 'Company Team',
     },
   ];
 
@@ -268,6 +332,12 @@ export class DashboardHomeComponent
       action: 'diagnosed AC issues for Honda Civic',
       time: '5 hours ago',
       icon: '❄️',
+    },
+    {
+      technician: 'Youssef Mohamed',
+      action: 'performed tire rotation for Audi A4',
+      time: '1 hour ago',
+      icon: '⚙️',
     },
   ];
 
@@ -437,14 +507,84 @@ export class DashboardHomeComponent
     { month: 'May', value: 25 },
   ];
 
-  constructor(private themeService: ThemeService) {
+  carMarkers = [
+    { id: 1, name: 'Car 1', coordinates: [30.0444, 31.2357], city: 'Cairo' },
+    {
+      id: 2,
+      name: 'Car 2',
+      coordinates: [31.2001, 29.9187],
+      city: 'Alexandria',
+    },
+    { id: 3, name: 'Car 3', coordinates: [30.0131, 31.2089], city: 'Giza' },
+    {
+      id: 4,
+      name: 'Car 4',
+      coordinates: [30.1287, 31.2441],
+      city: 'Shubra El Kheima',
+    },
+    {
+      id: 5,
+      name: 'Car 5',
+      coordinates: [29.9668, 30.9441],
+      city: '6th October City',
+    },
+    { id: 6, name: 'Car 6', coordinates: [30.7965, 30.9982], city: 'Tanta' },
+    { id: 7, name: 'Car 7', coordinates: [30.5877, 31.502], city: 'Zagazig' },
+    { id: 8, name: 'Car 8', coordinates: [31.0409, 30.472], city: 'Damanhur' },
+    { id: 9, name: 'Car 9', coordinates: [30.6043, 32.2723], city: 'Ismailia' },
+    { id: 10, name: 'Car 10', coordinates: [30.5566, 31.0082], city: 'Benha' },
+    {
+      id: 11,
+      name: 'Car 11',
+      coordinates: [31.0364, 31.3807],
+      city: 'Mansoura',
+    },
+    {
+      id: 12,
+      name: 'Car 12',
+      coordinates: [30.7865, 31.0004],
+      city: 'Shebin El Kom',
+    },
+    {
+      id: 13,
+      name: 'Car 13',
+      coordinates: [30.8343, 29.5795],
+      city: 'Kafr El Sheikh',
+    },
+    {
+      id: 14,
+      name: 'Car 14',
+      coordinates: [31.1282, 33.8008],
+      city: 'Port Said',
+    },
+    { id: 15, name: 'Car 15', coordinates: [30.123, 31.3757], city: 'Helwan' },
+    { id: 16, name: 'Car 16', coordinates: [27.18, 31.1837], city: 'Asyut' },
+    { id: 17, name: 'Car 17', coordinates: [24.0889, 32.8998], city: 'Luxor' },
+    { id: 18, name: 'Car 18', coordinates: [22.345, 31.6167], city: 'Aswan' },
+    {
+      id: 19,
+      name: 'Car 19',
+      coordinates: [30.9177, 31.475],
+      city: 'Damietta',
+    },
+    // Car Services Company in Mansoura
+    {
+      id: 20,
+      name: 'Car Services Company Mansoura',
+      coordinates: [31.0364, 31.3807],
+      city: 'Mansoura',
+    },
+  ];
+
+  themeService = inject(ThemeService);
+  constructor() {
     // Fix Leaflet icon paths
     fixLeafletIcons();
   }
 
   ngOnInit(): void {
     this.themeSubscription = this.themeService.isDarkMode$.subscribe(
-      (isDark) => {
+      (isDark: boolean) => {
         this.isDarkMode = isDark;
         // Update map theme if map is initialized
         if (this.mapInitialized && this.map) {
@@ -477,14 +617,14 @@ export class DashboardHomeComponent
     // Initialize customer acquisition chart
     this.initCustomerChart();
 
-    // Initialize service types chart
-    this.initServiceTypesChart();
+    // Initialize polar area chart for Service Types Performance
+    this.initServiceTypesPolarChart();
   }
 
   private initRevenueChart(): void {
     if (!this.revenueChartRef?.nativeElement) return;
 
-    const ctx = this.revenueChartRef.nativeElement.getContext('2d');
+    // Removed unused ctx variable
 
     // Simulate Chart.js without import (we'll use CSS styling for now)
     // In a real implementation, you would import Chart.js properly
@@ -494,15 +634,74 @@ export class DashboardHomeComponent
   private initCustomerChart(): void {
     if (!this.customerChartRef?.nativeElement) return;
 
-    const ctx = this.customerChartRef.nativeElement.getContext('2d');
+    // Removed unused ctx variable
     console.log('Customer Acquisition Chart initialized');
   }
 
-  private initServiceTypesChart(): void {
-    if (!this.serviceTypesChartRef?.nativeElement) return;
-
-    const ctx = this.serviceTypesChartRef.nativeElement.getContext('2d');
-    console.log('Service Types Chart initialized');
+  private initServiceTypesPolarChart(): void {
+    const canvas = document.getElementById(
+      'serviceTypesPolarChart'
+    ) as HTMLCanvasElement;
+    if (!canvas) return;
+    const labels = [
+      'Oil Change',
+      'Tire Service',
+      'Battery',
+      'Wash',
+      'Repair',
+      'Other',
+    ];
+    const data = {
+      labels,
+      datasets: [
+        {
+          data: [220, 180, 140, 100, 120, 160],
+          backgroundColor: [
+            'rgba(255, 205, 86, 0.7)',
+            'rgba(54, 162, 235, 0.7)',
+            'rgba(255, 99, 132, 0.7)',
+            'rgba(75, 192, 192, 0.7)',
+            'rgba(153, 102, 255, 0.7)',
+            'rgba(201, 203, 207, 0.7)',
+          ],
+          borderWidth: 1,
+          borderColor: 'transparent',
+        },
+      ],
+    };
+    new Chart(canvas, {
+      type: 'polarArea',
+      data,
+      options: {
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: {
+              color: this.isDarkMode ? '#fff' : '#888',
+              font: { size: 14 },
+            },
+          },
+          title: {
+            display: false,
+          },
+        },
+        scales: {
+          r: {
+            angleLines: { color: this.isDarkMode ? '#fff' : '#888' },
+            grid: { color: this.isDarkMode ? '#fff' : '#888' },
+            pointLabels: {
+              color: this.isDarkMode ? '#fff' : '#888',
+              font: { size: 13 },
+            },
+            ticks: {
+              color: this.isDarkMode ? '#fff' : '#888',
+              font: { size: 12, weight: 'bold' },
+            },
+          },
+        },
+      },
+    });
   }
 
   private initializeMap(): void {
@@ -530,6 +729,9 @@ export class DashboardHomeComponent
       // Add markers for service areas
       this.addServiceAreaMarkers();
 
+      // Add car markers for cars and company
+      this.addCarMarkers();
+
       // Add custom controls
       this.addCustomControls();
 
@@ -554,7 +756,7 @@ export class DashboardHomeComponent
 
   private addServiceAreaMarkers(): void {
     if (!this.map) return;
-
+    // Add service area markers as before
     this.serviceAreas.forEach((area) => {
       // Calculate marker size based on services volume
       const maxServices = Math.max(...this.serviceAreas.map((a) => a.services));
@@ -568,8 +770,8 @@ export class DashboardHomeComponent
         className: 'custom-marker',
         html: `
           <div class="marker-container" style="
-            width: ${size}px; 
-            height: ${size}px; 
+            width: ${size}px;
+            height: ${size}px;
             background: ${area.color};
             border: 3px solid white;
             border-radius: 50%;
@@ -579,7 +781,7 @@ export class DashboardHomeComponent
             justify-content: center;
             color: white;
             font-weight: bold;
-            font-size: ${size > 30 ? '12px' : '10px'};
+            font-size: 20px;
           ">
             🚗
           </div>
@@ -596,9 +798,6 @@ export class DashboardHomeComponent
       // Create popup content for service areas
       const popupContent = `
         <div class="map-popup">
-          <h3 style="margin: 0 0 10px 0; color: var(--text-primary);">🚗 ${
-            area.name
-          }</h3>
           <div style="margin: 5px 0;">
             <strong>Region:</strong> ${area.region}
           </div>
@@ -619,6 +818,96 @@ export class DashboardHomeComponent
         maxWidth: 250,
         closeButton: true,
       });
+    });
+    // Add car markers using same function
+    this.carMarkers.forEach((car) => {
+      const customIcon = L.divIcon({
+        className: 'car-marker',
+        html: `
+          <div class="marker-container pulse" style="
+            position: relative;
+            width: 44px;
+            height: 44px;
+            background: #ffe082;
+            border: 6px solid #f5f5f5;
+            border-radius: 50%;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #222;
+            font-size: 20px;
+            font-weight: bold;
+          ">
+            🚗
+            <span class='pulse-effect'></span>
+          </div>
+        `,
+        iconSize: [44, 44],
+        iconAnchor: [22, 22],
+      });
+      const marker = L.marker(car.coordinates as [number, number], {
+        icon: customIcon,
+      }).addTo(this.map!);
+      marker.bindPopup(
+        `
+        <div class='map-popup'>
+          <h3 style='margin:0 0 8px 0;color:var(--text-primary);'>🚗 ${car.name}</h3>
+          <div><strong>Location:</strong> ${car.city}</div>
+        </div>
+      `,
+        {
+          className: 'custom-popup',
+          maxWidth: 220,
+          closeButton: true,
+        }
+      );
+    });
+  }
+  private addCarMarkers(): void {
+    if (!this.map) return;
+    this.carMarkers.forEach((car) => {
+      // All cars use the same yellow style and car emoji icon with pulse effect
+      const customIcon = L.divIcon({
+        className: 'car-marker',
+        html: `
+          <div class="marker-container pulse" style="
+            position: relative;
+            width: 44px;
+            height: 44px;
+            background: #ffe082;
+            border: 6px solid #f5f5f5;
+            border-radius: 50%;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #222;
+            font-size: 20px;
+            font-weight: bold;
+          ">
+            🚗
+            <span class='pulse-effect'></span>
+          </div>
+        `,
+        iconSize: [44, 44],
+        iconAnchor: [22, 22],
+      });
+      const marker = L.marker(car.coordinates as [number, number], {
+        icon: customIcon,
+      }).addTo(this.map!);
+      marker.bindPopup(
+        `
+        <div class='map-popup'>
+          <div><strong>Location:</strong> ${car.city}</div>
+        </div>
+      `,
+        {
+          className: 'custom-popup',
+          maxWidth: 220,
+          closeButton: true,
+        }
+      );
     });
   }
   private addCustomControls(): void {
@@ -715,11 +1004,24 @@ export class DashboardHomeComponent
     }).format(amount);
   }
 
-  getMaxValue(data: any[]): number {
-    return Math.max(...data.map((item) => item.value || item.count));
+  getMaxValue(data: { value?: number; count?: number }[]): number {
+    return Math.max(...data.map((item) => item.value ?? item.count ?? 0));
   }
 
   getBarWidth(value: number, maxValue: number): number {
     return (value / maxValue) * 100;
+  }
+  // --- Added for template bindings ---
+  public roadmapPhases: unknown[] = [];
+  public roadmapPeriods: unknown[] = [];
+
+  public onPeriodChange(event: unknown): void {
+    // TODO: Implement logic for period change
+    console.log('Period changed:', event);
+  }
+
+  public onToggleView(event: unknown): void {
+    // TODO: Implement logic for toggle view
+    console.log('Toggle view:', event);
   }
 }

@@ -60,7 +60,7 @@
       </div>
     </div>
 
-    <button class="logout-btn" (click)="logout()" [title]="collapsed ? 'Logout' : ''">
+    <button class="logout-btn" (click)="logout()" routerLink="/" [title]="collapsed ? 'Logout' : ''">
       <i class="fas fa-sign-out-alt"></i>
       <span *ngIf="!collapsed">Sign Out</span>
     </button>

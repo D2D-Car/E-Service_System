@@ -46,6 +46,22 @@ export class DriverEarningsComponent {
     }
   };
 
+  // Fixed earnings breakdown data
+  earningsBreakdown = {
+    tripFares: 1156.30,
+    tips: 91.50,
+    bonuses: 125.00,
+    serviceFees: -125.00,
+    netEarnings: 1247.80
+  };
+
+  // Recent payouts data
+  recentPayouts = [
+    { amount: 1247.80, date: '2024-01-15', account: 'Bank Account', status: 'completed' },
+    { amount: 1156.30, date: '2024-01-08', account: 'Bank Account', status: 'completed' },
+    { amount: 1398.75, date: '2024-01-01', account: 'Bank Account', status: 'completed' }
+  ];
+
   currentStats = this.stats[this.selectedPeriod];
 
   ngOnInit(): void {
