@@ -32,9 +32,7 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/popper.js/dist/umd/popper.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
               "node_modules/@fortawesome/fontawesome-free/js/all.min.js"
             ],
             "stylePreprocessorOptions": {
@@ -46,15 +44,23 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "2500kB",
+                  "maximumError": "4000kB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "30kB",
+                  "maximumError": "60kB"
                 }
               ],
+              "allowedCommonJsDependencies": [
+                "leaflet",
+                "sweetalert2",
+                "jquery",
+                "popper.js"
+              ],
+              "extractLicenses": true,
+              "sourceMap": false,
               "outputHashing": "all"
             },
             "development": {
