@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Firestore, collection, addDoc, getDocs, query, where, orderBy, updateDoc, doc, deleteDoc, onSnapshot } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { OrderIdService } from './order-id.service';
 
 export interface ServiceBooking {
   id?: string;
@@ -49,7 +50,8 @@ export class FirebaseServiceService {
 
   constructor(
     private firestore: Firestore,
-    private auth: Auth
+    private auth: Auth,
+    private orderIdService: OrderIdService
   ) {
     this.initializeRealtimeListeners();
   }
@@ -189,9 +191,10 @@ export class FirebaseServiceService {
   // Add service to admin orders collection
   private async addToAdminOrders(service: ServiceBooking, serviceId: string): Promise<void> {
     try {
+      const sequentialId = await this.orderIdService.getNextOrderId();
       const orderData: any = {
         serviceId: serviceId,
-        orderId: `#SRV${Date.now()}`,
+        orderId: sequentialId,
         date: this.formatDate(service.serviceDate),
         customer: 'Customer', // Will be updated with actual customer name
         serviceType: service.title,
