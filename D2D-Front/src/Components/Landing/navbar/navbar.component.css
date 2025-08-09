@@ -1,5 +1,6 @@
 /* Remove border and outline from nav links on focus/active */
-.nav-link:focus, .nav-link:active {
+.nav-link:focus,
+.nav-link:active {
   outline: none !important;
   border: none !important;
   box-shadow: none !important;
@@ -187,7 +188,7 @@
 }
 
 .auth-signout:hover {
-  background-color: var(--primary-color); 
+  background-color: var(--primary-color);
   color: var(--light);
   border-color: var(--light);
 }
@@ -195,7 +196,6 @@
 .auth-signout i {
   font-size: 1rem;
 }
-
 
 @media (max-width: 1118px) {
   .brand-logo {

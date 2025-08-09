@@ -32,24 +32,20 @@
             href="#contact" (click)="scrollToSection('contact', $event)">Contact</a>
         </li>
       </ul>
-
-
-        <ng-container *ngIf="!isDashboardActive(); else elseTemplate">
-          <div class="d-flex auth-buttons flex-wrap gap-2">
-            <a class="btn btn-outline-primary auth-signup" routerLink="/auth/sign-up">Sign Up</a>
-            <a class="btn btn-primary auth-login" routerLink="/auth/login">Login</a>
-          </div>
-        </ng-container>
-        <ng-template #elseTemplate>
-          <div class="d-flex flex-wrap gap-2 align-items-center">
-            <a class="btn btn-outline-primary auth-signout d-flex align-items-center gap-2 px-3 py-2"
-              routerLink="/">
-              <i class="fa-solid fa-right-from-bracket"></i>
-              <span>Sign Out</span>
-            </a>
-          </div>
-        </ng-template>
-      </div>
+      <ng-container *ngIf="!isDashboardActive(); else elseTemplate">
+        <div class="d-flex auth-buttons flex-wrap gap-2">
+          <a class="btn btn-outline-primary auth-signup" routerLink="/auth/sign-up">Sign Up</a>
+          <a class="btn btn-primary auth-login" routerLink="/auth/login">Login</a>
+        </div>
+      </ng-container>
+      <ng-template #elseTemplate>
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+          <a class="btn btn-outline-primary auth-signout d-flex align-items-center gap-2 px-3 py-2" routerLink="/">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Sign Out</span>
+          </a>
+        </div>
+      </ng-template>
     </div>
   </div>
 </nav>
