@@ -104,12 +104,6 @@ export class FinancialComponent {
             { label: 'Year-to-Date', value: '$156,780' },
             { label: 'Projected Annual', value: '$220,080' },
             { label: 'Revenue per Customer', value: '$1,245' }
-          ],
-          chartData: [
-            { label: 'Q1', value: '$45,230', percentage: 75 },
-            { label: 'Q2', value: '$52,180', percentage: 87 },
-            { label: 'Q3', value: '$48,920', percentage: 82 },
-            { label: 'Q4', value: '$18,340', percentage: 83 }
           ]
         };
         break;
@@ -131,12 +125,6 @@ export class FinancialComponent {
             { label: 'Customer Satisfaction', value: '4.8/5' },
             { label: 'Team Efficiency', value: '92%' },
             { label: 'Budget Adherence', value: '88%' }
-          ],
-          chartData: [
-            { label: 'Planning', value: '8 projects', percentage: 32 },
-            { label: 'Development', value: '5 projects', percentage: 20 },
-            { label: 'Testing', value: '3 projects', percentage: 12 },
-            { label: 'Completed', value: '18 projects', percentage: 72 }
           ]
         };
         break;
@@ -158,12 +146,6 @@ export class FinancialComponent {
             { label: 'Employee Satisfaction', value: '4.7/5' },
             { label: 'Retention Rate', value: '94%' },
             { label: 'Performance Score', value: '88%' }
-          ],
-          chartData: [
-            { label: 'Q1', value: '10 members', percentage: 67 },
-            { label: 'Q2', value: '11 members', percentage: 73 },
-            { label: 'Q3', value: '12 members', percentage: 80 },
-            { label: 'Q4', value: '13 members', percentage: 82 }
           ]
         };
         break;
