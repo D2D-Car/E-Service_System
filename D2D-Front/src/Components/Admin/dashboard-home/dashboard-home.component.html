@@ -93,7 +93,19 @@
     </div>
 
     <!-- Customer Acquisition Section (col-4) -->
-    <div class="traffic-section">
+
+    <div>
+      <div class="chart-card orders-card" aria-label="Total Orders">
+        <div class="card-header">
+          <h3 style="color: var(--text-primary);">Total Orders</h3>
+        </div>
+        <app-total-orders-card></app-total-orders-card>
+      </div>
+    </div>
+  </div>
+
+  <div class="row project">
+    <div class="traffic-section col-md-4">
       <div class="chart-card traffic-card">
         <div class="card-header">
           <h3>Customer Acquisition</h3>
@@ -142,23 +154,17 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="row project">
-    <div class="col-md-4">
-      <div class="chart-card orders-card" aria-label="Total Orders">
-        <div class="card-header">
-          <h3 style="color: var(--text-primary);">Total Orders</h3>
-        </div>
-        <app-total-orders-card></app-total-orders-card>
-      </div>
-    </div>
     <div class="col-md-8">
       <div class="chart-card roadmap-card" aria-label="Project Roadmap">
         <div class="card-header">
-          <h3 style="color: var(--text-primary);">Project Roadmap</h3>
+          <h3 style="color: var(--text-primary);">Roadmap</h3>
+
+          <div class="period-buttons btn-group" role="group">
+            <button *ngFor="let p of periods" class="roadmap-btn tab-btn mx-1" [class.active]="currentPeriod===p"
+              (click)="setPeriod(p)">{{ p }}</button>
+          </div>
         </div>
-        <app-project-roadmap></app-project-roadmap>
+        <app-project-roadmap [currentPeriod]="currentPeriod"></app-project-roadmap>
       </div>
     </div>
   </div>

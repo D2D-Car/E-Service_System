@@ -12,7 +12,7 @@
   background: var(--bg-primary);
   color: var(--text-primary);
   min-height: calc(100vh - 64px);
-  padding: 2rem 3rem;
+  padding: 1rem;
   transition: all var(--time-transition);
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     sans-serif;
@@ -86,8 +86,8 @@
   display: grid;
   grid-template-columns: 2fr 1.5fr;
   grid-template-rows: auto auto auto;
-  gap: 2.5rem;
-  max-width: 1600px;
+  gap: 1rem;
+  /* max-width: 1600px; */
   width: 100%;
   margin: 0 auto;
   padding: 0 1rem;
@@ -140,17 +140,6 @@
   transition: all var(--time-transition);
   position: relative;
   overflow: hidden;
-}
-
-.section::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-  opacity: 0.8;
 }
 
 .section:hover {

@@ -1046,7 +1046,7 @@ canvas {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0;
+  padding: 0.8rem 0;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -1091,7 +1091,7 @@ canvas {
 }
 
 .source-name {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--text-primary);
   font-family: "Segoe UI", sans-serif;
@@ -1104,7 +1104,7 @@ canvas {
 }
 
 .source-value {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--text-primary);
   text-align: right;
@@ -1116,6 +1116,7 @@ canvas {
   border-radius: 12px;
   padding: 1rem;
   margin-top: 0;
+  height: 120%;
 }
 
 .chart-title {
@@ -1953,7 +1954,7 @@ a:focus {
 }
 
 span.color {
-  width: 11px;
+  width: 10px;
   height: 10px;
   background: inherit;
   border-radius: 50%;
@@ -1961,7 +1962,7 @@ span.color {
   z-index: 10;
   box-shadow: 0 0 2px #0000004d;
   opacity: 1;
-  left: 2px;
+  left: 3px;
   top: 18px;
 }
 

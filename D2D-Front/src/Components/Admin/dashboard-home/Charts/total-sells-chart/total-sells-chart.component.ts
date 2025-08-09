@@ -150,7 +150,7 @@ export class TotalSellsChartComponent implements OnInit, OnChanges {
       labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
       datasets: [
         {
-          data: [120, 150, 180, 210, 250, 230],
+          data: [120, 140, 135, 180, 200, 190], // small dip in March, slight fall in June
           label: 'Current Period',
           borderColor: '#6366f1',
           backgroundColor: 'rgba(99, 102, 241, 0.1)',
@@ -164,7 +164,7 @@ export class TotalSellsChartComponent implements OnInit, OnChanges {
           pointHoverRadius: 8,
         },
         {
-          data: [100, 130, 160, 190, 220, 200],
+          data: [100, 95, 110, 130, 170, 160], // drop in Feb, rebound then slight dip
           label: 'Previous Period',
           borderColor: '#10b981',
           backgroundColor: 'rgba(16, 185, 129, 0.1)',
@@ -179,8 +179,8 @@ export class TotalSellsChartComponent implements OnInit, OnChanges {
           pointHoverRadius: 8,
         },
         {
-          data: [110, 140, 170, 200, 230, 210],
-          label: '2025 Forecast',
+          data: [110, 115, 125, 160, 190, 185], // slow rise but not perfect
+          label: 'Forecast',
           borderColor: '#f59e42',
           backgroundColor: 'rgba(245, 158, 66, 0.1)',
           borderWidth: 3,
@@ -194,8 +194,8 @@ export class TotalSellsChartComponent implements OnInit, OnChanges {
           pointHoverRadius: 8,
         },
         {
-          data: [130, 160, 190, 220, 260, 240],
-          label: '2025 Actual',
+          data: [130, 145, 140, 200, 220, 210], // drop in Mar, big jump Apr, slight drop June
+          label: 'Actual',
           borderColor: '#3b82f6',
           backgroundColor: 'rgba(59, 130, 246, 0.1)',
           borderWidth: 3,
@@ -209,8 +209,8 @@ export class TotalSellsChartComponent implements OnInit, OnChanges {
           pointHoverRadius: 8,
         },
         {
-          data: [140, 170, 200, 230, 270, 250],
-          label: '2025 Target',
+          data: [140, 150, 155, 180, 210, 205], // steady but slight dip last month
+          label: 'Target',
           borderColor: '#ef4444',
           backgroundColor: 'rgba(239, 68, 68, 0.1)',
           borderWidth: 3,
@@ -242,7 +242,7 @@ export class TotalSellsChartComponent implements OnInit, OnChanges {
       ],
       datasets: [
         {
-          data: [120, 135, 150, 170, 210, 250, 240, 230, 220, 210, 200, 190],
+          data: [120, 135, 130, 150, 170, 210, 200, 190, 210, 220, 210, 200], // multiple dips/rebounds
           label: 'Current Period',
           borderColor: '#6366f1',
           backgroundColor: 'rgba(99, 102, 241, 0.1)',
@@ -256,7 +256,7 @@ export class TotalSellsChartComponent implements OnInit, OnChanges {
           pointHoverRadius: 8,
         },
         {
-          data: [100, 120, 130, 140, 180, 200, 190, 180, 170, 160, 150, 140],
+          data: [100, 110, 105, 120, 160, 180, 170, 160, 180, 175, 165, 155], // more wavy
           label: 'Previous Period',
           borderColor: '#10b981',
           backgroundColor: 'rgba(16, 185, 129, 0.1)',
@@ -271,8 +271,8 @@ export class TotalSellsChartComponent implements OnInit, OnChanges {
           pointHoverRadius: 8,
         },
         {
-          data: [110, 125, 140, 160, 200, 230, 220, 210, 200, 190, 180, 170],
-          label: '2025 Forecast',
+          data: [110, 115, 120, 140, 180, 200, 190, 185, 195, 205, 200, 195],
+          label: 'Forecast',
           borderColor: '#f59e42',
           backgroundColor: 'rgba(245, 158, 66, 0.1)',
           borderWidth: 3,
@@ -286,8 +286,8 @@ export class TotalSellsChartComponent implements OnInit, OnChanges {
           pointHoverRadius: 8,
         },
         {
-          data: [130, 145, 160, 180, 220, 260, 250, 240, 230, 220, 210, 200],
-          label: '2025 Actual',
+          data: [130, 140, 135, 160, 200, 230, 220, 215, 225, 240, 235, 225],
+          label: 'Actual',
           borderColor: '#3b82f6',
           backgroundColor: 'rgba(59, 130, 246, 0.1)',
           borderWidth: 3,
@@ -301,8 +301,8 @@ export class TotalSellsChartComponent implements OnInit, OnChanges {
           pointHoverRadius: 8,
         },
         {
-          data: [140, 155, 170, 190, 230, 270, 260, 250, 240, 230, 220, 210],
-          label: '2025 Target',
+          data: [140, 145, 150, 170, 210, 240, 230, 225, 235, 250, 245, 235],
+          label: 'Target',
           borderColor: '#ef4444',
           backgroundColor: 'rgba(239, 68, 68, 0.1)',
           borderWidth: 3,
@@ -473,11 +473,17 @@ export class TotalSellsChartComponent implements OnInit, OnChanges {
       scales: {
         x: {
           grid: { color: this.isDarkMode ? '#fff' : '#888' },
-          ticks: { color: this.isDarkMode ? '#fff' : '#888', font: { size: 12 } },
+          ticks: {
+            color: this.isDarkMode ? '#fff' : '#888',
+            font: { size: 12 },
+          },
         },
         y: {
           grid: { color: this.isDarkMode ? '#fff' : '#888' },
-          ticks: { color: this.isDarkMode ? '#fff' : '#888', font: { size: 12 } },
+          ticks: {
+            color: this.isDarkMode ? '#fff' : '#888',
+            font: { size: 12 },
+          },
         },
       },
     };

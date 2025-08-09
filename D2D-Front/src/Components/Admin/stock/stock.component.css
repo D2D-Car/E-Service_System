@@ -82,7 +82,6 @@ body {
 
 .stock-container {
   background-color: var(--bg-primary);
-  min-height: 100vh;
   padding: 1rem;
   overflow-x: hidden;
   position: relative;

@@ -36,9 +36,9 @@ export class TotalOrdersCardComponent {
         data: [12, 19, 15, 25, 22, 18, 20],
         backgroundColor: '#6366f1',
         borderColor: '#6366f1',
-        borderWidth: 0,
-        borderRadius: 2,
-        barThickness: 6,
+        borderWidth: 2,
+        borderRadius: 4,
+        barThickness: 12,
       },
     ],
   };

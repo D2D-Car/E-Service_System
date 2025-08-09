@@ -87,9 +87,15 @@ interface Activity {
   templateUrl: './dashboard-home.component.html',
   styleUrls: ['./dashboard-home.component.css'],
 })
-export class DashboardHomeComponent
-  implements OnInit, OnDestroy, AfterViewInit
-{
+export class DashboardHomeComponent implements OnInit, OnDestroy, AfterViewInit {
+  // Add missing properties for roadmap period buttons
+  periods: ('1M' | '6M' | '1Y')[] = ['1M', '6M', '1Y'];
+  currentPeriod: '1M' | '6M' | '1Y' = '1M';
+
+  setPeriod(period: '1M' | '6M' | '1Y') {
+    this.currentPeriod = period;
+    // Add any additional logic needed for period change
+  }
   @ViewChild('worldMap', { static: false }) mapElement!: ElementRef;
   @ViewChild('revenueChart', { static: false }) revenueChartRef!: ElementRef;
   @ViewChild('customerChart', { static: false }) customerChartRef!: ElementRef;
@@ -649,7 +655,6 @@ export class DashboardHomeComponent
       labels,
       datasets: [
         {
-          label: labels.join(', '),
           data: [220, 180, 140, 100, 120, 160],
           backgroundColor: [
             'rgba(255, 205, 86, 0.7)',

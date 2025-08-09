@@ -1,17 +1,28 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import {
+  Chart,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+Chart.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+
+type Status = 'completed' | 'active' | 'upcoming';
 
 interface RoadmapPhase {
-  name: string;
-  startWeek: number;
-  endWeek: number;
-  duration: number;
+  id: string;
+  label: string; // step name shown on Y axis
+  startWeek: number; // inclusive
+  endWeek: number; // inclusive
   color: string;
-  startDate: string;
-  endDate: string;
-  progress: number;
-  status: 'completed' | 'active' | 'upcoming';
+  progress: number; // 0-100
+  status: Status;
+  assignedTo?: string; // technician name
 }
 
 interface Technician {
@@ -19,6 +30,8 @@ interface Technician {
   specialization: string;
   experienceYears: number;
   availability: 'Available' | 'Busy' | 'On Leave';
+  color: string;
+  visible?: boolean; // toggle visibility on chart
 }
 
 @Component({
@@ -28,210 +41,377 @@ interface Technician {
   templateUrl: './project-roadmap.component.html',
   styleUrls: ['./project-roadmap.component.css'],
 })
-export class ProjectRoadmapComponent {
-  // Toggle between showAll and active only
-  toggleView(showAll: boolean): void {
-    this.showAll = showAll;
-  }
+export class ProjectRoadmapComponent implements AfterViewInit {
+  @Input() isDarkMode: boolean = false;
+  // Accept currentPeriod from parent
+  @Input() currentPeriod: '1M' | '6M' | '1Y' = '1M';
+  // Dynamic theme color variable
+  themeVars = {
+    bgPrimary: getComputedStyle(document.documentElement).getPropertyValue('--bg-primary').trim() || '#fff',
+    bgSecondary: getComputedStyle(document.documentElement).getPropertyValue('--bg-secondary').trim() || '#f8fafc',
+    textPrimary: getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim() || '#111827',
+    textSecondary: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim() || '#4b5563',
+    primaryColor: getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim() || '#ff3b3be8',
+    successColor: getComputedStyle(document.documentElement).getPropertyValue('--success-color').trim() || '#10b981',
+    successBg: getComputedStyle(document.documentElement).getPropertyValue('--success-bg').trim() || 'rgba(16,185,129,0.2)',
+    borderColor: getComputedStyle(document.documentElement).getPropertyValue('--border-color').trim() || '#d1d5db',
+  };
 
-  // Provide months for grid lines per quarter
-  getMonthsInPeriod(): string[] {
-    const quarters: Record<string, string[]> = {
-      Q1: ['Jan', 'Feb', 'Mar'],
-      Q2: ['Apr', 'May', 'Jun'],
-      Q3: ['Jul', 'Aug', 'Sep'],
-      Q4: ['Oct', 'Nov', 'Dec'],
+  // Listen for theme changes and update themeVars
+  ngOnInit(): void {
+    const updateThemeVars = () => {
+      this.themeVars.bgPrimary = getComputedStyle(document.documentElement).getPropertyValue('--bg-primary').trim() || '#fff';
+      this.themeVars.bgSecondary = getComputedStyle(document.documentElement).getPropertyValue('--bg-secondary').trim() || '#f8fafc';
+      this.themeVars.textPrimary = getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim() || '#111827';
+      this.themeVars.textSecondary = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim() || '#4b5563';
+      this.themeVars.primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim() || '#ff3b3be8';
+      this.themeVars.successColor = getComputedStyle(document.documentElement).getPropertyValue('--success-color').trim() || '#10b981';
+      this.themeVars.successBg = getComputedStyle(document.documentElement).getPropertyValue('--success-bg').trim() || 'rgba(16,185,129,0.2)';
+      this.themeVars.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--border-color').trim() || '#d1d5db';
     };
-    return quarters[this.currentPeriod] || quarters['Q1'];
+    window.addEventListener('themechange', updateThemeVars);
+    updateThemeVars();
   }
-  showLinks = false;
-  selectedPeriod = 'Week';
-  showAll = true;
-  currentPeriod = 'Q1';
-  periods = ['Q1', 'Q2', 'Q3', 'Q4'];
+  @ViewChild('roadmapCanvas', { static: true })
+  roadmapCanvas!: ElementRef<HTMLCanvasElement>;
+  chart!: Chart;
 
-  /** -------------------------
-   * TECHNICIANS DATA
-   * ------------------------- */
-  techniciansData: Technician[] = [
+  // UI state
+  showAll = true;
+  periods: ('1M' | '6M' | '1Y')[] = ['1M', '6M', '1Y'];
+
+  // Technicians
+  technicians: Technician[] = [
     {
       name: 'Ahmed Hassan',
-      specialization: 'Engine Specialist',
+      specialization: 'Engine',
       experienceYears: 8,
       availability: 'Available',
+      color: '#10b981',
+      visible: true,
     },
     {
       name: 'Omar Khaled',
-      specialization: 'Electrical Systems',
+      specialization: 'Electrical',
       experienceYears: 5,
       availability: 'Busy',
+      color: '#3b82f6',
+      visible: true,
     },
     {
       name: 'Mahmoud Ali',
       specialization: 'Body & Paint',
       experienceYears: 7,
       availability: 'Available',
+      color: '#f59e0b',
+      visible: true,
     },
     {
       name: 'Youssef Samir',
       specialization: 'Diagnostics',
       experienceYears: 4,
       availability: 'On Leave',
-    },
-    {
-      name: 'Hassan Mohamed',
-      specialization: 'Transmission',
-      experienceYears: 6,
-      availability: 'Available',
+      color: '#8b5cf6',
+      visible: true,
     },
   ];
 
-  /** -------------------------
-   * CAR REPAIR ROADMAP
-   * ------------------------- */
-  carRepairRoadmap: RoadmapPhase[] = [
+  // Roadmap steps (these are y-axis labels). Each element is a task/phase.
+  roadmap: RoadmapPhase[] = [
     {
-      name: 'Initial Inspection',
+      id: 'checkin',
+      label: 'Vehicle Check-In',
       startWeek: 1,
-      endWeek: 1,
-      duration: 1,
-      color: '#10b981',
-      startDate: '2024-01-02',
-      endDate: '2024-01-08',
-      progress: 100,
+      endWeek: 2,
+      color: '#94f2c7',
+      progress: 99,
       status: 'completed',
+      assignedTo: 'Ahmed Hassan',
     },
     {
-      name: 'Parts Ordering',
+      id: 'inspection',
+      label: 'Initial Inspection',
+      startWeek: 1,
+      endWeek: 2,
+      color: '#60a5fa',
+      progress: 85,
+      status: 'active',
+      assignedTo: 'Youssef Samir',
+    },
+    {
+      id: 'assignment',
+      label: 'Service Assignment',
       startWeek: 2,
-      endWeek: 3,
-      duration: 2,
+      endWeek: 2,
       color: '#f59e0b',
-      startDate: '2024-01-09',
-      endDate: '2024-01-22',
       progress: 90,
       status: 'active',
+      assignedTo: 'Omar Khaled',
     },
     {
-      name: 'Engine & Transmission Repair',
-      startWeek: 4,
-      endWeek: 6,
-      duration: 3,
-      color: '#ef4444',
-      startDate: '2024-01-23',
-      endDate: '2024-02-12',
+      id: 'parts',
+      label: 'Parts Ordering',
+      startWeek: 2,
+      endWeek: 4,
+      color: '#fb923c',
       progress: 60,
       status: 'active',
+      assignedTo: 'Mahmoud Ali',
     },
     {
-      name: 'Body & Paint Work',
-      startWeek: 7,
+      id: 'repair',
+      label: 'Repair & Assembly',
+      startWeek: 3,
+      endWeek: 7,
+      color: '#ef4444',
+      progress: 35,
+      status: 'active',
+      assignedTo: 'Ahmed Hassan',
+    },
+    {
+      id: 'paint',
+      label: 'Paint & Finish',
+      startWeek: 6,
       endWeek: 8,
-      duration: 2,
-      color: '#8b5cf6',
-      startDate: '2024-02-13',
-      endDate: '2024-02-26',
-      progress: 30,
+      color: '#a78bfa',
+      progress: 0,
       status: 'upcoming',
+      assignedTo: 'Mahmoud Ali',
     },
     {
-      name: 'Final Testing & Delivery',
+      id: 'qc',
+      label: ' Final Testing',
+      startWeek: 8,
+      endWeek: 8,
+      color: '#64748b',
+      progress: 0,
+      status: 'upcoming',
+      assignedTo: 'Youssef Samir',
+    },
+    {
+      id: 'handover',
+      label: 'Customer Handover',
       startWeek: 9,
       endWeek: 9,
-      duration: 1,
-      color: '#64748b',
-      startDate: '2024-02-27',
-      endDate: '2024-03-04',
+      color: '#16a34a',
       progress: 0,
       status: 'upcoming',
     },
   ];
 
-  /** -------------------------
-   * EXISTING ANALYTICS
-   * ------------------------- */
-  analyticsChartData: Record<
-    string,
-    { label: string; value: number; color: string; start: number }[]
-  > = {
-    Q1: [
-      { label: 'Total Cars', value: 120, color: '#6366f1', start: 0 },
-      { label: 'Technicians', value: 28, color: '#10b981', start: 20 },
-      { label: 'Branches', value: 15, color: '#f59e0b', start: 45 },
-      { label: 'Rev', value: 32, color: '#ef4444', start: 55 },
-      { label: 'Growth', value: 12, color: '#8b5cf6', start: 65 },
-    ],
-    Q2: [
-      { label: 'Diagnosis', value: 28, color: '#6366f1', start: 0 },
-      { label: 'Spare Parts Ordering', value: 20, color: '#10b981', start: 18 },
-      { label: 'Repair Work', value: 22, color: '#f59e0b', start: 30 },
-      { label: 'Quality Check', value: 10, color: '#ef4444', start: 48 },
-      { label: 'Delivery', value: 10, color: '#8b5cf6', start: 58 },
-    ],
-    Q3: [
-      { label: 'Diagnosis', value: 30, color: '#6366f1', start: 0 },
-      { label: 'Spare Parts Ordering', value: 32, color: '#10b981', start: 12 },
-      { label: 'Repair Work', value: 45, color: '#f59e0b', start: 22 },
-      { label: 'Quality Check', value: 28, color: '#ef4444', start: 52 },
-      { label: 'Delivery', value: 20, color: '#8b5cf6', start: 62 },
-    ],
-    Q4: [
-      { label: 'Diagnosis', value: 32, color: '#6366f1', start: 0 },
-      { label: 'Spare Parts Ordering', value: 34, color: '#10b981', start: 14 },
-      { label: 'Repair Work', value: 48, color: '#f59e0b', start: 24 },
-      { label: 'Quality Check', value: 30, color: '#ef4444', start: 54 },
-      { label: 'Delivery', value: 22, color: '#8b5cf6', start: 64 },
-    ],
-  };
+  constructor() {}
 
-  analyticsByQuarter: Record<string, string[]> = {
-    Q1: [
-      'Total Cars: 120',
-      'Technicians: 18',
-      'Branches: 5',
-      'Rev: $32,000',
-      'Growth: +12%',
-    ],
-    Q2: [
-      'Total Cars: 135',
-      'Technicians: 20',
-      'Branches: 6',
-      'Rev: $41,000',
-      'Growth: +15%',
-    ],
-    Q3: [
-      'Total Cars: 150',
-      'Technicians: 22',
-      'Branches: 7',
-      'Rev: $48,000',
-      'Growth: +18%',
-    ],
-    Q4: [
-      'Total Cars: 160',
-      'Technicians: 24',
-      'Branches: 8',
-      'Rev: $53,000',
-      'Growth: +20%',
-    ],
-  };
-
-  /** -------------------------
-   * METHODS
-   * ------------------------- */
-  setPeriod(period: string) {
-    this.currentPeriod = period;
+  ngAfterViewInit(): void {
+    this.createChart();
   }
 
-  getAnalyticsChartData() {
-    return this.analyticsChartData[this.currentPeriod] || [];
+  // UI actions
+  toggleView(showAll: boolean) {
+    this.showAll = showAll;
+    this.updateChartData();
   }
 
-  getMaxAnalyticsValue(): number {
-    const data = this.getAnalyticsChartData();
-    return Math.max(...data.map((d) => d.value));
+
+  ngOnChanges() {
+    this.updateChartOptions();
+    this.updateChartData();
   }
 
-  getAnalyticsLabels(): string[] {
-    return this.analyticsByQuarter[this.currentPeriod] || [];
+  // Toggle technician markers (shows technician midpoints on chart)
+  toggleTechnicianVisibility(tech: Technician) {
+    tech.visible = !tech.visible;
+    this.updateChartData();
+  }
+
+  // Refresh (demo): randomize small progress values and re-render
+  refreshRoadmap() {
+    this.roadmap = this.roadmap.map((r) => ({
+      ...r,
+      progress:
+        r.status === 'completed'
+          ? 100
+          : Math.max(0, Math.min(100, r.progress + (Math.random() * 20 - 10))),
+    }));
+    this.updateChartData();
+  }
+
+  // Build Chart.js and initial configs
+  private createChart() {
+    const ctx = this.roadmapCanvas.nativeElement.getContext('2d')!;
+    const gridColor = this.isDarkMode ? '#fff' : '#888';
+    const config = {
+      type: 'bar' as const,
+      data: {
+        // single dataset used for floating bars; data objects will include y, x, x2
+        datasets: [
+          {
+            label: 'Tasks',
+            data: this.buildChartDataPoints(),
+            backgroundColor: this.roadmap.map((r) => r.color),
+            borderColor: '#222',
+            borderWidth: 0,
+          },
+          // technicians markers dataset
+          {
+            label: 'Technicians',
+            type: 'bar' as const,
+            data: this.buildTechnicianPoints(),
+            backgroundColor: this.buildTechnicianColors(),
+            barThickness: 6,
+          },
+        ],
+      },
+      options: {
+        indexAxis: 'y' as const, // horizontal bars
+        responsive: true,
+        maintainAspectRatio: false,
+        parsing: {
+          // tell chart.js to use x and x2 keys for the horizontal data range
+          xAxisKey: 'x',
+          x2AxisKey: 'x2',
+          yAxisKey: 'y',
+        },
+        scales: {
+          x: {
+            min: 0,
+            max: 10, // will be updated by updateChartOptions
+            grid: { color: gridColor },
+            ticks: {
+              stepSize: 1,
+              color: gridColor,
+              callback: (v: any) => `W${v}`,
+            },
+            title: { display: true, text: 'Week number', color: gridColor },
+          },
+          y: {
+            type: 'category' as const,
+            labels: this.getVisibleLabels(),
+            grid: { color: gridColor },
+            ticks: { font: { size: 13 }, color: gridColor },
+          },
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: (ctx: any) => {
+                const d = ctx.raw;
+                if (d && d.x !== undefined && d.x2 !== undefined) {
+                  const label = d.y;
+                  const start = d.x;
+                  const end = d.x2;
+                  const task = this.roadmap.find((t) => t.label === label);
+                  const progress = task ? `${task.progress}%` : '';
+                  return `${label} — W${start} → W${end} • ${progress}`;
+                }
+                return ctx.dataset.label;
+              },
+            },
+          },
+          legend: { display: false },
+        },
+        animation: { duration: 350 },
+      },
+    };
+
+    this.chart = new Chart(ctx, config as any);
+    this.updateChartOptions();
+    this.updateChartData();
+  }
+
+  // Build the main dataset data points for Chart.js: objects with x, x2, y
+  private buildChartDataPoints() {
+    const visible = this.roadmap.filter(
+      (r) => this.showAll || r.status === 'active'
+    );
+    // Chart expects order matching y labels: we'll return in that order
+    const labels = this.getVisibleLabels();
+    return visible.map((r) => ({
+      x: r.startWeek,
+      x2: r.endWeek,
+      y: r.label,
+      backgroundColor: r.color,
+      progress: r.progress,
+    }));
+  }
+
+  // Technician markers positioned at midpoints of assigned tasks (if any)
+  private buildTechnicianPoints() {
+    // For each visible tech, add a bar-like point at the y-position of their assigned task(s)
+    const techPoints: any[] = [];
+    const visibleTechs = this.technicians.filter((t) => t.visible);
+    visibleTechs.forEach((tech, idx) => {
+      // find first assigned task or skip
+      const assignedTask = this.roadmap.find(
+        (r) =>
+          r.assignedTo === tech.name && (this.showAll || r.status === 'active')
+      );
+      if (!assignedTask) return;
+      const midpoint = Math.round(
+        (assignedTask.startWeek + assignedTask.endWeek) / 2
+      );
+      techPoints.push({
+        x: midpoint,
+        x2: midpoint + 0.1, // small width to render as thin marker
+        y: assignedTask.label,
+        techName: tech.name,
+      });
+    });
+    return techPoints;
+  }
+
+  private buildTechnicianColors() {
+    return this.technicians.filter((t) => t.visible).map((t) => t.color);
+  }
+
+  // Visible Y labels depend on showAll filter
+  private getVisibleLabels() {
+    return this.roadmap
+      .filter((r) => this.showAll || r.status === 'active')
+      .map((r) => r.label);
+  }
+
+  // Update chart data and y-axis labels
+  private updateChartData() {
+    if (!this.chart) return;
+
+    // Update primary dataset (tasks)
+    const tasks = this.buildChartDataPoints();
+    (this.chart.data.datasets![0].data as any[]) = tasks;
+    // Update colors per task
+    this.chart.data.datasets![0].backgroundColor = tasks.map(
+      (t: any) => t.backgroundColor
+    );
+
+    // Update technician dataset
+    const techPoints = this.buildTechnicianPoints();
+    (this.chart.data.datasets![1].data as any[]) = techPoints;
+    this.chart.data.datasets![1].backgroundColor = this.buildTechnicianColors();
+
+    // Update Y labels
+    (this.chart.options!.scales! as any).y.labels = this.getVisibleLabels();
+    (this.chart.options!.scales! as any).y.ticks = {
+      callback: (v: any, i: number) => this.getVisibleLabels()[i],
+    };
+
+    this.chart.update();
+  }
+
+  // Update x-axis range according to selected period
+  private updateChartOptions() {
+    if (!this.chart) return;
+
+    const x = (this.chart.options!.scales! as any).x;
+    if (this.currentPeriod === '1M') {
+      x.min = 1;
+      x.max = 6; // show 6 weeks as 1 month sample
+    } else if (this.currentPeriod === '6M') {
+      x.min = 1;
+      x.max = 24; // 6 months ~ 24 weeks
+    } else {
+      // 1Y
+      x.min = 1;
+      x.max = 52; // 52 weeks
+    }
+    this.chart.update();
   }
 }
