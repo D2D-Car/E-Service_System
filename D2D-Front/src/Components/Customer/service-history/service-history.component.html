@@ -171,14 +171,12 @@
         <div class="form-row">
           <div class="form-group">
             <label for="vehicle">Vehicle</label>
-            <input
-              type="text"
-              id="vehicle"
-              name="vehicle"
-              formControlName="vehicle"
-              required
-              placeholder="e.g., Toyota Camry"
-            />
+            <select id="vehicle" name="vehicle" formControlName="vehicle" required>
+              <option value="">-- Select Vehicle --</option>
+              <option value="2021 Dodge">2021 Dodge</option>
+              <option value="2022 Jeep Renegade">2022 Jeep Renegade</option>
+              <option value="2024 BMW x6">2024 BMW x6</option>
+            </select>
            <div style="display: flex; gap: 0.5rem; align-items: center;">
              <input 
                type="text" 
