@@ -19,6 +19,7 @@ export interface ServiceBooking {
   location?: string;
   duration?: string;
   serviceType?: string;
+  customerLocation?: { lat: number; lng: number }; // added
 }
 
 export interface UpcomingService {
@@ -138,6 +139,15 @@ export class FirebaseServiceService {
         throw new Error('User must be authenticated to book a service');
       }
 
+      // derive customerLocation if provided as object or parsable string
+      let customerLocation = serviceData.customerLocation;
+      if (!customerLocation && serviceData.location && /-?\d+\.?\d*\s*,\s*-?\d+\.?\d*/.test(serviceData.location)) {
+        const [latStr, lngStr] = (serviceData.location as string).split(',');
+        const lat = parseFloat(latStr.trim());
+        const lng = parseFloat(lngStr.trim());
+        if (!isNaN(lat) && !isNaN(lng)) customerLocation = { lat, lng };
+      }
+
       const newService: ServiceBooking = {
         userId: currentUser.uid,
         title: serviceData.title || '',
@@ -152,7 +162,8 @@ export class FirebaseServiceService {
         updatedAt: new Date(),
         location: serviceData.location || '',
         duration: serviceData.duration || '60 mins',
-        serviceType: serviceData.serviceType || 'General Service'
+        serviceType: serviceData.serviceType || 'General Service',
+        customerLocation
       };
 
       const docRef = await addDoc(collection(this.firestore, 'services'), newService);
@@ -178,7 +189,7 @@ export class FirebaseServiceService {
   // Add service to admin orders collection
   private async addToAdminOrders(service: ServiceBooking, serviceId: string): Promise<void> {
     try {
-      const orderData = {
+      const orderData: any = {
         serviceId: serviceId,
         orderId: `#SRV${Date.now()}`,
         date: this.formatDate(service.serviceDate),
@@ -192,7 +203,7 @@ export class FirebaseServiceService {
         createdAt: new Date(),
         updatedAt: new Date()
       };
-
+      if (service.customerLocation) orderData.customerLocation = service.customerLocation;
       await addDoc(collection(this.firestore, 'adminOrders'), orderData);
     } catch (error) {
       console.error('Error adding to admin orders:', error);

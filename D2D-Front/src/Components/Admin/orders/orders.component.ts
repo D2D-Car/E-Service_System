@@ -205,7 +205,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
         Array.from(this.selectedDriverIds),
         Array.from(this.selectedTechnicianIds)
       );
-      Swal.fire('Success','Assignment saved','success');
+      Swal.fire('Success','Order Saved','success');
       this.closeAssignModal();
     } catch (e:any) {
       Swal.fire('Error','Failed to save assignment','error');
