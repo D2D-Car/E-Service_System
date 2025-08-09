@@ -1,3 +1,4 @@
+//ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -27,12 +28,89 @@ export class TechniciansDashboardComponent implements OnInit {
 
   activeTab = 'Dashboard';
   availability = 'Available';
+  
+  // Modal states
+  showReportsModal = false;
+  showMessagesModal = false;
+  
+  // Unread messages count
+  unreadMessages = 3;
 
   jobsToday = [
     { title: 'Oil Change & Filter', status: 'Accepted', time: '10:00 AM', customer: 'Sarah Wilson', distance: '2.3 km', price: 65 },
     { title: 'Brake Inspection', status: 'Pending', time: '2:00 PM', customer: 'John Davis', distance: '4.1 km', price: 85 },
     { title: 'Tire Replacement', status: 'Accepted', time: '4:00 PM', customer: 'Emma Brown', distance: '3.2 km', price: 120 },
     { title: 'Engine Diagnostic', status: 'Pending', time: '6:30 PM', customer: 'Michael Lee', distance: '5.0 km', price: 150 }
+  ];
+
+  // Static messages data
+  messages = [
+    {
+      id: 1,
+      sender: 'Ahmed Tamer',
+      avatar: '/assets/customers-img/cust1.jpg',
+      preview: 'Thank you for the excellent oil change service! My car runs perfectly now. Would definitely recommend.',
+      time: '2 hours ago',
+    
+      type: 'feedback',
+      typeLabel: 'Feedback',
+      isOnline: true
+    },
+    {
+      id: 2,
+      sender: 'Khaled Waleed',
+      avatar: '/assets/customers-img/cust2.jpg',
+      preview: 'Hi! I need to reschedule my brake inspection appointment from 2 PM to 4 PM today. Is that possible?',
+      time: '4 hours ago',
+      unread: true,
+      type: 'booking',
+      typeLabel: 'Booking',
+      isOnline: false
+    },
+    {
+      id: 3,
+      sender: 'Ashraf Hassan',
+      avatar: '/assets/customers-img/cust3.jpg',
+      preview: 'Hello, I have a question about the tire replacement service. What brand of tires do you recommend?',
+      time: '6 hours ago',
+      unread: true,
+      type: 'inquiry',
+      typeLabel: 'Inquiry',
+      isOnline: true
+    },
+    {
+      id: 4,
+      sender: 'Mahmoud Elsayed',
+      avatar: '/assets/customers-img/cust4.jpg',
+      preview: 'The engine diagnostic was very thorough. Thank you for explaining everything so clearly. Five stars!',
+      time: '1 day ago',
+      unread: false,
+      type: 'feedback',
+      typeLabel: 'Feedback',
+      isOnline: false
+    },
+    {
+      id: 5,
+      sender: 'Shawqi Shokry',
+      avatar: '/assets/customers-img/cust5.jpg',
+      preview: 'I had an small issue with the service yesterday. The technician arrived 30 minutes late without notice',
+      time: '2 days ago',
+      unread: false,
+      type: 'complaint',
+      typeLabel: 'Complaint',
+      isOnline: false
+    },
+    {
+      id: 6,
+      sender: 'Aser Ayman',
+      avatar: '/assets/customers-img/cust6.jpg',
+      preview: 'Can you provide a quote for transmission fluid change and filter replacement for my Honda Civic?',
+      time: '3 days ago',
+      unread: false,
+      type: 'inquiry',
+      typeLabel: 'Inquiry',
+      isOnline: true
+    }
   ];
 
   constructor(
@@ -52,8 +130,8 @@ export class TechniciansDashboardComponent implements OnInit {
         if (userProfile) {
           this.profile = {
             name: userProfile.displayName || 'Technician',
-            rating: userProfile.rating || 0,
-            totalJobs: userProfile.completedJobs || 0,
+            rating: userProfile.rating || 4.8,
+            totalJobs: userProfile.completedJobs || 127,
             earningsToday: 245, // These would come from a separate earnings service
             earningsWeek: 1680,
             earningsMonth: 6420
@@ -62,11 +140,81 @@ export class TechniciansDashboardComponent implements OnInit {
       }
     } catch (error) {
       console.error('Error loading user profile:', error);
+      // Set default values if loading fails
+      this.profile = {
+        name: 'Ahmed Hassan',
+        rating: 4.8,
+        totalJobs: 127,
+        earningsToday: 245,
+        earningsWeek: 1680,
+        earningsMonth: 6420
+      };
     }
   }
-
 
   setActiveTab(tab: string) {
     this.activeTab = tab;
   }
+
+  // Modal methods
+  openReportsModal() {
+    this.showReportsModal = true;
+    document.body.style.overflow = 'hidden'; 
+  }
+
+  closeReportsModal() {
+    this.showReportsModal = false;
+    document.body.style.overflow = 'auto'; 
+  }
+
+  openMessagesModal() {
+    this.showMessagesModal = true;
+    document.body.style.overflow = 'hidden'; 
+  }
+
+  closeMessagesModal() {
+    this.showMessagesModal = false;
+    document.body.style.overflow = 'auto'; 
+  }
+
+  // Message actions
+  replyToMessage(messageId: number) {
+  const message = this.messages.find(m => m.id === messageId);
+  if (message) {
+    alert(`Reply sent to ${message.sender}`);
+   
+  }
+}
+
+  markAsRead(messageId: number) {
+    const message = this.messages.find(m => m.id === messageId);
+    if (message && message.unread) {
+      message.unread = false;
+      this.unreadMessages = Math.max(0, this.unreadMessages - 1);
+    }
+  }
+
+  
+
+
+
+markAllAsRead() {
+  this.messages.forEach(message => {
+    if (message.unread) {
+      message.unread = false;
+    }
+  });
+  this.unreadMessages = 0;
+  alert('All messages have been marked as read');
+}
+
+  
+  onModalOverlayClick(event: Event) {
+    if (event.target === event.currentTarget) {
+      this.closeReportsModal();
+      this.closeMessagesModal();
+    }
+  }
+
+  
 }
