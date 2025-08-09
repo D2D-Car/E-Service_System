@@ -1,10 +1,9 @@
-<app-navbar></app-navbar>
-
-
+<ng-container *ngIf="!isHomePage">
+  <app-navbar></app-navbar>
+</ng-container>
 
 <router-outlet></router-outlet>
 
-<!-- Show landing page sections only when on home page -->
 <ng-container *ngIf="isHomePage">
   <app-technicians></app-technicians>
   <app-services></app-services>
@@ -13,5 +12,4 @@
   <app-feedback></app-feedback>
 </ng-container>
 
-<!-- Show footer only when NOT on dashboard pages -->
 <app-footer *ngIf="!isDashboardPage"></app-footer>
