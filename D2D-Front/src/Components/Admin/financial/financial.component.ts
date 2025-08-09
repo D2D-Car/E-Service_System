@@ -13,11 +13,6 @@ interface ModalData {
     label: string;
     value: string;
   }>;
-  chartData?: Array<{
-    label: string;
-    value: string;
-    percentage: number;
-  }>;
 }
 
 @Component({
@@ -35,7 +30,6 @@ export class FinancialComponent {
     subtitle: '',
     stats: [],
     details: [],
-    chartData: []
   };
 
   ngOnInit(): void {
