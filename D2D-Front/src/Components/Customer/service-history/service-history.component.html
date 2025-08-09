@@ -58,14 +58,6 @@
           </div>
           <div class="price-rating-group">
             <span class="service-price">${{ service.price | number:'1.2-2' }}</span>
-            <div class="rating">
-              <span
-                class="star"
-                *ngFor="let star of [0, 1, 2, 3, 4]; let i = index"
-                [class.empty]="i >= service.rating"
-                >★</span
-              >
-            </div>
           </div>
         </div>
         <div class="service-details">
@@ -73,10 +65,7 @@
             <i class="fas fa-calendar-alt detail-icon"></i>
             <span>{{ formatDate(service.serviceDate) }}</span>
           </div>
-          <div class="detail-item">
-            <i class="fas fa-user-cog detail-icon"></i>
-            <span>{{ service.technician }}</span>
-          </div>
+          <!-- Technician removed -->
           <div class="detail-item">
             <i class="fas fa-car detail-icon"></i>
             <span>{{ service.vehicle }}</span>
@@ -181,20 +170,6 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label for="technician">Technician</label>
-            <input
-              type="text"
-              id="technician"
-              name="technician"
-              formControlName="technician"
-              required
-              placeholder="e.g., John Smith"
-            />
-            <div class="error-message" *ngIf="getFieldError('technician')">
-              {{ getFieldError('technician') }}
-            </div>
-          </div>
-          <div class="form-group">
             <label for="vehicle">Vehicle</label>
             <input
               type="text"
@@ -253,18 +228,7 @@
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label for="rating">Expected Rating</label>
-            <select id="rating" name="rating" formControlName="rating" required>
-              <option value="5">5 Stars - Excellent</option>
-              <option value="4">4 Stars - Very Good</option>
-              <option value="3">3 Stars - Good</option>
-              <option value="2">2 Stars - Fair</option>
-              <option value="1">1 Star - Poor</option>
-            </select>
-          </div>
-        </div>
+  <!-- Expected Rating removed -->
 
         <!-- Error Message -->
         <div class="error-message global-error" *ngIf="errorMessage">

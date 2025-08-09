@@ -64,7 +64,9 @@ export const routes: Routes = [
   {
     path: 'customer',
     component: CustomerDashboardComponent,
-    // canActivate: [AuthGuard],
+    canMatch: [AuthGuard],
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: CustomerDashboardComponent },
@@ -77,7 +79,9 @@ export const routes: Routes = [
   {
     path: 'technician',
     component: TechniciansDashboardComponent,
+    canMatch: [AuthGuard],
     canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: TechniciansDashboardComponent },
@@ -91,7 +95,9 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminDashboardComponent,
-    // canActivate: [AuthGuard],
+    canMatch: [AuthGuard],
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardHomeComponent },
@@ -121,7 +127,9 @@ export const routes: Routes = [
   {
     path: 'driver',
     component: DriverSharedComponent,
+    canMatch: [AuthGuard],
     canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DriverDashboardComponent },
