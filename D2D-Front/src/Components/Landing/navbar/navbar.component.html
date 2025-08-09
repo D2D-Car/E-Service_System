@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark" [ngClass]="{'fixed-navbar': isFixed}">
+<nav class="navbar navbar-expand-lg navbar-dark">
   <div class="container-fluid d-flex justify-content-between align-items-center">
     <a class="navbar-brand ms-5 d-flex align-items-center" routerLink="/">
       <img src="./assets/nav-img/logo.png" alt="D2D Logo" class="me-2" style="height: 60px; width: auto;">
@@ -12,40 +12,48 @@
     <div class="collapse navbar-collapse flex-grow-0" id="navbarNavDropdown">
       <ul class="navbar-nav align-items-center me-3">
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeSection === 'home'" aria-current="page" href="#home"
-            (click)="scrollToSection('home', $event)">Home</a>
+          <a class="nav-link" aria-current="page" routerLink="/" routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeSection === 'technicians'" href="#technicians"
-            (click)="scrollToSection('technicians', $event)">Technicians</a>
+          <a class="nav-link" routerLink="/technicians" routerLinkActive="active">Technicians</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeSection === 'services'" href="#services"
-            (click)="scrollToSection('services', $event)">Services</a>
+          <a class="nav-link" routerLink="/services" routerLinkActive="active">Services</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeSection === 'about'" href="#about"
-            (click)="scrollToSection('about', $event)">About</a>
+          <a class="nav-link" routerLink="/about" routerLinkActive="active">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeSection === 'feedback' || activeSection === 'contact'"
-            href="#contact" (click)="scrollToSection('contact', $event)">Contact</a>
+          <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contact</a>
         </li>
       </ul>
-      <ng-container *ngIf="!isDashboardActive(); else elseTemplate">
-        <div class="d-flex auth-buttons flex-wrap gap-2">
-          <a class="btn btn-outline-primary auth-signup" routerLink="/auth/sign-up">Sign Up</a>
-          <a class="btn btn-primary auth-login" routerLink="/auth/login">Login</a>
-        </div>
-      </ng-container>
-      <ng-template #elseTemplate>
-        <div class="d-flex flex-wrap gap-2 align-items-center">
-          <a class="btn btn-outline-primary auth-signout d-flex align-items-center gap-2 px-3 py-2" routerLink="/">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Sign Out</span>
-          </a>
-        </div>
-      </ng-template>
+
+      <div class="d-flex flex-column flex-lg-row align-items-center gap-2 gap-lg-3">
+        <form class="search-form d-flex align-items-center position-relative me-lg-3" role="search"
+          aria-label="Site search">
+          <input type="search" class="form-control search-input" placeholder="Search..." aria-label="Search" />
+          <button type="submit" class="btn search-btn" aria-label="Submit search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </form>
+
+        <ng-container *ngIf="!isDashboardActive(); else elseTemplate">
+          <div class="d-flex auth-buttons flex-wrap gap-2">
+            <a class="btn btn-outline-primary auth-signup" routerLink="/auth/sign-up">Sign Up</a>
+            <a class="btn btn-primary auth-login" routerLink="/auth/login">Login</a>
+          </div>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <div class="d-flex flex-wrap gap-2 align-items-center">
+            <a class="btn btn-outline-primary auth-signout d-flex align-items-center gap-2 px-3 py-2"
+              routerLink="/">
+              <i class="fa-solid fa-right-from-bracket"></i>
+              <span>Sign Out</span>
+            </a>
+          </div>
+        </ng-template>
+      </div>
     </div>
   </div>
 </nav>

@@ -50,18 +50,8 @@
   padding: 1.5rem !important;
 }
 
-// Global smooth scrolling
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 72px; // Navbar height
-}
-
-body {
-  padding-top: 72px; // Navbar height
-}
-
-@media (max-width: 420px) {
-  .row > * {
+@media(max-width: 420px) {
+  .row>* {
     padding: {
       right: 0 !important;
       left: 0 !important;
@@ -84,7 +74,7 @@ body {
 // SCSS Variables (Must be defined first)
 // =====================================
 $primary: #ff3b3be8;
-$background-darkgray: #1c1c1e;
+$background-darkgray: #1C1C1E;
 $dark: #0a0a0a;
 $secondary: #5b272a;
 $light: #ffffff;
@@ -154,26 +144,10 @@ $member-gradient-end: #8e24aa;
   --danger-bg: #{$danger-bg};
 
   // Icon Gradients
-  --services-gradient: linear-gradient(
-    135deg,
-    #{$services-gradient-start},
-    #{$services-gradient-end}
-  );
-  --money-gradient: linear-gradient(
-    135deg,
-    #{$money-gradient-start},
-    #{$money-gradient-end}
-  );
-  --loyalty-gradient: linear-gradient(
-    135deg,
-    #{$loyalty-gradient-start},
-    #{$loyalty-gradient-end}
-  );
-  --member-gradient: linear-gradient(
-    135deg,
-    #{$member-gradient-start},
-    #{$member-gradient-end}
-  );
+  --services-gradient: linear-gradient(135deg, #{$services-gradient-start}, #{$services-gradient-end});
+  --money-gradient: linear-gradient(135deg, #{$money-gradient-start}, #{$money-gradient-end});
+  --loyalty-gradient: linear-gradient(135deg, #{$loyalty-gradient-start}, #{$loyalty-gradient-end});
+  --member-gradient: linear-gradient(135deg, #{$member-gradient-start}, #{$member-gradient-end});
 
   // Layout & Design
   --padding: 1rem;
@@ -273,8 +247,7 @@ body {
   background: var(--bg-secondary);
   color: var(--text-primary);
   transition: background 0.3s ease, color 0.3s ease;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* Custom Light Scrollbar - Theme Adaptive */
@@ -310,8 +283,7 @@ body {
 
 body {
   background-color: var(--background-color) !important;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .light-theme body {
@@ -383,26 +355,10 @@ body.admin-page {
   --danger-bg: #{$danger-bg};
 
   // Icon Gradients
-  --services-gradient: linear-gradient(
-    135deg,
-    #{$services-gradient-start},
-    #{$services-gradient-end}
-  );
-  --money-gradient: linear-gradient(
-    135deg,
-    #{$money-gradient-start},
-    #{$money-gradient-end}
-  );
-  --loyalty-gradient: linear-gradient(
-    135deg,
-    #{$loyalty-gradient-start},
-    #{$loyalty-gradient-end}
-  );
-  --member-gradient: linear-gradient(
-    135deg,
-    #{$member-gradient-start},
-    #{$member-gradient-end}
-  );
+  --services-gradient: linear-gradient(135deg, #{$services-gradient-start}, #{$services-gradient-end});
+  --money-gradient: linear-gradient(135deg, #{$money-gradient-start}, #{$money-gradient-end});
+  --loyalty-gradient: linear-gradient(135deg, #{$loyalty-gradient-start}, #{$loyalty-gradient-end});
+  --member-gradient: linear-gradient(135deg, #{$member-gradient-start}, #{$member-gradient-end});
 
   --padding: 1rem;
   --border-radius: 16px;
@@ -418,8 +374,7 @@ body.admin-page {
 body {
   background-color: var(--background-color) !important;
   box-sizing: border-box;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .light-theme body {

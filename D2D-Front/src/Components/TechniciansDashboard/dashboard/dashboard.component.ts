@@ -18,7 +18,7 @@ import { Firestore, collection, query, where, onSnapshot, orderBy, limit } from 
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class TechniciansComponent implements OnInit {
+export class TechniciansDashboardComponent implements OnInit {
   profile: any = {
     name: 'Loading...',
     rating: 0,

@@ -24,14 +24,14 @@ import { ServiceHistoryComponent } from '../Components/Customer/service-history/
 import { DriverDashboardComponent } from '../Components/Driver/driver-dashboard/driver-dashboard.component';
 
 // Technician Dashboard Components
-import { TechniciansComponent } from '../Components/Technicians/dashboard/dashboard.component';
-import { JobsComponent } from '../Components/Technicians/jobs/jobs.component';
+import { TechniciansDashboardComponent } from '../Components/TechniciansDashboard/dashboard/dashboard.component';
+import { JobsComponent } from '../Components/TechniciansDashboard/jobs/jobs.component';
 import { SignUpComponent } from '../Components/Auth/sign-up/sign-up.component';
 import { LoginComponent as AuthLoginComponent } from '../Components/Auth/login/login.component';
 import { PendingVerificationComponent } from '../Components/Auth/pending-verification/pending-verification.component';
 import { AuthGuard } from '../Guards/auth.guard';
-import { TechnicianEarningsComponent } from '../Components/Technicians/earnings/earnings.component';
-import { TechnicianProfileComponent } from '../Components/Technicians/profile/technician-profile.component';
+import { TechnicianEarningsComponent } from '../Components/TechniciansDashboard/earnings/earnings.component';
+import { TechnicianProfileComponent } from '../Components/TechniciansDashboard/profile/technician-profile.component';
 import { DriverJobsComponent } from '../Components/Driver/driver-jobs/driver-jobs.component';
 import { DriverEarningsComponent } from '../Components/Driver/driver-earnings/driver-earnings.component';
 import { DriverProfileComponent } from '../Components/Driver/driver-profile/driver-profile.component';
@@ -76,11 +76,11 @@ export const routes: Routes = [
   // Technician Dashboard with Child Routes
   {
     path: 'technician',
-    component: TechniciansComponent,
+    component: TechniciansDashboardComponent,
     canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: TechniciansComponent },
+      { path: 'dashboard', component: TechniciansDashboardComponent },
       { path: 'jobs', component: JobsComponent },
       { path: 'earnings', component: TechnicianEarningsComponent },
       { path: 'profile', component: TechnicianProfileComponent },

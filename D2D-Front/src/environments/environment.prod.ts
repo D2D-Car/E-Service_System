@@ -1,19 +1,16 @@
-// @ts-ignore
-declare var process: any;
-
 export const environment = {
   production: true,
   firebase: {
-  apiKey: process?.env?.['NG_APP_FIREBASE_API_KEY'] || "",
-  authDomain: process?.env?.['NG_APP_FIREBASE_AUTH_DOMAIN'] || "",
-  databaseURL: process?.env?.['NG_APP_FIREBASE_DATABASE_URL'] || "",
-  projectId: process?.env?.['NG_APP_FIREBASE_PROJECT_ID'] || "",
-  storageBucket: process?.env?.['NG_APP_FIREBASE_STORAGE_BUCKET'] || "",
-  messagingSenderId: process?.env?.['NG_APP_FIREBASE_MESSAGING_SENDER_ID'] || "",
-  appId: process?.env?.['NG_APP_FIREBASE_APP_ID'] || "",
-  measurementId: process?.env?.['NG_APP_FIREBASE_MEASUREMENT_ID'] || ""
+    apiKey: "AIzaSyBef27wt27Y59ko3iTHE97Ap2UL-DpOhR0",
+    authDomain: "d2ddatabase.firebaseapp.com",
+    databaseURL: "https://d2ddatabase-default-rtdb.firebaseio.com",
+    projectId: "d2ddatabase",
+    storageBucket: "d2ddatabase.firebasestorage.app",
+    messagingSenderId: "49961156364",
+    appId: "1:49961156364:web:40dd7d0207127ca2d65329",
+    measurementId: "G-XS6P2WGWNY"
   },
   recaptcha: {
-  siteKey: process?.env?.['NG_APP_RECAPTCHA_SITE_KEY'] || ""
+    siteKey: "your-recaptcha-site-key"
   }
 };
