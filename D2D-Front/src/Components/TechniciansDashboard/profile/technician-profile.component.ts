@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-technician-profile',
@@ -68,43 +70,59 @@ export class TechnicianProfileComponent implements OnInit {
     // Initially disable all form controls
     this.technicianForm.disable();
   }
+editOrSaveProfile() {
+  if (!this.isEditing) {
+    this.isEditing = true;
+    Object.keys(this.technicianForm.controls).forEach(key => {
+      this.technicianForm.get(key)?.enable();
+    });
 
-  toggleEdit() {
-  // هنفعل كل حقول الفورم عشان تقدري تعدليها
-  Object.keys(this.technicianForm.controls).forEach(key => {
-    this.technicianForm.get(key)?.enable();
-  });
-
-  // رسالة للمستخدم إن البيانات اتفتحت للتعديل
-  alert('Data updated successfuly!');
-}
-
-
-  saveProfile() {
+    Swal.fire({
+      icon: 'info',
+      title: 'Edit Mode Enabled',
+      text: 'You can now update the technician profile.',
+      confirmButtonText: 'OK'
+    });
+  } else {
     if (this.technicianForm.valid) {
-      // Update current technician data
-      this.currentTechnician = { 
-        ...this.currentTechnician, 
-        ...this.technicianForm.value 
-      };
-      
-      // Here you would typically send the data to your backend service
-      console.log('Saving profile data:', this.currentTechnician);
-      
-      // Disable form controls
-      this.technicianForm.disable();
-      this.isEditing = false;
-      
-      // Show success message (you can implement a toast service or similar)
-      alert('Profile updated successfully!');
-      
-      // You can also call your API service here
-      // this.technicianService.updateTechnician(this.currentTechnician).subscribe(...)
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you want to save the changes to the profile?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, save it',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.currentTechnician = {
+            ...this.currentTechnician,
+            ...this.technicianForm.value
+          };
+          this.technicianForm.disable();
+          this.isEditing = false;
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Profile Updated',
+            text: 'The technician profile has been saved successfully.',
+            confirmButtonText: 'Great!'
+          });
+        }
+      });
     } else {
-      console.log('Form is invalid');
+      Swal.fire({
+        icon: 'error',
+        title: 'Invalid Form',
+        text: 'Please fill in all required fields correctly.',
+        confirmButtonText: 'OK'
+      });
       this.markFormGroupTouched();
     }
   }
+}
+
+
+
 
   
 

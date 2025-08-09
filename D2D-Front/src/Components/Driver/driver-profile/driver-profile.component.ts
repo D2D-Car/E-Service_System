@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-driver-profile',
@@ -34,14 +35,22 @@ export class DriverProfileComponent {
     this.activeLink = link;
   }
 
-  editProfileInfo() {
-    this.isEditable = !this.isEditable;
-    if (this.isEditable) {
-      this.profileForm.enable();
-    } else {
-      this.profileForm.disable();
-    }
+editProfileInfo() {
+  if (this.isEditable) {
+    Swal.fire({
+      icon: 'success',
+      title: 'Data saved',
+      showConfirmButton: false,
+      timer: 1500
+    });
+    this.isEditable = false;
+    this.profileForm.disable();
+  } else {
+    this.isEditable = true;
+    this.profileForm.enable();
   }
+}
+
 
   ngOnInit() {
     this.profileForm.disable();

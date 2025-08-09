@@ -132,13 +132,14 @@ export class ServiceHistoryComponent implements OnInit, OnDestroy {
         this.closeAddServiceModal();
         
         // Show SweetAlert success message
-        Swal.fire({
-          icon: 'success',
-          title: 'تم بنجاح!',
-          text: 'تم إضافة الخدمة بنجاح',
-          confirmButtonText: 'موافق',
-          confirmButtonColor: '#ff3b3b'
-        });
+      Swal.fire({
+  icon: 'success',
+  title: 'Success!',
+  text: 'Service has been added successfully.',
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#ff3b3b'
+});
+
         
       } catch (error: any) {
         console.error('Service History: Error adding service:', error);
@@ -172,13 +173,14 @@ export class ServiceHistoryComponent implements OnInit, OnDestroy {
   // Get current location
   getCurrentLocation(): void {
     if (!navigator.geolocation) {
-      Swal.fire({
-        icon: 'error',
-        title: 'خطأ',
-        text: 'المتصفح لا يدعم خدمة تحديد الموقع',
-        confirmButtonText: 'موافق',
-        confirmButtonColor: '#ff3b3b'
-      });
+  Swal.fire({
+  icon: 'error',
+  title: 'Error',
+  text: 'Your browser does not support location services.',
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#ff3b3b'
+});
+
       return;
     }
 
@@ -194,50 +196,54 @@ export class ServiceHistoryComponent implements OnInit, OnDestroy {
           const locationString = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
           this.addServiceForm.patchValue({ location: locationString });
           
-          Swal.fire({
-            icon: 'success',
-            title: 'تم تحديد الموقع',
-            text: 'تم الحصول على موقعك الحالي بنجاح',
-            timer: 2000,
-            showConfirmButton: false
-          });
+        Swal.fire({
+  icon: 'success',
+  title: 'Location detected',
+  text: 'Your current location has been retrieved successfully.',
+  timer: 2000,
+  showConfirmButton: false
+});
+
           
         } catch (error) {
           console.error('Error getting location:', error);
-          Swal.fire({
-            icon: 'error',
-            title: 'خطأ',
-            text: 'فشل في تحديد الموقع',
-            confirmButtonText: 'موافق',
-            confirmButtonColor: '#ff3b3b'
-          });
+        Swal.fire({
+  icon: 'error',
+  title: 'Error',
+  text: 'Failed to detect location',
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#ff3b3b'
+});
+
         } finally {
           this.isGettingLocation = false;
         }
       },
       (error) => {
         this.isGettingLocation = false;
-        let errorMessage = 'فشل في تحديد الموقع';
+        let errorMessage = 'Failed to detect location';
+
         
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            errorMessage = 'تم رفض الإذن للوصول إلى الموقع';
+        errorMessage = 'Permission to access location was denied';  
             break;
           case error.POSITION_UNAVAILABLE:
-            errorMessage = 'معلومات الموقع غير متاحة';
+              errorMessage = 'Location information is unavailable';
             break;
           case error.TIMEOUT:
-            errorMessage = 'انتهت مهلة طلب الموقع';
+           errorMessage = 'The request to get location timed out';
             break;
         }
         
-        Swal.fire({
-          icon: 'error',
-          title: 'خطأ في الموقع',
-          text: errorMessage,
-          confirmButtonText: 'موافق',
-          confirmButtonColor: '#ff3b3b'
-        });
+      Swal.fire({
+  icon: 'error',
+  title: 'Location Error',
+  text: errorMessage,
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#ff3b3b'
+});
+
       },
       {
         enableHighAccuracy: true,

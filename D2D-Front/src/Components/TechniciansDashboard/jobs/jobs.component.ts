@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-jobs',
@@ -97,44 +98,110 @@ export class JobsComponent implements OnInit {
     this.loadingDetails = false;
   }
 
-  addSpecialty() {
-    const trimmed = this.newSpecialty.trim();
-    if (trimmed && !this.specialties.includes(trimmed)) {
-      this.specialties.push(trimmed);
-    }
-    this.newSpecialty = '';
+ addSpecialty() {
+  const trimmed = this.newSpecialty.trim();
+  if (trimmed && !this.specialties.includes(trimmed)) {
+    this.specialties.push(trimmed);
+    Swal.fire({
+      title: 'Added!',
+      text: `${trimmed} has been added to your specialties.`,
+      icon: 'success',
+      timer: 1500,
+      showConfirmButton: false
+    });
   }
+  this.newSpecialty = '';
+}
+
 
   removeSpecialty(specialty: string) {
     this.specialties = this.specialties.filter(s => s !== specialty);
   }
 
-  callCustomer(job: any) {
-    if (confirm(`Call ${job.customerName}?`)) {
+ callCustomer(job: any) {
+  Swal.fire({
+    title: `Call ${job.customerName}?`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, Call',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
       window.open(`tel:+1234567890`, '_self');
     }
-  }
+  });
+}
+
 
   getDirections(job: any) {
     window.open(`https://maps.google.com/maps?q=${job.customerName}+location`, '_blank');
   }
 
-  acceptJob(job: any) {
-    job.status = 'Accepted';
-  }
-
-  rejectJob(job: any) {
-    if (confirm('Are you sure you want to reject this job?')) {
-      job.status = 'Rejected';
+ acceptJob(job: any) {
+  Swal.fire({
+    title: 'Accept this job?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, Accept',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      job.status = 'Accepted';
+      Swal.fire({
+        title: 'Accepted!',
+        text: 'The job has been accepted.',
+        icon: 'success',
+        timer: 1500,
+        showConfirmButton: false
+      });
     }
-  }
+  });
+}
 
-  completeJob(job: any) {
-    if (confirm('Mark this job as completed?')) {
+ rejectJob(job: any) {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'Do you really want to reject this job?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, reject it',
+    cancelButtonText: 'Cancel',
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      job.status = 'Rejected';
+      Swal.fire(
+        'Rejected!',
+        'The job has been rejected.',
+        'success'
+      );
+    }
+  });
+}
+
+completeJob(job: any) {
+  Swal.fire({
+    title: 'Mark this job as completed?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, Complete',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
       job.status = 'Completed';
       this.jobsCompleted++;
+
+      Swal.fire({
+        title: 'Completed!',
+        text: 'The job has been marked as completed.',
+        icon: 'success',
+        timer: 1500,
+        showConfirmButton: false
+      });
     }
-  }
+  });
+}
 
   selectedStatus = 'all-status';
   selectedService = 'all-services';

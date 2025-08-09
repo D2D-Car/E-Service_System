@@ -189,20 +189,37 @@ export class DashboardComponent implements OnInit {
         this.closeAddServiceModal();
         
         // Show SweetAlert success message
-        Swal.fire({
-          icon: 'success',
-          title: 'تم بنجاح!',
-          text: 'تم حجز الخدمة بنجاح',
-          confirmButtonText: 'موافق',
-          confirmButtonColor: '#ff3b3b'
-        });
+      Swal.fire({
+  icon: 'success',
+  title: 'Success!',
+  text: 'Service booked successfully.',
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#3085d6'
+});
         
       } catch (error: any) {
         console.error('Customer Dashboard: Error adding service:', error);
-        if (error.message && error.message.includes('Permission denied')) {
-          this.errorMessage = 'Permission denied. Please check your account permissions or contact support.';
-        } else {
-          this.errorMessage = 'Failed to book service. Please try again.';
+        if (error.message && error.message.includes('Permission denied')) 
+          
+        {
+Swal.fire({
+    icon: 'error',
+    title: 'Permission Denied',
+    text: 'Please check your account permissions or contact support.',
+    confirmButtonText: 'OK',
+    confirmButtonColor: '#d33'
+  });        } 
+        
+        else {
+
+          Swal.fire({
+    icon: 'error',
+    title: 'Booking Failed',
+    text: 'Failed to book service. Please try again.',
+    confirmButtonText: 'OK',
+    confirmButtonColor: '#d33'
+  });
+
         }
       } finally {
         this.isLoading = false;
@@ -229,13 +246,14 @@ export class DashboardComponent implements OnInit {
   // Get current location
   getCurrentLocation(): void {
     if (!navigator.geolocation) {
-      Swal.fire({
-        icon: 'error',
-        title: 'خطأ',
-        text: 'المتصفح لا يدعم خدمة تحديد الموقع',
-        confirmButtonText: 'موافق',
-        confirmButtonColor: '#ff3b3b'
-      });
+  Swal.fire({
+  icon: 'error',
+  title: 'Error',
+  text: 'Your browser does not support location services.',
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#d33'
+});
+
       return;
     }
 
@@ -269,14 +287,16 @@ export class DashboardComponent implements OnInit {
             this.addServiceForm.patchValue({ location: this.currentLocation });
           }
           
-          Swal.fire({
-            icon: 'success',
-            title: 'تم تحديد الموقع',
-            text: 'تم الحصول على موقعك الحالي بنجاح',
-            timer: 2000,
-            showConfirmButton: false
-          });
-          
+       Swal.fire({
+  icon: 'success',
+  title: 'Location Found',
+  text: 'Your current location has been detected.',
+  timer: 2000,
+  showConfirmButton: false,
+  toast: true,
+  position: 'top-end'
+});
+
         } catch (error) {
           console.error('Error getting location details:', error);
           // Use coordinates as fallback
@@ -285,40 +305,42 @@ export class DashboardComponent implements OnInit {
           this.currentLocation = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
           this.addServiceForm.patchValue({ location: this.currentLocation });
           
-          Swal.fire({
-            icon: 'info',
-            title: 'تم تحديد الموقع',
-            text: 'تم الحصول على إحداثيات موقعك',
-            timer: 2000,
-            showConfirmButton: false
-          });
+       Swal.fire({
+  icon: 'info',
+  title: 'Location Detected',
+  text: 'Your location coordinates have been obtained',
+  timer: 2000,
+  showConfirmButton: false
+});
+
         } finally {
           this.isGettingLocation = false;
         }
       },
       (error) => {
         this.isGettingLocation = false;
-        let errorMessage = 'فشل في تحديد الموقع';
+let errorMessage = 'Failed to determine location';
+
+switch (error.code) {
+  case error.PERMISSION_DENIED:
+    errorMessage = 'Permission to access location was denied';
+    break;
+  case error.POSITION_UNAVAILABLE:
+    errorMessage = 'Location information is unavailable';
+    break;
+  case error.TIMEOUT:
+    errorMessage = 'Location request timed out';
+    break;
+}
         
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            errorMessage = 'تم رفض الإذن للوصول إلى الموقع';
-            break;
-          case error.POSITION_UNAVAILABLE:
-            errorMessage = 'معلومات الموقع غير متاحة';
-            break;
-          case error.TIMEOUT:
-            errorMessage = 'انتهت مهلة طلب الموقع';
-            break;
-        }
-        
-        Swal.fire({
-          icon: 'error',
-          title: 'خطأ في الموقع',
-          text: errorMessage,
-          confirmButtonText: 'موافق',
-          confirmButtonColor: '#ff3b3b'
-        });
+    Swal.fire({
+  icon: 'error',
+  title: 'Location Error',
+  text: errorMessage,
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#d33'
+});
+
       },
       {
         enableHighAccuracy: true,

@@ -8,6 +8,7 @@ import { TechnicianProfileComponent } from "../profile/technician-profile.compon
 import { UserDataService, UserProfile } from '../../../Services/user-data.service';
 import { AuthService } from '../../../Services/auth.service';
 import { OnInit } from '@angular/core';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-technicians-dashboard',
@@ -181,7 +182,13 @@ export class TechniciansDashboardComponent implements OnInit {
   replyToMessage(messageId: number) {
   const message = this.messages.find(m => m.id === messageId);
   if (message) {
-    alert(`Reply sent to ${message.sender}`);
+Swal.fire({
+  icon: 'success',
+  title: 'Reply Sent',
+  text: `Your reply has been sent to ${message.sender}.`,
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#ff3b3b'
+});
    
   }
 }
@@ -205,7 +212,13 @@ markAllAsRead() {
     }
   });
   this.unreadMessages = 0;
-  alert('All messages have been marked as read');
+Swal.fire({
+  icon: 'success',
+  title: 'Messages Updated',
+  text: 'All messages have been marked as read.',
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#ff3b3b'
+});
 }
 
   

@@ -165,40 +165,85 @@ export class VehiclesComponent {
 
   // Add or Update vehicle on form submit
   submitVehicle(): void {
-    if (!this.isFormValid()) return;
+  if (!this.isFormValid()) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Invalid Form',
+      text: 'Please fill in all required fields before submitting.',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#ff3b3b'
+    });
+    return;
+  }
 
-    if (this.isEditMode && this.editingVehicleId !== null) {
-      // Update existing vehicle
-      const index = this.vehicles.findIndex(v => v.id === this.editingVehicleId);
-      if (index !== -1) {
-        this.vehicles[index] = {
-          id: this.editingVehicleId,
-          ...this.newVehicle,
-          image: this.imagePreview || './assets/vehicles-img/default-car.jpg'
-        };
-        console.log('Vehicle updated:', this.vehicles[index]);
-      }
-    } else {
-      // Add new vehicle
-      const newId = Math.max(...this.vehicles.map(v => v.id), 0) + 1;
-      const vehicle: Vehicle = {
-        id: newId,
+  if (this.isEditMode && this.editingVehicleId !== null) {
+    // Update existing vehicle
+    const index = this.vehicles.findIndex(v => v.id === this.editingVehicleId);
+    if (index !== -1) {
+      this.vehicles[index] = {
+        id: this.editingVehicleId,
         ...this.newVehicle,
         image: this.imagePreview || './assets/vehicles-img/default-car.jpg'
       };
-      this.vehicles.push(vehicle);
-      console.log('Vehicle added:', vehicle);
-    }
+      console.log('Vehicle updated:', this.vehicles[index]);
 
-    this.closeAddVehicleModal();
+      Swal.fire({
+        icon: 'success',
+        title: 'Vehicle Updated',
+        text: 'The vehicle has been updated successfully.',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#ff3b3b'
+      });
+    }
+  } else {
+    // Add new vehicle
+    const newId = Math.max(...this.vehicles.map(v => v.id), 0) + 1;
+    const vehicle: Vehicle = {
+      id: newId,
+      ...this.newVehicle,
+      image: this.imagePreview || './assets/vehicles-img/default-car.jpg'
+    };
+    this.vehicles.push(vehicle);
+    console.log('Vehicle added:', vehicle);
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Vehicle Added',
+      text: 'The vehicle has been added successfully.',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#ff3b3b'
+    });
   }
+
+  this.closeAddVehicleModal();
+}
+
 
   // Confirm and delete vehicle
-  confirmDelete(vehicleId: number): void {
-    if (confirm('Are you sure you want to delete this vehicle?')) {
+ confirmDelete(vehicleId: number): void {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'This action cannot be undone!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#ff3b3b',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Yes, delete it',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
       this.deleteVehicle(vehicleId);
+      Swal.fire({
+        icon: 'success',
+        title: 'Deleted!',
+        text: 'The vehicle has been deleted successfully.',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#ff3b3b'
+      });
     }
-  }
+  });
+}
+
 
   private deleteVehicle(vehicleId: number): void {
     this.vehicles = this.vehicles.filter(v => v.id !== vehicleId);
@@ -293,23 +338,24 @@ export class VehiclesComponent {
         this.closeScheduleServiceModal();
         
         // Show SweetAlert success message
-        Swal.fire({
-          icon: 'success',
-          title: 'تم بنجاح!',
-          text: 'تم جدولة الخدمة بنجاح',
-          confirmButtonText: 'موافق',
-          confirmButtonColor: '#ff3b3b'
-        });
-        
+    Swal.fire({
+  icon: 'success',
+  title: 'Success!',
+  text: 'Service has been scheduled successfully.',
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#ff3b3b'
+});
+
       } catch (error) {
         console.error('Vehicles Component: Error scheduling service:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'خطأ',
-          text: 'فشل في جدولة الخدمة. يرجى المحاولة مرة أخرى.',
-          confirmButtonText: 'موافق',
-          confirmButtonColor: '#ff3b3b'
-        });
+   Swal.fire({
+  icon: 'error',
+  title: 'Error',
+  text: 'Failed to schedule the service. Please try again.',
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#ff3b3b'
+});
+
       }
     } else {
       console.log('Vehicles Component: Form is invalid:', this.serviceForm.errors);
@@ -333,13 +379,14 @@ export class VehiclesComponent {
   // Get current location
   getCurrentLocation(): void {
     if (!navigator.geolocation) {
-      Swal.fire({
-        icon: 'error',
-        title: 'خطأ',
-        text: 'المتصفح لا يدعم خدمة تحديد الموقع',
-        confirmButtonText: 'موافق',
-        confirmButtonColor: '#ff3b3b'
-      });
+  Swal.fire({
+  icon: 'error',
+  title: 'Error',
+  text: 'Your browser does not support geolocation.',
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#ff3b3b'
+});
+
       return;
     }
 
@@ -355,50 +402,53 @@ export class VehiclesComponent {
           const locationString = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
           this.serviceForm.patchValue({ location: locationString });
           
-          Swal.fire({
-            icon: 'success',
-            title: 'تم تحديد الموقع',
-            text: 'تم الحصول على موقعك الحالي بنجاح',
-            timer: 2000,
-            showConfirmButton: false
-          });
+     Swal.fire({
+  icon: 'success',
+  title: 'Location Detected',
+  text: 'Your current location has been retrieved successfully.',
+  timer: 2000,
+  showConfirmButton: false
+});
+
           
         } catch (error) {
           console.error('Error getting location:', error);
-          Swal.fire({
-            icon: 'error',
-            title: 'خطأ',
-            text: 'فشل في تحديد الموقع',
-            confirmButtonText: 'موافق',
-            confirmButtonColor: '#ff3b3b'
-          });
+       Swal.fire({
+  icon: 'error',
+  title: 'Error',
+  text: 'Failed to detect your location.',
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#ff3b3b'
+});
+
         } finally {
           this.isGettingLocation = false;
         }
       },
       (error) => {
         this.isGettingLocation = false;
-        let errorMessage = 'فشل في تحديد الموقع';
+        let errorMessage = 'Failed to detect location';
         
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            errorMessage = 'تم رفض الإذن للوصول إلى الموقع';
+         errorMessage = 'Permission to access location was denied.'; 
             break;
           case error.POSITION_UNAVAILABLE:
-            errorMessage = 'معلومات الموقع غير متاحة';
+         errorMessage = 'Location information is unavailable.';
             break;
           case error.TIMEOUT:
-            errorMessage = 'انتهت مهلة طلب الموقع';
+        errorMessage = 'Location request timed out.';      
             break;
         }
         
-        Swal.fire({
-          icon: 'error',
-          title: 'خطأ في الموقع',
-          text: errorMessage,
-          confirmButtonText: 'موافق',
-          confirmButtonColor: '#ff3b3b'
-        });
+      Swal.fire({
+  icon: 'error',
+  title: 'Location Error',
+  text: errorMessage,
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#ff3b3b'
+});
+
       },
       {
         enableHighAccuracy: true,
