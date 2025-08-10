@@ -3,6 +3,7 @@
 ## 📋 Table of Contents
 
 - [Overview](#overview)
+- [Accounts](#accounts)
 - [Features](#features)
 - [Technology Stack](#technology-stack)
 - [Project Architecture](#project-architecture)
@@ -15,7 +16,6 @@
 - [Contributing](#contributing)
 - [Troubleshooting](#troubleshooting)
 - [License](#license)
-- [Accounts](#accounts)
 
 ## 🚗 Overview
 
@@ -41,6 +41,25 @@ This project was developed by a dedicated team of developers:
 - **Basmala Mohamed Abd Elaleem**
 - **Ahmed Mohammed Allam**
 - **Yousef Elbilkasy**
+
+
+## Accounts
+
+### Driver
+
+- **Email**: Driver@gmail.com
+- **Password**: 12345678
+
+### Technician
+
+- **Email**: tech@gmail.com
+- **Password**: 12345678
+
+### Admin
+
+- **Email**: abduallhshadow@gmail.com
+- **Password**: 12345678
+
 
 ## ✨ Features
 
@@ -645,25 +664,3 @@ For support and questions:
 **Built with ❤️ by the D2D Care Team**
 
 _Last Updated: August 2025_
-
-## Accounts
-
-### Customer
-
-- **Email**: youseffelbazz.1@gmail.com
-- **Password**: 12345678
-
-### Driver
-
-- **Email**: Driver@gmail.com
-- **Password**: 12345678
-
-### Technician
-
-- **Email**: tech@gmail.com
-- **Password**: 12345678
-
-### Admin
-
-- **Email**: abduallhshadow@gmail.com
-- **Password**: 12345678
