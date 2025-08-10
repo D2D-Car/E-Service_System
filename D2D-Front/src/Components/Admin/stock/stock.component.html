@@ -43,7 +43,7 @@
     </div>
 
     <div class="stat-card urgent">
-      <h3>Emergency Calls</h3>
+      <h3>Out Of Stock</h3>
       <div class="stat-number">{{emergencyCalls}}</div>
       <div class="stat-label">
         <span class="status-icon">🚨</span>
@@ -55,32 +55,32 @@
   <!-- Main Content Area -->
   <div class="content-grid">
     <!-- Parts List -->
-      <div class="table-container">
-        <table class="parts-table">
-          <thead>
-            <tr>
-              <th>Part Name</th>
-              <th>Part Number</th>
-              <th>Quantity</th>
-              <th>Location</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let part of filteredPartsList" [class]="getRowClass(part.status)">
-              <td>{{part.name}}</td>
-              <td>{{part.partNumber}}</td>
-              <td>{{part.quantity}}</td>
-              <td>{{part.location}}</td>
-              <td>
-                <span class="status-badge" [class]="getStatusClass(part.status)">
-                  {{part.status}}
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="table-container">
+      <table class="parts-table">
+        <thead>
+          <tr>
+            <th>Part Name</th>
+            <th>Part Number</th>
+            <th>Quantity</th>
+            <th>Location</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let part of filteredPartsList" [class]="getRowClass(part.status)">
+            <td>{{part.name}}</td>
+            <td>{{part.partNumber}}</td>
+            <td>{{part.quantity}}</td>
+            <td>{{part.location}}</td>
+            <td>
+              <span class="status-badge" [class]="getStatusClass(part.status)">
+                {{part.status}}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <!-- Service Issues Chart -->
     <div class="chart-section">
