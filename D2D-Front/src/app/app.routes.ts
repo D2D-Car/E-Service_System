@@ -38,13 +38,15 @@ import { DriverProfileComponent } from '../Components/Driver/driver-profile/driv
 import { DriverSharedComponent } from '../Components/Driver/driver-shared/driver-shared.component';
 
 export const routes: Routes = [
-  // Landing Page Routes
+  // Landing Page Routes - All redirect to home with fragments for scrolling
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'about', component: AboutComponent },
-  { path: 'contact', component: FeedbackComponent },
-  { path: 'services', component: ServicesComponent },
-  { path: 'technicians', component: LandingTechniciansComponent },
+  { path: 'about', redirectTo: '/#about', pathMatch: 'full' },
+  { path: 'contact', redirectTo: '/#contact', pathMatch: 'full' },
+  { path: 'services', redirectTo: '/#services', pathMatch: 'full' },
+  { path: 'technicians', redirectTo: '/#technicians', pathMatch: 'full' },
+  { path: 'testimonials', redirectTo: '/#testimonials', pathMatch: 'full' },
+  { path: 'feedback', redirectTo: '/#feedback', pathMatch: 'full' },
 
   // Authentication routes
   {

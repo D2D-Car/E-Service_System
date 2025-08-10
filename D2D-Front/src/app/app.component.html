@@ -1,13 +1,9 @@
-<ng-container *ngIf="!isHomePage">
-  <app-navbar></app-navbar>
-</ng-container>
+<app-navbar></app-navbar>
 
-<router-outlet></router-outlet>
-
-<ng-container *ngIf="isHomePage">
+<ng-container *ngIf="isHomePage; else routedContent">
   <div class="landing-scroll-container">
     <section class="landing-section" id="home">
-      <router-outlet></router-outlet>
+      <app-home></app-home>
     </section>
     <section class="landing-section" id="technicians">
       <app-technicians></app-technicians>
@@ -24,12 +20,13 @@
     <section class="landing-section" id="feedback">
       <app-feedback></app-feedback>
     </section>
+    <section class="landing-section" id="contact">
+      <app-contact></app-contact>
+    </section>
   </div>
 </ng-container>
-
-<!-- Show other pages when not on home page -->
-<ng-container *ngIf="!isHomePage">
+<ng-template #routedContent>
   <router-outlet></router-outlet>
-</ng-container>
+</ng-template>
 
 <app-footer *ngIf="!isDashboardPage"></app-footer>

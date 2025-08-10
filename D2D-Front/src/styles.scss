@@ -422,3 +422,18 @@ body {
 .member-icon {
   background: var(--member-gradient);
 }
+
+// Landing page scroll adjustments for navbar
+.landing-section {
+  scroll-margin-top: 85px; // Account for navbar + small padding
+  position: relative;
+}
+
+.landing-section#home {
+  scroll-margin-top: 0; // Home section starts from top
+}
+
+// Smooth scroll behavior
+html {
+  scroll-behavior: smooth;
+}

@@ -15,6 +15,7 @@ import { HomeComponent } from '../Components/Landing/home/home.component';
 import { FeedbackComponent } from '../Components/Landing/feedback/feedback.component';
 import { AboutComponent } from '../Components/Landing/about/about.component';
 import { TestimonialsComponent } from '../Components/Landing/testimonials/testimonials.component';
+import { ContactComponent } from '../Components/Landing/contact/contact.component';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -30,6 +31,8 @@ import { Subscription } from 'rxjs';
     FooterComponent,
     AboutComponent,
     TestimonialsComponent,
+  ContactComponent,
+  HomeComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
@@ -104,7 +107,22 @@ export class AppComponent implements OnInit, OnDestroy {
   private scrollToFragment(fragment: string): void {
     const element = document.getElementById(fragment);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const navbarHeight = 80;
+      const elementTop = element.offsetTop;
+      let scrollTarget: number;
+      
+      if (fragment === 'home') {
+        // Home section should start from the very top
+        scrollTarget = 0;
+      } else {
+        // Other sections should start just below navbar with small padding
+        scrollTarget = elementTop - navbarHeight - 5; // 5px padding for perfect alignment
+      }
+      
+      window.scrollTo({
+        top: scrollTarget,
+        behavior: 'smooth'
+      });
     }
   }
 
@@ -150,22 +168,57 @@ export class AppComponent implements OnInit, OnDestroy {
   private updateActiveSection() {
     const container = document.querySelector('.landing-scroll-container');
     if (!container) return;
+    
     const sections = Array.from(container.querySelectorAll('.landing-section'));
+    const navbarHeight = 80;
     let found = false;
+    
+    // Find section that's currently most visible in the viewport (accounting for navbar)
     for (const section of sections) {
       const rect = (section as HTMLElement).getBoundingClientRect();
-      if (
-        rect.top <= window.innerHeight / 2 &&
-        rect.bottom > window.innerHeight / 2
-      ) {
+      const sectionTop = rect.top;
+      const sectionBottom = rect.bottom;
+      
+      // Consider navbar height and use center of visible viewport
+      const viewportStart = navbarHeight;
+      const viewportCenter = navbarHeight + (window.innerHeight - navbarHeight) / 2;
+      
+      // Section is active if it contains the center of the visible viewport
+      if (sectionTop <= viewportCenter && sectionBottom > viewportCenter) {
         this.activeSection = section.id;
         found = true;
         break;
       }
     }
+    
+    // Fallback: use the first section if none found
     if (!found && sections.length) {
-      this.activeSection = (sections[0] as HTMLElement).id;
+      const scrollTop = window.pageYOffset;
+      
+      if (scrollTop < 50) {
+        // Very top = home
+        this.activeSection = 'home';
+      } else {
+        // Find section based on scroll position
+        for (const section of sections) {
+          const elementTop = (section as HTMLElement).offsetTop;
+          const nextSibling = section.nextElementSibling as HTMLElement;
+          const nextTop = nextSibling ? nextSibling.offsetTop : Infinity;
+          
+          if (scrollTop + navbarHeight >= elementTop && scrollTop + navbarHeight < nextTop) {
+            this.activeSection = section.id;
+            found = true;
+            break;
+          }
+        }
+        
+        // Last resort: use first section
+        if (!found) {
+          this.activeSection = (sections[0] as HTMLElement).id;
+        }
+      }
     }
+    
     // Emit custom event for navbar
     window.dispatchEvent(
       new CustomEvent('sectionChange', { detail: this.activeSection })
