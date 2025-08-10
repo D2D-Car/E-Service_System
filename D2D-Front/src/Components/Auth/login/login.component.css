@@ -4,7 +4,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  /* Extra top padding to prevent overlap with fixed navbar */
+  padding: 120px 20px 40px;
   position: relative;
   overflow: hidden;
 }
