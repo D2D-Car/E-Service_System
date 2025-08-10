@@ -12,19 +12,32 @@
     <div class="collapse navbar-collapse flex-grow-1" id="navbarNavDropdown">
       <ul class="navbar-nav main-nav align-items-center mx-auto">
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeSection==='home'" aria-current="page" href="#home" (click)="scrollTo('home',$event)">Home</a>
+          <a class="nav-link" [class.active]="activeSection==='home'" aria-current="page" href="#home"
+            (click)="scrollTo('home',$event)">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeSection==='technicians'" href="#technicians" (click)="scrollTo('technicians',$event)">Technicians</a>
+          <a class="nav-link" [class.active]="activeSection==='technicians'" href="#technicians"
+            (click)="scrollTo('technicians',$event)">Technicians</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeSection==='services'" href="#services" (click)="scrollTo('services',$event)">Services</a>
+          <a class="nav-link" [class.active]="activeSection==='services'" href="#services"
+            (click)="scrollTo('services',$event)">Services</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeSection==='about'" href="#about" (click)="scrollTo('about',$event)">About</a>
+          <a class="nav-link" [class.active]="activeSection==='about'" href="#about"
+            (click)="scrollTo('about',$event)">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeSection==='contact'" href="#contact" (click)="scrollTo('contact',$event)">Contact</a>
+          <a class="nav-link" [class.active]="activeSection==='testimonials'" href="#testimonials"
+            (click)="scrollTo('testimonials',$event)">Testimonials</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeSection==='feedback'" href="#feedback"
+            (click)="scrollTo('feedback',$event)">Feedback</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeSection==='contact'" href="#contact"
+            (click)="scrollTo('contact',$event)">Contact</a>
         </li>
       </ul>
 

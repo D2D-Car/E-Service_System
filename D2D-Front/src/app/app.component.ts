@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  HostListener,
+  AfterViewInit,
+} from '@angular/core';
 import { ServicesComponent } from '../Components/Landing/services/services.component';
 import { NavbarComponent } from '../Components/Landing/navbar/navbar.component';
 import {
@@ -31,13 +37,13 @@ import { Subscription } from 'rxjs';
     FooterComponent,
     AboutComponent,
     TestimonialsComponent,
-  ContactComponent,
-  HomeComponent,
+    ContactComponent,
+    HomeComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   title = 'D2D Car';
   public isHomePage = false;
   public isDashboardPage = false;
@@ -45,6 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private readonly routeSubscription?: Subscription;
   private isScrolling = false;
   public activeSection: string = 'home';
+  private sectionObserver?: IntersectionObserver;
 
   constructor(
     public router: Router,
@@ -75,6 +82,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // Handle fragment scrolling after navigation
         this.handleFragmentScroll(url);
+
+        // Toggle home-page body class (used for snap / styling)
+        if (this.isHomePage) {
+          document.body.classList.add('home-page');
+        } else {
+          document.body.classList.remove('home-page');
+        }
       });
   }
 
@@ -88,10 +102,76 @@ export class AppComponent implements OnInit, OnDestroy {
     }, 500);
   }
 
+  ngAfterViewInit(): void {
+    // Initialize reveal animations for landing sections
+    if (this.isHomePage) {
+      this.initSectionObserver();
+    }
+
+    // Also (re-)init observer when route changes to home
+    this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe(() => {
+        if (this.isHomePage) {
+          // Delay a tick to ensure DOM rendered
+          setTimeout(() => this.initSectionObserver(), 50);
+        } else if (this.sectionObserver) {
+          this.sectionObserver.disconnect();
+        }
+      });
+  }
+
   ngOnDestroy(): void {
     if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
     }
+    if (this.sectionObserver) {
+      this.sectionObserver.disconnect();
+    }
+  }
+
+  private initSectionObserver() {
+    const container = document.querySelector('.landing-scroll-container');
+    if (!container) return;
+
+    const sections: Element[] = Array.from(
+      container.querySelectorAll('.landing-section')
+    );
+
+    // Disconnect previous observer if exists
+    if (this.sectionObserver) {
+      this.sectionObserver.disconnect();
+    }
+
+    // Add base class so they are hidden before animation
+    sections.forEach((s) => s.classList.add('will-animate'));
+
+    // Ensure first (home) section visible immediately
+    const first = sections[0];
+    if (first && !first.classList.contains('visible')) {
+      first.classList.add('visible');
+    }
+
+    this.sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const el = entry.target as HTMLElement;
+          if (entry.isIntersecting) {
+            // Stagger children inside the section (optional)
+            el.classList.add('visible');
+            // Animate only once
+            this.sectionObserver?.unobserve(el);
+          }
+        });
+      },
+      {
+        root: null,
+        threshold: 0.2, // 20% of section visible triggers animation
+        rootMargin: '0px 0px -10% 0px',
+      }
+    );
+
+    sections.forEach((section) => this.sectionObserver?.observe(section));
   }
 
   private handleFragmentScroll(url: string): void {
@@ -110,7 +190,7 @@ export class AppComponent implements OnInit, OnDestroy {
       const navbarHeight = 80;
       const elementTop = element.offsetTop;
       let scrollTarget: number;
-      
+
       if (fragment === 'home') {
         // Home section should start from the very top
         scrollTarget = 0;
@@ -118,10 +198,10 @@ export class AppComponent implements OnInit, OnDestroy {
         // Other sections should start just below navbar with small padding
         scrollTarget = elementTop - navbarHeight - 5; // 5px padding for perfect alignment
       }
-      
+
       window.scrollTo({
         top: scrollTarget,
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
     }
   }
@@ -133,8 +213,8 @@ export class AppComponent implements OnInit, OnDestroy {
     const container = document.querySelector('.landing-scroll-container');
     if (!container) return;
     const sections = Array.from(container.querySelectorAll('.landing-section'));
-    const currentSection = sections.find((section: any) => {
-      const rect = section.getBoundingClientRect();
+    const currentSection = sections.find((section: Element) => {
+      const rect = (section as HTMLElement).getBoundingClientRect();
       return rect.top <= 10 && rect.bottom > 10;
     });
     if (!currentSection) return;
@@ -146,14 +226,20 @@ export class AppComponent implements OnInit, OnDestroy {
       // Scroll Up
       nextSection = currentSection.previousElementSibling;
     }
-    if (nextSection && nextSection.classList.contains('landing-section')) {
+    if (nextSection?.classList.contains('landing-section')) {
+      event.preventDefault(); // Block native multi scroll momentum
+      const navbarHeight = 80;
+      const targetEl = nextSection as HTMLElement;
+      const targetTopRaw = targetEl.offsetTop;
+      const targetTop =
+        targetEl.id === 'home' ? 0 : targetTopRaw - navbarHeight - 5;
       this.isScrolling = true;
-      (nextSection as HTMLElement).scrollIntoView({ behavior: 'smooth' });
+      window.scrollTo({ top: targetTop, behavior: 'smooth' });
+      // Use scroll event end detection fallback via timeout
       setTimeout(() => {
         this.isScrolling = false;
         this.updateActiveSection();
-      }, 800);
-      event.preventDefault();
+      }, 700);
     }
   }
 
@@ -168,21 +254,21 @@ export class AppComponent implements OnInit, OnDestroy {
   private updateActiveSection() {
     const container = document.querySelector('.landing-scroll-container');
     if (!container) return;
-    
+
     const sections = Array.from(container.querySelectorAll('.landing-section'));
     const navbarHeight = 80;
     let found = false;
-    
+
     // Find section that's currently most visible in the viewport (accounting for navbar)
     for (const section of sections) {
       const rect = (section as HTMLElement).getBoundingClientRect();
       const sectionTop = rect.top;
       const sectionBottom = rect.bottom;
-      
+
       // Consider navbar height and use center of visible viewport
-      const viewportStart = navbarHeight;
-      const viewportCenter = navbarHeight + (window.innerHeight - navbarHeight) / 2;
-      
+      const viewportCenter =
+        navbarHeight + (window.innerHeight - navbarHeight) / 2;
+
       // Section is active if it contains the center of the visible viewport
       if (sectionTop <= viewportCenter && sectionBottom > viewportCenter) {
         this.activeSection = section.id;
@@ -190,11 +276,11 @@ export class AppComponent implements OnInit, OnDestroy {
         break;
       }
     }
-    
+
     // Fallback: use the first section if none found
     if (!found && sections.length) {
       const scrollTop = window.pageYOffset;
-      
+
       if (scrollTop < 50) {
         // Very top = home
         this.activeSection = 'home';
@@ -204,21 +290,24 @@ export class AppComponent implements OnInit, OnDestroy {
           const elementTop = (section as HTMLElement).offsetTop;
           const nextSibling = section.nextElementSibling as HTMLElement;
           const nextTop = nextSibling ? nextSibling.offsetTop : Infinity;
-          
-          if (scrollTop + navbarHeight >= elementTop && scrollTop + navbarHeight < nextTop) {
+
+          if (
+            scrollTop + navbarHeight >= elementTop &&
+            scrollTop + navbarHeight < nextTop
+          ) {
             this.activeSection = section.id;
             found = true;
             break;
           }
         }
-        
+
         // Last resort: use first section
         if (!found) {
           this.activeSection = (sections[0] as HTMLElement).id;
         }
       }
     }
-    
+
     // Emit custom event for navbar
     window.dispatchEvent(
       new CustomEvent('sectionChange', { detail: this.activeSection })

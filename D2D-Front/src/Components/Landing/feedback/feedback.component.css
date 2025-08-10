@@ -1,10 +1,16 @@
 .feedback-page {
-  background-color:var(--background-color);
+  background-color: var(--background-color);
   color: #fff;
+  min-height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .highlight-text {
-  color: #E83030;
+  color: #e83030;
 }
 
 .feedback-form {
@@ -12,7 +18,7 @@
 }
 
 .feedback-form h2 {
-  color: #E83030;
+  color: #e83030;
 }
 
 .custom-input {
@@ -26,14 +32,14 @@
 }
 
 .custom-input:focus {
-  border: 1px solid #E83030;
+  border: 1px solid #e83030;
   box-shadow: none;
   background-color: #444;
   color: #fff;
 }
 
 .submit-btn {
-  background-color: #E83030;
+  background-color: #e83030;
   color: white;
   transition: 0.3s ease;
 }
@@ -43,14 +49,14 @@
   color: white;
 }
 
-hr{
-     background: linear-gradient(to left, transparent, #E83030);
-     border: none;
-     height: 4px;
+hr {
+  background: linear-gradient(to left, transparent, #e83030);
+  border: none;
+  height: 4px;
 }
 
 .contact-info-box h3 {
-  color: #E83030;
+  color: #e83030;
 }
 
 .contact-list a {
@@ -61,6 +67,6 @@ hr{
 }
 
 .contact-list a:hover {
-  color: #E83030;
+  color: #e83030;
   text-decoration: none;
 }

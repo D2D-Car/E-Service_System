@@ -1,6 +1,13 @@
 .technicians-section {
   background-color: var(--background-color);
-  padding: 4rem 1rem;
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0;
   transition: var(--time-transition);
 }
 

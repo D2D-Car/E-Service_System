@@ -42,7 +42,7 @@
 // Using CSS imports instead of SCSS @import for external resources
 
 // Leaflet CSS import
-@import 'leaflet/dist/leaflet.css';
+@import "leaflet/dist/leaflet.css";
 
 .technicians-section,
 .drivers-section,
@@ -50,8 +50,8 @@
   padding: 1.5rem !important;
 }
 
-@media(max-width: 420px) {
-  .row>* {
+@media (max-width: 420px) {
+  .row > * {
     padding: {
       right: 0 !important;
       left: 0 !important;
@@ -74,7 +74,7 @@
 // SCSS Variables (Must be defined first)
 // =====================================
 $primary: #ff3b3be8;
-$background-darkgray: #1C1C1E;
+$background-darkgray: #1c1c1e;
 $dark: #0a0a0a;
 $secondary: #5b272a;
 $light: #ffffff;
@@ -144,10 +144,26 @@ $member-gradient-end: #8e24aa;
   --danger-bg: #{$danger-bg};
 
   // Icon Gradients
-  --services-gradient: linear-gradient(135deg, #{$services-gradient-start}, #{$services-gradient-end});
-  --money-gradient: linear-gradient(135deg, #{$money-gradient-start}, #{$money-gradient-end});
-  --loyalty-gradient: linear-gradient(135deg, #{$loyalty-gradient-start}, #{$loyalty-gradient-end});
-  --member-gradient: linear-gradient(135deg, #{$member-gradient-start}, #{$member-gradient-end});
+  --services-gradient: linear-gradient(
+    135deg,
+    #{$services-gradient-start},
+    #{$services-gradient-end}
+  );
+  --money-gradient: linear-gradient(
+    135deg,
+    #{$money-gradient-start},
+    #{$money-gradient-end}
+  );
+  --loyalty-gradient: linear-gradient(
+    135deg,
+    #{$loyalty-gradient-start},
+    #{$loyalty-gradient-end}
+  );
+  --member-gradient: linear-gradient(
+    135deg,
+    #{$member-gradient-start},
+    #{$member-gradient-end}
+  );
 
   // Layout & Design
   --padding: 1rem;
@@ -247,7 +263,8 @@ body {
   background: var(--bg-secondary);
   color: var(--text-primary);
   transition: background 0.3s ease, color 0.3s ease;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
 }
 
 /* Custom Light Scrollbar - Theme Adaptive */
@@ -283,7 +300,8 @@ body {
 
 body {
   background-color: var(--background-color) !important;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
 }
 
 .light-theme body {
@@ -355,10 +373,26 @@ body.admin-page {
   --danger-bg: #{$danger-bg};
 
   // Icon Gradients
-  --services-gradient: linear-gradient(135deg, #{$services-gradient-start}, #{$services-gradient-end});
-  --money-gradient: linear-gradient(135deg, #{$money-gradient-start}, #{$money-gradient-end});
-  --loyalty-gradient: linear-gradient(135deg, #{$loyalty-gradient-start}, #{$loyalty-gradient-end});
-  --member-gradient: linear-gradient(135deg, #{$member-gradient-start}, #{$member-gradient-end});
+  --services-gradient: linear-gradient(
+    135deg,
+    #{$services-gradient-start},
+    #{$services-gradient-end}
+  );
+  --money-gradient: linear-gradient(
+    135deg,
+    #{$money-gradient-start},
+    #{$money-gradient-end}
+  );
+  --loyalty-gradient: linear-gradient(
+    135deg,
+    #{$loyalty-gradient-start},
+    #{$loyalty-gradient-end}
+  );
+  --member-gradient: linear-gradient(
+    135deg,
+    #{$member-gradient-start},
+    #{$member-gradient-end}
+  );
 
   --padding: 1rem;
   --border-radius: 16px;
@@ -374,13 +408,13 @@ body.admin-page {
 body {
   background-color: var(--background-color) !important;
   box-sizing: border-box;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
 }
 
 .light-theme body {
   background-color: #f5f5f5 !important;
 }
-
 
 .head-of-section {
   font-weight: 700;
@@ -395,7 +429,11 @@ body {
   letter-spacing: 2px;
   font-size: 2rem;
   margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -427,6 +465,59 @@ body {
 .landing-section {
   scroll-margin-top: 85px; // Account for navbar + small padding
   position: relative;
+}
+
+body.home-page {
+  overscroll-behavior: contain; // prevent wheel momentum from chaining
+}
+
+// Optional scroll snapping for cleaner one-section navigation
+.home-page .landing-scroll-container {
+  scroll-snap-type: y mandatory;
+}
+
+.home-page .landing-scroll-container .landing-section {
+  scroll-snap-align: start;
+  min-height: calc(
+    100vh - 80px
+  ); // ensure at least viewport height minus navbar
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+// Reveal animation base state
+.landing-section.will-animate {
+  opacity: 0;
+  transform: translateY(60px) scale(0.98);
+  transition: opacity 0.8s ease,
+    transform 1s cubic-bezier(0.17, 0.67, 0.27, 1.02);
+  will-change: opacity, transform;
+}
+
+// Visible state
+.landing-section.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+// Optional stagger for direct children
+.landing-section.visible > * {
+  animation: fadeSlideUp 0.9s ease forwards;
+}
+
+@keyframes fadeSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .landing-section#home {

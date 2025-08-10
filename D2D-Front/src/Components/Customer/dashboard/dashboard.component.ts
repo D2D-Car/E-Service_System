@@ -1,14 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { VehiclesComponent } from '../vehicles/vehicles.component';
 import { ServiceHistoryComponent } from '../service-history/service-history.component';
 import { CustomerProfileComponent } from '../profile/profile.component';
-import { FirebaseServiceService, ServiceBooking, UpcomingService } from '../../../Services/firebase-service.service';
+import {
+  FirebaseServiceService,
+  ServiceBooking,
+  UpcomingService,
+} from '../../../Services/firebase-service.service';
 import { AuthService } from '../../../Services/auth.service';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-
 
 interface RecentActivity {
   icon: string;
@@ -17,10 +25,15 @@ interface RecentActivity {
   time: string;
 }
 
-
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, VehiclesComponent, ServiceHistoryComponent, CustomerProfileComponent, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    VehiclesComponent,
+    ServiceHistoryComponent,
+    CustomerProfileComponent,
+    ReactiveFormsModule,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
@@ -38,26 +51,26 @@ export class DashboardComponent implements OnInit {
       icon: '🔧',
       title: 'Oil Change Completed',
       description: 'Service completed for Toyota Camry',
-      time: '2 hours ago'
+      time: '2 hours ago',
     },
     {
       icon: '🚗',
       title: 'Vehicle Added',
       description: 'New vehicle Honda Civic added to profile',
-      time: '1 day ago'
+      time: '1 day ago',
     },
     {
       icon: '📅',
       title: 'Appointment Scheduled',
       description: 'Brake inspection scheduled for Aug 20',
-      time: '2 days ago'
+      time: '2 days ago',
     },
     {
       icon: '💰',
       title: 'Payment Processed',
       description: 'Payment of $85.00 processed for oil change',
-      time: '3 days ago'
-    }
+      time: '3 days ago',
+    },
   ];
 
   // Modal state
@@ -79,8 +92,12 @@ export class DashboardComponent implements OnInit {
       vehicle: ['', Validators.required],
       date: ['', Validators.required],
       serviceType: ['General Service', Validators.required],
-      location: ['', Validators.required]
+      location: ['', Validators.required],
     });
+  }
+
+  async signOut() {
+    await this.authService.signOut();
   }
 
   ngOnInit() {
@@ -88,20 +105,22 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   private loadUserData(): void {
     // Subscribe to upcoming services
-    const upcomingSub = this.firebaseService.getCurrentUserUpcomingServices().subscribe(
-      (services) => {
-        this.upcomingServices = services;
-        console.log('Upcoming services loaded:', services);
-      },
-      (error) => {
-        console.error('Error loading upcoming services:', error);
-      }
-    );
+    const upcomingSub = this.firebaseService
+      .getCurrentUserUpcomingServices()
+      .subscribe(
+        (services) => {
+          this.upcomingServices = services;
+          console.log('Upcoming services loaded:', services);
+        },
+        (error) => {
+          console.error('Error loading upcoming services:', error);
+        }
+      );
 
     // Subscribe to all services for service history
     const servicesSub = this.firebaseService.getCurrentUserServices().subscribe(
@@ -119,9 +138,15 @@ export class DashboardComponent implements OnInit {
 
   openAddServiceModal(): void {
     console.log('Customer Dashboard: Opening modal...');
-    console.log('Customer Dashboard: Current showAddServiceModal value:', this.showAddServiceModal);
+    console.log(
+      'Customer Dashboard: Current showAddServiceModal value:',
+      this.showAddServiceModal
+    );
     this.showAddServiceModal = true;
-    console.log('Customer Dashboard: showAddServiceModal set to:', this.showAddServiceModal);
+    console.log(
+      'Customer Dashboard: showAddServiceModal set to:',
+      this.showAddServiceModal
+    );
     this.addServiceForm.reset({
       title: '',
       description: '',
@@ -129,13 +154,16 @@ export class DashboardComponent implements OnInit {
       vehicle: '',
       date: '',
       serviceType: 'General Service',
-      location: ''
+      location: '',
     });
     console.log('Customer Dashboard: Modal should be visible now');
-    
+
     // Force change detection
     setTimeout(() => {
-      console.log('Customer Dashboard: Modal state after timeout:', this.showAddServiceModal);
+      console.log(
+        'Customer Dashboard: Modal state after timeout:',
+        this.showAddServiceModal
+      );
     }, 100);
   }
 
@@ -149,7 +177,7 @@ export class DashboardComponent implements OnInit {
       vehicle: '',
       date: '',
       serviceType: 'General Service',
-      location: ''
+      location: '',
     });
   }
 
@@ -157,10 +185,13 @@ export class DashboardComponent implements OnInit {
     if (this.addServiceForm.valid) {
       this.isLoading = true;
       this.errorMessage = '';
-      
+
       const formValue = this.addServiceForm.value;
-      console.log('Customer Dashboard: Adding new service with form data:', formValue);
-      
+      console.log(
+        'Customer Dashboard: Adding new service with form data:',
+        formValue
+      );
+
       try {
         // Prepare service data for Firebase
         const serviceData = {
@@ -170,25 +201,29 @@ export class DashboardComponent implements OnInit {
           vehicle: formValue.vehicle,
           serviceDate: new Date(formValue.date),
           serviceType: formValue.serviceType,
-          location: formValue.location
+          location: formValue.location,
         };
 
         // Add service to Firebase
-        const serviceId = await this.firebaseService.addServiceBooking(serviceData);
-        console.log('Customer Dashboard: Service added to Firebase with ID:', serviceId);
+        const serviceId = await this.firebaseService.addServiceBooking(
+          serviceData
+        );
+        console.log(
+          'Customer Dashboard: Service added to Firebase with ID:',
+          serviceId
+        );
 
         // Close modal and show success message
         this.closeAddServiceModal();
-        
+
         // Show SweetAlert success message
-      Swal.fire({
-  icon: 'success',
-  title: 'Success!',
-  text: 'Service booked successfully.',
-  confirmButtonText: 'OK',
-  confirmButtonColor: '#3085d6'
-});
-        
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Service booked successfully.',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#3085d6',
+        });
       } catch (error: any) {
         console.error('Customer Dashboard: Error adding service:', error);
         const code = error?.code || '';
@@ -201,24 +236,29 @@ export class DashboardComponent implements OnInit {
             title: 'Permission Denied',
             text: 'Access denied while creating service (permission-denied). تأكد من تسجيل الدخول وصلاحيات الحساب.',
             confirmButtonText: 'OK',
-            confirmButtonColor: '#d33'
+            confirmButtonColor: '#d33',
           });
         } else {
           Swal.fire({
             icon: 'error',
             title: 'Booking Failed',
-            html: `<p style="margin:0 0 8px">Failed to book service.</p><code style="font-size:12px;word-break:break-all;display:block;padding:6px;background:#222;border-radius:4px">${code || 'no-code'} - ${message}</code>`,
+            html: `<p style="margin:0 0 8px">Failed to book service.</p><code style="font-size:12px;word-break:break-all;display:block;padding:6px;background:#222;border-radius:4px">${
+              code || 'no-code'
+            } - ${message}</code>`,
             confirmButtonText: 'OK',
-            confirmButtonColor: '#d33'
+            confirmButtonColor: '#d33',
           });
         }
       } finally {
         this.isLoading = false;
       }
     } else {
-      console.log('Customer Dashboard: Form is invalid:', this.addServiceForm.errors);
+      console.log(
+        'Customer Dashboard: Form is invalid:',
+        this.addServiceForm.errors
+      );
       // Mark all fields as touched to show validation errors
-      Object.keys(this.addServiceForm.controls).forEach(key => {
+      Object.keys(this.addServiceForm.controls).forEach((key) => {
         this.addServiceForm.get(key)?.markAsTouched();
       });
     }
@@ -237,30 +277,30 @@ export class DashboardComponent implements OnInit {
   // Get current location
   getCurrentLocation(): void {
     if (!navigator.geolocation) {
-  Swal.fire({
-  icon: 'error',
-  title: 'Error',
-  text: 'Your browser does not support location services.',
-  confirmButtonText: 'OK',
-  confirmButtonColor: '#d33'
-});
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Your browser does not support location services.',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#d33',
+      });
 
       return;
     }
 
     this.isGettingLocation = true;
-    
+
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         try {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
-          
+
           // Use reverse geocoding to get address
           const response = await fetch(
             `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lng}&key=YOUR_API_KEY&language=ar&pretty=1`
           );
-          
+
           if (response.ok) {
             const data = await response.json();
             if (data.results && data.results.length > 0) {
@@ -270,24 +310,25 @@ export class DashboardComponent implements OnInit {
             } else {
               // Fallback to coordinates if no address found
               this.currentLocation = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-              this.addServiceForm.patchValue({ location: this.currentLocation });
+              this.addServiceForm.patchValue({
+                location: this.currentLocation,
+              });
             }
           } else {
             // Fallback to coordinates if API fails
             this.currentLocation = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
             this.addServiceForm.patchValue({ location: this.currentLocation });
           }
-          
-       Swal.fire({
-  icon: 'success',
-  title: 'Location Found',
-  text: 'Your current location has been detected.',
-  timer: 2000,
-  showConfirmButton: false,
-  toast: true,
-  position: 'top-end'
-});
 
+          Swal.fire({
+            icon: 'success',
+            title: 'Location Found',
+            text: 'Your current location has been detected.',
+            timer: 2000,
+            showConfirmButton: false,
+            toast: true,
+            position: 'top-end',
+          });
         } catch (error) {
           console.error('Error getting location details:', error);
           // Use coordinates as fallback
@@ -295,48 +336,46 @@ export class DashboardComponent implements OnInit {
           const lng = position.coords.longitude;
           this.currentLocation = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
           this.addServiceForm.patchValue({ location: this.currentLocation });
-          
-       Swal.fire({
-  icon: 'info',
-  title: 'Location Detected',
-  text: 'Your location coordinates have been obtained',
-  timer: 2000,
-  showConfirmButton: false
-});
 
+          Swal.fire({
+            icon: 'info',
+            title: 'Location Detected',
+            text: 'Your location coordinates have been obtained',
+            timer: 2000,
+            showConfirmButton: false,
+          });
         } finally {
           this.isGettingLocation = false;
         }
       },
       (error) => {
         this.isGettingLocation = false;
-let errorMessage = 'Failed to determine location';
+        let errorMessage = 'Failed to determine location';
 
-switch (error.code) {
-  case error.PERMISSION_DENIED:
-    errorMessage = 'Permission to access location was denied';
-    break;
-  case error.POSITION_UNAVAILABLE:
-    errorMessage = 'Location information is unavailable';
-    break;
-  case error.TIMEOUT:
-    errorMessage = 'Location request timed out';
-    break;
-}
-        
-    Swal.fire({
-  icon: 'error',
-  title: 'Location Error',
-  text: errorMessage,
-  confirmButtonText: 'OK',
-  confirmButtonColor: '#d33'
-});
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = 'Permission to access location was denied';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = 'Location information is unavailable';
+            break;
+          case error.TIMEOUT:
+            errorMessage = 'Location request timed out';
+            break;
+        }
 
+        Swal.fire({
+          icon: 'error',
+          title: 'Location Error',
+          text: errorMessage,
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#d33',
+        });
       },
       {
         enableHighAccuracy: true,
         timeout: 10000,
-        maximumAge: 60000
+        maximumAge: 60000,
       }
     );
   }
