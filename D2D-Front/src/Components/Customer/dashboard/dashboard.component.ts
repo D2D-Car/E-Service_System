@@ -191,27 +191,26 @@ export class DashboardComponent implements OnInit {
         
       } catch (error: any) {
         console.error('Customer Dashboard: Error adding service:', error);
-        if (error.message && error.message.includes('Permission denied')) 
-          
-        {
-Swal.fire({
-    icon: 'error',
-    title: 'Permission Denied',
-    text: 'Please check your account permissions or contact support.',
-    confirmButtonText: 'OK',
-    confirmButtonColor: '#d33'
-  });        } 
-        
-        else {
+        const code = error?.code || '';
+        const message = error?.message || 'Unknown error';
+        this.errorMessage = `${code} :: ${message}`;
 
+        if (code === 'permission-denied' || /permission/i.test(message)) {
           Swal.fire({
-    icon: 'error',
-    title: 'Booking Failed',
-    text: 'Failed to book service. Please try again.',
-    confirmButtonText: 'OK',
-    confirmButtonColor: '#d33'
-  });
-
+            icon: 'error',
+            title: 'Permission Denied',
+            text: 'Access denied while creating service (permission-denied). تأكد من تسجيل الدخول وصلاحيات الحساب.',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#d33'
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Booking Failed',
+            html: `<p style="margin:0 0 8px">Failed to book service.</p><code style="font-size:12px;word-break:break-all;display:block;padding:6px;background:#222;border-radius:4px">${code || 'no-code'} - ${message}</code>`,
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#d33'
+          });
         }
       } finally {
         this.isLoading = false;

@@ -24,29 +24,21 @@ service cloud.firestore {
     // SERVICES COLLECTION (Customer Service Bookings)
     // =====================================
     match /services/{serviceId} {
-      // Allow users to read and write their own services
-      allow read, write: if request.auth != null && 
-        request.auth.uid == resource.data.userId;
-      
-      // Allow users to create services for themselves
-      allow create: if request.auth != null && 
-        request.auth.uid == request.resource.data.userId;
-      
-      // Allow technicians to read services assigned to them
-      allow read: if request.auth != null && 
+      // Customer creates a service for himself (use request.resource for creates)
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+
+      // Customer can read / update / delete his own existing service (resource available)
+      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
+
+      // Technicians can read services (e.g., to view jobs) and update status
+      allow read, update: if request.auth != null &&
         exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'technician';
-      
-      // Allow admins to read all services
-      allow read: if request.auth != null && 
+
+      // Admins have full access
+      allow read, write: if request.auth != null &&
         exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
-      
-      // Allow technicians and admins to update service status
-      allow update: if request.auth != null && 
-        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
-        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'technician' ||
-         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
     }
     
     // =====================================
@@ -65,6 +57,14 @@ service cloud.firestore {
 
       // Update / delete restricted to admin
       allow update, delete: if isAdmin();
+    }
+
+    // =====================================
+    // COUNTERS COLLECTION (order id sequences)
+    // =====================================
+    match /counters/{counterId} {
+      // Allow authenticated users to read/update order counters (could be tightened to admins only)
+      allow read, update, create: if request.auth != null;
     }
     
     // =====================================

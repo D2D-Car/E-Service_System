@@ -44,17 +44,43 @@ export class OrderIdService {
 
   async getNextOrderId(): Promise<string> {
     await this.ensureInitialized();
-    const nextNumber = await runTransaction(this.firestore, async (tx) => {
-      const snap = await tx.get(this.counterDocRef as any);
-      let last = 0;
-      if (snap.exists()) {
-        const data: any = snap.data();
-        last = data?.lastOrderNumber || 0;
+    let nextNumber: number;
+    try {
+      nextNumber = await runTransaction(this.firestore, async (tx) => {
+        const snap = await tx.get(this.counterDocRef as any);
+        let last = 0;
+        if (snap.exists()) {
+          const data: any = snap.data();
+          last = data?.lastOrderNumber || 0;
+        }
+        const next = last + 1;
+        tx.set(this.counterDocRef as any, { lastOrderNumber: next }, { merge: true });
+        return next;
+      });
+    } catch (e) {
+      console.warn('[OrderIdService] transaction failed, falling back scan', e);
+      // Fallback: scan existing adminOrders quickly (last resort)
+      try {
+        const ordersCol = collection(this.firestore, 'adminOrders');
+        const existing = await getDocs(ordersCol);
+        let maxNum = 0;
+        existing.forEach(d => {
+          const data: any = d.data();
+            const id: string | undefined = data?.orderId;
+            if (id) {
+              const match = id.match(/#SRV(\d+)/i);
+              if (match) {
+                const num = parseInt(match[1], 10);
+                if (!isNaN(num) && num > maxNum) maxNum = num;
+              }
+            }
+        });
+        nextNumber = maxNum + 1;
+      } catch (scanErr) {
+        console.error('[OrderIdService] fallback scan failed, using timestamp seed', scanErr);
+        nextNumber = parseInt(Date.now().toString().slice(-6), 10); // last 6 digits
       }
-      const next = last + 1;
-      tx.set(this.counterDocRef as any, { lastOrderNumber: next }, { merge: true });
-      return next;
-    });
+    }
     const padded = nextNumber.toString().padStart(3, '0');
     return `#SRV${padded}`;
   }

@@ -116,7 +116,14 @@ export class FirebaseServiceService {
           });
 
           // Sort manually since we can't use orderBy
-          services.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+          services.sort((a, b) => {
+            const toDate = (v: any) => {
+              if (v instanceof Date) return v;
+              if (v && typeof v === 'object' && typeof v.toDate === 'function') return v.toDate();
+              try { return new Date(v); } catch { return new Date(0); }
+            };
+            return toDate(b.createdAt).getTime() - toDate(a.createdAt).getTime();
+          });
           upcomingServices.sort((a, b) => new Date(a.serviceDate).getTime() - new Date(b.serviceDate).getTime());
 
           this.servicesSubject.next(services);
@@ -157,10 +164,9 @@ export class FirebaseServiceService {
         title: serviceData.title || '',
         description: serviceData.description || '',
         price: serviceData.price || 0,
-  technician: serviceData.technician, // optional
+        // optional fields will be conditionally added below
         vehicle: serviceData.vehicle || '',
         serviceDate: serviceData.serviceDate || new Date(),
-  rating: serviceData.rating, // optional
         status: 'scheduled',
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -170,7 +176,40 @@ export class FirebaseServiceService {
         customerLocation
       };
 
-      const docRef = await addDoc(collection(this.firestore, 'services'), newService);
+      // Conditionally attach optional fields only if defined (Firestore rejects undefined)
+      if (serviceData.technician !== undefined) (newService as any).technician = serviceData.technician;
+      if (serviceData.rating !== undefined) (newService as any).rating = serviceData.rating;
+      if (customerLocation === undefined) {
+        delete (newService as any).customerLocation; // avoid undefined
+      }
+
+      // Safety: remove any accidental undefined values
+      Object.keys(newService).forEach(k => {
+        if ((newService as any)[k] === undefined) {
+          delete (newService as any)[k];
+        }
+      });
+
+      console.log('[addServiceBooking] attempt user:', currentUser.uid, 'data:', newService);
+      const docRef = await addDoc(collection(this.firestore, 'services'), newService).catch(err => {
+        console.error('[addServiceBooking] Firestore addDoc error:', err?.code, err?.message, err);
+        throw err;
+      });
+      console.log('[addServiceBooking] success id:', docRef.id);
+
+      // Optimistic update so UI reflects immediately (real-time listener will reconcile)
+      const currentList = this.servicesSubject.value.slice();
+      const createdService: ServiceBooking = { ...newService, id: docRef.id };
+      currentList.unshift(createdService);
+      this.servicesSubject.next(currentList);
+      if (createdService.status === 'scheduled' || createdService.status === 'pending') {
+        const upList = this.upcomingServicesSubject.value.slice();
+        const upcoming = this.convertToUpcomingService(createdService);
+        if (upcoming) {
+          upList.push(upcoming);
+          this.upcomingServicesSubject.next(upList);
+        }
+      }
       
       // Also add to admin orders collection for admin dashboard
       try {
@@ -193,23 +232,55 @@ export class FirebaseServiceService {
   // Add service to admin orders collection
   private async addToAdminOrders(service: ServiceBooking, serviceId: string): Promise<void> {
     try {
-      const sequentialId = await this.orderIdService.getNextOrderId();
+      let sequentialId: string;
+      try {
+        sequentialId = await this.orderIdService.getNextOrderId();
+      } catch (e) {
+        console.warn('[addToAdminOrders] getNextOrderId failed, using fallback', e);
+        sequentialId = `#SRVFB${Date.now().toString().slice(-5)}`;
+      }
+      // Attempt to fetch customer displayName
+      let customerName = 'Customer';
+      try {
+        // dynamic import to avoid circular deps (auth service not injected here)
+        const { doc, getDoc } = await import('@angular/fire/firestore');
+        const userSnap = await getDoc(doc(this.firestore, 'users', service.userId));
+        if (userSnap.exists()) {
+          const data: any = userSnap.data();
+          customerName = data.displayName || data.name || customerName;
+        }
+      } catch (e) {
+        console.warn('[addToAdminOrders] could not fetch customer name', e);
+      }
       const orderData: any = {
         serviceId: serviceId,
         orderId: sequentialId,
         date: this.formatDate(service.serviceDate),
-        customer: 'Customer', // Will be updated with actual customer name
+        customer: customerName,
         serviceType: service.title,
         amount: service.price,
         status: service.status,
-        technician: service.technician,
+        technician: service.technician || '',
         vehicle: service.vehicle,
         location: service.location,
         createdAt: new Date(),
         updatedAt: new Date()
       };
       if (service.customerLocation) orderData.customerLocation = service.customerLocation;
-      await addDoc(collection(this.firestore, 'adminOrders'), orderData);
+      try {
+        await addDoc(collection(this.firestore, 'adminOrders'), orderData);
+        console.log('[addToAdminOrders] created admin order', orderData.orderId);
+      } catch (err: any) {
+        console.error('[addToAdminOrders] addDoc error', err?.code, err?.message, err);
+        // retry once with minimal required fields
+        try {
+          const minimal = { orderId: orderData.orderId, date: orderData.date, customer: orderData.customer, serviceType: orderData.serviceType, amount: orderData.amount, status: orderData.status, createdAt: new Date(), updatedAt: new Date() };
+          await addDoc(collection(this.firestore, 'adminOrders'), minimal);
+          console.log('[addToAdminOrders] retry succeeded with minimal data');
+        } catch (retryErr) {
+          console.error('[addToAdminOrders] retry failed', retryErr);
+        }
+      }
     } catch (error) {
       console.error('Error adding to admin orders:', error);
     }
