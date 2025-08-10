@@ -4,6 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
+  standalone: true,
   imports: [RouterModule,CommonModule, CommonModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
@@ -37,54 +38,58 @@ export class NavbarComponent implements OnInit {
   }
 
   scrollTo(sectionId: string, event: Event) {
-    event.preventDefault();
+  // Only prevent default if we're going to handle smooth scrolling ourselves
+  event.preventDefault();
     const onComposite = this.router.url === '/' || this.router.url === '/home' || this.router.url.startsWith('/#');
     const el = document.getElementById(sectionId);
 
     if (onComposite && el) {
-      this.scrolling = true;
-      this.activeSection = sectionId;
-      
-      // Add scrolling class to the clicked link
-      const clickedLink = event.target as HTMLElement;
-      clickedLink.classList.add('scrolling');
-      
-      // Calculate precise scroll position accounting for navbar
-      const navbarHeight = 80;
-      const elementTop = el.offsetTop;
-      let scrollTarget: number;
-      
-      if (sectionId === 'home') {
-        // Home section should start from the very top
-        scrollTarget = 0;
-      } else {
-        // Other sections should start just below navbar with small padding
-        scrollTarget = elementTop - navbarHeight - 5;
-      }
-      
-      window.scrollTo({
-        top: scrollTarget,
-        behavior: 'smooth'
-      });
-      
-      el.classList.add('scroll-pulse');
-      setTimeout(() => {
-        el.classList.remove('scroll-pulse');
-        clickedLink.classList.remove('scrolling');
-      }, 2000); // Match animation duration
-      setTimeout(() => (this.scrolling = false), 1500);
+      this.performSmoothScroll(sectionId, el, event.target as HTMLElement);
       return;
     }
 
     // Not on composite landing page yet -> navigate then apply effect after render
     this.router.navigate(['/'], { fragment: sectionId }).then(() => {
+      // Wait a tick for the landing sections to render, then smooth scroll with offset
       setTimeout(() => {
         const target = document.getElementById(sectionId);
         if (target) {
-          target.classList.add('scroll-pulse');
-          setTimeout(() => target.classList.remove('scroll-pulse'), 2000);
+          this.performSmoothScroll(sectionId, target, event.target as HTMLElement);
         }
-      }, 400); // slight delay to ensure DOM present
+      }, 350); // tuned delay
     });
+  }
+
+  private performSmoothScroll(sectionId: string, el: HTMLElement, clickedLink?: HTMLElement) {
+    this.scrolling = true;
+    this.activeSection = sectionId;
+
+    if (clickedLink) clickedLink.classList.add('scrolling');
+
+    const navbarHeight = 80;
+    const elementTop = el.offsetTop;
+    const scrollTarget = sectionId === 'home' ? 0 : Math.max(elementTop - navbarHeight - 5, 0);
+
+    // Prefer native scrollIntoView if available (handles dynamic layout better)
+    if (sectionId === 'home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if ('scrollIntoView' in el) {
+      // Use block:start then adjust if needed
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // After a short delay adjust for fixed navbar precisely
+      setTimeout(() => {
+        const adjusted = el.getBoundingClientRect().top + window.scrollY - 85; // navbar height + padding
+        window.scrollTo({ top: adjusted, behavior: 'auto' });
+      }, 350);
+    } else {
+      window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+    }
+
+    el.classList.add('scroll-pulse');
+    setTimeout(() => {
+      el.classList.remove('scroll-pulse');
+      if (clickedLink) clickedLink.classList.remove('scrolling');
+    }, 2000);
+    setTimeout(() => (this.scrolling = false), 1500);
   }
 }
