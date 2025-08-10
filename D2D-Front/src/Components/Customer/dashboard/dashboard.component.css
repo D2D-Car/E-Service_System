@@ -8,9 +8,11 @@
 
 /* Header Banner */
 .header-banner {
-  background: linear-gradient(135deg,
-      var(--primary-color) 0%,
-      var(--secondary-color) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--secondary-color) 100%
+  );
   padding: 2rem 2rem 3rem;
   position: relative;
   overflow: hidden;
@@ -716,4 +718,11 @@
   .form-actions .btn {
     width: 100%;
   }
+}
+
+.user-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
 }

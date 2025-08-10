@@ -1,4 +1,6 @@
-<app-navbar></app-navbar>
+@if (isHomePage) {
+  <app-navbar></app-navbar>
+}
 
 <ng-container *ngIf="isHomePage; else routedContent">
   <div class="landing-scroll-container">
