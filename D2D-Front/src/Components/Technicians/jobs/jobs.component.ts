@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { Firestore, collection, query, where, onSnapshot, orderBy } from '@angular/fire/firestore';
+import { Firestore, collection, query, where, onSnapshot } from '@angular/fire/firestore';
 import { AuthService } from '../../../Services/auth.service';
 
 @Component({
@@ -53,7 +53,9 @@ export class JobsComponent implements OnInit {
     const user = this.auth.getCurrentUser();
     if (!user) return;
     const ref = collection(this.firestore, 'adminOrders');
-    const q = query(ref, where('assignedTechnicianIds', 'array-contains', user.uid), orderBy('createdAt','desc'));
+  // Removed orderBy to avoid composite index requirement with array-contains.
+  // We'll sort client-side.
+  const q = query(ref, where('assignedTechnicianIds', 'array-contains', user.uid));
     this.jobsUnsub = onSnapshot(q, snap => {
       const list: any[] = [];
       snap.forEach(d => {
@@ -70,7 +72,12 @@ export class JobsComponent implements OnInit {
           date: data.createdAt
         });
       });
-      this.jobs = list;
+      // Client-side sort desc by createdAt (fallback to 0)
+      this.jobs = list.sort((a,b) => {
+        const ta = (a.date instanceof Date) ? a.date.getTime() : (a.date ? new Date(a.date).getTime() : 0);
+        const tb = (b.date instanceof Date) ? b.date.getTime() : (b.date ? new Date(b.date).getTime() : 0);
+        return tb - ta;
+      });
     });
   }
 

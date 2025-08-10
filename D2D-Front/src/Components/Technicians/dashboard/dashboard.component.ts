@@ -9,7 +9,7 @@ import { UserDataService, UserProfile } from '../../../Services/user-data.servic
 import { AuthService } from '../../../Services/auth.service';
 import { OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
-import { Firestore, collection, query, where, onSnapshot, orderBy, limit } from '@angular/fire/firestore';
+import { Firestore, collection, query, where, onSnapshot, limit } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-technicians-dashboard',
@@ -126,7 +126,8 @@ export class TechniciansDashboardComponent implements OnInit {
     const user = this.authService.getCurrentUser();
     if (!user) return;
     const ref = collection(this.firestore, 'adminOrders');
-    const q = query(ref, where('assignedTechnicianIds', 'array-contains', user.uid), orderBy('createdAt', 'desc'), limit(20));
+  // Removed orderBy('createdAt','desc') to avoid composite index requirement with array-contains
+  const q = query(ref, where('assignedTechnicianIds', 'array-contains', user.uid), limit(50));
     this.jobsUnsub = onSnapshot(q, snap => {
       const list: any[] = [];
       snap.forEach(d => {
@@ -141,7 +142,11 @@ export class TechniciansDashboardComponent implements OnInit {
             price: data.amount
         });
       });
-      this.jobsToday = list;
+      this.jobsToday = list.sort((a,b) => {
+        const ta = (a.date instanceof Date) ? a.date.getTime() : (a.date ? new Date(a.date).getTime() : 0);
+        const tb = (b.date instanceof Date) ? b.date.getTime() : (b.date ? new Date(b.date).getTime() : 0);
+        return tb - ta; // newest first
+      });
     });
   }
 

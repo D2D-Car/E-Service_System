@@ -57,7 +57,12 @@ export class DriverJobsComponent implements OnInit, OnDestroy {
             customerLocation: data.customerLocation
         });
       });
-      this.trips = list;
+      // Sort newest first by createdAt if available
+      this.trips = list.sort((a,b) => {
+        const ta = (a.createdAt instanceof Date) ? a.createdAt.getTime() : (a.createdAt ? new Date(a.createdAt).getTime() : 0);
+        const tb = (b.createdAt instanceof Date) ? b.createdAt.getTime() : (b.createdAt ? new Date(b.createdAt).getTime() : 0);
+        return tb - ta;
+      });
       this.filterTrips(this.selectedStatus);
     });
   }
