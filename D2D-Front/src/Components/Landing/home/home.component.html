@@ -6,7 +6,7 @@
         We offer reliable and efficient services to ensure your vehicle is always in top condition. Let us take care of your car, so you can focus on what matters most.
       </p>
       <div class="cta-buttons">
-        <a routerLink="/services" class="btn-primary">View Services</a>
+        <a href="#services" (click)="scrollToSection('services',$event)" class="btn-primary">View Services</a>
         <a routerLink="/auth/login" class="services-btn">Book Now</a>
       </div>
       <div class="slider-nav" aria-label="Hero navigation dots">
