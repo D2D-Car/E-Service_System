@@ -79,7 +79,7 @@ export class FinancialComponent {
 
   openModal(type: 'revenue' | 'projects' | 'team'): void {
     this.showModal = true;
-    
+
     switch (type) {
       case 'revenue':
         this.modalData = {
@@ -89,7 +89,7 @@ export class FinancialComponent {
             { icon: '💰', value: '$18,340', label: 'Current Revenue' },
             { icon: '📈', value: '+12.5%', label: 'Growth Rate' },
             { icon: '🎯', value: '$25,000', label: 'Target Revenue' },
-            { icon: '📊', value: '83%', label: 'Target Achievement' }
+            { icon: '📊', value: '83%', label: 'Target Achievement' },
           ],
           details: [
             { label: 'Monthly Average', value: '$15,280' },
@@ -97,11 +97,11 @@ export class FinancialComponent {
             { label: 'Lowest Month', value: '$8,920 (January)' },
             { label: 'Year-to-Date', value: '$156,780' },
             { label: 'Projected Annual', value: '$220,080' },
-            { label: 'Revenue per Customer', value: '$1,245' }
-          ]
+            { label: 'Revenue per Customer', value: '$1,245' },
+          ],
         };
         break;
-        
+
       case 'projects':
         this.modalData = {
           title: 'Projects Overview',
@@ -110,7 +110,7 @@ export class FinancialComponent {
             { icon: '📊', value: '25', label: 'Total Projects' },
             { icon: '✅', value: '18', label: 'Completed' },
             { icon: '🔄', value: '5', label: 'In Progress' },
-            { icon: '⏳', value: '2', label: 'Pending' }
+            { icon: '⏳', value: '2', label: 'Pending' },
           ],
           details: [
             { label: 'Completion Rate', value: '72%' },
@@ -118,11 +118,11 @@ export class FinancialComponent {
             { label: 'On-Time Delivery', value: '85%' },
             { label: 'Customer Satisfaction', value: '4.8/5' },
             { label: 'Team Efficiency', value: '92%' },
-            { label: 'Budget Adherence', value: '88%' }
-          ]
+            { label: 'Budget Adherence', value: '88%' },
+          ],
         };
         break;
-        
+
       case 'team':
         this.modalData = {
           title: 'Team Growth Details',
@@ -131,16 +131,19 @@ export class FinancialComponent {
             { icon: '👥', value: '13', label: 'Current Members' },
             { icon: '➕', value: '+3', label: 'This Quarter' },
             { icon: '⭐', value: '4.6', label: 'Team Rating' },
-            { icon: '🎯', value: '82%', label: 'Growth Target' }
+            { icon: '🎯', value: '82%', label: 'Growth Target' },
           ],
           details: [
-            { label: 'Department Distribution', value: 'Tech: 6, Sales: 4, Support: 3' },
+            {
+              label: 'Department Distribution',
+              value: 'Tech: 6, Sales: 4, Support: 3',
+            },
             { label: 'Average Experience', value: '3.2 years' },
             { label: 'Training Completion', value: '95%' },
             { label: 'Employee Satisfaction', value: '4.7/5' },
             { label: 'Retention Rate', value: '94%' },
-            { label: 'Performance Score', value: '88%' }
-          ]
+            { label: 'Performance Score', value: '88%' },
+          ],
         };
         break;
     }
@@ -249,9 +252,8 @@ export class FinancialComponent {
       const numberElement = element.querySelector(
         '.stat-number'
       ) as HTMLElement;
-      const current = parseInt(
-        numberElement?.textContent?.replace(/,/g, '') || '0'
-      );
+      const current =
+        parseInt(numberElement?.textContent?.replace(/,/g, '') || '0', 10) || 0;
       let change = 0;
 
       if (type === 'pending') {

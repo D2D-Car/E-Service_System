@@ -2,16 +2,22 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../../Services/theme.service';
 import { Subscription } from 'rxjs';
-import { AdminOrdersService, AdminOrder } from '../../../Services/admin-orders.service';
+import {
+  AdminOrdersService,
+  AdminOrder,
+} from '../../../Services/admin-orders.service';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
-import { UserDataService, UserProfile } from '../../../Services/user-data.service';
+import {
+  UserDataService,
+  UserProfile,
+} from '../../../Services/user-data.service';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.css'],
 })
@@ -36,7 +42,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   showMoreActions = false;
   showDateDropdown = false;
   selectedDateRange = 'Aug 1 - Aug 6, 2024';
-  
+
   // Modal properties
   showOrderDetailsModal = false;
   selectedOrder: AdminOrder | null = null;
@@ -84,9 +90,16 @@ export class OrdersComponent implements OnInit, OnDestroy {
   // Update statistics based on current orders
   private updateStatistics(): void {
     this.totalOrders = this.orders.length;
-    this.orderItems = this.orders.reduce((sum, order) => sum + order.items, 0);
-    this.fulfilledOrders = this.orders.filter(order => order.fulfillment === 'Fulfilled').length;
-    this.returnOrders = this.orders.filter(order => order.payment === 'Pending').length;
+    this.orderItems = this.orders.reduce(
+      (sum, order) => sum + (order.items || 0),
+      0
+    );
+    this.fulfilledOrders = this.orders.filter(
+      (order) => order.fulfillment === 'Fulfilled'
+    ).length;
+    this.returnOrders = this.orders.filter(
+      (order) => order.payment === 'Pending'
+    ).length;
   }
 
   // Helper method to update filtered orders based on current filter
@@ -145,7 +158,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   async viewOrder(orderId: string): Promise<void> {
     console.log('View order:', orderId);
     // Find the order by ID
-    const order = this.orders.find(o => o.id === orderId);
+    const order = this.orders.find((o) => o.id === orderId);
     if (order) {
       this.selectedOrder = order;
       this.showOrderDetailsModal = true;
@@ -160,7 +173,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   async editOrder(orderId: string): Promise<void> {
     console.log('Edit order:', orderId);
-    const orderToEdit = this.orders.find(order => order.id === orderId);
+    const orderToEdit = this.orders.find((order) => order.id === orderId);
     if (orderToEdit) {
       this.orderToEdit = { ...orderToEdit }; // Create a copy to avoid direct mutation
       this.showEditOrderModal = true;
@@ -178,11 +191,11 @@ export class OrdersComponent implements OnInit, OnDestroy {
     try {
       const [drivers, technicians] = await Promise.all([
         this.userDataService.getUsersByRole('driver'),
-        this.userDataService.getUsersByRole('technician')
+        this.userDataService.getUsersByRole('technician'),
       ]);
       this.drivers = drivers;
       this.technicians = technicians;
-    } catch (e:any) {
+    } catch (e: any) {
       this.assignmentError = 'Failed to load users';
     } finally {
       this.loadingAssignments = false;
@@ -194,8 +207,16 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.showAssignModal = false;
   }
 
-  toggleDriver(uid: string): void { this.selectedDriverIds.has(uid) ? this.selectedDriverIds.delete(uid) : this.selectedDriverIds.add(uid); }
-  toggleTechnician(uid: string): void { this.selectedTechnicianIds.has(uid) ? this.selectedTechnicianIds.delete(uid) : this.selectedTechnicianIds.add(uid); }
+  toggleDriver(uid: string): void {
+    this.selectedDriverIds.has(uid)
+      ? this.selectedDriverIds.delete(uid)
+      : this.selectedDriverIds.add(uid);
+  }
+  toggleTechnician(uid: string): void {
+    this.selectedTechnicianIds.has(uid)
+      ? this.selectedTechnicianIds.delete(uid)
+      : this.selectedTechnicianIds.add(uid);
+  }
 
   async saveAssignment(): Promise<void> {
     if (!this.selectedOrder?.id) return;
@@ -205,10 +226,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
         Array.from(this.selectedDriverIds),
         Array.from(this.selectedTechnicianIds)
       );
-      Swal.fire('Success','Order Saved','success');
+      Swal.fire('Success', 'Order Saved', 'success');
       this.closeAssignModal();
-    } catch (e:any) {
-      Swal.fire('Error','Failed to save assignment','error');
+    } catch (e: any) {
+      Swal.fire('Error', 'Failed to save assignment', 'error');
     }
   }
 
@@ -219,9 +240,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   saveOrderChanges(): void {
     if (!this.orderToEdit || !this.orderToEdit.id) return;
-    
+
     // Update the order in the service
-    this.adminOrdersService.updateOrder(this.orderToEdit.id, this.orderToEdit)
+    this.adminOrdersService
+      .updateOrder(this.orderToEdit.id, this.orderToEdit)
       .then(() => {
         // Close the modal after successful update
         this.closeEditOrderModal();
@@ -230,16 +252,16 @@ export class OrdersComponent implements OnInit, OnDestroy {
           title: 'Success!',
           text: 'Order updated successfully',
           icon: 'success',
-          confirmButtonText: 'OK'
+          confirmButtonText: 'OK',
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error updating order:', error);
         Swal.fire({
           title: 'Error!',
           text: 'Failed to update order',
           icon: 'error',
-          confirmButtonText: 'OK'
+          confirmButtonText: 'OK',
         });
       });
   }
@@ -257,7 +279,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     if (result.isConfirmed) {
       try {
         await this.adminOrdersService.deleteOrder(orderId);
-        this.orders = this.orders.filter(order => order.id !== orderId);
+        this.orders = this.orders.filter((order) => order.id !== orderId);
         this.updateFilteredOrders();
         this.updateStatistics();
         this.cdr.detectChanges();
@@ -265,7 +287,11 @@ export class OrdersComponent implements OnInit, OnDestroy {
         console.log('Order deleted:', orderId);
       } catch (error) {
         console.error('Error deleting order:', error);
-        await Swal.fire('Error', 'Failed to delete order. Please try again.', 'error');
+        await Swal.fire(
+          'Error',
+          'Failed to delete order. Please try again.',
+          'error'
+        );
       }
     }
   }
@@ -317,7 +343,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.showMoreActions = false;
     this.showDateDropdown = false;
   }
-  
+
   // Close order details modal
   closeOrderDetailsModal(): void {
     this.showOrderDetailsModal = false;
@@ -342,21 +368,25 @@ export class OrdersComponent implements OnInit, OnDestroy {
   // Remove duplicate orders based on order ID
   private async removeDuplicateOrders(): Promise<void> {
     try {
-      const uniqueOrders = Array.from(new Map(this.orders.map(order => [order.id, order])).values());
+      const uniqueOrders = Array.from(
+        new Map(this.orders.map((order) => [order.id, order])).values()
+      );
       if (uniqueOrders.length === this.orders.length) {
         await Swal.fire('Info', 'No duplicate orders found.', 'info');
         return;
       }
-      
+
       this.orders = uniqueOrders;
       this.updateFilteredOrders();
       this.updateStatistics();
       this.cdr.detectChanges();
-      
+
       const removedCount = this.orders.length - uniqueOrders.length;
       await Swal.fire(
-        'Success', 
-        `Removed ${removedCount} duplicate order${removedCount === 1 ? '' : 's'}.`, 
+        'Success',
+        `Removed ${removedCount} duplicate order${
+          removedCount === 1 ? '' : 's'
+        }.`,
         'success'
       );
     } catch (error) {
