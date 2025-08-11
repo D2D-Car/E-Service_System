@@ -1,4 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-dark" [class.scrolled]="scrolled" [class.at-top]="!scrolled">
+<nav class="navbar navbar-expand-lg navbar-dark" [class.scrolled]="scrolled" [class.at-top]="!scrolled"
+  [class.dark-theme]="isDarkMode" [class.theme-transition]="true">
   <div class="container-fluid d-flex justify-content-between align-items-center">
     <a class="navbar-brand d-flex align-items-center" routerLink="/">
       <img src="./assets/nav-img/logo.png" alt="D2D Logo" class="me-2 brand-logo" />
@@ -12,36 +13,41 @@
     <div class="collapse navbar-collapse flex-grow-1" id="navbarNavDropdown">
       <ul class="navbar-nav main-nav align-items-center mx-auto">
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeSection==='home'" aria-current="page" href="#home"
-            (click)="scrollTo('home',$event)">Home</a>
+          <a class="nav-link" [class.active]="activeSection==='home'" aria-current="page" routerLink="/home"
+            [class.pulse]="activeSection==='home'">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeSection==='technicians'" href="#technicians"
-            (click)="scrollTo('technicians',$event)">Technicians</a>
+          <a class="nav-link" [class.active]="activeSection==='technicians'" routerLink="/technicians"
+            [class.pulse]="activeSection==='technicians'">Technicians</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeSection==='services'" href="#services"
-            (click)="scrollTo('services',$event)">Services</a>
+          <a class="nav-link" [class.active]="activeSection==='services'" routerLink="/services"
+            [class.pulse]="activeSection==='services'">Services</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeSection==='about'" href="#about"
-            (click)="scrollTo('about',$event)">About</a>
+          <a class="nav-link" [class.active]="activeSection==='about'" routerLink="/about"
+            [class.pulse]="activeSection==='about'">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeSection==='testimonials'" href="#testimonials"
-            (click)="scrollTo('testimonials',$event)">Testimonials</a>
+          <a class="nav-link" [class.active]="activeSection==='testimonials'" routerLink="/testimonials"
+            [class.pulse]="activeSection==='testimonials'">Testimonials</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeSection==='feedback'" href="#feedback"
-            (click)="scrollTo('feedback',$event)">Feedback</a>
+          <a class="nav-link" [class.active]="activeSection==='feedback'" routerLink="/feedback"
+            [class.pulse]="activeSection==='feedback'">Feedback</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [class.active]="activeSection==='contact'" href="#contact"
-            (click)="scrollTo('contact',$event)">Contact</a>
+          <a class="nav-link" [class.active]="activeSection==='contact'" routerLink="/contact"
+            [class.pulse]="activeSection==='contact'">Contact</a>
         </li>
       </ul>
 
       <div class="d-flex flex-column flex-lg-row align-items-center gap-2 gap-lg-3 navbar-actions">
+        <!-- Theme Toggle Button -->
+        <button class="btn btn-link theme-toggle-btn" (click)="toggleTheme()" type="button" title="Toggle theme">
+          <i class="bi" [class.bi-moon-fill]="!isDarkMode" [class.bi-sun-fill]="isDarkMode"></i>
+        </button>
+
         <div class="d-flex auth-buttons flex-wrap gap-2">
           <a class="btn btn-outline-primary auth-signup" routerLink="/auth/sign-up">Sign Up</a>
           <a class="btn btn-primary auth-login" routerLink="/auth/login">Login</a>

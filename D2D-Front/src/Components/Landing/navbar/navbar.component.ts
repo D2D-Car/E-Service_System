@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { ThemeService } from '../../../Services/theme.service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterModule, CommonModule, CommonModule],
+  imports: [RouterModule, CommonModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
@@ -14,17 +15,27 @@ export class NavbarComponent implements OnInit {
   scrolled = false;
   private scrolling = false;
   activeSection = 'home';
+  isDarkMode = false;
 
-  constructor(public router: Router) {}
+  constructor(public router: Router, private themeService: ThemeService) {}
 
   ngOnInit(): void {
     // Initialize active section based on current hash if present
     const hash = window.location.hash.replace('#', '');
     if (hash) this.activeSection = hash;
+    
+    // Subscribe to theme changes
+    this.themeService.isDarkMode$.subscribe(isDark => {
+      this.isDarkMode = isDark;
+    });
   }
 
   toggleSearch() {
     this.showSearch = !this.showSearch;
+  }
+
+  toggleTheme() {
+    this.themeService.toggleTheme();
   }
 
   @HostListener('window:scroll')

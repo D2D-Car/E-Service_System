@@ -1,40 +1,52 @@
 /* Clean dark navbar to match reference design */
 .navbar {
-  background: rgba(20,20,20,.95); 
-  padding: 0.8rem 0; 
-  position: fixed; 
-  top: 0; 
-  left: 0; 
-  right: 0; 
-  z-index: 1000; 
-  transition: background .3s ease, padding .3s ease; 
-  border-bottom: 1px solid rgba(255,255,255,.1);
+  background-color: var(--background-color);
+  padding: 0.8rem 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: background .3s ease, padding .3s ease;
+  border-bottom: 1px solid var(--primary-color);
 }
-.navbar.at-top { background: rgba(20,20,20,.95); }
-.navbar.scrolled { background: rgba(15,15,15,.98); padding: 0.6rem 0; }
+
+.navbar.at-top {
+  background: rgba(20, 20, 20, .95);
+}
+
+.navbar.scrolled {
+  background: rgba(15, 15, 15, .98);
+  padding: 0.6rem 0;
+}
 
 /* Logo styling */
-.navbar-brand img{
-  height: 58px; 
-  width: auto; 
-  display: block; 
+.navbar-brand img {
+  height: 58px;
+  width: auto;
+  display: block;
   transition: .3s;
 }
-.navbar-brand:hover img{
+
+.navbar-brand:hover img {
   transform: scale(1.05);
 }
 
-.main-nav{display:flex; gap:2.5rem;}
-.nav-link{
-  margin:0; 
-  position:relative; 
-  transition:all .3s; 
-  text-align:center; 
-  color: #fff; 
-  font-weight: 500; 
-  font-size: 0.95rem; 
-  letter-spacing: 0.3px; 
-  padding: 0.5rem 1rem; 
+.main-nav {
+  display: flex;
+  gap: 2.5rem;
+}
+
+.nav-link {
+  margin: 0;
+  position: relative;
+  transition: all .3s;
+  text-align: center;
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+  padding: 0.5rem 1rem;
   border-radius: 6px;
   text-decoration: none;
   cursor: pointer;
@@ -43,8 +55,8 @@
 /* Click animation */
 .nav-link:active {
   transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 4px 15px rgba(255,71,87,0.3);
-  background: rgba(255,71,87,0.2);
+  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+  background: rgba(255, 71, 87, 0.2);
   border-radius: 8px;
 }
 
@@ -67,116 +79,178 @@
 }
 
 @keyframes loadingPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.3;
     width: 20px;
   }
+
   50% {
     opacity: 1;
     width: 40px;
   }
 }
-.nav-link.active{
-  background: rgba(255,71,87,.1); 
-  color: #ff4757;
-} 
-.nav-link::after{content:''; position:absolute; left:50%; bottom:4px; width:0; height:2px; background:linear-gradient(90deg,var(--primary-color,#ff4757),#ff6d5c); border-radius:2px; transform:translateX(-50%); transition:width .45s ease;}
-.nav-link:hover{color:#ff4757; transform:translateY(-1px);} 
-.nav-link:hover::after, .nav-link.active::after{width:60%;}
 
-.btn-primary{
-  background: #ff4757; 
-  color: #fff; 
-  border: none; 
-  padding: 0.5rem 1.2rem; 
-  border-radius: 6px; 
-  font-size: 0.9rem; 
-  font-weight: 600; 
+.nav-link.active {
+  background: rgba(255, 71, 87, .1);
+  color: #ff4757;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.nav-link:hover {
+  color: #ff4757;
+  transform: translateY(-1px);
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.btn-primary {
+  background: #ff4757;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
   transition: .3s;
 }
-.btn-primary:hover{
+
+.btn-primary:hover {
   background: #e63946;
   transform: translateY(-1px);
 }
 
-.btn-outline-primary{
-  color: #fff; 
-  border: 1px solid rgba(255,255,255,.3); 
-  background: transparent; 
-  padding: 0.5rem 1.2rem; 
-  border-radius: 6px; 
-  font-size: 0.9rem; 
-  font-weight: 600; 
+.btn-outline-primary {
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, .3);
+  background: transparent;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
   transition: .3s;
 }
-.btn-outline-primary:hover{
-  background: rgba(255,255,255,.1); 
-  color: #fff; 
-  border-color: rgba(255,255,255,.5);
+
+.btn-outline-primary:hover {
+  background: rgba(255, 255, 255, .1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, .5);
 }
 
 /* Auth buttons container */
-.auth-buttons .btn{min-width:100px; text-align:center;}/* Responsive */
-/* Responsive */
-@media (max-width: 992px){
-  .navbar{padding: 0.8rem 0;}
-  .navbar-collapse{ 
-    position:absolute; 
-    top:100%; 
-    left:0; 
-    right:0; 
-    background: rgba(20,20,20,.98); 
-    padding: 1.5rem; 
-    border-radius: 0 0 8px 8px; 
-    border-top: 1px solid rgba(255,255,255,.1);
-  }
-  .nav-item{width:100%; margin:0.3rem 0;}
-  .main-nav{gap:0; flex-direction: column;}
-  .nav-link{font-size:1rem; width:100%; text-align: left; padding: 0.8rem;}
-  .auth-buttons{width:100%; justify-content:flex-start; margin-top: 1rem;}
-  .auth-buttons .btn{flex:1 1 48%; min-width:0;}
-  .navbar-toggler{margin-left:auto; border: 1px solid rgba(255,255,255,.3);}
-  .navbar-toggler-icon { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); }
-}
-@media (max-width: 580px){
-  .auth-buttons{flex-direction:column;}
-  .auth-buttons .btn{width:100%; margin: 0.2rem 0;}
+.auth-buttons .btn {
+  min-width: 100px;
+  text-align: center;
 }
 
-@media (prefers-reduced-motion: reduce){ 
-  *,*::before,*::after{
-    animation-duration:.01ms !important; 
-    animation-iteration-count:1 !important; 
-    transition:none !important;
-  } 
+/* Responsive */
+/* Responsive */
+@media (max-width: 992px) {
+  .navbar {
+    padding: 0.8rem 0;
+  }
+
+  .navbar-collapse {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(20, 20, 20, .98);
+    padding: 1.5rem;
+    border-radius: 0 0 8px 8px;
+    border-top: 1px solid rgba(255, 255, 255, .1);
+  }
+
+  .nav-item {
+    width: 100%;
+    margin: 0.3rem 0;
+  }
+
+  .main-nav {
+    gap: 0;
+    flex-direction: column;
+  }
+
+  .nav-link {
+    font-size: 1rem;
+    width: 100%;
+    text-align: left;
+    padding: 0.8rem;
+  }
+
+  .auth-buttons {
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 1rem;
+  }
+
+  .auth-buttons .btn {
+    flex: 1 1 48%;
+    min-width: 0;
+  }
+
+  .navbar-toggler {
+    margin-left: auto;
+    border: 1px solid rgba(255, 255, 255, .3);
+  }
+
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
+}
+
+@media (max-width: 580px) {
+  .auth-buttons {
+    flex-direction: column;
+  }
+
+  .auth-buttons .btn {
+    width: 100%;
+    margin: 0.2rem 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition: none !important;
+  }
 }
 
 /* Scroll pulse effect for target sections */
-.scroll-pulse{
+.scroll-pulse {
   animation: sectionPulse 2s ease-out;
   position: relative;
   z-index: 1;
-} 
+}
 
-@keyframes sectionPulse{
-  0%{
-    box-shadow: 0 0 0 0 rgba(255,71,87,.9);
+@keyframes sectionPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 71, 87, .9);
     transform: scale(1);
   }
-  25%{
-    box-shadow: 0 0 0 15px rgba(255,71,87,0.4);
+
+  25% {
+    box-shadow: 0 0 0 15px rgba(255, 71, 87, 0.4);
     transform: scale(1.01);
   }
-  50%{
-    box-shadow: 0 0 0 30px rgba(255,71,87,0.1);
+
+  50% {
+    box-shadow: 0 0 0 30px rgba(255, 71, 87, 0.1);
     transform: scale(1.02);
   }
-  75%{
-    box-shadow: 0 0 0 40px rgba(255,71,87,0.05);
+
+  75% {
+    box-shadow: 0 0 0 40px rgba(255, 71, 87, 0.05);
     transform: scale(1.01);
   }
-  100%{
-    box-shadow: 0 0 0 0 rgba(255,71,87,0);
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 71, 87, 0);
     transform: scale(1);
   }
 }
@@ -189,10 +263,10 @@
   left: -10px;
   right: -10px;
   bottom: -10px;
-  background: linear-gradient(45deg, 
-    rgba(255,71,87,0.2) 0%, 
-    rgba(255,71,87,0.1) 50%, 
-    rgba(255,71,87,0.3) 100%);
+  background: linear-gradient(45deg,
+      rgba(255, 71, 87, 0.2) 0%,
+      rgba(255, 71, 87, 0.1) 50%,
+      rgba(255, 71, 87, 0.3) 100%);
   border-radius: 15px;
   z-index: -1;
   animation: glowPulse 2s ease-out;
@@ -200,10 +274,13 @@
 }
 
 @keyframes glowPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0;
     transform: scale(0.8);
   }
+
   50% {
     opacity: 1;
     transform: scale(1.1);

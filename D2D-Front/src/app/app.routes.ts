@@ -5,7 +5,7 @@ import { HomeComponent } from '../Components/Landing/home/home.component';
 import { AboutComponent } from '../Components/Landing/about/about.component';
 import { FeedbackComponent } from '../Components/Landing/feedback/feedback.component';
 import { ServicesComponent } from '../Components/Landing/services/services.component';
-import { TechniciansComponent as LandingTechniciansComponent } from '../Components/Landing/technicians/technicians.component';
+import { TechniciansComponent as LandingTechniciansComponent, TechniciansComponent } from '../Components/Landing/technicians/technicians.component';
 
 // Admin Components
 import { DashboardComponent as AdminDashboardComponent } from '../Components/Admin/dashboard/dashboard.component';
@@ -36,18 +36,20 @@ import { DriverJobsComponent } from '../Components/Driver/driver-jobs/driver-job
 import { DriverEarningsComponent } from '../Components/Driver/driver-earnings/driver-earnings.component';
 import { DriverProfileComponent } from '../Components/Driver/driver-profile/driver-profile.component';
 import { DriverSharedComponent } from '../Components/Driver/driver-shared/driver-shared.component';
+import { TestimonialsComponent } from '../Components/Landing/testimonials/testimonials.component';
+import { ContactComponent } from '../Components/Landing/contact/contact.component';
 
 export const routes: Routes = [
-  // Landing Page Routes - All redirect to home with fragments for scrolling
+  // Landing Page Routes - Home component handles all fragments
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'about', redirectTo: '/#about', pathMatch: 'full' },
-  { path: 'contact', redirectTo: '/#contact', pathMatch: 'full' },
-  { path: 'services', redirectTo: '/#services', pathMatch: 'full' },
-  { path: 'technicians', redirectTo: '/#technicians', pathMatch: 'full' },
-  { path: 'testimonials', redirectTo: '/#testimonials', pathMatch: 'full' },
-  { path: 'feedback', redirectTo: '/#feedback', pathMatch: 'full' },
-
+  {path: 'technicians', component:TechniciansComponent},
+  {path: 'about', component:AboutComponent},
+  {path: 'feedback', component:FeedbackComponent},
+  {path: 'services', component:ServicesComponent},
+  {path: 'testimonials',component:TestimonialsComponent},
+  {path: 'contact', component:ContactComponent},
+  
   // Authentication routes
   {
     path: 'auth',
